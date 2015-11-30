@@ -1,0 +1,81 @@
+
+RewriteEngine On
+RewriteBase /
+#RewriteLog "/var/www/user/data/www/mail-numizmatik.ru/1.log"
+#RewriteLogLevel 9
+
+#RewriteRule (noteb|less|highcharts|data|externals|swf|css|images|pictures|javascripts|jquery|bootstrap)/(.*)  $1/$2 [L,QSA]
+
+
+#RewriteRule user/registration.php$          index.php?module=user&task=registration [L,QSA]
+#RewriteRule user/registration.php?ajax=1$   index.php?module=user&task=registration&ajax=1 [L,QSA]
+#RewriteRule user/login.php$                 index.php?module=user&task=login [L,QSA]
+#RewriteRule user/login.php?ajax=1$          index.php?module=user&task=login&ajax=1 [L,QSA]
+#RewriteRule addcall.php?ajax=1$             index.php?module=addcall&ajax=1 [L,QSA]
+#RewriteRule addcall.php$                    index.php?module=addcall [L,QSA]
+#RewriteRule user/remind.php?ajax=1          index.php?module=user&task=remind&ajax=1 [L,QSA]
+#RewriteRule user/remind.php                  index.php?module=user&task=remind [L,QSA]
+#RewriteRule user/subsription.php?datatype=(.*)  index.php?module=user&task=subsription&datatype=$1 [L,QSA]
+RewriteRule  shopcoins/                     index.php?module=shopcoins
+RewriteRule (.*)/(.*).php$                 index.php?module=$1&task=$2 [L,QSA]
+RewriteRule (.*).php$                       index.php?module=$1 [L,QSA]
+RewriteRule (.*)$                          index.php?module=$1 [L,QSA]
+
+#ocenka-stoimost-monet
+
+##RewriteRule z-news/shownew.php[^/]*         index.php?module=news    [L,QSA]
+##RewriteRule z-news/showlinks.php[^/]*       index.php?module=new     [L,QSA]
+##RewriteRule review/showart.php              index.php?module=reviews [L,QSA]
+##RewriteRule review/show.php                 index.php?module=review  [L,QSA]
+##RewriteRule worldprice/tender.php           index.php?module=tenders [L,QSA]
+##RewriteRule z-news/shownew_all.php          index.php?module=news&detailed [L,QSA]
+##RewriteRule zernostat/.*                    index.php?module=zernostat [L,QSA]
+##RewriteRule zrussia/.*                      index.php?module=zrussia [L,QSA]
+##RewriteRule grainprices/.*                  index.php?module=grainprices [L,QSA]
+##RewriteRule worldprice/.*                   index.php?module=worldprice [L,QSA]
+##RewriteRule worldprice_ntb/.*               index.php?module=worldprice_ntb [L,QSA]
+##RewriteRule portquotes/.*                   index.php?module=portquotes [L,QSA]
+##RewriteRule agrostuff/.*                    index.php?module=agrostuff [L,QSA]
+##RewriteRule ([a-z0-9\-\_]+)\.htm$	        index.php?module=search_pages_generator&translit=$1 [QSA,L]
+#RewriteRule cropcalendar/cropcalendar.php   index.php?module=calendar [L,QSA]
+#RewriteRule cropcalendar/data.php.*         index.php?module=calendar&getflashdata=1 [L,QSA]
+#RewriteRule cropcalendar/.*                 index.php?module=worldcalendar [L,QSA]
+#RewriteRule freight/.*                      index.php?module=freight [L,QSA]
+#RewriteRule review/partners.php             index.php?module=partners [L,QSA]
+#RewriteRule zern_spr/showart.php            index.php?module=dictionary [L,QSA]
+#RewriteRule standard/.*                     index.php?module=standards [L,QSA]
+#RewriteRule technika/declar/                index.php?module=agro_equipment_board [L,QSA]
+#RewriteRule technika/catalog/[^/]*          index.php?module=agro_equipment_catalog [L,QSA]
+#RewriteRule technika/catalog/index.php/([^/]*)[/]* index.php?module=agro_equipment_catalog&category=$1 [L,QSA]
+#RewriteRule technika/catalog/index.php/([^/]*)/([^/]*)[/]* index.php?module=agro_equipment_catalog&category=$1&subcategory=$2 [L,QSA]
+#RewriteRule technika/catalog/index.php/([^/]*)/([^/]*)/([0-9]+)[/]* index.php?module=agro_equipment_catalog&category=$1&subcategory=$2&id=$3 [L,QSA]
+#RewriteRule technika/.*                     index.php?module=agro_equipment [L,QSA]
+#RewriteRule classified/                     index.php?module=classified [L,QSA]
+#RewriteRule catalogue/                      index.php?module=catalogue  [L,QSA]
+#RewriteRule vagontrace.php                  index.php?module=vagontrace [L,QSA]
+#RewriteRule rabota/declar.php               index.php?module=rabota  [L,QSA]
+#RewriteRule debtor/                         index.php?module=debtor [L,QSA]
+
+#RewriteCond %{QUERY_STRING} ^inc=fair_r
+#RewriteRule (.*) index.php?module=exhibitions [L,QSA]
+
+#RewriteRule content/?                       index.php?module=search_pages [L,QSA]
+#RewriteRule userpage                        index.php?module=userpage [L,QSA]
+#RewriteRule subscribe/faq.php               index.php?module=faq [L,QSA]
+#RewriteRule messhelp.php                    index.php?module=messhelp [L,QSA]
+
+#RewriteRule subscribe                       index.php?module=subscribe [L,QSA]
+#RewriteRule search/search.php               index.php?module=search [L,QSA]
+#RewriteRule price/                          index.php?module=pricelists [L,QSA]
+#RewriteRule advertisement/banner.php        index.php?module=advertisement [L,QSA]
+#RewriteRule advertisement/region[/]{0,1}$   index.php?module=advertisement&region= [L,QSA]
+#RewriteRule advertisement/region/([^\/]+)   index.php?module=advertisement&region=$1 [L,QSA]
+#RewriteRule z-subscrible/index.php          index.php?module=email_subscriptions [L,QSA]
+
+RewriteCond %{QUERY_STRING} ^inc=service_r
+#RewriteRule (.*) index.php?module=contacts [L,QSA]
+
+#RewriteRule z-news/lastnews.php             index.php?module=rss [L,QSA]
+#RewriteRule z-news/rss.php                  index.php?module=rss&zol [L,QSA]
+#RewriteRule sev/                            index.php?module=sev [L,QSA]
+#RewriteRule (.*)$                           index.php [L,QSA]
