@@ -9,8 +9,8 @@
         	<a href="/catalog?page=shop.cart" title="Показать корзину"><font color="Black">Корзина покупок</font></a>
          </p>
     	<div class="basket-label">  <p>	
-    	<b>В корзине:</b> <span><?=$tmp['user']['product_amount']?> товаров </span><br>
-    	<b>На сумму:</b> <span><?=$tmp['user']['summ']?> рублей </span>  </p>
+    	<b>В корзине:</b> <span><?=$tpl['user']['product_amount']?> товаров </span><br>
+    	<b>На сумму:</b> <span><?=$tpl['user']['summ']?> рублей </span>  </p>
     	</div>	
     	<p class="basket-info"><b>Выберите несколько товаров и поместите их в корзину.</b> </p>
     </div>

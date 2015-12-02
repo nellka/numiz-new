@@ -9,15 +9,17 @@
         
         
         if($static_page){?>
+			 <div class="subheader">
 			<div class="wraper clearfix">
-		        <div id='leftmemu'>
-		         <?php include $cfg['path'] . '/views/leftmenu/leftmenu_index.tpl.php'; ?>
-		        </div>
-		        <div id='subheader-body'>
-		            <?php include $cfg['path'] . '/views/common/breadcrumb.tpl.php'; ?> 
-		            <? include $cfg['path'] . '/views/static_pages/' . $tpl['module'] . '.tpl.php'; ?>		            
-		        </div>
-		    </div>          
+			        <div id='leftmemu'>
+			         <?php include $cfg['path'] . '/views/leftmenu/leftmenu_index.tpl.php'; ?>
+			        </div>
+			        <div id='subheader-body'>
+			            <?php include $cfg['path'] . '/views/common/breadcrumb.tpl.php'; ?> 
+			            <? include $cfg['path'] . '/views/static_pages/' . $tpl['module'] . '.tpl.php'; ?>		            
+			        </div>
+			    </div> 
+		    </div>         
        <? } else {   ?>  
         	  <div class="subheader">
 		       <div class="wraper clearfix">

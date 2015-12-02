@@ -9,7 +9,7 @@ $userpassword = isset($_REQUEST['userpassword'])?$_REQUEST['userpassword']:"";
 $shopcoins = isset($_REQUEST['shopcoins'])?$_REQUEST['shopcoins']:0;
 
 $materialtype = (integer)(isset($_REQUEST['materialtype'])?$_REQUEST['materialtype']:'');
-$onpage = (integer)(isset($_REQUEST['onpage'])?$_REQUEST['onpage']:'');
+
 $search = isset($_REQUEST['search'])?$_REQUEST['search']:'';
 $recoins = isset($_REQUEST['recoins'])?$_REQUEST['recoins']:'';
 $member = isset($_REQUEST['member'])?$_REQUEST['member']:'';

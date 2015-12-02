@@ -20,13 +20,15 @@ $tpl['user']['remote_address'] = $user_remote_address;
 $tpl['user']['is_logined'] = $user_class->is_logged_in();
 
 //получаем информацию о балансе пользователя пользователя
-$tmp['user']['summ'] = 0;
-$tmp['user']['product_amount'] = intval($shopcoinsorderamount);
+$tpl['user']['summ'] = 0;
+$tpl['user']['product_amount'] = intval($shopcoinsorderamount);
+
 if ($tpl['user']['is_logined']){
 	//данный набор о пользователеле нужен в нескольких кусках хода, поэтому чтобы не дублировать выношу в отдельную функцию
 	$user_base_data = $user_class->getUserBaseData();
+	
 	$tpl['user'] = array_merge($tpl['user'],$user_base_data);
-}
+} else $tpl['user']['user_id'] = 0;
 
 include_once($cfg['path'] ."/configs/keywordsAdmin.php");
 //include $_SERVER["DOCUMENT_ROOT"]."/keywords.php";

@@ -191,7 +191,7 @@ $DeliveryName[4] = 'Отправка по почте';
 $DeliveryName[5] = 'Экспресс доставка (СПСР)';
 $DeliveryName[6] = 'Экспресс доставка (ЕМС)';
 $DeliveryName[7] = 'Метро Новослободская (самовывоз)';
-$dateinsert_orderby = "dateinsert";
+
 $myip = "83.167.125.158";
 $minpriceoneclick = 500;
 $reservetime = 18000;

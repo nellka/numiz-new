@@ -7,6 +7,7 @@
 <link rel=stylesheet type=text/css href='<?=$cfg['site_dir']?>css/main.css'>
 <link rel=stylesheet type=text/css href='<?=$cfg['site_dir']?>js/main.js'>
 <link rel="SHORTCUT ICON" href="<?=$cfg['site_dir']?>favicon.ico">
+<meta name="viewport" content="width=1200" />
 <link href='https://fonts.googleapis.com/css?family=Roboto:400italic,700,700italic,100,400,100italic' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css" href="<?=$cfg['site_dir']?>css/jquery.fancybox-1.3.3.css" media="screen" />
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>

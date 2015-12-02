@@ -6,6 +6,8 @@ RewriteBase /
 
 #RewriteRule (noteb|less|highcharts|data|externals|swf|css|images|pictures|javascripts|jquery|bootstrap)/(.*)  $1/$2 [L,QSA]
 
+#this rule related to mail processing, which was sent from main numizmatik 
+RewriteRule gate.php                       gate.php [L]
 
 #RewriteRule user/registration.php$          index.php?module=user&task=registration [L,QSA]
 #RewriteRule user/registration.php?ajax=1$   index.php?module=user&task=registration&ajax=1 [L,QSA]

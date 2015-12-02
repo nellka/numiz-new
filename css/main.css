@@ -28,7 +28,7 @@ a:hover{color:#006699;font-weight:bold;}
 	width: 1200px;
 }
 #header {	
-	padding: 50px 0 0;
+	padding: 70px 0 0;
     height: 205px;
 }
 #header-menu {	
@@ -51,9 +51,14 @@ a:hover{color:#006699;font-weight:bold;}
     font-size: 14px;
     margin: 10px 0 0 70px;
     padding: 5px 20px;
-    width: 200px;
+    
 }
-
+.top-menu{
+	position:fixed;
+	width:1200px;
+	background-color:#ffffff;
+	z-index:10;
+}
 .rss_lenta a {
     color: white;
     line-height: 40px;
@@ -97,12 +102,13 @@ a:hover{color:#006699;font-weight:bold;}
 #cssmenu ul li a:hover ,#cssmenu ul li a.active {
   background: #ffcc66  
 }
+
 #ddmenu div.submenu {
   height: 270px;
   left: 85px;
   list-style: outside none none;
   margin: 0;
-  top: 50px;
+  top: 40px;
   width: 1024px;
   position: absolute;
   z-index: 1000;
@@ -453,7 +459,7 @@ width:100%;
 }
 
 #basket{
-width:235px;
+width:240px;
 float:right;
 text-align:left;
 padding: 10px 0 0;
@@ -463,7 +469,7 @@ padding: 10px 0 0;
     font-weight: bold;
 }
 .triger{
- background: #eeeeee none repeat scroll 0 0;
+ background:#eeeeee none repeat scroll 0 0;
 }
 
 /*
@@ -592,9 +598,9 @@ position:relative;
     height: 80px;
 }
 .custom_socials {
-    bottom: 0;
+    bottom: 10px;
     position: absolute;
-    right: 45px;
+    right: 100px;
     text-align: right;
     width: 230px;
 }
@@ -630,6 +636,10 @@ text-decoration: none;
     text-transform: uppercase;
      background: white none repeat scroll 0 0;
 }
+#subsription {
+    position: relative;
+}
+
 #subsription-form input[type=button]:hover {
 color: #006699
 }
@@ -674,6 +684,7 @@ width:250px
 .main_context {
 
 	width:725px;
+	font-size:13px;
 }
 blockquote {
         -webkit-border-radius: 6px;
