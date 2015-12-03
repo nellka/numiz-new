@@ -7,12 +7,12 @@
     <div class="clearfix" id='content-<?=$tpl['module']?>'>
         <?php 
         
-        
-        if($static_page){?>
+       
+        if($static_page||$tpl['module']=='shopcoins'){?>
 			 <div class="subheader">
 			<div class="wraper clearfix">
 			        <div id='leftmemu'>
-			         <?php include $cfg['path'] . '/views/leftmenu/leftmenu_index.tpl.php'; ?>
+			         <?php include $cfg['path'] . '/views/leftmenu/leftmenu_'.($tpl['module']=='shopcoins'?'shopcoins':'index').'.tpl.php'; ?>
 			        </div>
 			        <div id='subheader-body'>
 			            <?php include $cfg['path'] . '/views/common/breadcrumb.tpl.php'; ?> 

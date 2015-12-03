@@ -41,16 +41,9 @@ modal:false,
 });
 </script>
 	
-<title><?=$tpl['title']?></title>
-
-<?php 
-if (isset($tpl['_Keywords'])) { ?>
-<meta name="Keywords" content="<?=$tpl['_Keywords']?>" >
-<?} ?>
-
-<?php if (isset( $tpl['_DescriptionShopcoins'])) { ?>
-<meta name="Description" content="<?=$tpl['_DescriptionShopcoins']?>">
-<?php } ?>
+<title><?=isset($tpl[$tpl['module']]['_Title'])?$tpl[$tpl['module']]['_Title']:$tpl['base']['_Title']?></title>
+<meta name="Keywords" content="<?=isset($tpl[$tpl['module']]['_Keywords'])?$tpl[$tpl['module']]['_Keywords']:$tpl['base']['_Keywords']?>" >
+<meta name="Description" content="<?=isset( $tpl[$tpl['module']]['_Description'])?$tpl[$tpl['module']]['_Description']:$tpl['base']['_Description']?>">
 </head>
 <!--onLoad="initMenu();"-->
 <body>   

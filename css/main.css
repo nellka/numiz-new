@@ -39,7 +39,7 @@ a:hover{color:#006699;font-weight:bold;}
     z-index:10
 }
 #cssmenu {
-    background: url("/images/home.png") no-repeat scroll left center;
+    background: url("../images/home.png") no-repeat scroll left center;
     height:40px;    
     color:white;
 }
@@ -63,7 +63,7 @@ a:hover{color:#006699;font-weight:bold;}
     color: white;
     line-height: 40px;
     text-decoration: none;
-     background: url("/images/rss.png") no-repeat scroll left center;
+     background: url("../images/rss.png") no-repeat scroll left center;
      padding: 0 0 0 15px;
 }
 
@@ -299,7 +299,7 @@ color:red;
 text-align:center;
 }
 #search-top-module #globalsearch-submit {
-     background: #eeeeee url("/images/search.png") no-repeat scroll center center;
+     background: #eeeeee url("../images/search.png") no-repeat scroll center center;
     border: 1px solid #eeeeee;
     border-radius: 3px;
     color: #7da2aa;

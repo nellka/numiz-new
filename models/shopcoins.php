@@ -10,22 +10,23 @@ class model_shopcoins extends Model_Base
 	public function countByParams($where){
 	   // $this->_getSelect($select) );	    
 	    $sql = "Select count(*) from shopcoins $where;";
+	    //echo $sql."<br>";
     	//$result=mysql_query($sql);
     	$result = $this->db->fetchOne($sql);
     	return $result;
 	}    
 	   
-	public function getItemsByParams($user_id=0,$materialtype=null,$page=1, $items_for_page=30,$orderby=''){
+	public function getItemsByParams($user_id=0,$materialtype=null,$page=1, $items_for_page=30,$orderby='',$searchid='',$yearsearch='',$searchname='',$group='',$WhereArray=array()){
 	    //если нет ничего в поиске
 	    //часть данных не инициализирую на первом этапе
-	    
+	    var_dump($materialtype);
 	   $select = $this->db->select()
 	                      ->from('shopcoins')
 	                      ->join(array('group'),'shopcoins.group=group.group');
 	   
 	   if($user_id==811||$user_id==309236) {
 	       if(!$nocheck){
-	           $select->where("(shopcoins.check=1 or (shopcoins.check>3 and shopcoins.check<20))");
+	           $select->where("shopcoins.check=1 or (shopcoins.check>3 and shopcoins.check<20)");
 	       } else {
 	           $select->where("shopcoins.check>3 and shopcoins.check<20");
 	       }
@@ -38,7 +39,12 @@ class model_shopcoins extends Model_Base
 	   } 
 	   
 	   if ($materialtype==1 || $materialtype==10){
-	        $select->where("((shopcoins.materialtype='".$materialtype."' ".(!$searchid&&!$yearsearch&&!$searchname?"and shopcoins.amountparent > 0":"").") or shopcoins.materialtypecross & pow(2,".$materialtype.")".($group?" or shopcoins.materialtype='8' or shopcoins.materialtypecross & pow(2,8)":"").")"); 	     
+	       if(!$searchid&&!$yearsearch&&!$searchname){
+	            $select->where("(shopcoins.materialtype='".$materialtype."' and shopcoins.amountparent > 0) or shopcoins.materialtypecross & pow(2,".$materialtype.")".($group?" or shopcoins.materialtype='8' or shopcoins.materialtypecross & pow(2,8)":"")); 		
+	       } else {
+	           $select->where("shopcoins.materialtype='".$materialtype."' or shopcoins.materialtypecross & pow(2,".$materialtype.")".($group?" or shopcoins.materialtype='8' or shopcoins.materialtypecross & pow(2,8)":"")); 
+	       }
+	            
 	   } else {
 	        $select->where("(shopcoins.materialtype=? or shopcoins.materialtypecross & pow(2,?))",$materialtype); 
 	   }
@@ -63,6 +69,7 @@ class model_shopcoins extends Model_Base
 	       $select->order($orderby);
 	   }
 	   $select->limitPage($page, $items_for_page);
+	   //echo $select->__toString();
        return $this->db->fetchAll($select);
 	} 
    

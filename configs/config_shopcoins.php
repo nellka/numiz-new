@@ -128,28 +128,36 @@ $ArrayForCode = array (
 
 $MaterialTypeArray = Array();
 
-$MaterialTypeArray[1] = "Монеты"; 											$MaterialTypeArraySort[1] = 1;			$MaterialTypeArrayTitle[1] = "Монеты со всего мира стоимость(цены)";
-//$MaterialTypeArray[12] = "ВИП монеты";										//$MaterialTypeArraySort[2] = 12;			$MaterialTypeArrayTitle[12] = "ВИП Монеты";
-$MaterialTypeArray[12] = "Монеты СССР";										$MaterialTypeArraySort[2] = 12;			$MaterialTypeArrayTitle[12] = "Дешевые монеты СССР (цены и стоимость покупки и продажи)";
+$MaterialTypeArray[1] = "Монеты"; 											
+$MaterialTypeArraySort[1] = 1;			
+$MaterialTypeArrayTitle[1] = "Монеты со всего мира стоимость(цены)";
 
-$MaterialTypeArray[8] = "Мелочь ";											$MaterialTypeArraySort[3] = 8;			$MaterialTypeArrayTitle[8] = "Дешевые монеты со всего мира стоимость(цены)";
-$MaterialTypeArray[10] = "Нотгельды ";										$MaterialTypeArraySort[4] = 10;			$MaterialTypeArrayTitle[10] = "Нотгельды со всего мира стоимость(цены)";
-$MaterialTypeArray[7] = "Наборы монет";										$MaterialTypeArraySort[5] = 7;			$MaterialTypeArrayTitle[7] = "Наборы монет со всего мира стоимость(цены)";
+$MaterialTypeArray[12] = "Монеты СССР";										
+$MaterialTypeArraySort[2] = 12;			
+$MaterialTypeArrayTitle[12] = "Дешевые монеты СССР (цены и стоимость покупки и продажи)";
 
-$MaterialTypeArray[11] = "Барахолка монет <font color=red>NEW</font>";									$MaterialTypeArraySort[7] = 11;			$MaterialTypeArrayTitle[11] = "Барахолка монет со всего мира стоимость(цены)";
-$MaterialTypeArray[2] = "Боны";												$MaterialTypeArraySort[8] = 2;			$MaterialTypeArrayTitle[2] = "Банкноты(боны) со всего мира стоимость(цены)";
-$MaterialTypeArray[3] = "Аксессуары";										$MaterialTypeArraySort[9] = 3;			$MaterialTypeArrayTitle[3] = "Аксессуары для нумизмата стоимость(цены)";
+$MaterialTypeArray[8] = "Мелочь ";											
+$MaterialTypeArraySort[3] = 8;			$MaterialTypeArrayTitle[8] = "Дешевые монеты со всего мира стоимость(цены)";
+$MaterialTypeArray[10] = "Нотгельды ";										
+$MaterialTypeArraySort[4] = 10;			
+$MaterialTypeArrayTitle[10] = "Нотгельды со всего мира стоимость(цены)";
+$MaterialTypeArray[7] = "Наборы монет";										
+$MaterialTypeArraySort[5] = 7;			
+$MaterialTypeArrayTitle[7] = "Наборы монет со всего мира стоимость(цены)";
 
+$MaterialTypeArray[11] = "Барахолка монет <font color=red>NEW</font>";									
+$MaterialTypeArraySort[7] = 11;			$MaterialTypeArrayTitle[11] = "Барахолка монет со всего мира стоимость(цены)";
+$MaterialTypeArray[2] = "Боны";												
+$MaterialTypeArraySort[8] = 2;			
 
-//$MaterialTypeArray[6] = "Для монет";	$MaterialTypeFolderArray[6] = 1;	$MaterialTypeArraySort[5] = 6;
-//$MaterialTypeArray[8] = "Для банкнот";	$MaterialTypeFolderArray[8] = 1;	$MaterialTypeArraySort[6] = 8;
-//$MaterialTypeArray[9] = "Для марок";	$MaterialTypeFolderArray[9] = 1;	$MaterialTypeArraySort[7] = 9;
+$MaterialTypeArrayTitle[2] = "Банкноты(боны) со всего мира стоимость(цены)";
+$MaterialTypeArray[3] = "Аксессуары";										
+$MaterialTypeArraySort[9] = 3;			
+$MaterialTypeArrayTitle[3] = "Аксессуары для нумизмата стоимость(цены)";
 
-
-//if ($cookiesuser==811 or $cookiesuser==53849)
-	//$MaterialTypeArray[7] = "VIP <font color=red>NEW!!!</font>";
-
-$MaterialTypeArray[4] = "Подарочные наборы";								$MaterialTypeArraySort[10] = 4;			$MaterialTypeArrayTitle[4] = "Подарочные наборы монет со всего мира стоимость(цены)";
+$MaterialTypeArray[4] = "Подарочные наборы";								
+$MaterialTypeArraySort[10] = 4;			
+$MaterialTypeArrayTitle[4] = "Подарочные наборы монет со всего мира стоимость(цены)";
 //[Weight][Zone]
 $PostZone[1] = 138.80;
 $PostZone[2] = 140.70;

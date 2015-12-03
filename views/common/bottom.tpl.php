@@ -31,10 +31,10 @@
 		        </script>
 		 </center>  
 		 <div class="custom_socials">
-		        <a href="#" class="custom_social"> <img border="0" alt="" src="/images/social/instagram.gif"> </a> 
-		        <a href="#" class="custom_social"> <img border="0" alt="" src="/images/social/youtube.gif"> </a>
-		        <a href="#" class="custom_social"> <img border="0" alt="" src="/images/social/vk.gif"> </a>         
-		        <a href="#" class="custom_social"> <img border="0" alt="" src="/images/social/facebook.gif"> </a> 		   
+		        <a href="#" class="custom_social"> <img border="0" alt="" src="<?=$cfg['site_dir']?>images/social/instagram.gif"> </a> 
+		        <a href="#" class="custom_social"> <img border="0" alt="" src="<?=$cfg['site_dir']?>images/social/youtube.gif"> </a>
+		        <a href="#" class="custom_social"> <img border="0" alt="" src="<?=$cfg['site_dir']?>images/social/vk.gif"> </a>         
+		        <a href="#" class="custom_social"> <img border="0" alt="" src="<?=$cfg['site_dir']?>images/social/facebook.gif"> </a> 		   
 		    </div>
 </div>
 </div>
@@ -91,12 +91,12 @@
 Разнообразные аксессуары для монет, альбомы для монет. Оценка стоимости монет. Москва.
 
 <div class="cards">
-  <img border="0" alt="" src="/images/social/visa.gif"> 
-  <img border="0" alt="" src="/images/social/mastercard.gif">
-  <img border="0" alt="" src="/images/social/russianpost.gif"> 
-    <img border="0" alt="" src="/images/social/qiwi.gif">
-  <img border="0" alt="" src="/images/social/sberbank.gif">    
-    <img border="0" alt="" src="/images/social/webmoney.gif">  
+  <img border="0" alt="" src="<?=$cfg['site_dir']?>images/social/visa.gif"> 
+  <img border="0" alt="" src="<?=$cfg['site_dir']?>images/social/mastercard.gif">
+  <img border="0" alt="" src="<?=$cfg['site_dir']?>images/social/russianpost.gif"> 
+    <img border="0" alt="" src="<?=$cfg['site_dir']?>images/social/qiwi.gif">
+  <img border="0" alt="" src="<?=$cfg['site_dir']?>images/social/sberbank.gif">    
+    <img border="0" alt="" src="<?=$cfg['site_dir']?>images/social/webmoney.gif">  
 </div>
 </div>
 </div>

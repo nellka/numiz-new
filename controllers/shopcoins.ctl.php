@@ -194,45 +194,43 @@ elseif ($page == "recommendation" && $tpl['user']['user_id']) {
 } else {
 	/*$positive_amount = '';
 	if($materialtype == 2)	$positive_amount = ' and shopcoins.amount > 0 ';
-
+*/
 	$sql = "select shopcoins.*, group.name as gname, group.groupparent ".($CounterSQL?",".$CounterSQL:"")." ".($group>0&&!$page?$groupselect:"")."
 	from shopcoins, `group` 
 	$where ".$positive_amount."and shopcoins.group=group.group  
 	".($group>0&&!$page?($sortname?" order by ".($coinssearch?"shopcoins.shopcoins=".intval($coinssearch)." desc,":"")." groupparent asc,param2,param1,".$dateinsert_orderby." desc":" order by ".($coinssearch?"shopcoins.shopcoins=".intval($coinssearch)." desc,":"")." groupparent asc,".$dateinsert_orderby." desc,price desc, param2,param1"):$orderby)." 
-	$limit;";*/
-	
+	$limit;";
+	echo $sql;
 	$data = $shopcoins_class->getItemsByParams($tpl['user']['user_id'],$materialtype);
+	var_dump($data );
+	
+echo $sql;
 }
 
-echo $sql;
 
-
+//$result_search = mysql_query($sql);
 $ArrayParent = Array();
 $MyShowArray = Array();
-//echo mysql_num_rows($result_search);
+
 foreach ($data as $rows){
-	$ArrayShopcoins[] = $rows["shopcoins"];
-	$ArrayParent[] = $rows["parent"];
-	$MyShowArray[] = $rows;
+	$tpl['shop']['ArrayShopcoins'][] = $rows["shopcoins"];
+	$tpl['shop']['ArrayParent'][] = $rows["parent"];
+	$tpl['shop']['MyShowArray'][] = $rows;
 }
 
 if (sizeof($ArrayParent))
 {
-	$sql_search = "select * from shopcoins where parent in (".implode(",", $ArrayParent).")
-	and shopcoins not in (".implode(",", $ArrayShopcoins).")
+	$sql_search = "select * from shopcoins where parent in (".implode(",", $tpl['shop']['ArrayParent']).")
+	and shopcoins not in (".implode(",", $tpl['shop']['ArrayShopcoins']).")
 	and (".($tpl['user']['user_id']==811?(!$nocheck?"shopcoins.check=1 or (shopcoins.check>3 and shopcoins.check<20)":"(shopcoins.check>3 and shopcoins.check<20)"):"shopcoins.check=1").") order by parent;";
-	if ($REMOTE_ADDR == $myip)
-		echo $sql_search;
+	
 	$result_search = mysql_query($sql_search);
 	while ($rows_search = mysql_fetch_array($result_search))
 		$ImageParent[$rows_search["parent"]][] = $rows_search["image_small"];
 		
 }
 
-if ($REMOTE_ADDR == $myip)
-	echo  "<br>showall05-".(getmicrotime()-$time_start);
 
-//�������� ��� �� �� �����������/���� �������
 if ($materialtype==3 || $materialtype==5)
 {
 	if ($shopcoinsorder > 1)
@@ -253,33 +251,24 @@ if ($materialtype==3 || $materialtype==5)
 	}
 }
 
-if ($REMOTE_ADDR == $myip)
-	echo  "<br>showall06-".(getmicrotime()-$time_start);
 
-//ShopcoinsGroupArray - ������ �����
-//ShopcoinsThemeArray - ������ �������
 $ShopcoinsThemeArray = Array();
 $ShopcoinsGroupArray = Array();
 
 unset ($rows);
 //$result = mysql_query($sql);
 
-
 if (sizeof($MyShowArray)==0)
 {
-	echo "<br><p class=txt><strong><font color=red>��������, ��� �����������, ��������������� ������. ���������� ������ ��������.</font></strong><br><br>";
+	$tpl['shop']['errors'][] = "<br><p class=txt><strong><font color=red>Извините, нет результатов, удовлетворяющих поиску. Попробуйте другие варианты.</font></strong><br><br>";
 } else {
-	if ($REMOTE_ADDR == $myip)
-		echo  "<br>showall07-".(getmicrotime()-$time_start);
 	
 	$maxcoefficient=0;
 	$sumcoefficient=0;
-	$amountsearch = @mysql_num_rows($result_search);
+	$amountsearch = mysql_num_rows($result_search);
 	
 	if ($materialtype==1 || $materialtype==2 || $materialtype==10 || $materialtype==7 || $materialtype==6 || $materialtype==8 || $materialtype==4 || $materialtype==9 || $materialtype==11 || $materialtype==12 || $searchid || $search || $page == "recommendation")
 	{
-		if ($REMOTE_ADDR == $myip)
-			echo  "<br>showall08-".(getmicrotime()-$time_start);
 		
 		echo "
 		<script language=JavaScript>
@@ -594,7 +583,7 @@ if (sizeof($MyShowArray)==0)
 				
 				<tr><td class=tboard>";
 				//if ($REMOTE_ADDR == $myip)
-					//echo (getmicrotime()-$time_start);
+					
 				if ($ImageParent[$rows["parent"]]>0 && ($rows["materialtype"]==1 ||$rows["materialtype"]==10 ||$rows["materialtype"]==12) && !$mycoins)
 				{
 					echo "<table border=0 cellpadding=1 cellspacing=0 width=294>
@@ -1745,7 +1734,7 @@ function AddBascet (shopcoins, amount)
 {
 	//vbhjckfd
 	yaCounter31049031.reachGoal('AddBascet');
-	process ('addbascet.php?shopcoinsorder=<?echo $shopcoinsorder;?>&shopcoins=' + shopcoins + '&amount=' + amount + '<?= cookiesWork() ? '' : '&'.SID ?>');
+	process ('addbascet.php?shopcoinsorder=<?echo $shopcoinsorder;?>&shopcoins=' + shopcoins + '&amount=' + amount );
 	var str = '';
 	str = 'bascetshopcoins' + shopcoins;
 	myDiv = document.getElementById(str);
@@ -1755,9 +1744,7 @@ function AddBascet (shopcoins, amount)
 
 function AddNext (shopcoins, amount)
 {
-	//vbhjckfd
-	//window.open ('addinorder.php?shopcoins=' + shopcoins + '&amount=' + amount + '<?= cookiesWork() ? '' : '&'.SID ?>');
-	process ('addnext.php?shopcoins=' + shopcoins + '&amount=' + amount + '<?= cookiesWork() ? '' : '&'.SID ?>');
+	process ('addnext.php?shopcoins=' + shopcoins + '&amount=');
 	var str = '';
 	str = 'bascetshop' + shopcoins;
 	myDiv = document.getElementById(str);
@@ -1766,15 +1753,7 @@ function AddNext (shopcoins, amount)
 }
 </script>
 
-<?
-
-}
-if ($REMOTE_ADDR == $myip)
-{
-	echo "<br>showall20-".(getmicrotime()-$time_start);
-}
-
-?>
+<?}?>
 <script language="JavaScript">
 
 function ShowNext (xmlRoot)
@@ -1883,14 +1862,6 @@ function ShowSmallBascet (xmlRoot)
 		str += '<br><strong>��������� 4%:</strong> ' + bascetinsurance + ' �. <br><strong>��������:</strong> 10 �. �� ������� / ����.</td></tr>';
 		str +='<tr class=tboard bgcolor=#ffcc66><td><div style="display:none" id=showbascet2>'+textbascet2+'</div></td></tr>'
 		str += '<tr class=tboard bgcolor=#EBE4D4><td align=center><img src=../images/windowsmaximize.gif onclick="ShowBascet2();" alt="���������� ����������"/></td></tr></table>';
-
-		<?
-if ($REMOTE_ADDR == $myip)
-{
-	echo "//showall21-".(getmicrotime()-$time_start)."';";
-}
-
-?>
 		
 		myDiv = document.getElementById("MainBascet");
 		myDiv.innerHTML = str;
@@ -1904,13 +1875,6 @@ if ($REMOTE_ADDR == $myip)
 		str = 'bascetshopcoins' + bascetshopcoins;
 		myDiv = document.getElementById(str);
 		myDiv.innerHTML = '<img src=<? echo $in; ?>images/corz7.gif border=0 alt="��� � �������">';
-			<?
-if ($REMOTE_ADDR == $myip)
-{
-	echo "//showall22-".(getmicrotime()-$time_start)."';";
-}
-
-?>
 		
 	}
 	else if (errorvalue == 'reserved')
@@ -1945,31 +1909,10 @@ if ($REMOTE_ADDR == $myip)
 		alert ('�� ������ ����� ���� ' + erroramountvalue + ' ����');
 	}
 		<?
-if ($REMOTE_ADDR == $myip)
-{
-	echo "alert ('showall23-".(getmicrotime()-$time_start)."');";
-}
 
 ?>
 }
-<? /*
-if ($showdetailssmall) {
 
-	?>
-	
-	alert('��������������, ������ ��� ����������� ������ � ������� ������. ����������� ������������� ��� ������� ���� ����� �������������� ������ ��������� (+/- 0.5 �� ����� F VF XF UNC). ����� ���� ���������� �� ��������� ��� � ������� ��� � � ������� �������. Proof � ��� ��������� �� ������, ���������, ��������������, ��� Proof - ��� ��������� ���������� ��������� ��� �������, ������� � �.�. ����������� ���� - �������� ��� ������ - ����� ���������� �� �����. � ��������� ������� ����� ���� ������������ ����.');
-	<?
-
-}
-if ($showdetailsset) {
-
-	?>
-	
-	alert('����������� ������������� ��� ������� ���� �����. ��� ������ �� �� ���������, �� ����� ���� ������ ���������� ��������, ������, ����� � ������ ������� ��������. � ��������� ������� ����� ���� ������������ ����.');
-	<?
-
-}*/
-?>
 function ShowSmallBascet__12 (xmlRoot)
 {
 	error = xmlRoot.getElementsByTagName("error");

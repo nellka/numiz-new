@@ -13,8 +13,8 @@ $cfg = array(
             'password' => 'eh3Majyd',
             'dbname'   => 'tet',
       ),
-      'site_root' => 'http://'.$_SERVER["HTTP_HOST"]."/",
-      'site_dir' => 'http://'.$_SERVER["HTTP_HOST"]."/",
+      'site_root' => 'http://'.$_SERVER["HTTP_HOST"]."/new/",
+      'site_dir' => 'http://'.$_SERVER["HTTP_HOST"]."/new/",
       'domain'=>".numizmatik1.ru",
       'server_name' =>"http://www.numizmatik.ru",
       'email_admin'=>"bodka@rt.mipt.ru"     

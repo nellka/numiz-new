@@ -44,11 +44,7 @@ if (in_array($_SERVER["HTTP_USER_AGENT"],$black_user_agent_list[0])
     $tpl['error_text'] = 'Скачивание информации запрещено!!!Если Вы считаете что это ошибка, свяжитесь с администратором по телефону 8-926-268-41-10.';
     require $cfg['path'] . '/views/error.tpl.php';
 	exit;
-} else if (substr_count($_SERVER["HTTP_USER_AGENT"],"Copier")|| in_array($_SERVER["HTTP_USER_AGENT"],$black_user_agent_list[1])||in_array($user_remote_address,$black_ip_list[1])) {
-    $tpl['error_text'] = 'Хватит херней страдать';
-    require $cfg['path'] . '/views/error.tpl.php';
-	exit;
-}
+} 
 $timenow = time();
 
 if ($_SERVER['REQUEST_URI'] == "/?materialtype=8&group=590&search=15+%EA%EE%EF%E5%E5%EA") {    
@@ -69,11 +65,13 @@ if(file_exists($controller)){
     //для статических страниц контроллера может не быть
     require  $controller;
 }
+/*
 if ($catalog){	
 	require_once($cfg['path'] . '/controllers/catalog.ctl.php');
 } else {	
+// перенесли в admin keywords
 	require_once($cfg['path'] . '/controllers/site_titles.ctl.php');
-}
+}*/
 
 
 
