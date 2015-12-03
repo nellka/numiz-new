@@ -35,11 +35,11 @@
                 </ul>
            </div> 
        </li>            
-      <li class="top"><a href="<?=$cfg['site_dir']?>ocenka-stoimost-monet" class="<?=('ocenka-stoimost-monet'==$tpl['current_page'])?'active':''?>"><span>Скупка-оценка</span></a>
+      <li class="top"><a href="<?=$cfg['site_dir']?>ocenka-stoimost-monet" class="<?=in_array($tpl['current_page'],array('ocenka-stoimost-monet','gde-prodat-monety'))?'active':''?>"><span>Скупка-оценка</span></a>
        <div id="menu5"  class="submenu">          
             <ul>               
                 <li><a href='<?=$cfg['site_dir']?>ocenka-stoimost-monet' title='Оценка стоимости(цены) монет(ы)' class=topmenu>Оценка стоимости монет</a></li>
-                <li><a href='http://www.numizmatik.ru/gde-prodat-monety' title='Покупка-скупка монет, коллекций монет. ' class=topmenu>Покупка/скупка монет</a></li>
+                <li><a href='<?=$cfg['site_dir']?>gde-prodat-monety' title='Покупка-скупка монет, коллекций монет. ' class=topmenu>Покупка/скупка монет</a></li>
                 <li><a href='http://www.numizmatik.ru/change/obmen-monet.php' title='Обмен монет' class=topmenu>Обмен монетами</a></li>
                 <li><a href='http://www.numizmatik.ru/shopinfo.php' title='Салон продаж' class=topmenu>Контакты</a></li>
                </ul> 

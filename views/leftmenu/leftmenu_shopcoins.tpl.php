@@ -1,5 +1,5 @@
-<div class="menu-heading"><span>Разделы сайта</span></div>
-<ul class="menu-sidebar">
+<div class="menu-heading"><a href="#s" onclick="showMainLeftMenu();return false"><span>Разделы сайта</span></a></div>
+<ul class="menu-sidebar" id='left_menu_shop' style="display:none" >
    <li> <a href="<?=$cfg['site_dir']?>shopcoins/" class="<?=('/'==$tpl['current_page'])?'active':''?>"><span>Магазин монет</span></a>
    
         <ul>
@@ -28,11 +28,11 @@
             <li><a href='shopinfo.php' title='Салон продаж' class=topmenu>Контакты</a></li>
             </ul>
        </li> 
-   <li> <a href="<?=$cfg['site_dir']?>ocenka-stoimost-monet" class="<?=in_array($tpl['current_page'],array('ocenka-stoimost-monet','gde-prodat-monety'))?'active':''?>"><span>Скупка-оценка</span></a>
+   <li> <a href="<?=$cfg['site_dir']?>ocenka-stoimost-monet" class="<?=('ocenka-stoimost-monet'==$tpl['current_page'])?'active':''?>"><span>Скупка-оценка</span></a>
    
         <ul>               
             <li><a href='<?=$cfg['site_dir']?>ocenka-stoimost-monet' title='Оценка стоимости(цены) монет(ы)' class=topmenu>Оценка стоимости монет</a></li>
-            <li><a href='<?=$cfg['site_dir']?>gde-prodat-monety' title='Покупка-скупка монет, коллекций монет. ' class=topmenu>Покупка/скупка монет</a></li>
+            <li><a href='http://www.numizmatik.ru/gde-prodat-monety' title='Покупка-скупка монет, коллекций монет. ' class=topmenu>Покупка/скупка монет</a></li>
             <li><a href='http://www.numizmatik.ru/change/obmen-monet.php' title='Обмен монет' class=topmenu>Обмен монетами</a></li>
             <li><a href='http://www.numizmatik.ru/shopinfo.php' title='Салон продаж' class=topmenu>Контакты</a></li>
        </ul>    
@@ -99,11 +99,28 @@
         </ul> 
    </li>
 </ul>
-<div class="statictic">
-<h5>Статистика Клуба Нумизмат</h5>
-Зарегистрированных пользователей:<?=$tpl['stat']['users']?><br>
-В магазине позиций товар: <?=$tpl['stat']['items']?><br>
-Новостей о нумизматике:	<?=$tpl['stat']['news']?>	<br>
-На форуме нумизматов тем: 15942	<br>
-В "Тор 100" нумизматических сайтов: 448 <br>
-</div>
+
+
+<ul id='shop_menu'>
+   <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=8' title='Монеты стоимость(цены) весь мир' class=topmenu>Монеты</a></li>
+   <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=8' title='Дешевые монеты стоимость(цены) весь мир' class=topmenu>Мелочь </a></li>
+    <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=10' title='Нотгельды стоимость(цены) весь мир' class=topmenu>Нотгельды </a></li>
+    <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=7' title='Наборы монет стоимость(цены) весь мир' class=topmenu>Наборы монет</a></li>
+     <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=9' title='Лоты монет для начинающих нумизматов' class=topmenu>Лоты монет для начинающих нумизматов</a></li>
+     <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?search=newcoins' title='Новинки 2013-2015' class=topmenu>Новинки 2015-2015</a></li>
+     <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=2' title='Банкноты стоимость(цены) весь мир' class=topmenu>Боны</a></li>
+     <li><a href='<?=$cfg['site_dir']?>shopcoins/?materialtype=3' title='Аксессуары для коллекционеров цены' class=topmenu>Аксессуары для монет</a></li>
+      <li><a href='<?=$cfg['site_dir']?>shopcoins/?materialtype=4' title='Подарочные наборы монет  стоимость(цены) весь мир' class=topmenu>Подарочные наборы</a></li>
+      <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=5' title='Книги о нумизматике бонистике цены' class=topmenu>Книги о монетах</a>
+      <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?search=revaluation' title='Распродажа монет' class=topmenu>Распродажа монет</a></li>        
+         </ul>   
+   </li>
+   
+   <script> function showMainLeftMenu(){
+        if(!jQuery('#left_menu_shop').is(':visible')){
+            jQuery('#left_menu_shop').show();
+        } else {
+            jQuery('#left_menu_shop').hide();
+        }
+        return false;
+   }</script>

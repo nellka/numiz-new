@@ -5,14 +5,24 @@
    
         
     <div class="clearfix" id='content-<?=$tpl['module']?>'>
-        <?php 
-        
-       
-        if($static_page||$tpl['module']=='shopcoins'){?>
+        <?php        
+        if($tpl['module']=='shopcoins'){?>
 			 <div class="subheader">
 			<div class="wraper clearfix">
 			        <div id='leftmemu'>
-			         <?php include $cfg['path'] . '/views/leftmenu/leftmenu_'.($tpl['module']=='shopcoins'?'shopcoins':'index').'.tpl.php'; ?>
+			         <?php include $cfg['path'] . '/views/leftmenu/leftmenu_shopcoins.tpl.php'; ?>
+			        </div>
+			        <div id='subheader-body'>
+			            <?php include $cfg['path'] . '/views/common/breadcrumb.tpl.php'; ?> 
+			            <? include $cfg['path'] . '/views/' . $tpl['module'] . '.tpl.php'; ?>		            
+			        </div>
+			    </div> 
+		    </div>         
+       <? }else if($static_page){?>
+			 <div class="subheader">
+			<div class="wraper clearfix">
+			        <div id='leftmemu'>
+			         <?php include $cfg['path'] . '/views/leftmenu/leftmenu_index.tpl.php'; ?>
 			        </div>
 			        <div id='subheader-body'>
 			            <?php include $cfg['path'] . '/views/common/breadcrumb.tpl.php'; ?> 

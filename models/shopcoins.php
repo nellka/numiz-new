@@ -5,8 +5,12 @@ class model_shopcoins extends Model_Base
 {	
     public $id;
     public $name;
-    public $last_name;    	
-	
+    public $last_name; 
+       	
+	public function __construct($db){
+	    parent::__construct($db);
+	  //  $this->db->query("SET names 'cp1251'");
+	}
 	public function countByParams($where){
 	   // $this->_getSelect($select) );	    
 	    $sql = "Select count(*) from shopcoins $where;";
@@ -14,15 +18,32 @@ class model_shopcoins extends Model_Base
     	//$result=mysql_query($sql);
     	$result = $this->db->fetchOne($sql);
     	return $result;
-	}    
-	   
+	}
+	public function getPopular($limit=4){ 
+	   $select = $this->db->select()
+                      ->from('shopcoins')
+                      ->join(array('group'),'shopcoins.group=group.group',array('gname'=>'group.name'))
+                      ->where("shopcoins.check=1")
+                      ->order('rand()')
+                      ->limit($limit);
+       return $this->db->fetchAll($select);
+	}  
+	public function getNew($limit=4){ 
+	   $select = $this->db->select()
+                      ->from('shopcoins')
+                      ->join(array('group'),'shopcoins.group=group.group',array('gname'=>'group.name'))
+                      ->where("shopcoins.check=1")
+                      ->order('shopcoins desc')
+                      ->limit($limit);
+       return $this->db->fetchAll($select);
+	}  
+	
 	public function getItemsByParams($user_id=0,$materialtype=null,$page=1, $items_for_page=30,$orderby='',$searchid='',$yearsearch='',$searchname='',$group='',$WhereArray=array()){
 	    //если нет ничего в поиске
 	    //часть данных не инициализирую на первом этапе
-	    var_dump($materialtype);
 	   $select = $this->db->select()
 	                      ->from('shopcoins')
-	                      ->join(array('group'),'shopcoins.group=group.group');
+	                      ->join(array('group'),'shopcoins.group=group.group',array('gname'=>'group.name'));
 	   
 	   if($user_id==811||$user_id==309236) {
 	       if(!$nocheck){
