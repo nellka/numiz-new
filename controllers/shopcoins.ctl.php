@@ -1,5 +1,5 @@
 <?
-
+require($cfg['path'].'/helpers/Paginator.php');
 $search = (integer) request('pagestart');
 $onpage = (integer)(request('onpage')?request('onpage'):30);
 $sortname = request('sortname');
@@ -63,11 +63,22 @@ if ($yearsearch >0) {
 	$where .= " and shopcoins.year='".$yearsearch."' ";
 }
 
+if (!$onpage) $onpage=8;
 
-if (!$page)
-{
-    $countpubs = $shopcoins_class->countByParams($where);
-	if (!$onpage) $onpage=8;
+$countpubs = $shopcoins_class->countByParams($where);
+    
+$tpl['paginator'] = new Paginator(array(
+        'url'        => $cfg['site_dir'],
+        'count'      => $countpubs,
+        'per_page'   => $onpage,
+        'page'       => $page,
+    ));
+    
+   
+    
+if (!$page){   
+
+	
 	$numpages=15;
 	$pagenum=round($pagenum);
 	$pages=ceil($countpubs/$onpage);if (!$pages) $pages=1;

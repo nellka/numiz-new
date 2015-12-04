@@ -1,4 +1,6 @@
-<?	
+<?	echo $tpl['paginator']->printPager(); 
+
+
 echo "
 		
 		<div id='ShowShopcoinsm'></div>
