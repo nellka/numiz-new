@@ -23,6 +23,18 @@ $tpl['user']['is_logined'] = $user_class->is_logged_in();
 $tpl['user']['summ'] = 0;
 $tpl['user']['product_amount'] = intval($shopcoinsorderamount);
 
+//ЭТА ПРОВЕРКА ЧАСТО ИСПОЛЬЗУЕТСЯ. ЗАЧЕМ НЕ ПОНЯТНО, НО ВЫНОШУ В ОТДЕЛЬНОЕ СВОЙСТВО
+
+if ($user_remote_address!="213.180.194.162" 
+&& $user_remote_address!="213.180.194.133" 
+&& $user_remote_address!="213.180.194.164" 
+&& $user_remote_address!="213.180.210.2" 
+&& $user_remote_address!="83.149.237.18"
+&& $user_remote_address!="83.237.234.171"
+&& !substr_count($_SERVER["HTTP_USER_AGENT"],"ia_archiver")
+&& !substr_count($_SERVER["HTTP_USER_AGENT"],"coona")
+) $tpl['user']['can_see'] = true;
+
 if ($tpl['user']['is_logined']){
 	//данный набор о пользователеле нужен в нескольких кусках хода, поэтому чтобы не дублировать выношу в отдельную функцию
 	$user_base_data = $user_class->getUserBaseData();

@@ -19,6 +19,53 @@ class model_shopcoins extends Model_Base
     	$result = $this->db->fetchOne($sql);
     	return $result;
 	}
+	
+	public function countAll(){
+        $select = $this->db->select()
+		               ->from($this->table,array('count(*)'))
+		               ->where('shopcoins.check=1');
+    	return $this->db->fetchOne($select);       
+	}
+	
+	public function countAllByParams($user_id=0,$nocheck,$materialtype,$WhereArray=array(),$searchname='',$searchid='',$yearsearch='',$group=''){
+	    $select = $this->db->select()
+		               ->from($this->table,array('count(*)'));
+	    if($user_id==811||$user_id==309236) {
+	       if(!$nocheck){
+	           $select->where("shopcoins.check=1 or (shopcoins.check>3 and shopcoins.check<20)");
+	       } else {
+	           $select->where("shopcoins.check>3 and shopcoins.check<20");
+	       }
+	   }  else {
+	       $select->where("shopcoins.check=1");
+	   }  
+	   if(sizeof($WhereArray)){
+	       $select->where(implode(" and ", $WhereArray)); 
+	   }             
+	   if($materialtype == 2){
+	       $select->where('shopcoins.amount > 0'); 	       
+	   } 
+	   if ($searchid) {	
+	       
+       } /*elseif($search){
+	       //$where = " where ( ".($show50?"or shopcoins.check=50":"").") and ((shopcoins.materialtype in (2,4,7,8,3,5,9)) or (shopcoins.materialtype in(1,10) and shopcoins.amountparent>0) or shopcoins.number='$search' or shopcoins.number2='$search')";
+	   } */else {
+	       if($materialtype == 2){
+    	       $select->where('shopcoins.amount > 0');     	       
+    	   } 
+    	   if ($materialtype==1 || $materialtype==10){
+    	       if(!$yearsearch&&!$searchname){
+    	            $select->where("(shopcoins.materialtype='".$materialtype."' and shopcoins.amountparent > 0) or shopcoins.materialtypecross & pow(2,".$materialtype.")".($group?" or shopcoins.materialtype='8' or shopcoins.materialtypecross & pow(2,8)":"")); 		
+    	       } else {
+    	           $select->where("shopcoins.materialtype='".$materialtype."' or shopcoins.materialtypecross & pow(2,".$materialtype.")".($group?" or shopcoins.materialtype='8' or shopcoins.materialtypecross & pow(2,8)":"")); 
+    	       }
+	            
+    	   } else {
+    	        $select->where("(shopcoins.materialtype=? or shopcoins.materialtypecross & pow(2,?))",$materialtype); 
+    	   }
+	   } 
+       return $this->db->fetchOne($select);       
+	}
 	public function getPopular($limit=4){ 
 	   $select = $this->db->select()
                       ->from('shopcoins')
@@ -38,7 +85,7 @@ class model_shopcoins extends Model_Base
        return $this->db->fetchAll($select);
 	}  
 	
-	public function getItemsByParams($user_id=0,$materialtype=null,$page=1, $items_for_page=30,$orderby='',$searchid='',$yearsearch='',$searchname='',$group='',$WhereArray=array()){
+	public function getItemsByParams($user_id=0,$nocheck,$materialtype,$WhereArray=array(),$searchname='',$yearsearch='', $page=1, $items_for_page=30,$orderby='',$searchid='',$group=''){
 	    //если нет ничего в поиске
 	    //часть данных не инициализирую на первом этапе
 	   $select = $this->db->select()
@@ -55,10 +102,18 @@ class model_shopcoins extends Model_Base
 	       $select->where("shopcoins.check=1");
 	   }                
 	   if($materialtype == 2){
-	       $select->where('shopcoins.amount > 0'); 
-	       
+	       $select->where('shopcoins.amount > 0');	       
 	   } 
-	   
+	   if ($searchname) {
+        	$searchname = str_replace("'","",$searchname);
+        	$select->where('shopcoins.name=?',$searchname);
+       }	
+       if ($yearsearch>0) {
+        	$searchname = str_replace("'","",$searchname);
+        	$select->where('hopcoins.year=?',$yearsearch);
+       }	
+
+
 	   if ($materialtype==1 || $materialtype==10){
 	       if(!$searchid&&!$yearsearch&&!$searchname){
 	            $select->where("(shopcoins.materialtype='".$materialtype."' and shopcoins.amountparent > 0) or shopcoins.materialtypecross & pow(2,".$materialtype.")".($group?" or shopcoins.materialtype='8' or shopcoins.materialtypecross & pow(2,8)":"")); 		
@@ -69,6 +124,15 @@ class model_shopcoins extends Model_Base
 	   } else {
 	        $select->where("(shopcoins.materialtype=? or shopcoins.materialtypecross & pow(2,?))",$materialtype); 
 	   }
+	   
+	   if ($searchname) {
+        	$searchname = str_replace("'","",$searchname);
+        	$select->where('shopcoins.name=?',$searchname);
+       }	
+       if ($yearsearch>0) {
+        	$searchname = str_replace("'","",$searchname);
+        	$select->where('hopcoins.year=?',$yearsearch);
+       }	
 	   if(sizeof($WhereArray)){
 	       $select->where(implode(" and ", $WhereArray)); 
 	   }
@@ -93,7 +157,41 @@ class model_shopcoins extends Model_Base
 	   //echo $select->__toString();
        return $this->db->fetchAll($select);
 	} 
-   
+	//получаем уже зарезервированные монеты
+    public function getReserved($id,$reservetime){
+         $select = $this->db->select()
+                      ->from('helpshopcoinsorder')
+                     ->where("shopcoins=?",$id)
+                     ->where("reserve > ?",time() - $reservetime);
+       return $this->db->fetchAll($select);       
+    }
+	
+	public function addSearchStatistic(){
+	    
+	    $sql_key = "select count(*) from keywords where word='".lowstring($search)."' and page='$script';";
+		$result_key = mysql_query($sql_key);
+		$rows_key = mysql_fetch_array($result_key);
+		if ($rows_key[0]==0)
+		{
+			$sql_key2 = "insert into keywords values (0, '".lowstring(strip_string($search))."', '$script', 1, $amountsearch);";
+		} else {
+			$sql_key2 = "update keywords set counter=counter+1 where word='".lowstring($search)."' and page='$script';";
+		}
+		$result_key2 = mysql_query($sql_key2);
+//		echo $sql_key2."=sql_key2<br>";
+		$sql_tmp = "select * from searchkeywords where keywords='".lowstring($search)."' and page='$script';";
+		$result_tmp = mysql_query($sql_tmp);
+		$rows_tmp = mysql_fetch_array($result_tmp);
+		if ($rows_tmp[0]==0)
+		{
+			$sql_tmp2 = "insert into searchkeywords values (0, '$maxcoefficient', '$sumcoefficient','".lowstring(strip_string($search))."', '$script', 1, '$amountsearch', '$timenow');";
+		} else {
+			$sql_tmp2 = "update searchkeywords set counter=counter+1, maxcoefficient='$maxcoefficient', sumcoefficient='$sumcoefficient', amount='$amountsearch' where keywords='".lowstring($search)."' and page='$script';";
+		}
+		$result_tmp2 = mysql_query($sql_tmp2);
+		//echo $sql_tmp2."=sql_tmp2<br>";
+			//����� ������
+	}
     /*	
 	}	
 ?>

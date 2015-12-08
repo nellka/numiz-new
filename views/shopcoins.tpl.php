@@ -1,12 +1,44 @@
-<?
-
-if($tpl['task']){
-     include $cfg['path'] . '/views/' . $tpl['module'] . '/'.$tpl['task'].'.tpl.php'; 
-} else {
-    include $cfg['path'] . '/views/' . $tpl['module'] . '/catalog.tpl.php';
-}?>
-
 <script language="JavaScript">
+function sendData(name,val){
+    jQuery('#'+name).val(val);
+     console.log( jQuery('form#search-params input'));
+     
+     console.log( jQuery('form#search-params :input').serializeArray() );
+    console.log(fields); 
+    console.log(val); 
+}
+
+
+<?
+/*
+function AddAccessory_main(shopcoins,materialtype){
+	var str;
+	str = document.mainform.amount + shopcoins + value;
+	document.mainform.shopcoinsorder.value = shopcoins;
+	document.mainform.materialtype.value = materialtype;
+	document.mainform.shopcoinsorderamount.value = eval(str);
+	if (eval(str) > 0)
+	{
+		//document.mainform.submit();
+		process ('addbascet.php?shopcoinsorder="<?=$shopcoinsorder?>."&shopcoins=' + shopcoins + '&amount=' + eval(str));
+	}
+	else
+		alert ('Р’РІРµРґРёС‚Рµ РєРѕР»РёС‡РµСЃС‚РІРѕ');
+}
+
+function AddAccessory_3(shopcoins){
+	var str;
+	str = document.mainform.amount + shopcoins + value;
+	document.mainform.shopcoinsorder.value = shopcoins;
+	document.mainform.shopcoinsorderamount.value = eval(str);
+	if (eval(str) > 0)
+	{
+		//document.mainform.submit();
+		process ('addbascet.php?shopcoinsorder=".$shopcoinsorder."&shopcoins=' + shopcoins + '&amount=' + eval(str));
+	}
+	else
+		alert ('Р’РІРµРґРёС‚Рµ РєРѕР»РёС‡РµСЃС‚РІРѕ');
+}
 
 function WaitSubscribeCatalog(catalog)
 {
@@ -31,13 +63,13 @@ function AddSubscribeCatalog ()
     if (valueid != "")
     {
       myDiv = document.getElementById("mysubscribecatalog" + valueid);
-      myDiv.innerHTML = '<b><font color=silver>Заявка принята</font></b>';
+      myDiv.innerHTML = '<b><font color=silver>пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ</font></b>';
     }
   }
   else if (errorvalue == 'auth')
   {
     myDiv = document.getElementById("mysubscribecatalog" + valueid);
-    myDiv.innerHTML = '<b><font color=silver>Вы не авторизованы</font></b>';
+    myDiv.innerHTML = '<b><font color=silver>пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ</font></b>';
   }
   else
   {
@@ -84,37 +116,37 @@ function ShowNext (xmlRoot)
 	
 	if (errorvalue == 'none')
 	{
-		alert ('Вы в очереди на покупку монеты, в случае отказа от покупки предыдущего покупателя монета будет забронирована за вами в течении 5 часов. Ваша бронь будет действительна до '+datereserve);
+		alert ('пїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ 5 пїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ '+datereserve);
 		
 		var str = '';
 		str = 'bascetshop' + bascetshopcoins;
 		myDiv = document.getElementById(str);
-		myDiv.innerHTML = '<img src=<? echo $in; ?>images/corz77.gif border=0 alt="Вы в очереди на монету">';
+		myDiv.innerHTML = '<img src=<? echo $in; ?>images/corz77.gif border=0 alt="пїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ">';
 	}
 	else if (errorvalue == 'reserved')
 	{
-		alert ('Товар зарезервирован одновременно с другим пользователем');
+		alert ('пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
 
 		var str = '';
 		str = 'bascetshop' + bascetshopcoins;
 		myDiv = document.getElementById(str);
-		myDiv.innerHTML = '<img src=<? echo $in; ?>images/corz6.gif border=0 alt="Уже в корзине">';
+		myDiv.innerHTML = '<img src=<? echo $in; ?>images/corz6.gif border=0 alt="пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ">';
 		
 	}
 	else if (errorvalue == 'notavailable')
 	{
 		
-		alert ('Товар уже продан');
+		alert ('пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
 		
 		var str = '';
 		str = 'bascetshop' + bascetshopcoins;
 		myDiv = document.getElementById(str);
-		myDiv.innerHTML = '<img src=<? echo $in; ?>images/corz6.gif border=0 alt="Уже в корзине">';
+		myDiv.innerHTML = '<img src=<? echo $in; ?>images/corz6.gif border=0 alt="пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ">';
 
 	}
 	else if (errorvalue == 'stopsummax')
 	{
-		alert ('Максимальная сумма заказа <? echo $stopsummax;?> руб. \nЕсли вы не все сложили в корзину, проделайте следующим заказом."');
+		alert ('пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ <? echo $stopsummax;?> пїЅпїЅпїЅ. \nпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ."');
 	}
 	
 }
@@ -162,23 +194,23 @@ function ShowSmallBascet (xmlRoot)
 		//alert(textbascet2);
 		
 		myDiv = document.getElementById("inorderamount");
-		myDiv.innerHTML = "В вашей корзине <a href=<?=$in?>shopcoins/index.php?page=orderdetails> "+bascetamount+" </a> товаров, <a href=<?=$in?>shopcoins/index.php?page=orderdetails><img src=<?=$in?>images/basket.gif border=0></a>";
+		myDiv.innerHTML = "пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ <a href=<?=$in?>shopcoins/index.php?page=orderdetails> "+bascetamount+" </a> пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, <a href=<?=$in?>shopcoins/index.php?page=orderdetails><img src=<?=$in?>images/basket.gif border=0></a>";
 		
 		var str = '';
 		str = '<table border=0 cellpadding=3 cellspacing=0 style="border:thin solid 1px #000000" id=tableshopcoinsorder width=180>';
-		str += '<tr class=tboard bgcolor=#006699><td><strong><font color=white>Корзина:</font></strong></td></tr>';
-		str += '<tr class=tboard bgcolor=#ffcc66><td class=tboard align=top><strong>Заказ №</strong> ' + shopcoinsorder + ' ';
-		str += '<br><strong>Товаров:</strong> ' + bascetamount + ' <br><strong>На сумму:</strong> ' + bascetsum + ' р.';
+		str += '<tr class=tboard bgcolor=#006699><td><strong><font color=white>пїЅпїЅпїЅпїЅпїЅпїЅпїЅ:</font></strong></td></tr>';
+		str += '<tr class=tboard bgcolor=#ffcc66><td class=tboard align=top><strong>пїЅпїЅпїЅпїЅпїЅ пїЅ</strong> ' + shopcoinsorder + ' ';
+		str += '<br><strong>пїЅпїЅпїЅпїЅпїЅпїЅпїЅ:</strong> ' + bascetamount + ' <br><strong>пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ:</strong> ' + bascetsum + ' пїЅ.';
 		if (bascetsumclient>0) {
-			str += '<br><strong>Для постоянных клиентов:</strong> ' + bascetsumclient + ' р.';
+			str += '<br><strong>пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:</strong> ' + bascetsumclient + ' пїЅ.';
 		}
-		str += '<br><strong>Вес ~ </strong> ' + bascetweight + ' гр. <br><strong>Бронь на:</strong> ' + bascetreservetime + '<br><center><a href=index.php?page=orderdetails><img src=<?echo $in;?>images/basket.gif border=0></a></center></td></tr>';
-		str += '<tr class=tboard bgcolor=#006699><td><strong><font color=white>Доставка:</font></strong></td></tr>';
-		str += '<tr class=tboard bgcolor=#ffcc66><td class=tboard align=top><strong>Москва:</strong><br><strong>Кольцевые станции:</strong> бесплатно<br><strong>В офис:</strong> от 170 р.';
-		str += '<br><br><strong>Почта России</strong><br><strong>Сбор по весу:</strong> от ' + bascetpostweightmin + ' до ' + bascetpostweightmax + ' р.';
-		str += '<br><strong>Страховка 4%:</strong> ' + bascetinsurance + ' р. <br><strong>Упаковка:</strong> 10 р. за конверт / ящик.</td></tr>';
+		str += '<br><strong>пїЅпїЅпїЅ ~ </strong> ' + bascetweight + ' пїЅпїЅ. <br><strong>пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ:</strong> ' + bascetreservetime + '<br><center><a href=index.php?page=orderdetails><img src=<?echo $in;?>images/basket.gif border=0></a></center></td></tr>';
+		str += '<tr class=tboard bgcolor=#006699><td><strong><font color=white>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:</font></strong></td></tr>';
+		str += '<tr class=tboard bgcolor=#ffcc66><td class=tboard align=top><strong>пїЅпїЅпїЅпїЅпїЅпїЅ:</strong><br><strong>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ:</strong> пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ<br><strong>пїЅ пїЅпїЅпїЅпїЅ:</strong> пїЅпїЅ 170 пїЅ.';
+		str += '<br><br><strong>пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ</strong><br><strong>пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ:</strong> пїЅпїЅ ' + bascetpostweightmin + ' пїЅпїЅ ' + bascetpostweightmax + ' пїЅ.';
+		str += '<br><strong>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 4%:</strong> ' + bascetinsurance + ' пїЅ. <br><strong>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:</strong> 10 пїЅ. пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ / пїЅпїЅпїЅпїЅ.</td></tr>';
 		str +='<tr class=tboard bgcolor=#ffcc66><td><div style="display:none" id=showbascet2>'+textbascet2+'</div></td></tr>'
-		str += '<tr class=tboard bgcolor=#EBE4D4><td align=center><img src=../images/windowsmaximize.gif onclick="ShowBascet2();" alt="Посмотреть содержимое"/></td></tr></table>';
+		str += '<tr class=tboard bgcolor=#EBE4D4><td align=center><img src=../images/windowsmaximize.gif onclick="ShowBascet2();" alt="пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"/></td></tr></table>';
 
 		
 		myDiv = document.getElementById("MainBascet");
@@ -192,55 +224,46 @@ function ShowSmallBascet (xmlRoot)
 		var str = '';
 		str = 'bascetshopcoins' + bascetshopcoins;
 		myDiv = document.getElementById(str);
-		myDiv.innerHTML = '<img src=<? echo $in; ?>images/corz7.gif border=0 alt="Уже в корзине">';		
+		myDiv.innerHTML = '<img src=<? echo $in; ?>images/corz7.gif border=0 alt="пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ">';		
 		
 	}
 	else if (errorvalue == 'reserved')
 	{
-		alert ('Товар зарезервирован одновременно с другим пользователем');
+		alert ('пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
 
 		var str = '';
 		str = 'bascetshopcoins' + bascetshopcoins;
 		myDiv = document.getElementById(str);
-		myDiv.innerHTML = '<img src=<? echo $in; ?>images/corz6.gif border=0 alt="Уже в корзине">';
+		myDiv.innerHTML = '<img src=<? echo $in; ?>images/corz6.gif border=0 alt="пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ">';
 		
 	}
 	else if (errorvalue == 'notavailable')
 	{
 		
-		alert ('Товар уже продан');
+		alert ('пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
 		
 		var str = '';
 		str = 'bascetshopcoins' + bascetshopcoins;
 		myDiv = document.getElementById(str);
-		myDiv.innerHTML = '<img src=<? echo $in; ?>images/corz6.gif border=0 alt="Уже в корзине">';
+		myDiv.innerHTML = '<img src=<? echo $in; ?>images/corz6.gif border=0 alt="пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ">';
 
 	}
 	else if (errorvalue == 'stopsummax')
 	{
-		alert ('Максимальная сумма заказа <? echo $stopsummax;?> руб. \nЕсли вы не все сложили в корзину, проделайте следующим заказом."');
+		alert ('пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ <? echo $stopsummax;?> пїЅпїЅпїЅ. \nпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ."');
 	}
 	else if (errorvalue == 'amount')
 	{
 		erroramount = xmlRoot.getElementsByTagName("erroramount");
 		erroramountvalue = erroramount.item(0).firstChild.data;
-		alert ('На складе всего лишь ' + erroramountvalue + ' штук');
+		alert ('пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ ' + erroramountvalue + ' пїЅпїЅпїЅпїЅ');
 	}	
-}
-function AddAccessory(shopcoins,materialtype)
-{
-	var str;
-	str = document.mainform.amount + shopcoins + value;
-	document.mainform.shopcoinsorder.value = shopcoins;
-	document.mainform.materialtype.value = materialtype;
-	document.mainform.shopcoinsorderamount.value = eval(str);
-	//alert (eval(str) + shopcoins);
-	if (eval(str) > 0)
-	{
-		//document.mainform.submit();
-		process ('addbascet.php?shopcoinsorder=".$shopcoinsorder."&shopcoins=' + shopcoins + '&amount=' + eval(str));
-	}
-	else
-		alert ('Введите количество');
-}
+}*/?>
 </script>
+
+<?
+if($tpl['task']){
+     include $cfg['path'] . '/views/' . $tpl['module'] . '/'.$tpl['task'].'.tpl.php'; 
+} else {
+    include $cfg['path'] . '/views/' . $tpl['module'] . '/catalog.tpl.php';
+}?>

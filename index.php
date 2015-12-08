@@ -6,6 +6,7 @@ try {
     
     //функции хелпера собрали в себе кучу мелких статических функци
     require_once $cfg['path'] . '/helpers/functions_h.php';
+    require_once $cfg['path'] . '/helpers/contentHelper.php';    
     require_once $cfg['path'] . '/helpers/Mobile_Detect.php';
     require_once $cfg['path'] . '/models/Model_Base.php';
     require_once $cfg['path'] . '/models/user.php';

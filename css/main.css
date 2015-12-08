@@ -758,7 +758,7 @@ div.fancybox-reg_form {left: 1080px !important;top: 185px !important;}
 div.fancybox-showcalllink{left: 820px !important;top: 165px !important;}*/
 
 /*Табы start*/
-/*стили для блоков с монетками*/
+/*стили для блоков с монетками для ГС*/
 .coin_info{
 	float:left;
 	width:230px;
@@ -767,6 +767,34 @@ div.fancybox-showcalllink{left: 820px !important;top: 165px !important;}*/
 	padding-bottom:10px;
 	margin-right:10px;
 	background:#ffffff;
+}
+.club_review{
+	float:left;
+	width:230px;
+	padding-left:15px;
+	padding-top:10px;
+	padding-bottom:10px;
+	margin-right:10px;
+	background:#ffffff;
+}
+.club_news{
+	float:left;
+	width:230px;
+	padding-left:15px;
+	padding-top:10px;
+	padding-bottom:10px;
+	margin-right:10px;
+	background:#ffffff;
+}
+.coin_division{
+	float:left;
+	width:317px;
+	padding-left:7px;
+	padding-right:7px;
+	padding-top:10px;
+	padding-bottom:10px;
+	margin-right:10px;
+	background:#eeeeee;
 }
 /* Стили для табов-вкладок */
 .tabs_block {
