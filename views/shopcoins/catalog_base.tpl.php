@@ -12,7 +12,7 @@ include('pager.tpl.php');
 <input type=hidden name=materialtype value=''>
 
 <?*/?>
-<div id='products'>
+<div id='products' style="width:800px;float:left;">
 <?
 $i=1;
 foreach ($tpl['shop']['MyShowArray'] as $key=>$rows){	
@@ -20,17 +20,15 @@ foreach ($tpl['shop']['MyShowArray'] as $key=>$rows){
 	if (($rows['materialtype']==2 || $rows['materialtype']==4 || $rows['materialtype']==7 || $rows['materialtype']==8 || $rows['materialtype']==6) && $rows['amount']>10) 
 		$rows['amount'] = 10;	
 		
-	if (($rows["materialtype"]!=7 && $rows["materialtype"]!=4 && $rows["materialtype"]!=9) || ($rows["materialtypecross"] & pow(2,1) && $materialtype==1) || ($rows["materialtypecross"] & pow(2,8) && $materialtype==8) || ($rows["materialtypecross"] & pow(2,6) && $materialtype==6)){		
-	    echo "<div style='width=50%;float:left'>";
-		
-	} else echo "<div>";?>
-	
-	<?if ($rows['materialtype']==3 || $rows['materialtype']==5) {	
-		include('items/item5.tpl.php');
-	}	else {
+	if($rows["materialtype"]==7){
+		echo "<div class='blockshop_spisok'>";
+		include('items/item_nabor.tpl.php');
+		echo "</div>";
+	} else {
+		echo "<div class='blockshop'>";
 		include('items/item.tpl.php');
+		echo "</div>";
 	}	
-	echo "</div>";
 	$i++;	
 }
 

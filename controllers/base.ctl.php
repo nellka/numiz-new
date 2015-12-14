@@ -42,6 +42,8 @@ if ($tpl['user']['is_logined']){
 	$tpl['user'] = array_merge($tpl['user'],$user_base_data);
 } else $tpl['user']['user_id'] = 0;
 
+$shopcoins_class = new model_shopcoins($cfg['db'],$tpl['user']['user_id'],$nocheck);
+    
 include_once($cfg['path'] ."/configs/keywordsAdmin.php");
 //include $_SERVER["DOCUMENT_ROOT"]."/keywords.php";
 

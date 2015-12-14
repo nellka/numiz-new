@@ -4,11 +4,13 @@
 class model_shopcoins extends Model_Base
 {	
     public $id;
-    public $name;
+    public $user_id;
     public $last_name; 
        	
-	public function __construct($db){
+	public function __construct($db,$user_id=0,$nocheck=0){
 	    parent::__construct($db);
+	    $this->user_id = $user_id;
+	    $this->nocheck = $nocheck;
 	  //  $this->db->query("SET names 'cp1251'");
 	}
 	public function countByParams($where){
@@ -27,24 +29,97 @@ class model_shopcoins extends Model_Base
     	return $this->db->fetchOne($select);       
 	}
 	
-	public function countAllByParams($user_id=0,$nocheck,$materialtype,$WhereArray=array(),$searchname='',$searchid='',$yearsearch='',$group=''){
+    public function getMaxPrice($materialtype){
+         $select = $this->db->select()
+		               ->from($this->table,array('max(price)'));
+		 $select = $this->byAdmin( $select);
+    	 if($materialtype == 2){
+    	       $select->where('shopcoins.amount > 0');     	       
+    	} 
+	     $select->where("(shopcoins.materialtype=? or shopcoins.materialtypecross & pow(2,?))",$materialtype); 
+	     return $this->db->fetchOne($select);
+    }
+    
+	public function getCoinsParents($ids){
+         $select = $this->db->select()
+		               ->from($this->table)
+		               ->where("parent in (".implode(",", $ids).")")
+		               ->order('parent');
+		 $select = $this->byAdmin( $select);		 
+    	 return $this->db->fetchAll($select);
+	}
+	
+    
+	public function countAllByParams($materialtype,$WhereParams=array(),$searchid='',$yearsearch=''){
+	    $searchname = '';
 	    $select = $this->db->select()
 		               ->from($this->table,array('count(*)'));
-	    if($user_id==811||$user_id==309236) {
-	       if(!$nocheck){
-	           $select->where("shopcoins.check=1 or (shopcoins.check>3 and shopcoins.check<20)");
-	       } else {
-	           $select->where("shopcoins.check>3 and shopcoins.check<20");
-	       }
-	   }  else {
-	       $select->where("shopcoins.check=1");
-	   }  
-	   if(sizeof($WhereArray)){
-	       $select->where(implode(" and ", $WhereArray)); 
-	   }             
-	   if($materialtype == 2){
+ 
+		if (isset($WhereParams['pricestart'])) {
+        	$select->where("shopcoins.`price` >= ?",floatval($WhereParams['pricestart']));
+        }
+        if (isset($WhereParams['priceend'])) {        	
+        	$select->where("shopcoins.`price` <=?",floatval($WhereParams['priceend']));
+        }
+        if (isset($WhereParams['theme'])) {
+        	 $whereTheme = array();
+            foreach ($WhereParams['theme'] as $theme){
+                $whereTheme[] = "(shopcoins.theme='".pow(2,$theme)."' or shopcoins.theme & ".pow(2,$theme).">0)";
+            }
+            if($whereTheme) {
+                $select->where("(".implode(' or ',$whereTheme).')');
+            }
+        }
+        if (isset($WhereParams['searchname'])) {   
+             $searchname =   $WhereParams['searchname'];   	
+             $select->where("shopcoins.name=?",$WhereParams['searchname']);	
+        }
+        
+        if (isset($WhereParams['series'])){
+        	$select->where("shopcoins.series = ?",intval($WhereParams['series']));
+        }
+        if (isset($WhereParams['year'])) {
+        	$where_year = array();
+        	//var_dump($WhereParams['year']);
+        	foreach ($WhereParams['year'] as $year_int){
+        		if($year_int[0]>0&&$year_int[1]>0&&$year_int[1]<date('Y',time())){
+        			$where_year[] = "(`year` >={$year_int[0]} and `year` <={$year_int[1]})";
+        		} elseif ($year_int[0]>0){
+        			$where_year[] = "(`year` >={$year_int[0]})";
+        		} else {
+        			$where_year[] = "(`year` <={$year_int[1]})";
+        		}        		
+        	}
+        	$select->where("(".implode(" or ",$where_year).")");
+        }
+
+        if (isset($WhereParams['group'])) {
+        	$select->where("shopcoins.`group` in (".implode(",",$WhereParams['group']).")");
+        }
+        if (isset($WhereParams['metal'])) {
+            $metals = array();
+            foreach ($WhereParams['metal'] as $metal){
+                $metal = str_replace("'","",$metal);
+                $metals[] = "'".$metal."'";
+            }        	
+        	$select->where("shopcoins.metal in (".implode(",",$metals).")");
+
+        }
+        if (isset($WhereParams['condition'])) {        	
+        	$condition = array();
+            foreach ($WhereParams['condition'] as $condition){
+                $condition = str_replace("'","",$condition);
+                $conditions[] = "'".$condition."'";
+            }        	
+        	$select->where("shopcoins.condition in (".implode(",",$conditions).")");
+        }
+ 
+	    $select = $this->byAdmin($select); 
+	          
+	    if($materialtype == 2){
 	       $select->where('shopcoins.amount > 0'); 	       
 	   } 
+	   
 	   if ($searchid) {	
 	       
        } /*elseif($search){
@@ -55,7 +130,7 @@ class model_shopcoins extends Model_Base
     	   } 
     	   if ($materialtype==1 || $materialtype==10){
     	       if(!$yearsearch&&!$searchname){
-    	            $select->where("(shopcoins.materialtype='".$materialtype."' and shopcoins.amountparent > 0) or shopcoins.materialtypecross & pow(2,".$materialtype.")".($group?" or shopcoins.materialtype='8' or shopcoins.materialtypecross & pow(2,8)":"")); 		
+    	            $select->where("(shopcoins.materialtype='".$materialtype."' and shopcoins.amountparent > 0) or shopcoins.materialtypecross & pow(2,".$materialtype.")".(isset($WhereParams['group'])?" or shopcoins.materialtype='8' or shopcoins.materialtypecross & pow(2,8)":"")); 		
     	       } else {
     	           $select->where("shopcoins.materialtype='".$materialtype."' or shopcoins.materialtypecross & pow(2,".$materialtype.")".($group?" or shopcoins.materialtype='8' or shopcoins.materialtypecross & pow(2,8)":"")); 
     	       }
@@ -64,6 +139,7 @@ class model_shopcoins extends Model_Base
     	        $select->where("(shopcoins.materialtype=? or shopcoins.materialtypecross & pow(2,?))",$materialtype); 
     	   }
 	   } 
+	 echo $select->__toString();
        return $this->db->fetchOne($select);       
 	}
 	public function getPopular($limit=4){ 
@@ -85,38 +161,85 @@ class model_shopcoins extends Model_Base
        return $this->db->fetchAll($select);
 	}  
 	
-	public function getItemsByParams($user_id=0,$nocheck,$materialtype,$WhereArray=array(),$searchname='',$yearsearch='', $page=1, $items_for_page=30,$orderby='',$searchid='',$group=''){
+	public function getItemsByParams($materialtype,$WhereParams=array(),$yearsearch='', $page=1, $items_for_page=30,$orderby='',$searchid=''){
+        if(isset($WhereParams['coinssearch'])) $coinssearch = $WhereParams['coinssearch'];
+	   $searchname = 0;
 	    //если нет ничего в поиске
 	    //часть данных не инициализирую на первом этапе
 	   $select = $this->db->select()
 	                      ->from('shopcoins')
 	                      ->join(array('group'),'shopcoins.group=group.group',array('gname'=>'group.name'));
 	   
-	   if($user_id==811||$user_id==309236) {
-	       if(!$nocheck){
-	           $select->where("shopcoins.check=1 or (shopcoins.check>3 and shopcoins.check<20)");
-	       } else {
-	           $select->where("shopcoins.check>3 and shopcoins.check<20");
-	       }
-	   }  else {
-	       $select->where("shopcoins.check=1");
-	   }                
+	                      
+	     if (isset($WhereParams['pricestart'])) {
+        	$select->where("shopcoins.`price` >= ?",floatval($WhereParams['pricestart']));
+        }
+        if (isset($WhereParams['priceend'])) {        	
+        	$select->where("shopcoins.`price` <=?",floatval($WhereParams['priceend']));
+        }
+        if (isset($WhereParams['searchname'])) {   
+             $searchname =   $WhereParams['searchname'];   	
+             $select->where("shopcoins.name=?",$WhereParams['searchname']);	
+        }
+
+        if (isset($WhereParams['theme'])) {
+            $whereTheme = array();
+            foreach ($WhereParams['theme'] as $theme){
+                $whereTheme[] = "(shopcoins.theme='".pow(2,$theme)."' or shopcoins.theme & ".pow(2,$theme).">0)";
+            }
+            if($whereTheme) {
+                $select->where("(".implode(' or ',$whereTheme).')');
+            }        	
+        }
+        
+        if (isset($WhereParams['series'])){
+        	$select->where("shopcoins.series = ?",intval($WhereParams['series']));
+        }
+        if (isset($WhereParams['group'])) {
+        	$select->where("shopcoins.`group` in (".implode(",",$WhereParams['group']).")");
+        }
+        if (isset($WhereParams['year'])) {
+        	$where_year = array();
+        	//var_dump($WhereParams['year']);
+        	foreach ($WhereParams['year'] as $year_int){
+        		if($year_int[0]>0&&$year_int[1]>0&&$year_int[1]<date('Y',time())){
+        			$where_year[] = "(`year` >={$year_int[0]} and `year` <={$year_int[1]})";
+        		} elseif ($year_int[0]>0){
+        			$where_year[] = "(`year` >={$year_int[0]})";
+        		} else {
+        			$where_year[] = "(`year` <={$year_int[1]})";
+        		}        		
+        	}
+        	$select->where("(".implode(" or ",$where_year).")");
+        }
+        
+        if (isset($WhereParams['metal'])) {
+        	$metals = array();
+            foreach ($WhereParams['metal'] as $metal){
+                $metal = str_replace("'","",$metal);
+                $metals[] = "'".$metal."'";
+            }        	
+        	$select->where("shopcoins.metal in (".implode(",",$metals).")");
+        }
+        if (isset($WhereParams['condition'])) {
+        	$condition = array();
+            foreach ($WhereParams['condition'] as $condition){
+                $condition = str_replace("'","",$condition);
+                $conditions[] = "'".$condition."'";
+            }        	
+        	$select->where("shopcoins.condition in (".implode(",",$conditions).")");
+        }
+
+
+	   $select = $this->byAdmin($select); 
+	         
 	   if($materialtype == 2){
 	       $select->where('shopcoins.amount > 0');	       
-	   } 
-	   if ($searchname) {
-        	$searchname = str_replace("'","",$searchname);
-        	$select->where('shopcoins.name=?',$searchname);
-       }	
-       if ($yearsearch>0) {
-        	$searchname = str_replace("'","",$searchname);
-        	$select->where('hopcoins.year=?',$yearsearch);
-       }	
-
+	   }      
 
 	   if ($materialtype==1 || $materialtype==10){
 	       if(!$searchid&&!$yearsearch&&!$searchname){
-	            $select->where("(shopcoins.materialtype='".$materialtype."' and shopcoins.amountparent > 0) or shopcoins.materialtypecross & pow(2,".$materialtype.")".($group?" or shopcoins.materialtype='8' or shopcoins.materialtypecross & pow(2,8)":"")); 		
+	            $select->where("(shopcoins.materialtype='".$materialtype."' and shopcoins.amountparent > 0) or shopcoins.materialtypecross & pow(2,".$materialtype.")".(isset($WhereParams['group'])?" or shopcoins.materialtype='8' or shopcoins.materialtypecross & pow(2,8)":"")); 		
 	       } else {
 	           $select->where("shopcoins.materialtype='".$materialtype."' or shopcoins.materialtypecross & pow(2,".$materialtype.")".($group?" or shopcoins.materialtype='8' or shopcoins.materialtypecross & pow(2,8)":"")); 
 	       }
@@ -133,11 +256,9 @@ class model_shopcoins extends Model_Base
         	$searchname = str_replace("'","",$searchname);
         	$select->where('hopcoins.year=?',$yearsearch);
        }	
-	   if(sizeof($WhereArray)){
-	       $select->where(implode(" and ", $WhereArray)); 
-	   }
-	   if($group>0&&!$page){
-	       if($sortname){
+	//  var_dump($orderby);
+	 if(isset($WhereParams['group'])&&!$page){
+	        /* if($sortname){
 	           if($coinssearch){
 	                $select->order("shopcoins.shopcoins=".intval($coinssearch)." desc, groupparent asc,param2,param1,".$dateinsert_orderby." desc");
 	           } else {
@@ -149,12 +270,15 @@ class model_shopcoins extends Model_Base
 	            } else {
 	                $select->order("groupparent asc,".$dateinsert_orderby." desc,price desc, param2,param1" );
 	            }      
-	       }	      
+	       }*/	      
 	   } else {
 	       $select->order($orderby);
 	   }
-	   $select->limitPage($page, $items_for_page);
-	   //echo $select->__toString();
+	   if($items_for_page!='all'){
+	        $select->limitPage($page, $items_for_page);
+	   }  
+	  
+	   echo $select->__toString();
        return $this->db->fetchAll($select);
 	} 
 	//получаем уже зарезервированные монеты
@@ -166,6 +290,7 @@ class model_shopcoins extends Model_Base
        return $this->db->fetchAll($select);       
     }
 	
+    
 	public function addSearchStatistic(){
 	    
 	    $sql_key = "select count(*) from keywords where word='".lowstring($search)."' and page='$script';";
@@ -192,6 +317,84 @@ class model_shopcoins extends Model_Base
 		//echo $sql_tmp2."=sql_tmp2<br>";
 			//����� ������
 	}
+	
+	//получаем металы для выборки
+	public function getMetalls($materialtype=1){
+	    $select = $this->db->select()
+	                      ->from('shopcoins',array('metal'=>'distinct(metal)'))
+	                      ->where('metal<>""')
+	                      ->where("(shopcoins.materialtype=? or shopcoins.materialtypecross & pow(2,?))",$materialtype)                      
+	                      ->order('metal desc');
+	   $select = $this->byAdmin($select); 	
+	   return $this->db->fetchAll($select);       
+	}
+	//группы для выборки
+	public function getGroups($materialtype=1,$is_revaluation=0,$is_new=0){	   
+		//	".$WhereSearch;	    
+	    $select = $this->db->select()
+	                      ->from('shopcoins',array('group'=>'distinct(`group`)'))	                      
+	                      //->where('group<>""')
+	                      ->where('shopcoins.dateinsert>0')
+	                       ->order('group desc');
+	   $select = $this->byAdmin($select); 
+       if($materialtype){
+           $select->where("(shopcoins.materialtype=? or shopcoins.materialtypecross & pow(2,?))",$materialtype)                         ->order('group desc');
+       } elseif ($is_revaluation){
+            
+       } elseif ($is_new){
+            $arraynewcoins = Array(1=>date('Y')-2,2=>date('Y')-1,3=>date('Y'));
+            $select->where("shopcoins.materialtype in(1,4,7,8)")
+                   ->where("shopcoins.year in(".implode(",",$arraynewcoins).")");	
+       }
+       return $this->db->fetchAll($select);       
+	}
+	//получаем данные о группах
+	public function getGroupsDetails($ids = array(),$is_parent = false){	
+	    $select = $this->db->select()
+	                      ->from('group')	 
+	                      ->order('name asc');
+	    if($ids) {
+	        $select->where("`group` in (".implode(",", $ids).")");
+	    } else {
+	        $select->where("`group`=0");
+	    }
+	    if($is_parent)  $select->where("groupparent='0'");
+        return $this->db->fetchAll($select);     
+	}
+	
+	protected function byAdmin($select){
+	    if($this->user_id==811||$this->user_id==309236) {
+	       if(!$this->nocheck){
+	           $select->where("shopcoins.check=1 or (shopcoins.check>3 and shopcoins.check<20)");
+	       } else {
+	           $select->where("shopcoins.check>3 and shopcoins.check<20");
+	       }
+	   }  else {
+	       $select->where("shopcoins.check=1");
+	   }  
+	   return  $select;    
+	}
+	public function getConditions($materialtype=1){
+		$select = $this->db->select()
+	                      ->from('shopcoins',array('distinct(`condition`)'))
+	                      ->where("(shopcoins.materialtype=? or shopcoins.materialtypecross & pow(2,?))",$materialtype)
+	                      ->where('`condition`>""')
+	                      ->order('condition desc');    
+	   	$select = $this->byAdmin($select); 	   	
+	   	return $this->db->fetchAll($select);    
+	}
+	
+	public function getYears($materialtype=1){
+	   $select = $this->db->select()
+	                      ->from('shopcoins',array('year'=>'distinct(year)'))
+	                      ->where("(shopcoins.materialtype=? or shopcoins.materialtypecross & pow(2,?))",$materialtype)
+	                      ->where('year>0')
+	                      ->order('year desc');    
+	   $select = $this->byAdmin($select); 
+	   return $this->db->fetchAll($select);       
+	}
+	
+	
     /*	
 	}	
 ?>

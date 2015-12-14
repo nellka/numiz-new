@@ -1,13 +1,93 @@
-<script language="JavaScript">
-function sendData(name,val){
-    jQuery('#'+name).val(val);
+<script>		
+function ShowOneClick(id) {
+	jQuery('.oneclick_notifications .messages').hide();
+	
+	if (jQuery('#oneshopcoins'+id+' .messages').children().length > 0) {
+		jQuery('#oneshopcoins'+id+' .messages').fadeIn("fast");
+	}
+
+	jQuery(".bg_shadow").show();
+	var yourClick = true;
+					
+	jQuery(document).mouseup(function (e) {
+	var container = jQuery('#oneshopcoins'+id+' .messages');
+	if (container.has(e.target).length === 0){
+		container.hide();
+		jQuery(".bg_shadow").hide();
+	}
+	});
+			
+}
+function HideOneClick(id) {
+	jQuery('#oneshopcoins'+id+' .messages').fadeOut("fast");
+	jQuery(".bg_shadow").fadeOut("fast");
+	jQuery(document).unbind("click.myEvent");
+}
+
+function fast_order(id) {
+	var telephone = $("#fast_order_"+id).find("input[name='fast_order_telephone']").val();
+	
+	$("#fast_order_"+id).find(".fast_order_error").fadeOut("fast");
+	height_fast_order = $("#fast_order_"+id).find(".fast_order_body").height()+parseInt($("#fast_order_"+id).css("padding-bottom"))+"px";
+	if (telephone.length > 5) {
+		$.ajax({
+			data: "PRODUCT_ID="+id+"&TELEPHONE="+telephone+"&REG_USER=Y&CHANGE_PHONE=Y&ADD_BASKET=Y&ID_USER_FAST=",
+			url: "/bitrix/components/pvk/order.click/ajax.php",
+			cache: false,
+			success: function(html){
+				$("#fast_order_"+id).find(".fast_order_body").hide();
+				$("#fast_order_"+id).find(".fast_order_success").fadeIn("fast");
+				$("#fast_order_"+id).animate({height: $("#fast_order_"+id).find(".fast_order_success").height()+parseInt($("#fast_order_"+id).css("padding-bottom"))+"px"}, 100);
+				setTimeout("fast_order_success_close("+id+");", 5000);
+			}
+		});
+	} else {
+		$("#fast_order_"+id).find(".fast_order_error").fadeIn("fast");
+		$("#fast_order_"+id).animate({height: $(".fast_order_body").height()+parseInt($("#fast_order_"+id).css("padding-bottom"))+"px"}, 100);
+	}
+}
+function fast_order_success_close(id) {
+	$("#fast_order_"+id).fadeOut("fast");
+	$(document).unbind("click.myEvent");
+	setTimeout("fast_order_success_close2("+id+");", 1000);
+}
+function fast_order_success_close2(id) {
+	$("#fast_order_"+id).find(".fast_order_body").show();
+	$("#fast_order_"+id).find(".fast_order_success").hide();
+	$("#fast_order_"+id).css("height", "100px");
+	$(".bg_shadow").fadeOut("fast");
+	
+}
+
+/*function sendData(name,val){
+     return false;
+   // jQuery('#'+name).val(val);
      console.log( jQuery('form#search-params input'));
      
      console.log( jQuery('form#search-params :input').serializeArray() );
     console.log(fields); 
     console.log(val); 
-}
+    return false;
+}*/
+function sendData(name,val){   
+    if(name){
+        jQuery('#'+name).val(val);
+    }
+    console.log(jQuery('form#search-params'));
+    jQuery('#pricestart').val(jQuery('#amount1').val());
+    jQuery('#priceend').val(jQuery('#amount2').val());
+    
+    jQuery('#yearstart').val(jQuery('#amount3').val());
+    jQuery('#yearend').val(jQuery('#amount4').val());
+    /*  jQuery('input[name="them[]"]:checked').each()
 
+   // data = jQuery('form#search-params :input').serializeArray();
+   // filter = jQuery('.filterbox :input').serializeArray();
+   
+    //console.log(data);
+    console.log(filter);*/
+    jQuery('form#search-params').submit();
+}
 
 <?
 /*
@@ -267,3 +347,4 @@ if($tpl['task']){
 } else {
     include $cfg['path'] . '/views/' . $tpl['module'] . '/catalog.tpl.php';
 }?>
+</form>

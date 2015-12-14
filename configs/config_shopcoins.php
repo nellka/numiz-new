@@ -14,8 +14,16 @@ $MetroArray = Array (
 				11 => "Комсомольская", 
 				12 => "Проспект Мира",
 	);
+	
+$yearsArray = Array (
+		1 => array('name' => '2001-настоящее время','data'=>array(2001,date('Y',time()))), 
+		2 => array('name' => '1901-2000','data'=>array(1900,2000)),
+		3 => array('name' => '1801-1900','data'=>array(1801,1900)),
+		4 => array('name' => '1701-1800','data'=>array(1701,1800)),
+		5 => array('name' => 'до 1600','data'=>array(0,1600)),
+		6 => array('name' => 'Без указания года','data'=>array(0,0)));
 
-
+							    
 $TimeMetroMeeting = Array (
 				64800 => '18-00', 
 				65100 => '18-05', 

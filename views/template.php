@@ -1,5 +1,5 @@
 <?php include $cfg['path'] . '/views/common/header/head.tpl.php'; ?>
-
+<div class="bg_shadow"></div>
 <div id="page" class="container">
     <?php include $cfg['path'] . '/views/common/header.tpl.php'; ?>   
    

@@ -19,7 +19,6 @@ try {
      	
     //будем на стадии Index проверять залогинивание
     session_start();
-    $shopcoins_class = new model_shopcoins($cfg['db']);
     $user_class = new model_user($cfg['db']);
     $news_class = new model_news($cfg['db']);
 
