@@ -52,7 +52,6 @@ if (in_array($_SERVER["HTTP_USER_AGENT"],$black_user_agent_list[0])
 || substr_count($_SERVER["HTTP_USER_AGENT"],"Rufus")
 || substr_count($_SERVER["HTTP_USER_AGENT"],"Wget")
 || substr_count($_SERVER["HTTP_USER_AGENT"],"Robot")
-|| $order=="87410"
 ||in_array($user_remote_address,$black_ip_list[0]))
 {
     $tpl['error_text'] = 'Скачивание информации запрещено!!!Если Вы считаете что это ошибка, свяжитесь с администратором по телефону 8-926-268-41-10.';
@@ -73,11 +72,18 @@ $tpl['stat']['users'] = $user_class->countAll();
 $tpl['stat']['items'] = $shopcoins_class->countAll();
 $tpl['stat']['news'] =  $news_class->countAll();
 
+$dir = $cfg['path'] .  '/controllers/'.$tpl['module'].'/';
 
-
-$controller = $cfg['path'] .  '/controllers/'.$tpl['module'].'.ctl.php';
+if( is_dir($dir)){
+    if($tpl['task']&&file_exists($dir.$tpl['task'].'.ctl.php')){
+         $controller = $dir.$tpl['task'].'.ctl.php';
+    } else {
+         $controller = $dir.$tpl['module'].'.ctl.php';
+    }
+} else {
+    $controller = $cfg['path'] .  '/controllers/'.$tpl['module'].'.ctl.php';   
+}
 $static_page = true;
-
 if(file_exists($controller)){
     $static_page = false;
     //для статических страниц контроллера может не быть

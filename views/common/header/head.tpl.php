@@ -11,7 +11,10 @@
 <link href='https://fonts.googleapis.com/css?family=Roboto:400italic,700,700italic,100,400,100italic' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css" href="<?=$cfg['site_dir']?>css/jquery.fancybox-1.3.3.css" media="screen" />
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<script src="<?=$cfg['site_dir']?>js/jquery.maskedinput.min.js"></script>
+<!--<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />-->
+<link rel="stylesheet" type="text/css" href="<?=$cfg['site_dir']?>css/jqueryui.custom.css" media="screen" />
+
 <script type="text/javascript" charset="utf-8" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script> $.noConflict();
 jQuery( document ).ready(function( $ ) {});
@@ -19,13 +22,20 @@ jQuery( document ).ready(function( $ ) {});
 <script type="text/javascript" src="<?=$cfg['site_dir']?>js/main.js"></script>
 <script type="text/javascript" src="<?=$cfg['site_dir']?>js/jquery.mousewheel-3.0.4.pack.js"></script>
 <script type="text/javascript" src="<?=$cfg['site_dir']?>js/jquery.fancybox-1.3.3.js"></script>
-<script src="<?=$cfg['site_dir']?>js/jquery.maskedinput.min.js"></script>
+
 
 
 
 <script type="text/javascript">
 jQuery(document).ready(function() {
-    
+//jQuery("#callphone").mask("+7(999) 999-9999");
+//jQuery(".phone").each(function( index, value ) {
+  //console.log(jQuery(this));
+  //jQuery(".phone").mask("+7(999) 999-9999");
+//});
+
+
+
 jQuery(".iframe").fancybox({ // выбор всех ссылок с классом iframe
 width : 330,
 height : 300,

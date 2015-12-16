@@ -67,12 +67,13 @@
 		           <? foreach ($filter['child'] as $filter_child) {?>
 		           		<div class="checkbox">
 		                <?php             
-		                 if (is_array($$filter_group['filter_group_id'])&&in_array($filter_child['filter_id'], $$filter_group['filter_group_id'])) { ?>
-		                <input type="checkbox" name="<?=$filter_group['filter_group_id']?>[]" value="<?=$filter_child['filter_id']?>" checked="checked" />
-		                <?php echo $filter['name']; ?>
+		                 if (is_array($$filter_group['filter_group_id_full'])&&in_array($filter_child['filter_id'], $$filter_group['filter_group_id_full'])) { ?>
+		                <input type="checkbox" name="<?=$filter_group['filter_group_id_full']?>[]" value="<?=$filter_child['filter_id']?>" checked="checked" />
+		                <a href="?materialtype=<?=$materialtype?>&<?=$filter_group['filter_group_id']?>=<?=urlencode(iconv("utf8","cp1251",$filter_child['filter_id']))?>"> <?=$filter_child['name'];?></a>
 		                <?php } else { ?>
-		                <input type="checkbox" name="<?php echo $filter_group['filter_group_id']; ?>[]" value="<?php echo $filter_child['filter_id']; ?>" />
-		                <?=$filter_child['name']?>
+		                <input type="checkbox" name="<?php echo $filter_group['filter_group_id_full']; ?>[]" value="<?php echo $filter_child['filter_id']; ?>" />
+		                  <a href="?materialtype=<?=$materialtype?>&<?=$filter_group['filter_group_id']?>=<?=urlencode(iconv("utf8","cp1251",$filter_child['filter_id']))?>"> <?=$filter_child['name'];?></a>
+
 		                <?php } ?>
 		            	</div>
 			            <?php     

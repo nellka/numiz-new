@@ -1,7 +1,6 @@
 <script>		
 function ShowOneClick(id) {
-	jQuery('.oneclick_notifications .messages').hide();
-	
+	jQuery('.oneclick_notifications .messages').hide();	
 	if (jQuery('#oneshopcoins'+id+' .messages').children().length > 0) {
 		jQuery('#oneshopcoins'+id+' .messages').fadeIn("fast");
 	}
@@ -24,51 +23,64 @@ function HideOneClick(id) {
 	jQuery(document).unbind("click.myEvent");
 }
 
-function fast_order(id) {
-	var telephone = $("#fast_order_"+id).find("input[name='fast_order_telephone']").val();
-	
-	$("#fast_order_"+id).find(".fast_order_error").fadeOut("fast");
-	height_fast_order = $("#fast_order_"+id).find(".fast_order_body").height()+parseInt($("#fast_order_"+id).css("padding-bottom"))+"px";
-	if (telephone.length > 5) {
-		$.ajax({
-			data: "PRODUCT_ID="+id+"&TELEPHONE="+telephone+"&REG_USER=Y&CHANGE_PHONE=Y&ADD_BASKET=Y&ID_USER_FAST=",
-			url: "/bitrix/components/pvk/order.click/ajax.php",
-			cache: false,
-			success: function(html){
-				$("#fast_order_"+id).find(".fast_order_body").hide();
-				$("#fast_order_"+id).find(".fast_order_success").fadeIn("fast");
-				$("#fast_order_"+id).animate({height: $("#fast_order_"+id).find(".fast_order_success").height()+parseInt($("#fast_order_"+id).css("padding-bottom"))+"px"}, 100);
-				setTimeout("fast_order_success_close("+id+");", 5000);
-			}
-		});
-	} else {
-		$("#fast_order_"+id).find(".fast_order_error").fadeIn("fast");
-		$("#fast_order_"+id).animate({height: $(".fast_order_body").height()+parseInt($("#fast_order_"+id).css("padding-bottom"))+"px"}, 100);
-	}
-}
-function fast_order_success_close(id) {
-	$("#fast_order_"+id).fadeOut("fast");
-	$(document).unbind("click.myEvent");
-	setTimeout("fast_order_success_close2("+id+");", 1000);
-}
-function fast_order_success_close2(id) {
-	$("#fast_order_"+id).find(".fast_order_body").show();
-	$("#fast_order_"+id).find(".fast_order_success").hide();
-	$("#fast_order_"+id).css("height", "100px");
-	$(".bg_shadow").fadeOut("fast");
-	
+function ValidPhone(phone) {
+    var re = /^\d[\d\(\)\ -]{8,14}\d$/;
+    var myPhone = phone;
+    var valid = re.test(myPhone);
+    if (valid) return true;
+    return false;
+}  
+
+function AddOneClick(id) {
+   var onefio = jQuery('#oneshopcoins'+id+' .messages').find("input[name='onefio']").val();
+   var onephone = jQuery('#oneshopcoins'+id+' .messages').find("input[name='onephone']").val();
+   
+   if (!onefio || onefio.length <3){
+		jQuery('#oneshopcoins'+id+'-error').text('Вы не указали имя');
+		return;
+   }
+   
+   if (!ValidPhone(onephone)){
+		jQuery('#oneshopcoins'+id+'-error').text('Укажите номер телефона в полном формате!');
+		return;
+   }
+    
+   jQuery.ajax({
+	    url: '<?=$cfg['site_dir']?>shopcoins/addoneklick.php', 
+	    type: "POST",
+	    data:{'shopcoins':id,'onefio':onefio,'onephone':onephone,'datatype':'json'},         
+	    dataType : "json",                   
+	    success: function (data, textStatus) { 
+	        ShowOneClickResult(id,data)
+	    }
+	});
+	return;	
 }
 
-/*function sendData(name,val){
-     return false;
-   // jQuery('#'+name).val(val);
-     console.log( jQuery('form#search-params input'));
-     
-     console.log( jQuery('form#search-params :input').serializeArray() );
-    console.log(fields); 
-    console.log(val); 
-    return false;
-}*/
+function ShowOneClickResult(id,data) {		
+	errorvalue = data.error;
+	var bascetshopcoins = data.bascetshopcoins;	
+	
+	if (!errorvalue){
+		var shopcoinsorder = data.shopcoinsorder;	
+		var bascetsum = data.bascetsum;			
+		var str = '';
+		str += '<h4>Ваш заказ №</strong> ' + shopcoinsorder + ' </h4>';
+		str += '<p><strong>Товаров:</strong> 1 <br><strong>На сумму:</strong> ' + bascetsum + ' р.';
+		str += '<br>Заказ сделан, Для уточнения деталей платежа и доставки с Вами свяжется наш менеджер.<br><br></p>';
+		jQuery('#oneclick_form'+id).html(str);
+	} else if (errorvalue == 'reserved') {
+		jQuery('#oneshopcoins'+id+'-error').text('Товар зарезервирован одновременно с другим пользователем');		
+	} else if (errorvalue == 'notavailable') {		
+		jQuery('#oneshopcoins'+id+'-error').text('Товар уже продан');	
+	} else if (errorvalue == 'stopsummax') {
+		jQuery('#oneshopcoins'+id+'-error').text('Минимальная сумма заказа <? echo $minpriceoneclick;?> руб.');		
+	}	else if (errorvalue == 'amount') {
+		erroramountvalue = data.erroramount;		
+		jQuery('#oneshopcoins'+id+'-error').text('На складе всего лишь ' + erroramountvalue + ' штук');		
+	}
+}	
+	
 function sendData(name,val){   
     if(name){
         jQuery('#'+name).val(val);
@@ -79,32 +91,86 @@ function sendData(name,val){
     
     jQuery('#yearstart').val(jQuery('#amount3').val());
     jQuery('#yearend').val(jQuery('#amount4').val());
-    /*  jQuery('input[name="them[]"]:checked').each()
-
-   // data = jQuery('form#search-params :input').serializeArray();
-   // filter = jQuery('.filterbox :input').serializeArray();
-   
-    //console.log(data);
-    console.log(filter);*/
     jQuery('form#search-params').submit();
 }
 
+function AddAccessory(id,materialtype){	
+	var str;
+	var amount = jQuery('#amount'+id).val();
+	if(amount <=0) amount = 1;
+    jQuery.ajax({	
+	    url: '<?=$cfg['site_dir']?>shopcoins/addbascet.php?', 
+	    type: "POST",
+	    data:{'shopcoinsorder':"<?=$shopcoinsorder?>",'shopcoins':id,'amount':amount,'materialtype':materialtype,'datatype':'json'},         
+	    dataType : "json",                   
+	    success: function (data, textStatus) { 	    	
+	        ShowSmallBascet(id,data);
+	    }
+	});
+	
+	return false;		
+}
+function ShowSmallBascet (id,data)
+{
+	errorvalue = data.error;
+	var bascetshopcoins = data.bascetshopcoins;	
+	if (!errorvalue){
+		var shopcoinsorder = data.shopcoinsorder;
+		var bascetamount = data.bascetamount;
+		var bascetsum = data.bascetsum;
+		var bascetweight = data.bascetsumclient;
+		var bascetreservetime = data.bascetreservetime;
+		var bascetpostweightmin = data.bascetpostweightmin;
+		var bascetpostweightmax = data.bascetpostweightmax;
+		var bascetinsurance = data.bascetinsurance;
+		var textbascet2 = data.textbascet2;		
+		
+		jQuery("#inorderamount").html(bascetamount);				
+		var str = '';
+		str = '<h1 class="yell_b">Корзина</h1>';
+		str += '<p><b>Заказ №</b> ' + shopcoinsorder + '</p>';
+		str += '<p><strong>Товаров:</strong> ' + bascetamount + ' <br><b>На сумму:</b> ' + bascetsum + ' р.';
+		str += '<br><b>Вес ~ </b> ' + bascetweight + ' гр. <br><b>Бронь на:</b> ' + bascetreservetime + '</p>'
+		str += '<p><center><a href=?page=orderdetails><img src=<?=$cfg['site_dir']?>images/basket.gif border=0></a></center></p>';
+		str += '<h1 class="yell_b">Доставка:</font></h1>';
+		str += '<p><b>Москва:</b><br><b>Кольцевые станции:</b> бесплатно<br><b>В офис:</b> от 150 р.';
+		str += '<br><br><b>Почта России</b><br><b>Сбор по весу:</b> от ' + bascetpostweightmin + ' до ' + bascetpostweightmax + ' р.';
+		str += '<br><b>Страховка 4%:</b> ' + bascetinsurance + ' р. <br><b>Упаковка:</b> 10 р. за конверт / ящик.</<p>';
+		
+		jQuery("#MainBascet").html(str);				
+		jQuery("#bascetshopcoins" + bascetshopcoins).html('<img src="<?=$cfg['site_dir']?>images/corz7.gif" title="Уже в корзине" alt="Уже в корзине">');		
+	} else if (errorvalue == 'reserved'){
+		jQuery("#MainBascet").html('<h1 class="yell_b">Корзина</h1><p class=center>Товар зарезервирован одновременно с другим пользователем</p>');	
+		jQuery("#bascetshopcoins" + bascetshopcoins).html('<img src="<?=$cfg['site_dir']?>images/corz6.gif" title="Уже в корзине" alt="Уже в корзине">');
+		
+	}	else if (errorvalue == 'notavailable'){	
+		jQuery("#MainBascet").html('<h1 class="yell_b">Корзина</h1><p class=center>Товар уже продан</p>');	
+		jQuery("#bascetshopcoins" + bascetshopcoins).html('<img src="<?=$cfg['site_dir']?>images/corz6.gif" title="Уже в корзине" alt="Уже в корзине">');
+	} else if (errorvalue == 'stopsummax') {
+		jQuery("#MainBascet").html('<h1 class="yell_b">Корзина</h1><p class=center>Максимальная сумма заказа <? echo $stopsummax;?> руб. <br>Если вы не все сложили в корзину, проделайте следующим заказом.</p>');	
+	} else if (errorvalue == 'amount') {
+		erroramountvalue = data.erroramount;
+		jQuery("#MainBascet").html('<h1 class="yell_b">Корзина</h1><p class=center>На складе всего лишь ' + erroramountvalue + ' штук</p>');
+	}
+	
+	$("#MainBascet").dialog({
+    	position: { 
+            my: 'top',
+            at: 'top',
+            of: jQuery("#bascetshopcoins"+id)
+        },
+ 		 modal:true,
+		 buttons:{
+		    Ok: function(){
+		      $(this).dialog( "close" );
+		    }
+		  }
+	});
+}
+	
 <?
 /*
-function AddAccessory_main(shopcoins,materialtype){
-	var str;
-	str = document.mainform.amount + shopcoins + value;
-	document.mainform.shopcoinsorder.value = shopcoins;
-	document.mainform.materialtype.value = materialtype;
-	document.mainform.shopcoinsorderamount.value = eval(str);
-	if (eval(str) > 0)
-	{
-		//document.mainform.submit();
-		process ('addbascet.php?shopcoinsorder="<?=$shopcoinsorder?>."&shopcoins=' + shopcoins + '&amount=' + eval(str));
-	}
-	else
-		alert ('Введите количество');
-}
+
 
 function AddAccessory_3(shopcoins){
 	var str;
@@ -242,103 +308,7 @@ function ShowBascet2() {
 		myDiv.style.display="none";
 }
 
-function ShowSmallBascet (xmlRoot)
-{
-	error = xmlRoot.getElementsByTagName("error");
-	errorvalue = error.item(0).firstChild.data;
-	var bascetshopcoins = '';	
-	bascetshopcoins = xmlRoot.getElementsByTagName("bascetshopcoins").item(0).firstChild.data;	
-	
-	if (errorvalue == 'none')
-	{
-		var shopcoinsorder = '';
-		var bascetamount = '';
-		var bascetsum = '';
-		var bascetweight = '';
-		var bascetreservetime = '';
-		var bascetpostweightmin = '';
-		var bascetpostweightmax = '';
-		var bascetinsurance = '';
-		var textbascet2 = '';
-		
-		shopcoinsorder = xmlRoot.getElementsByTagName("shopcoinsorder").item(0).firstChild.data;
-		bascetamount = xmlRoot.getElementsByTagName("bascetamount").item(0).firstChild.data;
-		bascetsum = xmlRoot.getElementsByTagName("bascetsum").item(0).firstChild.data;
-		bascetsumclient = xmlRoot.getElementsByTagName("bascetsumclient").item(0).firstChild.data;
-		bascetweight = xmlRoot.getElementsByTagName("bascetweight").item(0).firstChild.data;
-		bascetreservetime = xmlRoot.getElementsByTagName("bascetreservetime").item(0).firstChild.data;
-		bascetpostweightmin = xmlRoot.getElementsByTagName("bascetpostweightmin").item(0).firstChild.data;
-		bascetpostweightmax = xmlRoot.getElementsByTagName("bascetpostweightmax").item(0).firstChild.data;
-		bascetinsurance = xmlRoot.getElementsByTagName("bascetinsurance").item(0).firstChild.data;
-		textbascet2 = xmlRoot.getElementsByTagName("textbascet2").item(0).firstChild.data;
-		//alert(textbascet2);
-		
-		myDiv = document.getElementById("inorderamount");
-		myDiv.innerHTML = "� ����� ������� <a href=<?=$in?>shopcoins/index.php?page=orderdetails> "+bascetamount+" </a> �������, <a href=<?=$in?>shopcoins/index.php?page=orderdetails><img src=<?=$in?>images/basket.gif border=0></a>";
-		
-		var str = '';
-		str = '<table border=0 cellpadding=3 cellspacing=0 style="border:thin solid 1px #000000" id=tableshopcoinsorder width=180>';
-		str += '<tr class=tboard bgcolor=#006699><td><strong><font color=white>�������:</font></strong></td></tr>';
-		str += '<tr class=tboard bgcolor=#ffcc66><td class=tboard align=top><strong>����� �</strong> ' + shopcoinsorder + ' ';
-		str += '<br><strong>�������:</strong> ' + bascetamount + ' <br><strong>�� �����:</strong> ' + bascetsum + ' �.';
-		if (bascetsumclient>0) {
-			str += '<br><strong>��� ���������� ��������:</strong> ' + bascetsumclient + ' �.';
-		}
-		str += '<br><strong>��� ~ </strong> ' + bascetweight + ' ��. <br><strong>����� ��:</strong> ' + bascetreservetime + '<br><center><a href=index.php?page=orderdetails><img src=<?echo $in;?>images/basket.gif border=0></a></center></td></tr>';
-		str += '<tr class=tboard bgcolor=#006699><td><strong><font color=white>��������:</font></strong></td></tr>';
-		str += '<tr class=tboard bgcolor=#ffcc66><td class=tboard align=top><strong>������:</strong><br><strong>��������� �������:</strong> ���������<br><strong>� ����:</strong> �� 170 �.';
-		str += '<br><br><strong>����� ������</strong><br><strong>���� �� ����:</strong> �� ' + bascetpostweightmin + ' �� ' + bascetpostweightmax + ' �.';
-		str += '<br><strong>��������� 4%:</strong> ' + bascetinsurance + ' �. <br><strong>��������:</strong> 10 �. �� ������� / ����.</td></tr>';
-		str +='<tr class=tboard bgcolor=#ffcc66><td><div style="display:none" id=showbascet2>'+textbascet2+'</div></td></tr>'
-		str += '<tr class=tboard bgcolor=#EBE4D4><td align=center><img src=../images/windowsmaximize.gif onclick="ShowBascet2();" alt="���������� ����������"/></td></tr></table>';
-
-		
-		myDiv = document.getElementById("MainBascet");
-		myDiv.innerHTML = str;
-		//dHbcnn=document.compatMode=='CSS1Compat' && !window.opera?document.documentElement.clientHeight:document.body.clientHeight
-		dWbcnn=document.compatMode=='CSS1Compat' && !window.opera?document.documentElement.clientWidth:document.body.clientWidth
-		myDiv.style.position = "absolute";
-		myDiv.style.left = dWbcnn - 220;
-		myDiv.style.top = document.body.scrollTop;
-		
-		var str = '';
-		str = 'bascetshopcoins' + bascetshopcoins;
-		myDiv = document.getElementById(str);
-		myDiv.innerHTML = '<img src=<? echo $in; ?>images/corz7.gif border=0 alt="��� � �������">';		
-		
-	}
-	else if (errorvalue == 'reserved')
-	{
-		alert ('����� �������������� ������������ � ������ �������������');
-
-		var str = '';
-		str = 'bascetshopcoins' + bascetshopcoins;
-		myDiv = document.getElementById(str);
-		myDiv.innerHTML = '<img src=<? echo $in; ?>images/corz6.gif border=0 alt="��� � �������">';
-		
-	}
-	else if (errorvalue == 'notavailable')
-	{
-		
-		alert ('����� ��� ������');
-		
-		var str = '';
-		str = 'bascetshopcoins' + bascetshopcoins;
-		myDiv = document.getElementById(str);
-		myDiv.innerHTML = '<img src=<? echo $in; ?>images/corz6.gif border=0 alt="��� � �������">';
-
-	}
-	else if (errorvalue == 'stopsummax')
-	{
-		alert ('������������ ����� ������ <? echo $stopsummax;?> ���. \n���� �� �� ��� ������� � �������, ���������� ��������� �������."');
-	}
-	else if (errorvalue == 'amount')
-	{
-		erroramount = xmlRoot.getElementsByTagName("erroramount");
-		erroramountvalue = erroramount.item(0).firstChild.data;
-		alert ('�� ������ ����� ���� ' + erroramountvalue + ' ����');
-	}	
-}*/?>
+*/?>
 </script>
 
 <?

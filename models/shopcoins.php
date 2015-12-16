@@ -139,7 +139,7 @@ class model_shopcoins extends Model_Base
     	        $select->where("(shopcoins.materialtype=? or shopcoins.materialtypecross & pow(2,?))",$materialtype); 
     	   }
 	   } 
-	 echo $select->__toString();
+	 //echo $select->__toString();
        return $this->db->fetchOne($select);       
 	}
 	public function getPopular($limit=4){ 
@@ -278,7 +278,7 @@ class model_shopcoins extends Model_Base
 	        $select->limitPage($page, $items_for_page);
 	   }  
 	  
-	   echo $select->__toString();
+	  // echo $select->__toString();
        return $this->db->fetchAll($select);
 	} 
 	//получаем уже зарезервированные монеты

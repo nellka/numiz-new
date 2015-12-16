@@ -49,127 +49,14 @@ Abstract Class Model_Base {
 		}             
     	return $this->db->fetchAll($select);       
     }
-       
-/*     
-    // получить имя таблицы
     
-     
-    // получить все записи
-    function getAllRows(){
-        if(!isset($this->dataResult) OR empty($this->dataResult)) return false;
-        return $this->dataResult;
+    public function updateRow($data,$where){
+        $this->db->update($this->table,$data,$where);
     }
-     
-    // получить одну запись
-    function getOneRow(){
-        if(!isset($this->dataResult) OR empty($this->dataResult)) return false;
-        return $this->dataResult[0];
-    }   
-     
-    // извлечь из базы данных одну запись
-    function fetchOne(){
-        if(!isset($this->dataResult) OR empty($this->dataResult)) return false;
-        foreach($this->dataResult[0] as $key => $val){
-            $this->$key = $val;
-        }
-        return true;
+    public function getRowSql($sql){
+    	return $this->db->fetchRow($sql);
     }
-     
-    // получить запись по id
-    function getRowById($id){
-        try{
-            $db = $this->db;
-            $stmt = $db->query("SELECT * from $this->table WHERE id = $id");
-            $row = $stmt->fetch();
-        }catch(PDOException $e) {
-            echo $e->getMessage();
-            exit;
-        }
-        return $row;
-    }
-     
-    // запись в базу данных
-    
-    public function  select($select){
-        
-        return $this->_getResult($this->_getSelect($select));
-    }
-    // составление запроса к базе данных
-    private function _getSelect($select) {
-        
-        if(is_array($select)){
-            $allQuery = array_keys($select);
-            array_walk($allQuery, function(&$val){
-                $val = strtoupper($val);
-            });
-         
-            $querySql = "SELECT ";
-            $from_array = array();
-            if(in_array("FIELDS", $allQuery)){
-                foreach($select as $key => $val){
-                    if(strtoupper($key) == "FIELDS"){
-                        $from_array[] = $val;                  
-                    }
-                }
-            }
-            $querySql = " ".($from_array?implode(",",$from_array):"*")." from $this->table";
-            
-            if(in_array("WHERE", $allQuery)){
-                foreach($select as $key => $val){
-                    if(strtoupper($key) == "WHERE"){
-                        $querySql .= " WHERE " . $val;                  
-                    }
-                }
-            }
-             
-            if(in_array("GROUP", $allQuery)){
-                foreach($select as $key => $val){
-                    if(strtoupper($key) == "GROUP"){
-                        $querySql .= " GROUP BY " . $val;                   
-                    }
-                }
-            }
-             
-            if(in_array("ORDER", $allQuery)){
-                foreach($select as $key => $val){
-                    if(strtoupper($key) == "ORDER"){
-                        $querySql .= " ORDER BY " . $val;                   
-                    }
-                }
-            }
-             
-            if(in_array("LIMIT", $allQuery)){
-                foreach($select as $key => $val){
-                    if(strtoupper($key) == "LIMIT"){
-                        $querySql .= " LIMIT " . $val;                  
-                    }
-                }
-            }
-               
-            return $querySql;
-        }       
-        return false;
-    }
-    public function countAll(){      
-        $sql = "SELECT count(*) from $this->table";   
-        $row = $this->db->getOne($sql);
-        return $row;       
-    } 
-    // выполнение запроса к базе данных
-    private function _getResult($sql){       
-        try{
-            $db = $this->db;
-            $stmt = $db->query($sql);
-            //$rows = $stmt->fetchAll();
-            $this->dataResult = $rows;
-        }catch(PDOException $e) {
-            echo $e->getMessage();
-            exit;
-        }
-         
-        return $rows;
-    }
-     
+      /*
     // уделение записей из базы данных по условию
     public function deleteBySelect($select){
         $sql = $this->_getSelect($select);
@@ -210,39 +97,6 @@ Abstract Class Model_Base {
     }
      
     // обновление записи. Происходит по ID
-    public function update(){
-        $arrayAllFields = array_keys($this->fieldsTable());
-        $arrayForSet = array();
-        foreach($arrayAllFields as $field){
-            if(!empty($this->$field)){
-                if(strtoupper($field) != 'ID'){
-                    $arrayForSet[] = $field . ' = "' . $this->$field . '"';
-                }else{
-                    $whereID = $this->$field;
-                }
-            }
-        }
-        if(!isset($arrayForSet) OR empty($arrayForSet)){
-            echo "Array data table `$this->table` empty!";
-            exit;
-        }
-        if(!isset($whereID) OR empty($whereID)){
-            echo "ID table `$this->table` not found!";
-            exit;
-        }
-         
-        $strForSet = implode(', ', $arrayForSet);
-         
-        try {
-            $db = $this->db;
-            $stmt = $db->prepare("UPDATE $this->table SET $strForSet WHERE `id` = $whereID");  
-            $result = $stmt->execute();
-        }catch(PDOException $e){
-            echo 'Error : '.$e->getMessage();
-            echo '<br/>Error sql : ' . "'UPDATE $this->table SET $strForSet WHERE `id` = $whereID'"; 
-            exit();
-        }
-        return $result;
-    }*/
+    */
 }
 ?>

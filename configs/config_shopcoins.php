@@ -16,8 +16,8 @@ $MetroArray = Array (
 	);
 	
 $yearsArray = Array (
-		1 => array('name' => '2001-настоящее время','data'=>array(2001,date('Y',time()))), 
-		2 => array('name' => '1901-2000','data'=>array(1900,2000)),
+		1 => array('name' => '2001-настоящее время','data'=>array(2001,(integer)date('Y',time()))), 
+		2 => array('name' => '1901-2000','data'=>array(1901,2000)),
 		3 => array('name' => '1801-1900','data'=>array(1801,1900)),
 		4 => array('name' => '1701-1800','data'=>array(1701,1800)),
 		5 => array('name' => 'до 1600','data'=>array(0,1600)),
@@ -371,7 +371,7 @@ $SumProperties[6] = "!!! <a href=kak_oplatit_kartoi_sberbanka.html target=_blank
 <br><b>Внимание: </b> Для ускорения процесса выполнение заказа, после перевода денег, просьба направить письмо на адрес  <a href=mailto:administrator@numizmatik.ru>administrator@numizmatik.ru</a> с темой \"Оплата заказа | Сбербанк | Клуб Нумизмат\". В теле сообщения укажите номер заказа и сумму перевода. 
 <br>В случае отсутствия письма с информацией о переводе денег, <font color=red><b>возможны задержки с отправкой заказа</b></font>
 ";
-
+/*
 $infotext = "
 <table cellpadding=3 cellspacing=0 border=0 align=center>
 <tr>

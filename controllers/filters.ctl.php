@@ -90,6 +90,7 @@ if(!$tpl['filter']['price']['max'] = $cache->load("price_max_$materialtype")) {
 
 //($
 if ($search == 'revaluation') {
+    die('$search');
     $tpl['filters']['All_groups'] = $shopcoins_class->getGroups(0,1,0);
 	$sql = "select distinct `group` 
 	from shopcoins 
@@ -97,6 +98,7 @@ if ($search == 'revaluation') {
 	and (".($tpl['user']['user_id']==811?(!$nocheck?"shopcoins.check=1 or shopcoins.check>3":"shopcoins.check>3"):"shopcoins.check=1").")
 	and shopcoins.dateinsert>0;";
 } elseif ($search == 'newcoins') {
+      die('newcoins');
     $arraynewcoins = Array(1=>date('Y')-2,2=>date('Y')-1,3=>date('Y'));
      $tpl['filters']['All_groups'] = $shopcoins_class->getGroups(0,0,1);
 	$sql = "select distinct `group` 

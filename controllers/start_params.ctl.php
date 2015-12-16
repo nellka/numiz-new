@@ -1,4 +1,29 @@
 <?
+
+$search = request('search');
+$page = request('page');
+$parent= request('parent');
+//для магазина - тип категории
+$materialtype = (integer)(isset($_REQUEST['materialtype'])?$_REQUEST['materialtype']:'');
+
+//номер заказа
+$shopcoinsorder = 0;
+
+if (isset($_COOKIE['shopcoinsorder'])&&intval($_COOKIE['shopcoinsorder'])>0)
+	$shopcoinsorder = intval($_COOKIE['shopcoinsorder']);
+elseif(isset($_SESSION['shopcoinsorder'])&&intval($_SESSION['shopcoinsorder'])>0)
+	$shopcoinsorder = intval($_SESSION['shopcoinsorder']);
+elseif (intval(request('shopcoinsorder'))>0)
+	$shopcoinsorder = intval(request('shopcoinsorder'));
+	
+//количество товаров в корзине
+if(isset($_SESSION['shopcoinsorderamount'])&&intval($_SESSION['shopcoinsorderamount'])>0){
+	$shopcoinsorder = intval($_SESSION['shopcoinsorderamount']);
+} else $shopcoinsorderamount = request('shopcoinsorderamount');
+//для админа
+$nocheck = request('nocheck');
+
+/*
 $order = (integer)(isset($_REQUEST['order'])?$_REQUEST['order']:0);
 $shopcoins = null;
 
@@ -8,18 +33,18 @@ $userpassword = isset($_REQUEST['userpassword'])?$_REQUEST['userpassword']:"";
 
 $shopcoins = isset($_REQUEST['shopcoins'])?$_REQUEST['shopcoins']:0;
 
-$materialtype = (integer)(isset($_REQUEST['materialtype'])?$_REQUEST['materialtype']:'');
+
 
 $search = isset($_REQUEST['search'])?$_REQUEST['search']:'';
 $recoins = isset($_REQUEST['recoins'])?$_REQUEST['recoins']:'';
 $member = isset($_REQUEST['member'])?$_REQUEST['member']:'';
 $savesearch = isset($_REQUEST['savesearch'])?$_REQUEST['savesearch']:'';
-$searchid = isset($_REQUEST['searchid'])?$_REQUEST['searchid']:'';
+
 $smallcoinsshow = isset($_COOKIE['smallcoinsshow'])?$_COOKIE['smallcoinsshow']:'';
 $setcoinsshow = isset($_COOKIE['setcoinsshow'])?$_COOKIE['setcoinsshow']:'';
 $page= isset($_REQUEST['page'])?$_REQUEST['page']:'';
-$parent= isset($_REQUEST['parent'])?$_REQUEST['parent']:'';
-$nocheck = isset($_REQUEST['nocheck'])?$_REQUEST['nocheck']:'';
+
+
 $pricestart  = isset($_REQUEST['pricestart'])?$_REQUEST['pricestart']:'';
 $priceend = isset($_REQUEST['priceend'])?$_REQUEST['priceend']:'';
 $theme = isset($_REQUEST['theme'])?$_REQUEST['theme']:'';
@@ -28,9 +53,9 @@ $yearstart  = isset($_REQUEST['yearstart'])?$_REQUEST['yearstart']:'';
 $yearend  = isset($_REQUEST['yearend'])?$_REQUEST['yearend']:'';
 $metal  = isset($_REQUEST['metal'])?$_REQUEST['metal']:'';
 $group = isset($_REQUEST['group'])?$_REQUEST['group']:'';
-$shopcoinsorderamount = isset($_REQUEST['shopcoinsorderamount'])?$_REQUEST['shopcoinsorderamount']:'';
+
 $condition = isset($_REQUEST['condition'])?$_REQUEST['condition']:'';
-$yearsearch = isset($_REQUEST['yearsearch'])?$_REQUEST['yearsearch']:'';
+
 $searchname = isset($_REQUEST['searchname'])?$_REQUEST['searchname']:'';
 $shopcoinsmain = isset($_POST['shopcoinsmain'])?$_POST['shopcoinsmain']:'';
 $inbascetmain = isset($_POST['inbascetmain'])?$_POST['inbascetmain']:'';
@@ -42,11 +67,11 @@ $coinssearch= isset($_REQUEST['coinssearch'])?$_REQUEST['coinssearch']:'';
 
 if ($search && substr_count($_SERVER['HTTP_REFERER'],"yandex")>0)
 	$search = iconv("UTF-8", "CP1251//IGNORE", $search);
-	/*
+	
 if (!$shopcoins && (!isset($_SESSION['shopcoins'])&&!$_SESSION['shopcoins']) && (!isset($_COOKIE['shopcoins'])&&!$_COOKIE['shopcoins'])){
 	$shopcoins=0;
 }
-*/
+
 	$shopcoins=0;
 $IsCompletePagePHP = 1;
 
@@ -67,4 +92,7 @@ if ($parent && !$catalog) {
 	$parent = intval($parent);
 	$catalog = $parent;
 }
+*/
+
+
 ?>

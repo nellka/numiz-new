@@ -85,6 +85,7 @@ if ($rows['price1'] && $rows['amount1']) {
 </div>
 
 <?
+$Accessory_type=($rows["materialtype"]==3||$rows["materialtype"]==5)?'_3':"";
 //кнопки в корзину, резервирует и тд
 if($rows['buy_status']==2){?>
 	<img src='<?=$cfg['site_dir']?>images/corz7.gif' alt='Уже в вашей корзине'>
@@ -101,20 +102,20 @@ if($rows['buy_status']==2){?>
 	  </a>
 	</div>
 <?} elseif ($rows['buy_status']==8){
-	$Accessory_type=($rows["materialtype"]==3||$rows["materialtype"]==5)?'_3':"";
+	
 	?>
-    <input type=text name=amount<?=$rows["shopcoins"]?> size=4 value='<?=$ourcoinsorderamount[$rows["shopcoins"]]?>'> 
+    <input type=text name=amount<?=$rows["shopcoins"]?> id=amount<?=$rows["shopcoins"]?> size=4 value='<?=$ourcoinsorderamount[$rows["shopcoins"]]?>'> 
 	  <a href='#coin<?=$rows["shopcoins"]?>' onclick='javascript:AddAccessory<?=$Accessory_type?>'(<?=$rows["shopcoins"]?>,<?=$rows["materialtype"]?>)' title='<?=$rows["name"]?>'>
 	  <div id=bascetshopcoins<?=$rows["shopcoins"]?>><img src=<?=$cfg['site_dir']?>images/corz7.gif alt='Уже в корзине'></div>
 	 </a>
 <?} else if ($rows['buy_status']==6){?>			
 	<div id=bascetshopcoins<?=$rows["shopcoins"]?>>					
-    	<input type=text name=amount<?=$rows["shopcoins"]?> size=4 value='0' style="float:left"> 
-		<a class="button25" href='#coin<?=$rows["shopcoins"]?>' onclick='javascript:AddAccessory_main(<?=$rows["shopcoins"]?>)' title='Положить в корзину <?=contentHelper::setWordOn($rows["materialtype"])?> <?=$rows["name"]?>'>Купить</a>
+    	<input type=text name=amount<?=$rows["shopcoins"]?> id=amount<?=$rows["shopcoins"]?> size=4 value='1' style="float:left"> 
+		<a class="button25" href='#coin<?=$rows["shopcoins"]?>' onclick='javascript:AddAccessory<?=$Accessory_type?>(<?=$rows["shopcoins"]?>)' title='Положить в корзину <?=contentHelper::setWordOn($rows["materialtype"])?> <?=$rows["name"]?>'>Купить</a>
 	</div>	
 <?} elseif ($rows['buy_status']==7) {?>
     <div id=bascetshopcoins<?=$rows["shopcoins"]?>>
-   		<a class="button25" href='#coin<?=$rows["shopcoins"]?>' onclick='javascript:AddAccessory_main(<?=$rows["shopcoins"]?>)' title='Положить в корзину <?=contentHelper::setWordOn($rows["materialtype"])?> <?=$rows["name"]?>'>Купить</a>
+   		<a class="button25" href='#coin<?=$rows["shopcoins"]?>' onclick='javascript:AddAccessory<?=$Accessory_type?>(<?=$rows["shopcoins"]?>)' title='Положить в корзину <?=contentHelper::setWordOn($rows["materialtype"])?> <?=$rows["name"]?>'>Купить</a>
     </div>
 	</a>
 	  

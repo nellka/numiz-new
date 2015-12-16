@@ -3,6 +3,8 @@ RewriteBase     /new
 RewriteRule ^index\.php$ - [L]
 RewriteRule (css|images|js)/(.*)  $1/$2 [L,QSA]
 
+RewriteRule  shopcoins/addoneklick.php     index.php?module=shopcoins&task=addoneklick [L,QSA]
+RewriteRule  shopcoins/?(.*)               index.php?module=shopcoins&$1 [L,QSA]
 RewriteRule  shopcoins/                    index.php?module=shopcoins
 RewriteRule (.*)/(.*).php$                 index.php?module=$1&task=$2 [L,QSA]
 RewriteRule (.*).php$                      index.php?module=$1 [L,QSA]
