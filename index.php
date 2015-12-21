@@ -6,19 +6,29 @@ try {
     
     //функции хелпера собрали в себе кучу мелких статических функци
     require_once $cfg['path'] . '/helpers/functions_h.php';
+    require_once $cfg['path'] . '/helpers/contentHelper.php';    
     require_once $cfg['path'] . '/helpers/Mobile_Detect.php';
     require_once $cfg['path'] . '/models/Model_Base.php';
     require_once $cfg['path'] . '/models/user.php';
     require_once($cfg['path'] . '/models/news.php');
     require_once $cfg['path'] . '/models/shopcoins.php';
-    
+     require_once 'Zend/Cache.php';
     //проверяем, что мобильное устройство
     $Mobile_Detect = new Mobile_Detect();
     $tpl['is_mobile'] = $Mobile_Detect->isMobile();         
-     	
+     //подключаем кеш
+    $frontendOptions = array('lifetime' => 7200, // время жизни кэша - 2 часа   
+       'automatic_serialization' => true);
+     
+    $backendOptions = array(
+        'cache_dir' => './tmp/' // директория, в которой размещаются файлы кэша
+    );
+     
+    // получение объекта Zend_Cache_Core
+    $cache = Zend_Cache::factory('Core',  'File',   $frontendOptions,  $backendOptions);
+    	
     //будем на стадии Index проверять залогинивание
-    session_start();
-    $shopcoins_class = new model_shopcoins($cfg['db']);
+    ob_start();
     $user_class = new model_user($cfg['db']);
     $news_class = new model_news($cfg['db']);
 

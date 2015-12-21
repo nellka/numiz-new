@@ -1,8 +1,9 @@
 <?
-
-/*
 $ciclelink = "";
 $checkuser = 0;
+
+/*
+
 if(isset($_COOKIE['cookiesuserdate'])) $cookiesuserdate = $_COOKIE['cookiesuserdate'];
 else $cookiesuserdate = 0;
 if(isset($_COOKIE['cookiesuser'])) $cookiesuser = $_COOKIE['cookiesuser'];

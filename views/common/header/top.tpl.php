@@ -31,10 +31,20 @@
             <option value=1>Новости
             <option value=2>Библиотека
             <option value=3>Конференция
-            </select>  -->  
-            <input type="hidden"    value="4">    
-            <input type="text" class="search rounded" name=globalsearch id=globalsearch>
-            <input type="submit" name=globalsearch-submit id=globalsearch-submit value="">
+            </select>  --> 
+	<table>
+		<tr>
+			<td>  
+				<input type="hidden"    value="4">    
+	          	  	<input type="text" class="search rounded" name=globalsearch id=globalsearch>
+			</td>
+			<td>
+				<input type="submit" name=globalsearch-submit id=globalsearch-submit value="">
+			</td>
+		</tr>
+	</table> 
+          
+           
         </form>    
     </div>
 </div>

@@ -4,9 +4,22 @@ body
 	padding: 0;
 	color: #000;
 	font-size: 12px;
-	font-family: 'Roboto', sans-serif;	
+	font-family: 'Roboto',Arial,Tahoma, sans-serif;	
 }
 
+.bg_shadow {
+    background: none repeat scroll 0 0 #000000;
+    display: none;
+    height: 100%;
+    left: 0;
+    min-height: 2000px;
+    min-width: 2000px;
+    opacity: 0.5;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 211;
+}
 
 .clearfix:before,
 .clearfix:after {
@@ -28,7 +41,7 @@ a:hover{color:#006699;font-weight:bold;}
 	width: 1200px;
 }
 #header {	
-	padding: 50px 0 0;
+	padding: 70px 0 0;
     height: 205px;
 }
 #header-menu {	
@@ -39,7 +52,7 @@ a:hover{color:#006699;font-weight:bold;}
     z-index:10
 }
 #cssmenu {
-    background: url("/images/home.png") no-repeat scroll left center;
+    background: url("../images/home.png") no-repeat scroll left center;
     height:40px;    
     color:white;
 }
@@ -51,14 +64,19 @@ a:hover{color:#006699;font-weight:bold;}
     font-size: 14px;
     margin: 10px 0 0 70px;
     padding: 5px 20px;
-    width: 200px;
+    
 }
-
+.top-menu{
+	position:fixed;
+	width:1200px;
+	background-color:#ffffff;
+	z-index:10;
+}
 .rss_lenta a {
     color: white;
     line-height: 40px;
     text-decoration: none;
-     background: url("/images/rss.png") no-repeat scroll left center;
+     background: url("../images/rss.png") no-repeat scroll left center;
      padding: 0 0 0 15px;
 }
 
@@ -97,12 +115,13 @@ a:hover{color:#006699;font-weight:bold;}
 #cssmenu ul li a:hover ,#cssmenu ul li a.active {
   background: #ffcc66  
 }
+
 #ddmenu div.submenu {
   height: 270px;
   left: 85px;
   list-style: outside none none;
   margin: 0;
-  top: 50px;
+  top: 40px;
   width: 1024px;
   position: absolute;
   z-index: 1000;
@@ -293,7 +312,7 @@ color:red;
 text-align:center;
 }
 #search-top-module #globalsearch-submit {
-     background: #eeeeee url("/images/search.png") no-repeat scroll center center;
+     background: #eeeeee url("../images/search.png") no-repeat scroll center center;
     border: 1px solid #eeeeee;
     border-radius: 3px;
     color: #7da2aa;
@@ -453,7 +472,7 @@ width:100%;
 }
 
 #basket{
-width:235px;
+width:240px;
 float:right;
 text-align:left;
 padding: 10px 0 0;
@@ -463,9 +482,59 @@ padding: 10px 0 0;
     font-weight: bold;
 }
 .triger{
- background: #eeeeee none repeat scroll 0 0;
+ background:#eeeeee none repeat scroll 0 0;
+}
+/*фильтры*/
+.box-heading{
+	background-color: #ecb34e;
+    border-bottom: 1px solid #ddd;
+    color: white;
+    font-size: 16px;
+    line-height: 32px;
+    padding: 0;
+    width: 261px;
+	padding-left:17px;
+	font-weight:bold;
+	margin-top:15px;
+	float:left;
+	margin:0px;
+}
+.filter_heading{
+	background-color: #ffffff;
+    border-bottom: 1px solid #ddd;
+    color: black;
+    font-size: 12px;
+    line-height: 32px;
+    padding: 0;
+    width: 261px;
+	padding-left:17px;
+	font-weight:bold;
+	margin-top:15px;
+	float:left;
+	margin-top:10px;
+	 
 }
 
+.filter_heading_ul{
+	list-style-type: none;
+    border-bottom: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    margin: 0;
+    padding: 5px 15;  
+    -webkit-box-shadow: 0 8px 6px -6px #ccc;
+    -moz-box-shadow: 0 8px 6px -6px #ccc;
+    box-shadow: 0 8px 6px -6px #ccc;
+	float:left;
+	padding-left:0px;
+	width:277px;
+}
+.filter_heading_ul  a{
+	color:black;
+	font-weight:bold;
+	font-size:12px;
+	text-decoration:none;
+}
 /*
 leftmenu
 */
@@ -519,6 +588,52 @@ box-shadow:  6px #ccc;
 color:#ecb34e;
     background: transparent url("../images/strel-yellow.png") no-repeat scroll 250px 50%;
 }
+/*стили для статического левого меню*/
+.menu-sidebar_static a span {
+    padding: 15px;
+}
+.menu-sidebar_static, .menu-sidebar_static ul{
+	 list-style-type: none;
+    border-bottom: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    margin: 0;
+    padding: 5px 15;  
+    -webkit-box-shadow: 0 8px 6px -6px #ccc;
+    -moz-box-shadow: 0 8px 6px -6px #ccc;
+    box-shadow: 0 8px 6px -6px #ccc;
+	padding-left:17px;
+}
+
+.menu-sidebar_static ul {
+    border: 1px solid #ccc;
+    box-shadow: 6px 8px 6px 6px #ccc;  
+}
+.menu-sidebar_static ul li {
+    border: 1px solid #ccc;
+    box-shadow: 6px 8px 6px 6px #ccc;  
+	list-style-type: none;
+	padding-left:17px;
+}
+
+.menu-sidebar_static ul{
+ -webkit-box-shadow: 6px #ccc;
+-moz-box-shadow: 6px  #ccc;
+box-shadow:  6px #ccc;
+}
+.menu-sidebar_static a {
+    color: black;
+    display: block;
+    font-size: 14px;
+    line-height: 26px;
+    text-decoration: none;
+   
+}
+.menu-sidebar_static a:hover,.menu-sidebar a.active,#shop_menu a.active{
+color:#ecb34e; 
+}
+
+
 #ddmenu ul li a:hover {
 color:#ecb34e;
 background:none;
@@ -592,9 +707,9 @@ position:relative;
     height: 80px;
 }
 .custom_socials {
-    bottom: 0;
+    bottom: 10px;
     position: absolute;
-    right: 45px;
+    right: 100px;
     text-align: right;
     width: 230px;
 }
@@ -630,6 +745,10 @@ text-decoration: none;
     text-transform: uppercase;
      background: white none repeat scroll 0 0;
 }
+#subsription {
+    position: relative;
+}
+
 #subsription-form input[type=button]:hover {
 color: #006699
 }
@@ -674,6 +793,7 @@ width:250px
 .main_context {
 
 	width:725px;
+	font-size:13px;
 }
 blockquote {
         -webkit-border-radius: 6px;
@@ -701,7 +821,18 @@ a.button24 {
   border-style: solid none;
   border-color: #FDBE33 #000 #D77206;
   border-radius: 6px;
-  background: linear-gradient(#F3AE0F, #E38916) #E38916;
+ background: linear-gradient(#F3AE0F, #E38916) #E38916;
+  
+    background: #E38916; /* Old browsers */
+    background: -moz-linear-gradient(bottom,  #F3AE0F 1%, #E38916 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(1%,#F3AE0F), color-stop(100%,#E38916)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(bottom,  #F3AE0F 1%,#00a3ca 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(bottom,  #F3AE0F 1%,#E38916 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(bottom,  #F3AE0F 1%,#E38916 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #F3AE0F 1%,#E38916 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F3AE0F', endColorstr='#E38916',GradientType=1 ); /* IE6-9 */
+
+    
   transition: 0.2s;
 } 
 a.button24:hover { background: linear-gradient(#f5ae00, #f59500) #f5ae00; }
@@ -710,6 +841,104 @@ a.button24:active { background: linear-gradient(#f59500, #f5ae00) #f59500; }
 .video_u {
     margin: 20px 0 0;
 }
+.button25 {
+  display: inline-block;
+  color: white;
+  text-decoration: none;
+  padding: .5em 2em;
+  outline: none;
+  border-width: 2px 0;
+  border-style: solid none;
+  border-color: #007d1d #000 #007d1d;
+  border-radius: 6px;
+  background: linear-gradient(#007d1d, #056e1d) #056e1d;
+  transition: 0.2s;
+} 
+.button25:hover { 
+	background: linear-gradient(#035015, #0c541c) #035015; 
+	 color: white;
+	 cursor:pointer;
+	}
+.button25:active { background: linear-gradient(#035015, #0c541c) #035015; }
+
+/*пейджер*/
+.pager {
+	float:left;
+	background:#eeeeee;
+	width:812px;
+	padding-top:5px;
+}
+.orderby{
+	float:left;
+	width:490px;
+	
+}
+.pages{
+	float:right;
+	width:300px;
+	text-align:right;
+	padding-right:10px;
+}
+.button15 {
+  cursor:pointer;
+  display: inline-block;
+  font-family: arial,sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+  color: #ffffff;
+  text-decoration: none;
+  padding: .2em ;
+  outline: none;
+  border: 1px solid rgba(0,0,0,.1);
+  border-radius: 2px;
+  background-color:  #666666;
+  transition: all .218s ease 0s;
+ 
+}
+.button15:hover {
+  color: #ffffff;
+  border: 1px solid rgb(198,198,198);
+  background: #f7f7f7 linear-gradient(#ecb34e, #ecb34e);
+  box-shadow: 0 1px 2px rgba(0,0,0,.1);
+}
+.button15active {
+  display: inline-block;
+  font-family: arial,sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+  color: #ffffff;
+  text-decoration: none;
+  user-select: none;
+  padding: .2em ;
+  outline: none;
+  border: 1px solid rgba(0,0,0,.1);
+  border-radius: 2px;
+  background: #ecb34e linear-gradient( #ecb34e,#ecb34e);
+  transition: all .218s ease 0s;
+}
+
+.blockshop {
+	width:245px;
+	height:405px;
+	
+	float:left; 
+	border:1px solid #cccccc;
+	margin:5 5 5 0px;
+	padding:5px;
+	cursor:pointer;
+	margin:2px;
+}
+
+.blockshop:hover{ border:1px solid #7f7979;}
+
+.blockshop_spisok{
+	width:400px;
+	border:1px solid #cccccc;
+	margin:5 5 5 0px;
+	padding:5px;
+	cursor:pointer;
+}
+.blockshop_spisok:hover{ border:1px solid #7f7979;}
 
 /*
 #fancybox-outer:before{content: "";
@@ -732,3 +961,148 @@ div.fancybox-reg_form {left: 1080px !important;top: 185px !important;}
 
 div.fancybox-showcalllink{left: 820px !important;top: 165px !important;}*/
 
+/*Табы start*/
+/*стили для блоков с монетками для ГС*/
+.coin_info{
+	float:left;
+	width:230px;
+	padding-left:15px;
+	padding-top:10px;
+	padding-bottom:10px;
+	margin-right:10px;
+	background:#ffffff;
+}
+.club_review{
+	float:left;
+	width:230px;
+	padding-left:15px;
+	padding-top:10px;
+	padding-bottom:10px;
+	margin-right:10px;
+	background:#ffffff;
+}
+.club_news{
+	float:left;
+	width:230px;
+	padding-left:15px;
+	padding-top:10px;
+	padding-bottom:10px;
+	margin-right:10px;
+	background:#ffffff;
+}
+.coin_division{
+	float:left;
+	width:317px;
+	padding-left:7px;
+	padding-right:7px;
+	padding-top:10px;
+	padding-bottom:10px;
+	margin-right:10px;
+	background:#eeeeee;
+}
+/* Стили для табов-вкладок */
+.tabs_block {
+    width: 100%;
+    max-width: 600px;
+    min-width: 300px;
+    margin: 0 auto;
+}
+.tabs_block:after {
+    content:"";
+    display:block;
+    clear:both;
+}
+/* панель навигации вкладок */
+.tabs {
+	margin-right:20px;
+    padding: 0;
+    list-style: none;
+    float:left;
+}
+/* список вкладок */
+.tabs li.current {
+    text-align:center;
+    float:left;
+    padding:8px 15px;
+    background:#367e9b;
+	margin-right:20px;
+    cursor:pointer;
+    color:#fff;
+	font-weight:bold;
+    -webkit-transition:all .2s linear 0s;
+    -webkit-transition-delay:.2s 0s;
+    transition:all .2s linear 0s;
+}
+.tabs li.passive{
+	 
+}
+
+/* активная вкладка */
+.tabs li {
+	margin-right:20px;
+	background:#eeeeee;
+	padding:8px 15px;
+    color:#000000;
+	font-weight:bold;
+	cursor:pointer;
+    float:left; 
+	
+}
+/* блоки вкладок с содержанием */
+.box {
+    background:#fdfdfd;
+    width:96%;
+    padding:5px 2% 6px;
+    display:none;
+    text-align: left;
+    float: left;
+}
+
+/*Табы end*/
+
+.oneclick_notifications {
+  display:block;
+  position:relative;
+  /*margin:100px auto;
+  width:80px;
+  height:80px;*/
+  background-color:white;
+  border-radius:50%;
+}
+
+
+.messages {
+  display:block;
+  position:absolute;
+
+  left: -150px;
+    position: absolute;
+    top: 20px;
+    z-index: 1000;
+     background-color:white;
+   color:black;
+}
+
+
+.oneclick_notifications .messages:before {
+  content:'.';
+  display:block;
+  position:absolute;
+   /* background-color:#bdc3c7;*/
+  margin-left:-10px;
+  left:50%;
+  top:-18px;
+  width:0;
+  height:0;
+  color:transparent;
+  border:10px solid black;
+  border-color:transparent transparent white;
+}
+
+.raiting {position:relative; height:16px; cursor:pointer; width:83px; float:left} /* Блок рейтинга*/
+#raiting_blank, #raiting_votes, #raiting_hover {height:16px; position:absolute}
+#raiting_blank { background:url(../images/ratings.png); width:83px; } /* "Чистые" звездочки */
+#raiting_votes {background:url(../images/ratings.png) 0 -16px} /*  Закрашенные звездочки */ 
+#raiting_hover {background:url(../images/ratings.png) 0 -32px; display:none}  /*  звездочки при голосовании */ 
+#raiting_info {margin-left:100px}
+#raiting_info img{vertical-align:middle; margin:0 5px; display:none}

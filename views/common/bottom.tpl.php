@@ -2,43 +2,43 @@
        <?php include $cfg['path'] . '/views/common/small-logo.tpl.php';?>
  </div>
  <div class="triger clearfix" id='subsription'>
-    <div class="wraper center" id='subsription-form'>    
+    <div class="wraper center" id='subsription-form' style="background-color:#eeeeee">    
         <div class="error" id="subsription-error"></div>
         Хотите быть в курсе событий? Всегда актульная информация!<br> 
-        <form action="<?=$cfg['site_dir']?>user/subsription.php?ajax=1" method="post" class=formtxt>
-        Подпишитесь <input type="text" placeholder="Введите e-mail" value="" id='subsription-mail'>  
-            <input type="button" value="Подписаться" onclick="subsript();">
-        </form> 
-        
-        <script>
-        function subsript(){
-        	var subsriptionmail = jQuery('#subsription-mail').val().trim();
-        	if(!subsriptionmail){
-        		jQuery('#subsription-error').text('Введите E-mail');
-        	} else {
-	            jQuery.ajax({
-				    url: '<?=$cfg['site_dir']?>user/subsription.php?datatype=json', 
-				    type: "POST",
-				    data:{'subsription-mail':subsriptionmail}  ,         
-				    dataType : "json",                   
-				    success: function (data, textStatus) { 
-				       jQuery('#subsription-error').text(data.errors);
-				    }
-				});
-        	} 
-        }
-        </script>
-   
-    </div>
-     <div class="custom_socials">
-        <div class="custom_socials">
-        <a href="#" class="custom_social"> <img border="0" alt="" src="/images/social/instagram.gif"> </a> 
-        <a href="#" class="custom_social"> <img border="0" alt="" src="/images/social/youtube.gif"> </a>
-        <a href="#" class="custom_social"> <img border="0" alt="" src="/images/social/vk.gif"> </a>         
-        <a href="#" class="custom_social"> <img border="0" alt="" src="/images/social/facebook.gif"> </a> 
-        </div>
-       </div>
+	<center>
+			  <form action="<?=$cfg['site_dir']?>user/subsription.php?ajax=1" method="post" class=formtxt>
+		        Подпишитесь <input type="text" placeholder="Введите e-mail" value="" id='subsription-mail'>  
+		            <input type="button" value="Подписаться" onclick="subsript();">
+		        </form> 
+		        
+		        <script>
+		        function subsript(){
+		        	var subsriptionmail = jQuery('#subsription-mail').val().trim();
+		        	if(!subsriptionmail){
+		        		jQuery('#subsription-error').text('Введите E-mail');
+		        	} else {
+			            jQuery.ajax({
+						    url: '<?=$cfg['site_dir']?>user/subsription.php?datatype=json', 
+						    type: "POST",
+						    data:{'subsription-mail':subsriptionmail}  ,         
+						    dataType : "json",                   
+						    success: function (data, textStatus) { 
+						       jQuery('#subsription-error').text(data.errors);
+						    }
+						});
+		        	} 
+		        }
+		        </script>
+		 </center>  
+		 <div class="custom_socials">
+		        <a href="#" class="custom_social"> <img border="0" alt="" src="<?=$cfg['site_dir']?>images/social/instagram.gif"> </a> 
+		        <a href="#" class="custom_social"> <img border="0" alt="" src="<?=$cfg['site_dir']?>images/social/youtube.gif"> </a>
+		        <a href="#" class="custom_social"> <img border="0" alt="" src="<?=$cfg['site_dir']?>images/social/vk.gif"> </a>         
+		        <a href="#" class="custom_social"> <img border="0" alt="" src="<?=$cfg['site_dir']?>images/social/facebook.gif"> </a> 		   
+		    </div>
 </div>
+</div>
+
 <div id='footer' class="wraper">
 <div id='footer-menu'>
     <div class="col-5">
@@ -85,18 +85,18 @@
 <div class="description">
 <div>
 При полном или частичном использовании материалов ссылка на Клуб Нумизмат обязательна.<br>
-2001 - <?=date('Y',time())?>date &copy; Клуб Нумизмат
+2001 - <?=date('Y',time())?> &copy; Клуб Нумизмат
 <br><a href="http://www.numizmatik.ru/mailto:administrator@numizmatik.ru">administrator@numizmatik.ru</a>
 <br>Крупнейший портал для коллекционеров. Монеты. Покупка и продажа. Боны, книги, антиквариат. <br>
 Разнообразные аксессуары для монет, альбомы для монет. Оценка стоимости монет. Москва.
 
 <div class="cards">
-  <img border="0" alt="" src="/images/social/visa.gif"> 
-  <img border="0" alt="" src="/images/social/mastercard.gif">
-  <img border="0" alt="" src="/images/social/russianpost.gif"> 
-    <img border="0" alt="" src="/images/social/qiwi.gif">
-  <img border="0" alt="" src="/images/social/sberbank.gif">    
-    <img border="0" alt="" src="/images/social/webmoney.gif">  
+  <img border="0" alt="" src="<?=$cfg['site_dir']?>images/social/visa.gif"> 
+  <img border="0" alt="" src="<?=$cfg['site_dir']?>images/social/mastercard.gif">
+  <img border="0" alt="" src="<?=$cfg['site_dir']?>images/social/russianpost.gif"> 
+    <img border="0" alt="" src="<?=$cfg['site_dir']?>images/social/qiwi.gif">
+  <img border="0" alt="" src="<?=$cfg['site_dir']?>images/social/sberbank.gif">    
+    <img border="0" alt="" src="<?=$cfg['site_dir']?>images/social/webmoney.gif">  
 </div>
 </div>
 </div>

@@ -14,8 +14,16 @@ $MetroArray = Array (
 				11 => "Комсомольская", 
 				12 => "Проспект Мира",
 	);
+	
+$yearsArray = Array (
+		1 => array('name' => '2001-настоящее время','data'=>array(2001,(integer)date('Y',time()))), 
+		2 => array('name' => '1901-2000','data'=>array(1901,2000)),
+		3 => array('name' => '1801-1900','data'=>array(1801,1900)),
+		4 => array('name' => '1701-1800','data'=>array(1701,1800)),
+		5 => array('name' => 'до 1600','data'=>array(0,1600)),
+		6 => array('name' => 'Без указания года','data'=>array(0,0)));
 
-
+$arraynewcoins = Array(1=>date('Y')-2,2=>date('Y')-1,3=>date('Y'));							    
 $TimeMetroMeeting = Array (
 				64800 => '18-00', 
 				65100 => '18-05', 
@@ -128,28 +136,36 @@ $ArrayForCode = array (
 
 $MaterialTypeArray = Array();
 
-$MaterialTypeArray[1] = "Монеты"; 											$MaterialTypeArraySort[1] = 1;			$MaterialTypeArrayTitle[1] = "Монеты со всего мира стоимость(цены)";
-//$MaterialTypeArray[12] = "ВИП монеты";										//$MaterialTypeArraySort[2] = 12;			$MaterialTypeArrayTitle[12] = "ВИП Монеты";
-$MaterialTypeArray[12] = "Монеты СССР";										$MaterialTypeArraySort[2] = 12;			$MaterialTypeArrayTitle[12] = "Дешевые монеты СССР (цены и стоимость покупки и продажи)";
+$MaterialTypeArray[1] = "Монеты"; 											
+$MaterialTypeArraySort[1] = 1;			
+$MaterialTypeArrayTitle[1] = "Монеты со всего мира стоимость(цены)";
 
-$MaterialTypeArray[8] = "Мелочь ";											$MaterialTypeArraySort[3] = 8;			$MaterialTypeArrayTitle[8] = "Дешевые монеты со всего мира стоимость(цены)";
-$MaterialTypeArray[10] = "Нотгельды ";										$MaterialTypeArraySort[4] = 10;			$MaterialTypeArrayTitle[10] = "Нотгельды со всего мира стоимость(цены)";
-$MaterialTypeArray[7] = "Наборы монет";										$MaterialTypeArraySort[5] = 7;			$MaterialTypeArrayTitle[7] = "Наборы монет со всего мира стоимость(цены)";
+$MaterialTypeArray[12] = "Монеты СССР";										
+$MaterialTypeArraySort[2] = 12;			
+$MaterialTypeArrayTitle[12] = "Дешевые монеты СССР (цены и стоимость покупки и продажи)";
 
-$MaterialTypeArray[11] = "Барахолка монет <font color=red>NEW</font>";									$MaterialTypeArraySort[7] = 11;			$MaterialTypeArrayTitle[11] = "Барахолка монет со всего мира стоимость(цены)";
-$MaterialTypeArray[2] = "Боны";												$MaterialTypeArraySort[8] = 2;			$MaterialTypeArrayTitle[2] = "Банкноты(боны) со всего мира стоимость(цены)";
-$MaterialTypeArray[3] = "Аксессуары";										$MaterialTypeArraySort[9] = 3;			$MaterialTypeArrayTitle[3] = "Аксессуары для нумизмата стоимость(цены)";
+$MaterialTypeArray[8] = "Мелочь ";											
+$MaterialTypeArraySort[3] = 8;			$MaterialTypeArrayTitle[8] = "Дешевые монеты со всего мира стоимость(цены)";
+$MaterialTypeArray[10] = "Нотгельды ";										
+$MaterialTypeArraySort[4] = 10;			
+$MaterialTypeArrayTitle[10] = "Нотгельды со всего мира стоимость(цены)";
+$MaterialTypeArray[7] = "Наборы монет";										
+$MaterialTypeArraySort[5] = 7;			
+$MaterialTypeArrayTitle[7] = "Наборы монет со всего мира стоимость(цены)";
 
+$MaterialTypeArray[11] = "Барахолка монет <font color=red>NEW</font>";									
+$MaterialTypeArraySort[7] = 11;			$MaterialTypeArrayTitle[11] = "Барахолка монет со всего мира стоимость(цены)";
+$MaterialTypeArray[2] = "Боны";												
+$MaterialTypeArraySort[8] = 2;			
 
-//$MaterialTypeArray[6] = "Для монет";	$MaterialTypeFolderArray[6] = 1;	$MaterialTypeArraySort[5] = 6;
-//$MaterialTypeArray[8] = "Для банкнот";	$MaterialTypeFolderArray[8] = 1;	$MaterialTypeArraySort[6] = 8;
-//$MaterialTypeArray[9] = "Для марок";	$MaterialTypeFolderArray[9] = 1;	$MaterialTypeArraySort[7] = 9;
+$MaterialTypeArrayTitle[2] = "Банкноты(боны) со всего мира стоимость(цены)";
+$MaterialTypeArray[3] = "Аксессуары";										
+$MaterialTypeArraySort[9] = 3;			
+$MaterialTypeArrayTitle[3] = "Аксессуары для нумизмата стоимость(цены)";
 
-
-//if ($cookiesuser==811 or $cookiesuser==53849)
-	//$MaterialTypeArray[7] = "VIP <font color=red>NEW!!!</font>";
-
-$MaterialTypeArray[4] = "Подарочные наборы";								$MaterialTypeArraySort[10] = 4;			$MaterialTypeArrayTitle[4] = "Подарочные наборы монет со всего мира стоимость(цены)";
+$MaterialTypeArray[4] = "Подарочные наборы";								
+$MaterialTypeArraySort[10] = 4;			
+$MaterialTypeArrayTitle[4] = "Подарочные наборы монет со всего мира стоимость(цены)";
 //[Weight][Zone]
 $PostZone[1] = 138.80;
 $PostZone[2] = 140.70;
@@ -191,7 +207,7 @@ $DeliveryName[4] = 'Отправка по почте';
 $DeliveryName[5] = 'Экспресс доставка (СПСР)';
 $DeliveryName[6] = 'Экспресс доставка (ЕМС)';
 $DeliveryName[7] = 'Метро Новослободская (самовывоз)';
-$dateinsert_orderby = "dateinsert";
+
 $myip = "83.167.125.158";
 $minpriceoneclick = 500;
 $reservetime = 18000;
@@ -355,7 +371,7 @@ $SumProperties[6] = "!!! <a href=kak_oplatit_kartoi_sberbanka.html target=_blank
 <br><b>Внимание: </b> Для ускорения процесса выполнение заказа, после перевода денег, просьба направить письмо на адрес  <a href=mailto:administrator@numizmatik.ru>administrator@numizmatik.ru</a> с темой \"Оплата заказа | Сбербанк | Клуб Нумизмат\". В теле сообщения укажите номер заказа и сумму перевода. 
 <br>В случае отсутствия письма с информацией о переводе денег, <font color=red><b>возможны задержки с отправкой заказа</b></font>
 ";
-
+/*
 $infotext = "
 <table cellpadding=3 cellspacing=0 border=0 align=center>
 <tr>

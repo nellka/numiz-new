@@ -55,7 +55,11 @@ function selected($value,$val){
 }
 
 function request($var){
-    return isset($_REQUEST[$var]) ? trim($_REQUEST[$var]) : null;
+    if(isset($_REQUEST[$var])) {
+        if(is_string($_REQUEST[$var])) return trim($_REQUEST[$var]);
+        return $_REQUEST[$var];
+    } 
+    return  null;
 }
 
 function generateString($number){  

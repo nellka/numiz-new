@@ -51,6 +51,7 @@ class model_user extends Model_Base
 	     }
 	 }
 	 public function getUserBaseData(){	 	
+	     
 	 	$data['user_id'] = $this->getIdentity();
 		$data['username'] = $this->getUsername();
     	$data['balance'] = $data['summ'] =  $this->getUserBalance($this->getIdentity());

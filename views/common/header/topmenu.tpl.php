@@ -1,6 +1,6 @@
 <div id="cssmenu" class="wraper">
     <ul id="ddmenu">        
-       <li><a href="http://www.numizmatik.ru" class="<?=('/'==$tpl['current_page'])?'active':''?>">Магазин монет</a>
+       <li class="top"><a href="http://www.numizmatik.ru" class="<?=('/'==$tpl['current_page'])?'active':''?>" >Магазин монет</a>
        <div id="menu3"  class="submenu">   
             <ul>
             <li><a href='<?=$cfg['site_dir']?>shopcoins/' title='Монеты стоимость(цены) весь мир' class=topmenu>Монеты</a></li>
@@ -22,7 +22,7 @@
            </div>
             </div>
        </li>       	
-       <li><a href="http://www.numizmatik.ru/shopcoinshelp.php">Покупателям</a>
+       <li class="top"><a href="http://www.numizmatik.ru/shopcoinshelp.php" >Покупателям</a>
           <div id="menu4"  class="submenu">          
             <ul>                
                 <li><a href='<?=$cfg['site_dir']?>shopcoins/delivery.php' title='Способы оплаты и доставки монет, банкнот, аксессуаров, книг по нумизматике'>Оплата и доставка</a> </li>
@@ -35,17 +35,17 @@
                 </ul>
            </div> 
        </li>            
-      <li><a href="<?=$cfg['site_dir']?>ocenka-stoimost-monet" class="<?=('ocenka-stoimost-monet'==$tpl['current_page'])?'active':''?>"><span>Скупка-оценка</span></a>
+      <li class="top"><a href="<?=$cfg['site_dir']?>ocenka-stoimost-monet" class="<?=in_array($tpl['current_page'],array('ocenka-stoimost-monet','gde-prodat-monety'))?'active':''?>"><span>Скупка-оценка</span></a>
        <div id="menu5"  class="submenu">          
             <ul>               
                 <li><a href='<?=$cfg['site_dir']?>ocenka-stoimost-monet' title='Оценка стоимости(цены) монет(ы)' class=topmenu>Оценка стоимости монет</a></li>
-                <li><a href='http://www.numizmatik.ru/gde-prodat-monety' title='Покупка-скупка монет, коллекций монет. ' class=topmenu>Покупка/скупка монет</a></li>
+                <li><a href='<?=$cfg['site_dir']?>gde-prodat-monety' title='Покупка-скупка монет, коллекций монет. ' class=topmenu>Покупка/скупка монет</a></li>
                 <li><a href='http://www.numizmatik.ru/change/obmen-monet.php' title='Обмен монет' class=topmenu>Обмен монетами</a></li>
                 <li><a href='http://www.numizmatik.ru/shopinfo.php' title='Салон продаж' class=topmenu>Контакты</a></li>
                </ul> 
            </div>      
       </li>
-      <li class=""><a href="http://www.numizmatik.ru/ocenka-stoimost-monet"><span>Каталог</span></a>
+      <li class="top"><a href="http://www.numizmatik.ru/ocenka-stoimost-monet"><span>Каталог</span></a>
        <div id="menu6"  class="submenu">          
             <ul>          
                 <li><a href='http://www.numizmatik.ru/catalognew/' title='Каталог монет России, Германии, США и других стран' class=topmenu>Каталог монет</a></li>
@@ -59,7 +59,7 @@
                 </ul>
             </div>      
       </li>
-      <li class=""><a href="http://www.numizmatik.ru/ocenka-stoimost-monet"><span>Аукцион</span></a>
+      <li class="top"><a href="http://www.numizmatik.ru/ocenka-stoimost-monet"><span>Аукцион</span></a>
       <div id="menu7"  class="submenu">          
             <ul>          
                 <li><a href='http://www.numizmatik.ru/auction/' title='Аукцион монет России, Германии, США и других стран' class=topmenu>Аукцион монет</a></li>
@@ -67,7 +67,7 @@
             </ul>
          </div>
       </li>      
-      <li><a href="http://www.numizmatik.ru/ocenka-stoimost-monet"><span>Форумы</span></a>      
+      <li class="top"><a href="http://www.numizmatik.ru/ocenka-stoimost-monet"><span>Форумы</span></a>      
       <div id="menu8"  class="submenu">          
             <ul>          
                 <li><a href='http://www.numizmatik.ru/forum/' title='Нумизматический форум, место встречи коллекционеров всей страны' class=topmenu>Форум нумизматов</a></li>
@@ -77,7 +77,7 @@
             </ul>
         </div>        
       </li>
-      <li><a href="http://www.numizmatik.ru/ocenka-stoimost-monet"><span>Общая информация</span></a>
+      <li class="top"><a href="http://www.numizmatik.ru/ocenka-stoimost-monet"><span>Общая информация</span></a>
        <div id="menu9"  class="submenu">          
           <ul>          
           <li><a href='http://news.numizmatik.ru/' title='Последние новости нумизматики' class=topmenu>Новости нумизматики</a></li>
@@ -90,7 +90,7 @@
           </ul>
        </div>
      </li>
-     <li><a href="http://www.numizmatik.ru/ocenka-stoimost-monet"><span>Полезное</span></a>
+     <li class="top"><a href="http://www.numizmatik.ru/ocenka-stoimost-monet"><span>Полезное</span></a>
       <div id="menu10"  class="submenu">          
             <ul>         
              <li><a href='biblio/' title='Нумизматическая библиотека - интересные для любого коллекционера статьи, обзоры и аналитические материалы' class=topmenu>Библиотека нумизмата</a> </li>
@@ -109,7 +109,7 @@
       	</div>
       </li>
       
-       <li><a href="http://www.numizmatik.ru/ocenka-stoimost-monet"><span>Контакты</span></a>       
+       <li class="top"><a href="http://www.numizmatik.ru/ocenka-stoimost-monet"><span>Контакты</span></a>       
           <div id="menu11"  class="submenu">          
             <ul>          
                 <li><a href='shopinfo.php' title='Салон продаж' class=topmenu>Контакты</a></li>      
@@ -118,22 +118,54 @@
        </li>
     </ul>
     
-    <div class="rss_lenta"><a href='<?=$cfg['site_dir']?>shopcoins/rss.xml' target='_blank' title='Новые поступления монет,банкнот,аксессуаров - канал RSS' class=topmenu>Подписаться на RSS</a></div>
+    <div class="rss_lenta"><a href='http://www.numizmatik.ru/shopcoins/rss.xml' target='_blank' title='Новые поступления монет,банкнот,аксессуаров - канал RSS' class=topmenu>Подписаться на RSS</a></div>
 </div>
+  <? if($tpl['is_mobile']){?>
+<style type="text/css">
+ #cssmenu ul li a:hover {
+  background: none;  
+}
+ #cssmenu ul li a.active_m{
+  background: #ffcc66;  
+}
+</style>  
 <script>
-jQuery(document).ready(function(){
-  /*$('a').on('click', function(e){
-    e.preventDefault();
-  });*/
-    
-  jQuery('#ddmenu li').hover(function () {
-     clearTimeout(jQuery.data(this,'timer'));
-     jQuery('div.submenu',this).stop(true,true).slideDown(200);
-  }, function () {
-   jQuery.data(this,'timer', setTimeout(jQuery.proxy(function() {
-      jQuery('div.submenu',this).stop(true,true).slideUp(200);
-    }, this), 100));
-  });
+jQuery(document).ready(function(){  
+  jQuery('#ddmenu li.top li').click(function(event) {
+      event.stopPropagation();
+  }); 
 
+  jQuery('#ddmenu li.top').click(function(event) {
+        var btn = jQuery('div.submenu',this);
+        var cur_href =  jQuery('a',this).filter( ':first' );       
+        var is_active =  cur_href.hasClass('active');   
+        if(!cur_href.hasClass('active_m'))  cur_href.addClass('active_m');         
+        var is_visible = btn.is(':visible')?true:false;
+        jQuery('div.submenu').hide();
+        
+        if(!is_visible){
+             btn.show();
+        } else {
+            btn.hide();
+            cur_href.removeClass('active_m');
+            if(is_active) cur_href.addClass('active');
+        }
+        return false;
+    });  
 });
 </script>
+ <? } else {?>
+ <script>   
+jQuery(document).ready(function(){ 
+    var cur_href =  jQuery('a',this).filter( ':first' );
+    jQuery('#ddmenu li').hover(function () {
+     clearTimeout(jQuery.data(this,'timer'));
+     jQuery('div.submenu',this).stop(true,true).slideDown(200);
+    }, function () {
+    jQuery.data(this,'timer', setTimeout(jQuery.proxy(function() {
+      jQuery('div.submenu',this).stop(true,true).slideUp(200);
+    }, this), 100));
+    });   
+});
+</script>
+ <?}?>
