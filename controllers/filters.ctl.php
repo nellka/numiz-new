@@ -97,18 +97,16 @@ if ($search == 'revaluation') {
 	where shopcoins.datereprice>0
 	and (".($tpl['user']['user_id']==811?(!$nocheck?"shopcoins.check=1 or shopcoins.check>3":"shopcoins.check>3"):"shopcoins.check=1").")
 	and shopcoins.dateinsert>0;";
-} elseif ($search == 'newcoins') {
-      die('newcoins');
-    $arraynewcoins = Array(1=>date('Y')-2,2=>date('Y')-1,3=>date('Y'));
-     $tpl['filters']['All_groups'] = $shopcoins_class->getGroups(0,0,1);
-	$sql = "select distinct `group` 
-	from shopcoins 
-	where shopcoins.year in(".implode(",",$arraynewcoins).")
-	and shopcoins.materialtype in(1,4,7,8)
-	and (".($tpl['user']['user_id']==811?(!$nocheck?"shopcoins.check=1 or shopcoins.check>3":"shopcoins.check>3"):"shopcoins.check=1").") 
-	and shopcoins.dateinsert>0;";
+} elseif ($search == 'newcoins') {    
+	if(!$tpl['filters']['All_groups'] = $cache->load("newcoins_filter_group")) {
+        $tpl['filters']['All_groups'] = $shopcoins_class->getGroups(0,0,1);
+        $cache->save( $tpl['filters']['All_groups'], "newcoins_filter_group");	
+    }
 }	else {
-    $tpl['filters']['All_groups'] = $shopcoins_class->getGroups($materialtype);
+    if(!$tpl['filters']['All_groups'] = $cache->load("all_groups_$materialtype")) {
+        $tpl['filters']['All_groups'] = $shopcoins_class->getGroups($materialtype);
+        $cache->save( $tpl['filters']['All_groups'], "all_groups_$materialtype");	
+    }
 }
 
 if(!in_array($materialtype,array(5))){

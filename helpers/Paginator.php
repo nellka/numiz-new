@@ -142,7 +142,8 @@ class Paginator
             { $list[] = $i; }
         return $list;
     }
-     public function printPager(){
+    
+    public function printPager(){
         $pages = $this->getPagesList();
          if (count($pages) > 1) {        
             $refs = array();
@@ -169,6 +170,48 @@ class Paginator
             }
             print '<p>Страницы: ' . implode('<span style="padding-right:3px;padding-left:3px;"></span>', $refs) . '</p>';
         }
+    }
+    
+     public function printPagerForShowPage(){
+        $pages = $this->getPagesList();
+        
+        if (count($pages) > 1) {        
+            $refs = array();
+    
+            if ( $pages[0] != 1 ) {
+    
+                $refs[] = "<a class='normal_ref_color' href='{$this->getBaseUrl()}_pp" . 
+                      ($pages[0] - 1) . ".html'>&lt;пред</a>";
+            }
+    
+            foreach ($pages as $page) {
+    
+                if ($this->isCurrentPage($page)) {
+                    $refs[] = "<span>{$page}</span>";
+                } else {
+                    $refs[] = "<a class='normal_ref_color' href='{$this->getBaseUrl()}_pp{$page}.html'>$page</a>";
+                }
+            }
+    
+            if ( $pages[ count($pages) - 1 ] != $this->getLastPage() ) {
+    
+                $refs[] = "<a class='normal_ref_color' href='{$this->getBaseUrl()}_pp" . 
+                      ($pages[count($pages) - 1] + 1) . ".html'>&gt;</a>";
+            }
+            print '<p>Страницы: ' . implode('<span style="padding-right:3px;padding-left:3px;"></span>', $refs) . '</p>';
+        }
+        /*
+        if ($pagenumparent>2*$numpages) $page_string .= "<a href='".$rehrefpage."_pp1.html'>[в начало]</a> | ";
+	if ($frompage>$numpages) $page_string .= "<a href='".$rehrefpage."_pp".($frompage-1).".html'><<пред</a> | ";
+	for ($i=$frompage;$i<=$topage;$i++)
+		{
+		if ($i==$pagenumparent) $page_string .= "<b>$i</b>";
+		else $page_string .= "<a href='".$rehrefpage."_pp$i.html'>$i</a>";
+		if ($i<$topage) $page_string .= " | ";
+		}      
+	if ($pages>$topage) $page_string .= " | <a href='".$rehrefpage."_pp$i.html'>далее>></a>";
+	
+	echo "<p class=txt><b>Страницы: </b>".$page_string." </p>";*/
     }
 }
 

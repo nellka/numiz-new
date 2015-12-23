@@ -23,7 +23,7 @@ $yearsArray = Array (
 		5 => array('name' => 'до 1600','data'=>array(0,1600)),
 		6 => array('name' => 'Без указания года','data'=>array(0,0)));
 
-							    
+$arraynewcoins = Array(1=>date('Y')-2,2=>date('Y')-1,3=>date('Y'));							    
 $TimeMetroMeeting = Array (
 				64800 => '18-00', 
 				65100 => '18-05', 

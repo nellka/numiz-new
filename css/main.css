@@ -484,7 +484,57 @@ padding: 10px 0 0;
 .triger{
  background:#eeeeee none repeat scroll 0 0;
 }
+/*фильтры*/
+.box-heading{
+	background-color: #ecb34e;
+    border-bottom: 1px solid #ddd;
+    color: white;
+    font-size: 16px;
+    line-height: 32px;
+    padding: 0;
+    width: 261px;
+	padding-left:17px;
+	font-weight:bold;
+	margin-top:15px;
+	float:left;
+	margin:0px;
+}
+.filter_heading{
+	background-color: #ffffff;
+    border-bottom: 1px solid #ddd;
+    color: black;
+    font-size: 12px;
+    line-height: 32px;
+    padding: 0;
+    width: 261px;
+	padding-left:17px;
+	font-weight:bold;
+	margin-top:15px;
+	float:left;
+	margin-top:10px;
+	 
+}
 
+.filter_heading_ul{
+	list-style-type: none;
+    border-bottom: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    margin: 0;
+    padding: 5px 15;  
+    -webkit-box-shadow: 0 8px 6px -6px #ccc;
+    -moz-box-shadow: 0 8px 6px -6px #ccc;
+    box-shadow: 0 8px 6px -6px #ccc;
+	float:left;
+	padding-left:0px;
+	width:277px;
+}
+.filter_heading_ul  a{
+	color:black;
+	font-weight:bold;
+	font-size:12px;
+	text-decoration:none;
+}
 /*
 leftmenu
 */
@@ -552,6 +602,7 @@ color:#ecb34e;
     -webkit-box-shadow: 0 8px 6px -6px #ccc;
     -moz-box-shadow: 0 8px 6px -6px #ccc;
     box-shadow: 0 8px 6px -6px #ccc;
+	padding-left:17px;
 }
 
 .menu-sidebar_static ul {
@@ -562,6 +613,7 @@ color:#ecb34e;
     border: 1px solid #ccc;
     box-shadow: 6px 8px 6px 6px #ccc;  
 	list-style-type: none;
+	padding-left:17px;
 }
 
 .menu-sidebar_static ul{
@@ -835,13 +887,13 @@ a.button24:active { background: linear-gradient(#f59500, #f5ae00) #f59500; }
   font-weight: bold;
   color: #ffffff;
   text-decoration: none;
-  user-select: none;
   padding: .2em ;
   outline: none;
   border: 1px solid rgba(0,0,0,.1);
   border-radius: 2px;
-  background: rgb(245,245,245) linear-gradient( #f1f1f1);
+  background-color:  #666666;
   transition: all .218s ease 0s;
+ 
 }
 .button15:hover {
   color: #ffffff;
@@ -867,12 +919,14 @@ a.button24:active { background: linear-gradient(#f59500, #f5ae00) #f59500; }
 
 .blockshop {
 	width:245px;
-	min-height:405px;
+	height:405px;
+	
 	float:left; 
 	border:1px solid #cccccc;
 	margin:5 5 5 0px;
 	padding:5px;
 	cursor:pointer;
+	margin:2px;
 }
 
 .blockshop:hover{ border:1px solid #7f7979;}
@@ -1045,3 +1099,10 @@ div.fancybox-showcalllink{left: 820px !important;top: 165px !important;}*/
   border-color:transparent transparent white;
 }
 
+.raiting {position:relative; height:16px; cursor:pointer; width:83px; float:left} /* Блок рейтинга*/
+#raiting_blank, #raiting_votes, #raiting_hover {height:16px; position:absolute}
+#raiting_blank { background:url(../images/ratings.png); width:83px; } /* "Чистые" звездочки */
+#raiting_votes {background:url(../images/ratings.png) 0 -16px} /*  Закрашенные звездочки */ 
+#raiting_hover {background:url(../images/ratings.png) 0 -32px; display:none}  /*  звездочки при голосовании */ 
+#raiting_info {margin-left:100px}
+#raiting_info img{vertical-align:middle; margin:0 5px; display:none}

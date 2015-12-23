@@ -6,8 +6,18 @@
         
     <div class="clearfix" id='content-<?=$tpl['module']?>'>
         <?php        
-        if($tpl['module']=='shopcoins'){?>
-			 <div class="subheader">
+        if($tpl['module']=='shopcoins'){
+            if($tpl['task']=='show'){?>
+                <div class="subheader">
+        			<div class="wraper clearfix">  
+        			     <?php include $cfg['path'] . '/views/shopcoins/itemtop.tpl.php'; ?>
+        			      <? include $cfg['path'] . '/views/' . $tpl['module'] . '.tpl.php'; ?>	
+        			
+        			    </div> 
+        		    </div>       
+           <? } else {
+            ?>
+			<div class="subheader">
 			<div class="wraper clearfix">
 			        <div id='leftmemu'>
 			         <?php include $cfg['path'] . '/views/leftmenu/leftmenu_shopcoins.tpl.php'; ?>
@@ -18,7 +28,8 @@
 			        </div>
 			    </div> 
 		    </div>         
-       <? }else if($static_page){?>
+       <? }
+       } else if($static_page){?>
 			 <div class="subheader">
 			<div class="wraper clearfix">
 			        <div id='leftmemu'>

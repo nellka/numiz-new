@@ -12,8 +12,12 @@ class contentHelper{
     	$text = str_replace($alfavitupper,$alfavitlover,strtolower($text)); 
        	return str_replace($ruskey,$engkey,$text);
     } 
-    static function showImage($url,$title){
-       return "<img src='http://numizmatik.ru/shopcoins/$url' title='$title'>";
+    static function showImage($url,$title,$params=array()){
+       $on = '';
+       foreach ($params as $key=>$value){
+            $on.= "$key=$value ";
+       }
+       return "<img src='http://numizmatik.ru/shopcoins/$url' title='$title' $on>";
        
     }
     
@@ -31,6 +35,12 @@ class contentHelper{
         $title .=" - ".$group." ".$name;      
         
         return  $title;
+    }
+    static function setYearText($year,$materialtype){
+        if($year == 1990 && $materialtype==12) return '1990 ЛМД';
+		if($year == 1991 && $materialtype==12) return '1991 ЛМД';
+		if($year == 1992 && $materialtype==12) return '1991 ММД';
+		return	$year;
     }
     
     static function setWordWhat($material){       

@@ -3,6 +3,19 @@ RewriteBase     /new
 RewriteRule ^index\.php$ - [L]
 RewriteRule (css|images|js)/(.*)  $1/$2 [L,QSA]
 
+RewriteCond %{QUERY_STRING} page=(.*)$ [NC]
+RewriteRule .* index.php?module=shopcoins&task=%1 [L,QSA]
+
+#RewriteCond %{REQUEST_URI}	^/shopcoins/.*_pp([0-9]*)\.html
+RewriteRule shopcoins/.*_c([0-9]*)_pc([0-9]*)_m([0-9]*)_pp([0-9]*)\.html$ index.php?module=shopcoins&task=show&catalog=$1&parent=$2&materialtype=$3&pagenumparent=$4 [L]
+#RewriteCond %{REQUEST_URI}	^/shopcoins/.*_m([0-9]*)\.html
+RewriteRule shopcoins/.*_c([0-9]*)_m([0-9]*)\.html$ index.php?module=shopcoins&task=show&catalog=$1&materialtype=$2 [L] 
+
+
+RewriteRule  shopcoins/detailscoins/addname.php    index.php?module=detailscoins&task=addname [L,QSA]
+RewriteRule  shopcoins/addreview.php     index.php?module=shopcoins&task=addreview [L,QSA]
+RewriteRule  shopcoins/addmark.php     index.php?module=shopcoins&task=addmark [L,QSA]
+RewriteRule  shopcoins/addbascet.php     index.php?module=shopcoins&task=addbascet [L,QSA]
 RewriteRule  shopcoins/addoneklick.php     index.php?module=shopcoins&task=addoneklick [L,QSA]
 RewriteRule  shopcoins/?(.*)               index.php?module=shopcoins&$1 [L,QSA]
 RewriteRule  shopcoins/                    index.php?module=shopcoins

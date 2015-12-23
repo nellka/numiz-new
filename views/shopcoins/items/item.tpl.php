@@ -1,6 +1,6 @@
 <? 
 if($rows["materialtype"]==3){?>
-<a href='<?=$rows["rehref"]?>' title='<?=$rows['namecoins']?>'>
+<a href='<?=$cfg['site_dir']?>/shopcoins<?=$rows["rehref"]?>' title='<?=$cfg['site_dir']?>/shopcoins<?=$rows['namecoins']?>'>
 	<?=contentHelper::showImage('images/'.$rows["image"],$rows['namecoins'])?>
 </a>
 <a name=coin<?=$rows["shopcoins"]?> title='<?=$rows["name"]?>'></a><strong><?=$rows['namecoins']?></strong>
@@ -37,118 +37,16 @@ if($rows["materialtype"]==3){?>
 
 </div>
 
-<div id=prices>
+<? echo contentHelper::render('shopcoins/price/prices',$rows);?>
+<?echo contentHelper::render('shopcoins/price/buy_button',$rows);?>
 <?
-	$price_text_old = ($rows["materialtype"]==8||$rows["materialtype"]==6)?"Старая цена":"Старая стоимость";
-	$price_text_new = ($rows["materialtype"]==8||$rows["materialtype"]==6)?"Новая цена":"Новая стоимость";
-	$price_text = ($rows["materialtype"]==8||$rows["materialtype"]==6)?"Цена":"Стоимость";
-			
-				
-	if($rows["oldprice"]>0){?>
-	    <?=$price_text_old?>: <strong><s><?=round($rows["oldprice"],2)?> руб.</s></strong><br>
-	    <?=$price_text_new?>: <strong><font color=red><?=($rows["price"]==0?"бесплатно":round($rows["price"],2)." руб.")?></font></strong>
-	 <?}?>
-        <?=$price_text?>: <strong><font color=red><?=($rows["price"]==0?"бесплатно":round($rows["price"],2)." руб.")?></font></strong>
-        <?if($rows["clientprice"]>0){?>
-          <br><a href=# onclick='javascript:alert("Цена со скидкой только для постоянных клиентов - сделавших не менее 3-х заказов за год под своим логином!")' title='Цена со скидкой только для постоянных клиентов - сделавших не менее 3-х заказов за год под своим логином!' >
-             <?=$price_text?> <b><sup><font color=blue>для постоянных клиентов</font></sup></b>: <strong><font color=red><?=round($rows["clientprice"],2)?> руб.</font></strong></a>
-        <?}
-
-if ($rows['price1'] && $rows['amount1']) {
-
-	$tmpbody1 = "<br><table bgcolor=#000000 cellpadding=2 cellspacing=1 width=100%>
-	<tr bgcolor=#fff8e8><td rowspan=2 class=tboard width=25%>Оптовая цена:
-	<td class=tboard>Кол-во<td class=tboard>".$rows['amount1']; "</tr>";
-	$tmpbody2 = "<tr bgcolor=#fff8e8><td class=tboard>Цена<td class=tboard>".$rows['price1'];
-	if ($rows['price2'] && $rows['amount2']) {
-	
-		$tmpbody1 .= "<td class=tboard>".$rows['amount2'];
-		$tmpbody2 .= "<td class=tboard>".$rows['price2'];
-	}
-	if ($rows['price3'] && $rows['amount3']) {
-	
-		$tmpbody1 .= "<td class=tboard>".$rows['amount3'];
-		$tmpbody2 .= "<td class=tboard>".$rows['price3'];
-	}
-	if ($rows['price4'] && $rows['amount4']) {
-	
-		$tmpbody1 .= "<td class=tboard>".$rows['amount4'];
-		$tmpbody2 .= "<td class=tboard>".$rows['price4'];
-	}
-	if ($rows['price5'] && $rows['amount5']) {
-	
-		$tmpbody1 .= "<td class=tboard>".$rows['amount5'];
-		$tmpbody2 .= "<td class=tboard>".$rows['price5'];
-	}
-	echo $tmpbody1."</tr>".$tmpbody2."</tr></table>"; 
-}?>
-</div>
-
-<?
-$Accessory_type=($rows["materialtype"]==3||$rows["materialtype"]==5)?'_3':"";
-//кнопки в корзину, резервирует и тд
-if($rows['buy_status']==2){?>
-	<img src='<?=$cfg['site_dir']?>images/corz7.gif' alt='Уже в вашей корзине'>
-<?} else if($rows['buy_status']==3){?>
-	<img src='<?=$cfg['site_dir']?>images/corz6.gif' alt='Покупает другой посетитель <?=contentHelper::setWordWhat($rows["materialtype"])?> <?=$rows["gname"]?> <?=$rows["name"]?>'>		
-<?} elseif ($rows['buy_status']==4){?>
-	<img src='<?=$cfg['site_dir']?>images/corz6.gif' alt='Покупает другой посетитель <?=contentHelper::setWordWhat($rows["materialtype"])?> <?=$rows["gname"]?> <?=$rows["name"]?>'>
-	<img src='<?=$cfg['site_dir']?>images/corz77.gif' alt='Вы в очереди на покупку <?=contentHelper::setWordThat($rows["materialtype"])?> <?=$rows["gname"]?> <?=$rows["name"]?>'>		
-<?} elseif ($rows['buy_status']==5){?>
-	<img src='<?=$cfg['site_dir']?>images/corz6.gif' alt='Покупает другой посетитель <?=contentHelper::setWordWhat($rows["materialtype"])?> <?=$rows["gname"]?> <?=$rows["name"]?>'>
-	<div id=bascetshop<?=$rows["shopcoins"]?>>
-	  <a href='#coin<?=$rows["shopcoins"]?>' onclick="javascript:AddNext('<?=$rows["shopcoins"]?>','1');" rel="nofollow" title='Стать в очередь на <?=contentHelper::setWordOn($rows["materialtype"])?> <?=$rows["gname"]?> <?=$rows["name"]?>'>
-	      <img src='<?=$cfg['site_dir']?>images/corz11.gif' alt='<?=contentHelper::setWordOn($rows["materialtype"])?> <?=$rows["gname"]?> <?=$rows["name"]?>'>
-	  </a>
-	</div>
-<?} elseif ($rows['buy_status']==8){
-	
-	?>
-    <input type=text name=amount<?=$rows["shopcoins"]?> id=amount<?=$rows["shopcoins"]?> size=4 value='<?=$ourcoinsorderamount[$rows["shopcoins"]]?>'> 
-	  <a href='#coin<?=$rows["shopcoins"]?>' onclick='javascript:AddAccessory<?=$Accessory_type?>'(<?=$rows["shopcoins"]?>,<?=$rows["materialtype"]?>)' title='<?=$rows["name"]?>'>
-	  <div id=bascetshopcoins<?=$rows["shopcoins"]?>><img src=<?=$cfg['site_dir']?>images/corz7.gif alt='Уже в корзине'></div>
-	 </a>
-<?} else if ($rows['buy_status']==6){?>			
-	<div id=bascetshopcoins<?=$rows["shopcoins"]?>>					
-    	<input type=text name=amount<?=$rows["shopcoins"]?> id=amount<?=$rows["shopcoins"]?> size=4 value='1' style="float:left"> 
-		<a class="button25" href='#coin<?=$rows["shopcoins"]?>' onclick='javascript:AddAccessory<?=$Accessory_type?>(<?=$rows["shopcoins"]?>)' title='Положить в корзину <?=contentHelper::setWordOn($rows["materialtype"])?> <?=$rows["name"]?>'>Купить</a>
-	</div>	
-<?} elseif ($rows['buy_status']==7) {?>
-    <div id=bascetshopcoins<?=$rows["shopcoins"]?>>
-   		<a class="button25" href='#coin<?=$rows["shopcoins"]?>' onclick='javascript:AddAccessory<?=$Accessory_type?>(<?=$rows["shopcoins"]?>)' title='Положить в корзину <?=contentHelper::setWordOn($rows["materialtype"])?> <?=$rows["name"]?>'>Купить</a>
-    </div>
-	</a>
-	  
-<?}
-
 if(($rows['buy_status']==7||$rows['buy_status']==6)&&($minpriceoneclick<=$rows['price'])) {
-	include('oneclick.tpl.php');
+	echo contentHelper::render('shopcoins/price/oneclick',$rows);
 }?>
 
 <?
-if ($rows["reservedForSomeUser"]) {
-	echo "<br><font color=gray size=-2>Бронь до ".date("H:i", $rows["reserve"]+$reservetime)."</font>";
-	
-	if (time() - (int) $rows["reserve"] >= $reservetime  || $rows["reserveorder"] != $shopcoinsorder  && $rows['relationcatalog']>0 && $tpl['user']['user_id']>0)
-		echo "<br><div id=mysubscribecatalog".$rows["shopcoins"]."><a href='#coin".$rows["shopcoins"]."' onclick=\"javascript:WaitSubscribeCatalog(".$rows["shopcoins"].");process('addsubscribecatalog.php?catalog=".$rows["shopcoins"]."');\" title='При следующем появлении данного типа монеты в магазине вам будет отправлено уведомление на email...'>Оставить заявку через каталог</a></div>";
-} elseif($rows["reservedForSomeGroup"]) {
-	if($rows["isInRerservedGroup"]) {
-		echo '<br><font color=#ff0000 size=-2>На монету вы оставили заявку через <a href=../catalognew target=_blank style="font-size:9px;">каталог</a>. Она доступна вам для покупки.</font>';
-	}	else {
-		echo '<br><font color=gray size=-2>На монету '.$rows["gname"].' '.$rows["name"].' была оставлена заявка через <a href=../catalognew target=_blank style="font-size:9px;" title=\'Каталог монет России, Германии, США и других стран\'>каталог</a>. Монету до '. date("H:i",$rows['timereserved']) .' могут купить только клиенты, оставившие заявку.</font>';
-		if ( $rows['relationcatalog']>0 && $tpl['user']['user_id']>0)
-			echo "<br><div id=mysubscribecatalog".$rows["shopcoins"]."><a href='#coin".$rows["shopcoins"]."' onclick=\"javascript:WaitSubscribeCatalog(".$rows["shopcoins"].");process('addsubscribecatalog.php?catalog=".$rows["shopcoins"]."');\" title='При следующем появлении данного типа монеты в магазине вам будет отправлено уведомление на email...'>Оставить заявку через каталог</a></div>";
-	}			
-} elseif ($rows['doubletimereserve'] > time() && $tpl['user']['user_id'] != $rows['userreserve']) {
-	echo '<br><font color=gray size=-2>Монета '.$rows["gname"].' '.$rows["name"].' была забронирована. Монету до '. date("H:i",$rows['doubletimereserve']) .' может купить только клиент, поставивший бронь.</font>';
-	if ( $rows['relationcatalog']>0 && $tpl['user']['user_id']>0)
-			echo "<br><div id=mysubscribecatalog".$rows["shopcoins"]."><a href='#coin".$rows["shopcoins"]."' onclick='javascript:WaitSubscribeCatalog(".$rows["shopcoins"].");process('addsubscribecatalog.php?catalog=".$rows["shopcoins"]."');' title='При следующем появлении данного типа монеты в магазине вам будет отправлено уведомление на email...'>Оставить заявку через каталог</a></div>";
-}
-if ($rows['doubletimereserve'] > time() && $tpl['user']['user_id'] == $rows['userreserve'] && $tpl['user']['user_id']>0)
-	if ( $rows['reservedForSomeUser'] || (!$tpl['user']['user_id'] && $rows['reservedForSomeGroup']) || (false === $rows['isInRerservedGroup']) ){ echo "<font color=red size=-2>Вы в очереди на монету до ".date("H:i", $rows["doubletimereserve"])."</font>";
-} else echo "<br><font color=red size=-2>Вы можете купить монету. Ваша бронь до ".date("H:i", $rows["doubletimereserve"])."</font>";
-?>
-	
+echo contentHelper::render('shopcoins/price/reserved',$rows);
+echo contentHelper::render('shopcoins/price/markitem',$rows['mark']);	?>
 <div id=subinfo>
 Название: <strong><?=$rows["name"]?></strong><br>
 Номер: <strong><?=$rows["number"]?></strong><br>
@@ -156,10 +54,17 @@ if ($rows['doubletimereserve'] > time() && $tpl['user']['user_id'] == $rows['use
 echo ($rows["width"]&&$rows["height"]?"<br>Приблизительный размер: <strong>".$rows["width"]."*".$rows["height"]." мм.</strong>":"")."
 ".($rows["weight"]>0?"<br>Вес: <strong>".$rows["weight"]." гр.</strong>":"")."
 ".($rows["series"]&&$group?"<br>Серия монет: <a href=$script?series=".$rows["series"]."&group=".$group."&materialtype=".$materialtype.">".$series_name[$rows["series"]]."</a>":"")."
-".($rows["materialtype"]==8&&$materialtype==1&&!$mycoins?"<br><font color=red>МОНЕТА С РАЗДЕЛА МЕЛОЧЬ, см. условия покупки в разделе</font>":"")."
-".($rows["accessoryProducer"]?"<br>Производитель:<strong> ".$rows["accessoryProducer"]."</strong>":"")."
-".($rows["accessoryColors"]?"<br>Цвета:<strong> ".$rows["accessoryColors"]."</strong>":"")."
-".($rows["accessorySize"]?"<br>Размеры:<strong> ".$rows["accessorySize"]."</strong>":"");
+".($rows["materialtype"]==8&&$materialtype==1&&!$mycoins?"<br><font color=red>МОНЕТА С РАЗДЕЛА МЕЛОЧЬ, см. условия покупки в разделе</font>":"");
+
+if($rows['materialtype']==5){
+	if (trim($rows["accessoryProducer"])) echo "<br><b>ISBN: </b>".$rows["accessoryProducer"];
+	if ($rows["accessoryColors"])  echo "<br><b>Год выпуска: </b>".$rows["accessoryColors"];
+	if ($rows["accessorySize"])  echo "<br><b>Количество страниц: <font color=blue>".$rows["accessorySize"]."</font></b>";
+} else {
+	if($rows["accessoryProducer"]) echo "<br>Производитель:<strong> ".$rows["accessoryProducer"]."</strong>";
+	if($rows["accessoryColors"]) echo "<br>Цвета:<strong> ".$rows["accessoryColors"]."</strong>";
+	if($rows["accessorySize"]) echo "<br>Размеры:<strong> ".$rows["accessorySize"]."</strong>";
+}
 
 		
 				

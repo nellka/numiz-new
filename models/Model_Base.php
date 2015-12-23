@@ -41,6 +41,15 @@ Abstract Class Model_Base {
     	return $this->db->fetchRow($select);       
     }
     
+    public function getOneByParams($row_name,$params=array()){
+        $select = $this->db->select()
+		               ->from($this->table,array($row_name));
+		foreach ($params as $key=>$value) {
+		    $select->where("$key=?",$value) ;
+		}         
+    	return $this->db->fetchOne($select);       
+    }
+    
     public function getAllByParams($params=array()){
         $select = $this->db->select()
 		               ->from($this->table);
@@ -49,6 +58,15 @@ Abstract Class Model_Base {
 		}             
     	return $this->db->fetchAll($select);       
     }
+    
+    /*public function countAllByParams($params=array()){
+        $select = $this->db->select()
+		               ->from($this->table,array('count(*)'));
+		foreach ($params as $key=>$value) {
+		    $select->where("$key=?",$value) ;
+		}             
+    	return $this->db->fetchOne($select);       
+    }*/
     
     public function updateRow($data,$where){
         $this->db->update($this->table,$data,$where);

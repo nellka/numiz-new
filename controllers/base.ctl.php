@@ -6,7 +6,6 @@ require $cfg['path'] . '/controllers/start_params.ctl.php';
 
 $tmp['addcall']['errors'] = array();
 if(request('logout')){
- 
 
 	$user_class->logout();
 	unset($_POST['logout']);
@@ -14,6 +13,7 @@ if(request('logout')){
 	  // die();
 	header("location: ".$_SERVER["REQUEST_URI"]);
 }
+
 $user_remote_address = $_SERVER['REMOTE_ADDR'] ;
 $tpl['user']['remote_address'] = $user_remote_address;
 //проверяем залогинивание пользователя
@@ -22,6 +22,10 @@ $tpl['user']['is_logined'] = $user_class->is_logged_in();
 //получаем информацию о балансе пользователя пользователя
 $tpl['user']['summ'] = 0;
 $tpl['user']['product_amount'] = intval($shopcoinsorderamount);
+
+$domain = $_SERVER["HTTP_HOST"];
+$domain = '.'.str_replace('www.','', $domain);
+        	    
 
 //ЭТА ПРОВЕРКА ЧАСТО ИСПОЛЬЗУЕТСЯ. ЗАЧЕМ НЕ ПОНЯТНО, НО ВЫНОШУ В ОТДЕЛЬНОЕ СВОЙСТВО
 
@@ -43,7 +47,7 @@ if ($tpl['user']['is_logined']){
 } else $tpl['user']['user_id'] = 0;
 
 $shopcoins_class = new model_shopcoins($cfg['db'],$tpl['user']['user_id'],$nocheck);
-    
+  
 include_once($cfg['path'] ."/configs/keywordsAdmin.php");
 //include $_SERVER["DOCUMENT_ROOT"]."/keywords.php";
 
@@ -83,6 +87,7 @@ if( is_dir($dir)){
 } else {
     $controller = $cfg['path'] .  '/controllers/'.$tpl['module'].'.ctl.php';   
 }
+
 $static_page = true;
 if(file_exists($controller)){
     $static_page = false;
