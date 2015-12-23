@@ -1,6 +1,6 @@
 <? 
 if($rows["materialtype"]==3){?>
-<a href='<?=$cfg['site_dir']?>/shopcoins<?=$rows["rehref"]?>' title='<?=$cfg['site_dir']?>/shopcoins<?=$rows['namecoins']?>'>
+<a href='<?=$cfg['site_dir']?>shopcoins<?=$rows["rehref"]?>' title='<?=$cfg['site_dir']?>/shopcoins<?=$rows['namecoins']?>'>
 	<?=contentHelper::showImage('images/'.$rows["image"],$rows['namecoins'])?>
 </a>
 <a name=coin<?=$rows["shopcoins"]?> title='<?=$rows["name"]?>'></a><strong><?=$rows['namecoins']?></strong>
@@ -11,8 +11,9 @@ if($rows["materialtype"]==3){?>
 </a>
 <a name=coin<?=$rows["shopcoins"]?> title='<?=$rows["name"]?>'></a><strong><?=$rows["name"]?></strong>
 <?}	else {
+
 	$title = contentHelper::setHrefTitle($rows["name"],$rows["materialtype"],$rows['gname']).' - подробная информация';?>
-	<a href='<?=$rows['rehref']?>' title='<?=$title?>'>
+	<a href='<?=$cfg['site_dir']?>shopcoins/<?=$rows['rehref']?>' title='<?=$title?>'>
 		<?=contentHelper::showImage('images/'.$rows["image"],'Подробная информация о '.contentHelper::setWordAbout($rows["materialtype"])." ".$rows["gname"]." ".$rows["name"])?>			
 	</a>	
 	<a name=coin<?=$rows["shopcoins"]?> title='<?=contentHelper::setHrefTitle($rows["name"],$rows["materialtype"],$rows["gname"])?>'></a>
@@ -27,7 +28,7 @@ if($rows["materialtype"]==3){?>
 	
 	if ($rows["gname"]){?>
 	<?=in_array($rows["materialtype"],array(9,3,5))?"Группа":"Страна"?>: 
-	<a href=<?=$cfg['site_dir']?>/shopcoins?group=<?=$rows['group']?>&materialtype=<?=$rows["materialtype"]?> title='Посмотреть <?=contentHelper::setWordThat($rows["materialtype"])?> <?=$rows["gname"]?>'>
+	<a href=<?=$cfg['site_dir']?>shopcoins?group=<?=$rows['group']?>&materialtype=<?=$rows["materialtype"]?> title='Посмотреть <?=contentHelper::setWordThat($rows["materialtype"])?> <?=$rows["gname"]?>'>
 	<strong><font color=blue><?=$rows["gname"]?></font></strong>
 	</a><br>
 	<?}?>

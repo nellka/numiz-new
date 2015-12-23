@@ -15,14 +15,7 @@
 			<div style="float:right;padding-right:17px;padding-top:3px;">
 				<a  href="#" onclick="clear_filter();return false;">Очистить</a>
 			</div>
-		</div>
-				
-
-			<link href="<?=$cfg['site_dir']?>css/jquery.mCustomScrollbar.css" rel="stylesheet" type= "text/css"/>
-			<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type= "text/javascript"></script>
-			<script src="<?=$cfg['site_dir']?>js/jquery.easing.1.3.js" type= "text/javascript"></script>
-			<script src= "<?=$cfg['site_dir']?>js/jquery.mousewheel.min.js" type= "text/javascript"></script> 
-			<script src="<?=$cfg['site_dir']?>js/jquery.mCustomScrollbar.js" type="text/javascript"></script>
+		</div>		
 			<li style="float:left;width:95%;">
 			<? if($tpl['filter']['price']['max']){?>
 				

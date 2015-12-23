@@ -188,7 +188,7 @@ function AddBascetLast2(kn) {
 			    dataType : "json",                   
 			    success: function (data, textStatus) { 	    	
 			        ShowSmallBascet(0,data);
-			        var arrlast = bascetshopcoins.split('d');
+			        var arrlast = data.bascetshopcoins.split('d');
 					for (i=0;i<arrlast.length;i++) {
 						$("#lastcatalogis"+arrlast[i]).html("<input type=checkbox disabled=disabled value=0>");
 					}

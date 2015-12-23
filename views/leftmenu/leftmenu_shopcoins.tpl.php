@@ -127,8 +127,7 @@
    <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=11' title='Барахолка' class="topmenu <?=(isset($materialtype)&&!$search&&$materialtype==11)?'active':''?>">Барахолка</a></li>   
                </ul>   
    
-   
-   <? include('filters.tpl.php')?>
+   <?  include('filters.tpl.php')?>
    <script> function showMainLeftMenu(){
         if(!jQuery('#left_menu_shop').is(':visible')){
             jQuery('#left_menu_shop').show();
