@@ -1,6 +1,6 @@
 @charset "utf-8";
-#filter-groupgroup_container{position:relative; left:0; top:20px; margin:0; height:500px; padding: 10px 0 0; border-top:1px dashed #999; }
-#filter-groupgroup_container .customScrollBox{position:relative; height:100%; overflow:hidden;}
+#filter-groupgroup_container{position:relative; left:0; top:20px; margin:0; height:290px; }
+#filter-groupgroup_container .customScrollBox{position:relative; height:87%; overflow:hidden;}
 #filter-groupgroup_container .customScrollBox .container{position:relative; width:240px; top:0; float:left;}
 #filter-groupgroup_container .customScrollBox .content{clear:both;}
 #filter-groupgroup_container .customScrollBox .content p{padding:10px 5px; margin:10px 0; color:#fff; font-family:Verdana, Geneva, sans-serif; font-size:13px; line-height:20px;}

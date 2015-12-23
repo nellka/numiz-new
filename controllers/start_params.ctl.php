@@ -23,6 +23,12 @@ if(isset($_SESSION['shopcoinsorderamount'])&&intval($_SESSION['shopcoinsorderamo
 //для админа
 $nocheck = request('nocheck');
 
+$LastCatalog10 = isset($_COOKIE['LastCatalog10'])?$_COOKIE['LastCatalog10']:'';
+$pagenumparent =  request('pagenumparent');
+
+
+			
+
 /*
 $order = (integer)(isset($_REQUEST['order'])?$_REQUEST['order']:0);
 $shopcoins = null;

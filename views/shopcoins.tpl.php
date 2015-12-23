@@ -160,6 +160,58 @@ function AddAccessory(id,materialtype){
 	
 	return false;		
 }
+var klicklast = 0;
+var klicklastn = 0;
+
+function AddBascetLast2(kn) {	
+	
+	if (klicklastn == 1) {
+		alert('Вы нажали на кнопку ранее, для активации кнопки обновите страницу');
+		return false;
+	}
+	var shopcoinslast = '';
+	var numislast2 = 0;
+	for (i=100;i<kn;i++) {	
+		if ($("#shopcoinslast"+i).prop("checked")) {			
+			shopcoinslast += $("#shopcoinslast"+i).val()+"d";
+			numislast2++;
+		}
+	}				
+	if (numislast2==0) {	
+		alert('Вы не указали позиции для добавления в корзину');
+	}	else {		
+		if (confirm("Вы желаете положить все отмеченные монеты из списка просмотренных в корзину?")) {
+			 $.ajax({	
+			    url: '<?=$cfg['site_dir']?>shopcoins/addbascetlast.php?', 
+			    type: "POST",
+			    data:{'shopcoinslast':shopcoinslast},         
+			    dataType : "json",                   
+			    success: function (data, textStatus) { 	    	
+			        ShowSmallBascet(0,data);
+			        var arrlast = bascetshopcoins.split('d');
+					for (i=0;i<arrlast.length;i++) {
+						$("#lastcatalogis"+arrlast[i]).html("<input type=checkbox disabled=disabled value=0>");
+					}
+					return;				
+			    }
+			});			
+			klicklastn = 1;
+		}
+	}
+}
+//var 
+		
+function ChangeSumSeeCoins (sumcoins,place) {
+	sumseecoins = $("#sumseecoins_val").val();
+	
+	if($("#shopcoinslast"+place).prop("checked")){
+		sumseecoins = parseInt(sumseecoins) + parseInt(sumcoins);
+	}	else {
+		sumseecoins = parseInt(sumseecoins) - parseInt(sumcoins);
+	}
+	$("#sumseecoins").text(sumseecoins);	
+}
+
 function ShowSmallBascet (id,data)
 {
 	var bascetshopcoins = data.bascetshopcoins;	
@@ -256,8 +308,7 @@ function AddNominal(){
 	    data:{'group':$('#group2').val()},         
 	    dataType : "json",                   
 	    success: function (data, textStatus) { 
-	      console.log(data);  
-	      ShowNameCoins();     
+	      console.log(data);       
        }
 	});
 

@@ -1,6 +1,21 @@
 <?
 class contentHelper{    
 
+	static  function render($template,$rows) {
+		if (file_exists(DIR_TEMPLATE . $template.'.tpl.php')) {
+			extract($rows);
+
+			ob_start();
+			require(DIR_TEMPLATE . $template.'.tpl.php');
+			$output = ob_get_contents();
+			ob_end_clean();
+			return $output;
+		} else {
+			die('Error: Could not load template ' . DIR_TEMPLATE . $template . '!');
+			exit();				
+		}
+	}
+	
     static function strtolower_ru($text) 
     { 
     	$text = trim($text);

@@ -5,7 +5,7 @@ class model_user extends Model_Base
 {		
     public $user_id;    
     public $username;    
-	
+	public $orderusernow;
     //получаем баланс пользователя
     public function getUserBalance($user_id){
         $select = $this->db->select()
@@ -53,6 +53,7 @@ class model_user extends Model_Base
 	 public function getUserBaseData(){	 	
 	     
 	 	$data['user_id'] = $this->getIdentity();
+	 	$data['orderusernow'] = 0;
 		$data['username'] = $this->getUsername();
     	$data['balance'] = $data['summ'] =  $this->getUserBalance($this->getIdentity());
     	return $data;
@@ -66,6 +67,15 @@ class model_user extends Model_Base
     	return $this->db->fetchRow($sql)?true:FALSE;  	
     
     }
+    //если пользователь залогинен и запрещено делать заказы, то проверяем те заказы, которые были
+    public 	function setOrderusernow(){
+    	 $select = $this->db->select()
+    		               ->from('order',array('count(*)'))
+    		               ->where('user =?',$this->user_id)
+    		               ->where('`check`=1 and SendPost=0 and sum>=500');
+        return  $this->db->fetchOne($select)?1:0;   
+    }
+
 	 /*
 	 
 		if (!$rows[0])

@@ -284,6 +284,13 @@ class model_shopcoins extends Model_Base
     	 return $this->db->fetchAll($select);
 	}
 	
+	public function findByIds($id_array= array()){
+         $select = $this->db->select()
+		               ->from($this->table)
+		               ->where("shopcoins in (".implode(",", $id_array).")");		 
+    	 return $this->db->fetchAll($select);
+	}
+	
 	//число товаров для показа на странице типа show
     public function countForShow($materialtype,$parent){
         if ($materialtype==7 || $materialtype==8 || $materialtype==6 || $materialtype==4 || $materialtype==2){ 
@@ -774,23 +781,8 @@ class model_shopcoins extends Model_Base
 		$select = $this->db->select()
               ->from('shopcoinsseries',array('name'))
               ->where("shopcoinsseries=?",$s_id);
-        return  $this->db->fetchOne($select);    
+        return       $this->db->fetchOne($select);    
 	
 	}
-	
-	public function getSeries($s_id){
-		$select = $this->db->select()
-              ->from('shopcoinsseries',array('name'))
-              ->where("shopcoinsseries=?",$s_id);
-        return  $this->db->fetchOne($select);    
-	
-	}
-	
-	public function getCatalognewName($group){
-    	$sql = "select trim(catalognew.name) from catalognew,`group` where catalognew.group=group.group and lower(trim(`group`.name))=lower('$group') group by trim(catalognew.name);";
-    	return  $this->db->fetchRow($sql);   
-	}
-	
-	
 }
 ?>

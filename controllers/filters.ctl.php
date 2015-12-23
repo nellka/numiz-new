@@ -53,7 +53,7 @@ foreach ($tpl['filters']['years'] as $value){
 			'name'      => $value["year"]);   
 }*/
 
-if(!in_array($materialtype,array(5,3))){
+if(!in_array($materialtype,array(5,3))&&($search != 'newcoins') ){
 	foreach ($yearsArray  as $key=>$value){
 		$childen_data_years[] = array('filter_id' => $key,'name' => $value['name']);
 	}

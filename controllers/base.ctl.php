@@ -46,6 +46,12 @@ if ($tpl['user']['is_logined']){
 	$tpl['user'] = array_merge($tpl['user'],$user_base_data);
 } else $tpl['user']['user_id'] = 0;
 
+//если пользователь залогинен и запрещено делать заказы, то проверяем те заказы, которые были
+//зачем на главное - под вопросом
+if ($blockend < time()&& $tpl['user']['user_id']) {
+	$tpl['user']['orderusernow'] = $user_class->setOrderusernow();   
+}
+
 $shopcoins_class = new model_shopcoins($cfg['db'],$tpl['user']['user_id'],$nocheck);
   
 include_once($cfg['path'] ."/configs/keywordsAdmin.php");
@@ -119,19 +125,7 @@ require_once  $cfg['path'] .  '/views/template.php';
 die();
 /*
 
-$orderusernow = 0;
-//если пользователь залогинен и запрещено делать заказы, то проверяем те заказы, которые были
-//зачем на главное - под вопросом
-if ($blockend < time()&& $tpl['is_logined']>0) {
-    die('blockend');
-		$sql_temp = "select count(*) from `order` where `user`='$cookiesuser' and `check`=1 and SendPost=0 and sum>=500;";
-		$result_temp = mysql_query($sql_temp);
-		$rows_temp = mysql_fetch_array($result_temp);
-		if ($rows_temp[0]>0) 
-			$orderusernow = 1;
-		else
-			$orderusernow = 0;
-}
+
 
 if ($recoins && $member) {
     die('recoins-member');
