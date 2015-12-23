@@ -55,7 +55,7 @@ class model_user extends Model_Base
 	 	$data['user_id'] = $this->getIdentity();
 	 	$data['orderusernow'] = 0;
 		$data['username'] = $this->getUsername();
-    	$data['balance'] = $data['summ'] =  $this->getUserBalance($this->getIdentity());
+    	$data['balance'] = $this->getUserBalance($this->getIdentity());
     	return $data;
 	 }
 	 

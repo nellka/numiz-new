@@ -151,6 +151,8 @@ if (sizeof($arrayresult)>0) {
 		$cache->save($dataBasket, "bascet_".$shopcoinsorder);	
 	}
 	$bascetsum = $dataBasket["mysum"];
+	$_SESSION['bascetsum'] = $bascetsum;
+	
 	$bascetsumclient = $dataBasket["mysumclient"];
 	if ($bascetsumclient >= $bascetsum) 
 		$bascetsumclient=0;

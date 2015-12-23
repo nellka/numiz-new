@@ -132,6 +132,7 @@ if(!$rows){
     		                     
     	    $shopcoins_class->updateRow($data_update,"shopcoins='$shopcoins'");           
 			$_SESSION["shopcoinsorderamount"] =  intval($shopcoinsorderamount)+1;
+			
 		} elseif ($ShopcoinsMaterialtype == 4 || $ShopcoinsMaterialtype == 7 || $ShopcoinsMaterialtype == 8 || $ShopcoinsMaterialtype == 6 || $ShopcoinsMaterialtype==2) {
 			for ($i=0;$i<$amount;$i++) {
 				$data_insert = array('reserveorder'=>$shopcoinsorder, 
@@ -150,6 +151,8 @@ if(!$rows){
 			$cache->save($dataBasket, "bascet_".$shopcoinsorder);	
 		}
 		$bascetsum = $dataBasket["mysum"];
+		$_SESSION['bascetsum'] = $bascetsum;
+		
 		$bascetsumclient = $dataBasket["mysumclient"];
 		if ($bascetsumclient >= $bascetsum) 
 			$bascetsumclient=0;

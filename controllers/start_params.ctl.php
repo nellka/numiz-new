@@ -15,10 +15,10 @@ elseif(isset($_SESSION['shopcoinsorder'])&&intval($_SESSION['shopcoinsorder'])>0
 	$shopcoinsorder = intval($_SESSION['shopcoinsorder']);
 elseif (intval(request('shopcoinsorder'))>0)
 	$shopcoinsorder = intval(request('shopcoinsorder'));
-	
+
 //количество товаров в корзине
 if(isset($_SESSION['shopcoinsorderamount'])&&intval($_SESSION['shopcoinsorderamount'])>0){
-	$shopcoinsorder = intval($_SESSION['shopcoinsorderamount']);
+	$shopcoinsorderamount = intval($_SESSION['shopcoinsorderamount']);
 } else $shopcoinsorderamount = request('shopcoinsorderamount');
 //для админа
 $nocheck = request('nocheck');
@@ -26,8 +26,11 @@ $nocheck = request('nocheck');
 $LastCatalog10 = isset($_COOKIE['LastCatalog10'])?$_COOKIE['LastCatalog10']:'';
 $pagenumparent =  request('pagenumparent');
 
-
-			
+$bascetsum = 0;
+if(isset($_SESSION['bascetsum'])&&$_SESSION['bascetsum']){
+	$bascetsum = $_SESSION['bascetsum'];
+}
+	
 
 /*
 $order = (integer)(isset($_REQUEST['order'])?$_REQUEST['order']:0);

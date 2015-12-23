@@ -20,12 +20,12 @@ $tpl['user']['remote_address'] = $user_remote_address;
 $tpl['user']['is_logined'] = $user_class->is_logged_in();
 
 //получаем информацию о балансе пользователя пользователя
-$tpl['user']['summ'] = 0;
+$tpl['user']['summ'] = $bascetsum;
 $tpl['user']['product_amount'] = intval($shopcoinsorderamount);
-
+var_dump($tpl['user']['summ']);
 $domain = $_SERVER["HTTP_HOST"];
 $domain = '.'.str_replace('www.','', $domain);
-        	    
+       // var_dump($_SESSION);	    
 
 //ЭТА ПРОВЕРКА ЧАСТО ИСПОЛЬЗУЕТСЯ. ЗАЧЕМ НЕ ПОНЯТНО, НО ВЫНОШУ В ОТДЕЛЬНОЕ СВОЙСТВО
 

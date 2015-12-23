@@ -1,7 +1,7 @@
 <?
 header('Content-type: text/html; charset=utf-8');
 try {
-   
+    session_start();
     require dirname(__FILE__) . '/config.php';        
     
     //функции хелпера собрали в себе кучу мелких статических функци
