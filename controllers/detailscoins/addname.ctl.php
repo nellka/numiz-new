@@ -1,27 +1,23 @@
 <?php
 
-
 $group = trim(request('group'));
-
+$id = trim(request('id'));
 if (!$tpl['user']['user_id']){	
 	$data_result['error'] = "error2";
 }
-
-if (!$group)
+$ArrayResult = array();
+$data_result  = array();
+$data_result['error'] = null;
+if (!$id)
 	$data_result['error'] = "error1";
 else {
-	$group=iconv("UTF-8", "windows-1251//TRANSLIT", $group); 
 	//echo $group;
-	$catalog_names = $shopcoins_class->getCatalognewName($group);
-	var_dump($catalog_names);
-	die();
-	//echo $sql;
-	if ($catalog_names) {
+	$catalog_names = $shopcoins_class->getCatalognew($id);	
 	
-		foreach ($result as $rows) {		
-			$ArrayResult[] = $rows[0];
-		}
-	} else $data_result['error'] = "error2";
+	if(!$catalog_names) $data_result['error'] = "error2";
+	foreach ($catalog_names as $rows) {		
+		$ArrayResult[] = $rows['name'];
+	}
 }
 
 if (!$data_result['error']) {	
@@ -29,7 +25,6 @@ if (!$data_result['error']) {
 }
 
 echo json_encode($data_result);
-
 die();
 
 ?>

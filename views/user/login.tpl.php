@@ -1,15 +1,14 @@
-<?
-if($tpl['user']['send_status']){?>
+<div id="loginForm">
+<?if($tpl['user']['send_status']){?>
 	<div class="error">Вы успешно авторизовались!</div>
 	<script>
 	//обновляем родительский блок элемента чтобы не перегружать страницу	
-	parent.jQuery('#user_top_block').html('<?=$html_for_ajax?>');
-	parent.jQuery.fancybox.close();
+	parent.$('#user_top_block').html('<?=$html_for_ajax?>');
 </script>	
 <?} else {?>
-<div id="auth_form" class="frame-form">
-<div class="error"><?=implode("<br>",$tpl['user']['errors'])?></div>
-<form action="<?=$cfg['site_dir']?>user/login.php?ajax=1" method="post" class=formtxt>
+<div class="frame-form" id="auth_form">
+<div class="error" id='login_errors'><?=implode("<br>",$tpl['user']['errors'])?></div>
+<form action="№" method="post" class=formtxt>
 <div class="web-form">
     <div class="left">
         <label for="username">Логин/Email: </label>
@@ -23,7 +22,7 @@ if($tpl['user']['send_status']){?>
         <label for="password">Пароль: </label>
      </div>
     <div class="right">
-         <input type=password name=password value='<?=$tpl['user']['password']?>'>
+         <input type=password name=password id=password value='<?=$tpl['user']['password']?>'>
     </div>
 </div>
 <div class="web-form" class="">    
@@ -32,11 +31,38 @@ if($tpl['user']['send_status']){?>
     </div>
 </div>
 <div class="web-form">
-    <input type="submit" name=login value='Войти' class="yell_b">
+    <input type="button" name=login value='Войти' onclick="Login()" class="yell_b">
 </div>
 </form>
 </div>
 <div class="web-form">
-<a href="<?=$cfg['site_dir']?>user/remind.php?ajax=1" class="remember_pwd" title='Восстановить пароль'><b>Напомнить пароль</b></a>
+<a href="<?=$cfg['site_dir']?>user/remind.php?ajax=1" class="iframe remember_pwd" title='Восстановить пароль'><b>Напомнить пароль</b></a>
 </div>
+
+<script>
+function Login() {
+$.ajax({	
+    url: '<?=$cfg['site_dir']?>user/login.php?ajax=1', 
+    type: "POST",
+    data:{username: $('#username').val(), 
+        password: $('#password').val(),
+        remember_me:$('#remember_me').prop('checked'),
+        datatype:"json"},         
+    dataType : "json",                   
+    success: function (data, textStatus) {  
+        if(data.errors.length>0){
+            var error = '';
+            for(i=0;i<data.errors.length;i++){
+                error+=data.errors[i];
+            }
+            $('#login_errors').html(error);
+        } else if(data.send_status){
+           location.reload();
+        }   	      
+    }
+ });
+}    
+
+</script>
 <?}?>
+</div>

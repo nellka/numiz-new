@@ -779,14 +779,23 @@ class model_shopcoins extends Model_Base
     	return $reviewitem;
 	}
 	public function getAdditionalReviews(){
-		$sql = "select `order`.order as shopcoins, user.fio, `user`.phone as uphone, `user`.email, `order`.*,date as dateinsert ,  	ReminderComment as review, if(`order`.mark=2 and `order`.markadmincheck=0,2,if(`order`.mark=2 and `order`.markadmincheck=2,1,0)) as omark 
+		/*$sql = "select `order`.order as shopcoins, user.fio, `user`.phone as uphone, `user`.email, `order`.*,date as dateinsert ,  	ReminderComment as review, if(`order`.mark=2 and `order`.markadmincheck=0,2,if(`order`.mark=2 and `order`.markadmincheck=2,1,0)) as omark 
 		         from `order`, user 
 		         where `order`.`check` = '1' and (trim( ReminderComment ) <> '' or mark=2) 
 		         and order.user = user.user and date>'1049918400' and `order`.`mark`='1' 
-		         order by omark desc, `order`.ReminderCommentDate desc, `order`.date desc limit 0,20";
-		
-		
-		return  $this->db->fetchAll($sql);  
+		         order by omark desc, `order`.ReminderCommentDate desc, `order`.date desc limit 0,8";*/
+		$revieves = array();
+		$sql = "select user.fio, `user`.phone as uphone, `user`.email, `order`.order as shopcoins,date as dateinsert ,  	ReminderComment as review, if(`order`.mark=2 and `order`.markadmincheck=0,2,if(`order`.mark=2 and `order`.markadmincheck=2,1,0)) as omark from `order`, user where `order`.`check` = '1' and (trim( ReminderComment ) <> '' or mark=2) and order.user = user.user and date>'1049918400' and `order`.`mark`='1' order by omark desc, `order`.ReminderCommentDate desc, `order`.date desc limit 0,8";
+        $good = $this->db->fetchAll($sql);  
+		foreach ($good as $row){
+		    $revieves[] = $row;
+		}
+		$sql = "select user.fio, `user`.phone as uphone, `user`.email, `order`.order as shopcoins,date as dateinsert ,  	ReminderComment as review, if(`order`.mark=2 and `order`.markadmincheck=0,2,if(`order`.mark=2 and `order`.markadmincheck=2,1,0)) as omark from `order`, user where `order`.`check` = '1' and (trim( ReminderComment ) <> '' or mark=2) and order.user = user.user and date>'1049918400' and `order`.`mark`='2' order by omark desc, `order`.ReminderCommentDate desc, `order`.date desc limit 0,2;";
+		$bad = $this->db->fetchAll($sql);  
+		foreach ($bad as $row){
+		    $revieves[] = $row;
+		}
+		return  $revieves;
 	}
 	//Возможные группы для описать монету
 	public function getGroupsForDescribe(){
@@ -843,6 +852,16 @@ class model_shopcoins extends Model_Base
 	        $select->where("(shopcoins.materialtype=? or shopcoins.materialtypecross & pow(2,?))",$materialtype); 
 	   }
        return $this->db->fetchRow($select);  	
+	}
+	//для номиналов
+	public function getCatalognew($id){
+	    
+	    $select = $this->db->select()
+              ->from('catalognew',array('distinct(name)'))
+              ->where('`group`=?',$id)
+              ->order('name DESC');    
+ 
+        return $this->db->fetchAll($select);  	     
 	}
 }
 ?>

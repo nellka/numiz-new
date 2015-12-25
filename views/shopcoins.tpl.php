@@ -367,10 +367,17 @@ function AddNominal(){
     $.ajax({
 	    url: '<?=$cfg['site_dir']?>shopcoins/detailscoins/addname.php', 
 	    type: "POST",
-	    data:{'group':$('#group2').val()},         
+	    data:{'id':$('#id_group2').val()},         
 	    dataType : "json",                   
 	    success: function (data, textStatus) { 
-	      console.log(data);       
+             var availableTags = data.arrayresult;
+            $('#name2').autocomplete({
+              source: availableTags/*,
+              select: function (event, ui) {
+                $('#id_group2').val(ui.item.id);
+                return ui.item.label;
+            }*/
+            });
        }
 	});
 }	

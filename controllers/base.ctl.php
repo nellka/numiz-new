@@ -111,12 +111,19 @@ if ($catalog){
 
 
 if($tpl["datatype"]=='json'){
-	echo json_encode($tpl[$tpl['task']]);
-	die();
+   // if(!$tpl['task']){
+       echo json_encode($tpl[$tpl['module']]);
+	   die();
+   // }    
+	//echo json_encode($tpl[$tpl['task']]);
+	//die();
 }
-
+if($tpl["datatype"]=='text_html'){
+    require_once $cfg['path'] .  '/views/'.$tpl['module'].'.tpl.php';
+    die();
+}
 if($tpl['ajax']){
-    require_once $cfg['path'] . '/views/common/smallhead.tpl.php';
+    require_once $cfg['path'] . '/views/common/header/head.tpl.php';
     require_once $cfg['path'] .  '/views/'.$tpl['module'].'.tpl.php';
     die();
 }

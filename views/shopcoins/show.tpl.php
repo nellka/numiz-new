@@ -237,26 +237,32 @@ echo "</center><br>";
 	  <script>
 		 $(function() {    
     var availableTags = <?=json_encode($groupselect_v2)?>;
-    $('#group2').live('keydown.autocomplete', function(){
-    	$(this).autocomplete({
-      source: availableTags
+        $('#group2').autocomplete({
+          source: availableTags,
+          select: function (event, ui) {
+            $('#id_group2').val(ui.item.id);
+            return ui.item.label;
+        }
+        });
     });
-});
-   /* $("#group2" ).autocomplete({
-      source: availableTags
-    });*/
-  })
   </script>
 
  
-<div class="ui-widget" id='hgf'>
+<div class="ui-widget">
   <label for="group2"><b>Страна:</b> </label>
   <input id="group2" size=40>
+  <input type="hidden" id="id_group2" size=40>
 </div>
 
 		<input type=hidden id=coins name=coin value="<?=$catalog?>">		
-		<!--<b>Страна: </b><input type=text class=formtxt id="group2" name="group" required size=40><br>-->
-		<b>Номинал: </b><input class=formtxt id="name2" name="name" type=text required size=40 onfocus="AddNominal();">  <br>
+
+		<div class="ui-widget" >
+  <label for="name2""><b>Номинал:</b> </label>
+  <input id="name2"" size=40 onfocus="AddNominal();">
+  <input type="hidden" id="id_name2"" size=40>
+</div>
+		
+		<br>
 		<a name=year></a><b>Год: </b><input class=formtxt id="year2" name="year" required size=4/> <br>
 		<b>Металл: </b>
 		<select name=metal id="metal2" class=formtxt >

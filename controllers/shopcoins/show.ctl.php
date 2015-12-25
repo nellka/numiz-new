@@ -170,12 +170,17 @@ if ($catalog){
 	
 	        $tpl['show']['described'] = true;			
 			$result = $shopcoins_class->getGroupsForDescribe();
-            $groupselect_v = array();
-            $groupselect_v2 = "";
+            $groupselect_v2 = array();
+            //$groupselect_v2 = "";
 			$i=0;
+
 			foreach ($result as $rows){
-			    $groupselect_v[] = $rows["name"];
-			     $groupselect_v2[] = $rows["name"];
+			     $currval = array();
+                  $currval['label'] =  $rows["name"];
+                  $currval['id'] = $rows['group'];
+                  array_push($groupselect_v2, $currval);
+			     //$groupselect_v2[] = $rows["name"];
+			    // $groupselect_v2[] = array('name'=>$rows["name"],'id'=>$rows["name"]);
 				//$groupselect_v .= ($i!=0?",\"":"\"").str_replace('"','',$rows["name"])."\"";
 				//$groupselect_v2 .= ($i!=0?",":"").str_replace('"','',$rows["name"])."";
 				//$i++;
@@ -204,13 +209,13 @@ if ($catalog){
 		}
 	}	
 	$tpl['show'][$rows_main["shopcoins"]]['mark'] = $shopcoins_class->getMarks($rows_main["shopcoins"]);
-	$tpl['show']['reviews'] = $shopcoins_class->getReviews($rows_main["shopcoins"]);
-	//var_dump($tpl['show']['reviews']);
-	if(count($tpl['show']['reviews']['reviewusers'])<5) $additional_reviews =  $shopcoins_class->getAdditionalReviews();
-	foreach ($additional_reviews as $review){
-	 	$tpl['show']['reviews']['reviewusers'][] = $review;
-	} 
-	//var_dump($tpl['show']['reviews']);
+	//$tpl['show']['reviews'] = $shopcoins_class->getReviews($rows_main["shopcoins"]);
+	
+	if(!$tpl['show']['reviews']['reviewusers'] = $cache->load("Reviews_$catalog")) {	   
+	    $tpl['show']['reviews']['reviewusers'] =  $shopcoins_class->getAdditionalReviews();	 
+	    $cache->save($tpl['show']['reviews']['reviewusers'], "Reviews_$catalog");	 
+	} 	
+
 	$tpl['show']['rows_main'] = $rows_main;
 	
 	//тематика

@@ -130,18 +130,18 @@
 }
 </style>  
 <script>
-jQuery(document).ready(function(){  
-  jQuery('#ddmenu li.top li').click(function(event) {
+$(document).ready(function(){  
+  $('#ddmenu li.top li').click(function(event) {
       event.stopPropagation();
   }); 
 
-  jQuery('#ddmenu li.top').click(function(event) {
-        var btn = jQuery('div.submenu',this);
-        var cur_href =  jQuery('a',this).filter( ':first' );       
+  $('#ddmenu li.top').click(function(event) {
+        var btn = $('div.submenu',this);
+        var cur_href =  $('a',this).filter( ':first' );       
         var is_active =  cur_href.hasClass('active');   
         if(!cur_href.hasClass('active_m'))  cur_href.addClass('active_m');         
         var is_visible = btn.is(':visible')?true:false;
-        jQuery('div.submenu').hide();
+        $('div.submenu').hide();
         
         if(!is_visible){
              btn.show();
@@ -156,14 +156,14 @@ jQuery(document).ready(function(){
 </script>
  <? } else {?>
  <script>   
-jQuery(document).ready(function(){ 
-    var cur_href =  jQuery('a',this).filter( ':first' );
-    jQuery('#ddmenu li').hover(function () {
-     clearTimeout(jQuery.data(this,'timer'));
-     jQuery('div.submenu',this).stop(true,true).slideDown(200);
+$(document).ready(function(){ 
+    var cur_href =  $('a',this).filter( ':first' );
+    $('#ddmenu li').hover(function () {
+     clearTimeout($.data(this,'timer'));
+     $('div.submenu',this).stop(true,true).slideDown(200);
     }, function () {
-    jQuery.data(this,'timer', setTimeout(jQuery.proxy(function() {
-      jQuery('div.submenu',this).stop(true,true).slideUp(200);
+    $.data(this,'timer', setTimeout($.proxy(function() {
+      $('div.submenu',this).stop(true,true).slideUp(200);
     }, this), 100));
     });   
 });
