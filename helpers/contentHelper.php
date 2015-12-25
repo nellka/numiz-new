@@ -32,7 +32,7 @@ class contentHelper{
        foreach ($params as $key=>$value){
             $on.= "$key=$value ";
        }
-       return "<img src='http://numizmatik.ru/shopcoins/$url' title='$title' $on>";
+       return "<img  src='http://numizmatik.ru/shopcoins/$url' title='$title' $on>";
        
     }
     
@@ -128,7 +128,9 @@ class contentHelper{
         return  $word;
     }
     
+    
     //функция, котора формирует ссылки для янжекса
+    /*
     static function rehrefdubdle($mtype,$parent,$rows){
        $url =  self::strtolower_ru($rehref)."_c";
        $url .= (($mtype==1 || $mtype==10 || $mtype==12)?$rows['parent']:$rows['shopcoins']);
@@ -136,7 +138,69 @@ class contentHelper{
 	   $url .= contentHelper::strtolower_ru($url)."_c".$rows['shopcoins']."_m".$rows['materialtype'].".html";
        return;
         
+    }*/
+    
+    static function getRegHref($rows,$materialtype=0,$parent=0){  
+        $mtype = ($rows['materialtype']>0?$rows['materialtype']:$materialtype);         
+        $rows['year'] = contentHelper::setYearText($rows['year'],$rows['materialtype']);        
+        $rehref = "";
+        if ($materialtype==5||$materialtype==3){
+			if ($mtype==1) $rehref = "Монета-";
+			if ($mtype==8) $rehref = "Монета-";
+			if ($mtype==7) $rehref = "Набор-монет-";
+			if ($mtype==2) $rehref = "Банкнота-";
+			if ($mtype==4) $rehref = "Набор-монет-";
+			if ($mtype==5) $rehref = "книга-";
+			if ($mtype==9) $rehref = "Лот монет ";
+			
+			if ($rows['gname'])
+				$rehref .= $rows['gname']."-";
+			$rehref .= $rows['name'];
+			if ($rows['metal'])
+				$rehref .= "-".$rows['metal']; 
+			if ($rows['year'])
+				$rehref .= "-".$rows['year'];
+			$namecoins = $rehref;
+			$rehrefdubdle = contentHelper::strtolower_ru($rehref)."_c".($mtype==1?$rows['parent']:$rows['shopcoins'])."_pc".($parent>0?$parent:(($mtype==7 || $mtype==8 || $mtype==6 || $mtype==4 || $mtype==2) && $rows["amount"]>1?$rows['shopcoins']:($mtype==1?$rows['parent']:0)))."_m".$rows['materialtype']."_pp1.html";
+			$rehref = contentHelper::strtolower_ru($rehref)."_c".$rows['shopcoins']."_m".$rows['materialtype'].".html";	
+			$tpl['shop']['MyShowArray'][$i]['amountall'] = ( !$rows["amount"])?1:$rows["amount"];		
+		} else {
+			if ($mtype==1) $rehref = "Монета ";
+			if ($mtype==8) $rehref = "Монета ";
+			if ($mtype==7) $rehref = "Набор монет ";
+			if ($mtype==2) $rehref = "Банкнота ";
+			if ($mtype==4) $rehref = "Набор монет ";
+			if ($mtype==5) $rehref = "Книга ";
+			if ($mtype==9)	$rehref = "Лот монет ";
+			if ($mtype==10)	$rehref = "Нотгельд ";
+			if ($mtype==11)	$rehref = "Монета ";	
+			
+			if (in_array($rows["materialtype"],array(2,4,7,8,6)) && $rows['amount']>10) 
+				$rows['amount'] = 10;
+		
+			if ($rows['gname']) $rehref .= $rows['gname']." ";
+			$rehref .= $rows['name'];
+			if ($rows['metal']) $rehref .= " ".$rows['metal']; 
+			if ($rows['year']) $rehref .= " ". $rows['year'];
+	
+			$namecoins = $rehref;		
+			$rehrefdubdle = contentHelper::strtolower_ru($rehref)."_c".(($mtype==1 || $mtype==10 || $mtype==12)?$rows['parent']:$rows['shopcoins'])."_pc".($parent>0?$parent:(($mtype==7 || $mtype==8 || $mtype==6 || $mtype==4 || $mtype==2) && $rows["amount"]>1?$rows['shopcoins']:(($mtype==1 || $mtype==10)?$rows['parent']:0)))."_m".$rows['materialtype']."_pp1.html";
+			$rehref = contentHelper::strtolower_ru($rehref)."_c".$rows['shopcoins']."_m".$rows['materialtype'].".html";		
+		}
+		return array('namecoins' => $namecoins, 'rehrefdubdle' => $rehrefdubdle,'rehref'=> $rehref);
     }
+    
+    static $menu = array(1=>"Монеты",
+                         8=>"Мелочь",
+                         6=>"Цветные монеты" ,
+                         10=>"Нотгельды",
+                         7=>"Наборы монет",
+                         9=>"Лоты монет для начинающих нумизматов",
+                         2=>"Боны",
+                         3=>"Аксессуары для монет",
+                         4=>"Подарочные наборы",
+                         5=>"Книги о монетах",
+                         11=>'Барахолка');
 }
 
 ?>

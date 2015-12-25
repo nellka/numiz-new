@@ -201,10 +201,14 @@ class model_shopcoins extends Model_Base
 			} elseif ($item['doubletimereserve'] > time() && $this->user_id != $item['userreserve']){
 				$buy_status = 3;
 			} elseif ($can_see&&$item["check"] == 1 || $item["check"] == 50 || ($this->user_id==811 && $item["check"] >3)){
-			    $buy_status = 7;
+			    if (($item['amount'] - $reserveamount)>1)	{
+    				$buy_status = 6;
+    			} else {
+			         $buy_status = 7;
+    			}
 			}			 
 		}
-		
+		//var_dump( $buy_status);
 		if ($reservedForSomeUser) {
 			$reserved_status = 1;
 			if (time() - (int) $item["reserve"] >= (self::$reservetime)  || $item["reserveorder"] != $shopcoinsorder  && $item['relationcatalog']>0 && $this->user_id)
@@ -315,8 +319,9 @@ class model_shopcoins extends Model_Base
 		               ->from($this->table,array('count(*)'));
  
 		if(isset($WhereParams["newcoins"])) {
-			 $select->where('shopcoins.materialtype in(1,4,7,8) and shopcoins.year in('.implode(",",$this->arraynewcoins).')');  
-			
+			 $select->where('shopcoins.materialtype in(1,4,7,8) and shopcoins.year in('.implode(",",$this->arraynewcoins).')'); 			
+		} elseif(isset($WhereParams["revaluation"])){
+		       $select->where('oldprice>0');
 		} else {
 			if($materialtype == 2){
     	       $select->where('shopcoins.amount > 0');     	       
@@ -443,7 +448,8 @@ class model_shopcoins extends Model_Base
 	}  
 	
 	public function getItemsByParams($materialtype,$WhereParams=array(),$yearsearch='', $page=1, $items_for_page=30,$orderby='',$searchid=''){
-        if(isset($WhereParams['coinssearch'])) $coinssearch = $WhereParams['coinssearch'];
+	  //  var_dump($orderby);
+       if(isset($WhereParams['coinssearch'])) $coinssearch = $WhereParams['coinssearch'];
 	   $searchname = 0;
 	    //если нет ничего в поиске
 	    //часть данных не инициализирую на первом этапе
@@ -454,6 +460,8 @@ class model_shopcoins extends Model_Base
 	    if(isset($WhereParams["newcoins"])) {
 			 $select->where('shopcoins.materialtype in(1,4,7,8) and shopcoins.year in('.implode(",",$this->arraynewcoins).')');  
 			
+		} elseif(isset($WhereParams["revaluation"])){
+		       $select->where('oldprice>0');
 		} else {
 			if($materialtype == 2){
 		       $select->where('shopcoins.amount > 0');	       
@@ -558,6 +566,8 @@ class model_shopcoins extends Model_Base
 	            }      
 	       }*/	      
 	   } else {
+	      // var_dump($orderby);
+	     //  die();
 	       $select->order($orderby);
 	   }
 	   if($items_for_page!='all'){
@@ -626,12 +636,13 @@ class model_shopcoins extends Model_Base
        if($materialtype){
            $select->where("(shopcoins.materialtype=? or shopcoins.materialtypecross & pow(2,?))",$materialtype)                         ->order('group desc');
        } elseif ($is_revaluation){
-           
-            die('$is_revaluation');
+           $select = $this->byAdmin($select);
+            $select->where("shopcoins.datereprice>0 and  shopcoins.dateinsert>0");
        } elseif ($is_new){           
             $select->where("shopcoins.materialtype in(1,4,7,8)")
                    ->where("shopcoins.year in(".implode(",",$this->arraynewcoins).")");	
-       }
+       }       
+
        return $this->db->fetchAll($select);       
 	}
 	//получаем данные о группах
@@ -777,12 +788,61 @@ class model_shopcoins extends Model_Base
 		
 		return  $this->db->fetchAll($sql);  
 	}
+	//Возможные группы для описать монету
+	public function getGroupsForDescribe(){
+	    $select = $this->db->select()
+              ->from('group')
+              ->where("type='shopcoins'")
+              ->where("`group` not in (667,937,983,997,1014,1015,1062,1063,1097,1106)")
+              ->group('name');
+        return  $this->db->fetchAll($select); 
+	}
+	//серии
 	public function getSeries($s_id){
 		$select = $this->db->select()
               ->from('shopcoinsseries',array('name'))
               ->where("shopcoinsseries=?",$s_id);
         return       $this->db->fetchOne($select);    
 	
+	}
+	//следующая монета
+	public function getNext($id,$materialtype){
+		$select = $this->db->select()
+              ->from($this->table)
+              ->where('shopcoins >?',$id)
+               ->join(array('group'),'shopcoins.group=group.group',array('gname'=>'group.name','ggroup'=>'group.groupparent'))
+              ->limit(1)
+              ->order('shopcoins ASC')
+            ;              
+		if($materialtype == 2){
+	       $select->where('shopcoins.amount > 0');	       
+	   	}      
+	
+	   	if ($materialtype==1 || $materialtype==10){
+	       $select->where("(shopcoins.materialtype='".$materialtype."' and shopcoins.amountparent > 0) or shopcoins.materialtypecross & pow(2,".$materialtype.")"); 		            
+	   } else {
+	        $select->where("(shopcoins.materialtype=? or shopcoins.materialtypecross & pow(2,?))",$materialtype); 
+	   }
+       return $this->db->fetchRow($select);  	
+	}
+	//предыдущая монета
+	public function getPrevios($id,$materialtype){
+		$select = $this->db->select()
+              ->from($this->table)
+              ->where('shopcoins <?',$id)
+              ->join(array('group'),'shopcoins.group=group.group',array('gname'=>'group.name','ggroup'=>'group.groupparent'))
+              ->limit(1)
+              ->order('shopcoins DESC');              
+		if($materialtype == 2){
+	       $select->where('shopcoins.amount > 0');	       
+	   	}      
+	
+	   	if ($materialtype==1 || $materialtype==10){
+	       $select->where("(shopcoins.materialtype='".$materialtype."' and shopcoins.amountparent > 0) or shopcoins.materialtypecross & pow(2,".$materialtype.")"); 		            
+	   } else {
+	        $select->where("(shopcoins.materialtype=? or shopcoins.materialtypecross & pow(2,?))",$materialtype); 
+	   }
+       return $this->db->fetchRow($select);  	
 	}
 }
 ?>

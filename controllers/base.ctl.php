@@ -22,7 +22,7 @@ $tpl['user']['is_logined'] = $user_class->is_logged_in();
 //получаем информацию о балансе пользователя пользователя
 $tpl['user']['summ'] = $bascetsum;
 $tpl['user']['product_amount'] = intval($shopcoinsorderamount);
-var_dump($tpl['user']['summ']);
+
 $domain = $_SERVER["HTTP_HOST"];
 $domain = '.'.str_replace('www.','', $domain);
        // var_dump($_SESSION);	    

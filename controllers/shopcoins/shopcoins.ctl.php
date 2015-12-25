@@ -1,5 +1,4 @@
 <?
-
 require($cfg['path'].'/helpers/Paginator.php');
 require $cfg['path'] . '/configs/config_shopcoins.php';
 
@@ -14,7 +13,7 @@ $sortname = request('sortname');
 $tpl['pager']['sorts'] = array('dateinsert'=>'новизне',                     
                       'price'=>'по цене',
                       'year'=>'году');
-$tpl['pager']['itemsOnpage'] = array(9=>9,16=>16,36=>36,32=>32,'all'=>'Все');
+$tpl['pager']['itemsOnpage'] = array(9=>9,16=>16,36=>36,33=>33,'all'=>'Все');
 
 //сохраняем количество элементов на странице в куке
 if(request('onpage')){
@@ -183,10 +182,10 @@ if ($searchid)
 
 
 if ($search == 'newcoins') {
-	   $WhereParams['newcoins'] = true;
-		//$WhereArray[] = " shopcoins.materialtype in(1,4,7,8) and shopcoins.year in(".implode(",",$arraynewcoins).")";
-		//die('kkk');
-	}
+	$WhereParams['newcoins'] = true;
+} elseif ($search == 'revaluation') {
+	$WhereParams['revaluation'] = true;
+}
 	
 $countpubs = $shopcoins_class->countallByParams($materialtype,$WhereParams,$yearsearch);
 
@@ -217,9 +216,7 @@ if (isset($CounterSQL)&&$CounterSQL)
 		$OrderByArray[] = " (coefficientcoins+coefficientgroup) desc, coefficientgroup desc, coefficientcoins desc ";
 
 
-if ($search === 'revaluation') {
-	$OrderByArray[] = " shopcoins.datereprice desc, shopcoins.price desc, shopcoins.".$dateinsert_orderby." desc";
-}
+
 
 //if ($group)	$OrderByArray[] = " ABS(shopcoins.group-".$group.") ";
 
@@ -250,14 +247,22 @@ if ($tpl['orderby']=="dateinsertdesc"){
 } elseif($materialtype==12){
 	$OrderByArray[] = "shopcoins.year desc";
 	$OrderByArray[] = "shopcoins.name desc ";
-} elseif ($materialtype==1||$materialtype==2||$materialtype==10||$materialtype==4||$materialtype==7||$materialtype==8||$materialtype==6||$materialtype==11||$search=='newcoins'){
+} 
+
+if ($materialtype==1||$materialtype==2||$materialtype==10||$materialtype==4||$materialtype==7||$materialtype==8||$materialtype==6||$materialtype==11||$search=='newcoins'){
 	$OrderByArray[] = $dateinsert_orderby." desc";
 	$OrderByArray[] = "shopcoins.price desc";
 }
 
-if (sizeof($OrderByArray))
-	$orderby = array_merge(array("shopcoins.check ASC"),$OrderByArray);
+if ($search === 'revaluation') {
+	$OrderByArray[] = "shopcoins.datereprice desc";
+	$OrderByArray[] = "shopcoins.price desc";
+	$OrderByArray[] = "shopcoins.".$dateinsert_orderby." desc";
+}
 
+if (sizeof($OrderByArray)){
+	$orderby = array_merge(array("shopcoins.check ASC"),$OrderByArray);
+}
 
 	
 /*if ($wheresearch)
@@ -365,72 +370,25 @@ if (sizeof($tpl['shop']['MyShowArray'])==0){
 			$tpl['shop']['MyShowArray'][$i]['tmpsmallimage'][] =contentHelper::showImage("smallimages/".$tpl['shop']['ImageParent'][$rows["parent"]][0],"Монета ".$rows["gname"]." | ".$rows["name"]);
 		}
 
-		$mtype = ($materialtype>0?$materialtype:$rows['materialtype']);
-		$MyShowArray[$i]['mtype'] = $mtype;	
-		$rehref = "";
-		if ($materialtype==5||$materialtype==3){
-			if ($mtype==1) $rehref = "Монета-";
-			if ($mtype==8) $rehref = "Монета-";
-			if ($mtype==7) $rehref = "Набор-монет-";
-			if ($mtype==2) $rehref = "Банкнота-";
-			if ($mtype==4) $rehref = "Набор-монет-";
-			if ($mtype==5) $rehref = "книга-";
-			if ($mtype==9) $rehref = "Лот монет ";
-			
-			if ($rows['gname'])
-				$rehref .= $rows['gname']."-";
-			$rehref .= $rows['name'];
-			if ($rows['metal'])
-				$rehref .= "-".$rows['metal']; 
-			if ($rows['year'])
-				$rehref .= "-".$rows['year'];
-			$namecoins = $rehref;
-			$rehrefdubdle = contentHelper::strtolower_ru($rehref)."_c".($mtype==1?$rows['parent']:$rows['shopcoins'])."_pc".($parent>0?$parent:(($mtype==7 || $mtype==8 || $mtype==6 || $mtype==4 || $mtype==2) && $rows["amount"]>1?$rows['shopcoins']:($mtype==1?$rows['parent']:0)))."_m".$rows['materialtype']."_pp1.html";
-			$rehref = contentHelper::strtolower_ru($rehref)."_c".$rows['shopcoins']."_m".$rows['materialtype'].".html";	
-			$tpl['shop']['MyShowArray'][$i]['amountall'] = ( !$rows["amount"])?1:$rows["amount"];		
-		} else {
-			if ($mtype==1) $rehref = "Монета ";
-			if ($mtype==8) $rehref = "Монета ";
-			if ($mtype==7) $rehref = "Набор монет ";
-			if ($mtype==2) $rehref = "Банкнота ";
-			if ($mtype==4) $rehref = "Набор монет ";
-			if ($mtype==5) $rehref = "Книга ";
-			if ($mtype==9)	$rehref = "Лот монет ";
-			if ($mtype==10)	$rehref = "Нотгельд ";
-			if ($mtype==11)	$rehref = "Монета ";	
 
+		$tpl['shop']['MyShowArray'][$i] = array_merge($tpl['shop']['MyShowArray'][$i], contentHelper::getRegHref($rows,$materialtype,$parent));
+		
+		 if ($materialtype==5||$materialtype==3){			
+			$tpl['shop']['MyShowArray'][$i]['amountall'] = ( !$rows["amount"])?1:$rows["amount"];		
+		} else {			
 			
-			if (($rows['materialtype']==2 || $rows['materialtype']==4 || $rows['materialtype']==7 || $rows['materialtype']==8 || $rows['materialtype']==6) && $rows['amount']>10) 
+			if (in_array($rows["materialtype"],array(2,4,7,8,6)) && $rows['amount']>10) 
 				$rows['amount'] = 10;
 			
 		    $amountall = $rows['amount'];
-			if ($rows["materialtype"]==8 || $rows["materialtype"]==6 || $rows["materialtype"]==7 || $rows["materialtype"]==2 || $rows["materialtype"]==4) {		
+			if (in_array($rows["materialtype"],array(8,6,7,2,4))) {		
 				$amountall = ( !$rows["amount"])?1:$rows["amount"];				
-			}
-			
-			$tpl['shop']['MyShowArray'][$i]['amountall'] = $amountall;
-				
-			if ($rows['gname'])
-				$rehref .= $rows['gname']." ";
-			$rehref .= $rows['name'];
-			if ($rows['metal'])
-				$rehref .= " ".$rows['metal']; 
-			if ($rows['year'])
-			{
-			    $tmp_year_name = $rows['year'];
-			    if($rows['year'] == 1990 && $rows['materialtype']==12) $tmp_year_name = '1990 ЛМД';
-			    if($rows['year'] == 1991 && $rows['materialtype']==12) $tmp_year_name = '1991 ЛМД';
-			    if($rows['year'] == 1992 && $rows['materialtype']==12) $tmp_year_name = '1991 ММД';
-				$rehref .= " ". $tmp_year_name;
-			}	
-			$namecoins = $rehref;		
-			$rehrefdubdle = contentHelper::strtolower_ru($rehref)."_c".(($mtype==1 || $mtype==10 || $mtype==12)?$rows['parent']:$rows['shopcoins'])."_pc".($parent>0?$parent:(($mtype==7 || $mtype==8 || $mtype==6 || $mtype==4 || $mtype==2) && $rows["amount"]>1?$rows['shopcoins']:(($mtype==1 || $mtype==10)?$rows['parent']:0)))."_m".$rows['materialtype']."_pp1.html";
-			$rehref = contentHelper::strtolower_ru($rehref)."_c".$rows['shopcoins']."_m".$rows['materialtype'].".html";		
-		} 
-		
-		$tpl['shop']['MyShowArray'][$i]['namecoins'] = $namecoins;
+			}			
+			$tpl['shop']['MyShowArray'][$i]['amountall'] = $amountall;				
+		}
+		/*$tpl['shop']['MyShowArray'][$i]['namecoins'] = $namecoins;
 		$tpl['shop']['MyShowArray'][$i]['rehrefdubdle'] = $rehrefdubdle ;
-		$tpl['shop']['MyShowArray'][$i]['rehref'] = $rehref ;	
+		$tpl['shop']['MyShowArray'][$i]['rehref'] = $rehref ;	*/
 		//формируем рейтинги
 	    $tpl['shop']['MyShowArray'][$i]['mark'] = $shopcoins_class->getMarks($rows["shopcoins"]);
 
@@ -455,9 +413,10 @@ if (sizeof($tpl['shop']['MyShowArray'])==0){
 		}
 				
 			
-		$tpl['shop']['MyShowArray'][$i]['coefficient'] = 0;
-		$tpl['shop']['MyShowArray'][$i]['sumcoefficient'] = 0 ;
-		$tpl['shop']['MyShowArray'][$i]['maxcoefficient'] = 0 ;	
+		$tpl['shop']['MyShowArray'][$i]['coefficient'] = $coefficient;
+		$tpl['shop']['MyShowArray'][$i]['sumcoefficient'] = $sumcoefficient ;
+		$tpl['shop']['MyShowArray'][$i]['maxcoefficient'] = $maxcoefficient ;	
+		
 		$tpl['shop']['MyShowArray'][$i]['buy_status'] = 0 ;		
 		$textoneclick='';	
 		
@@ -485,7 +444,6 @@ if (sizeof($tpl['shop']['MyShowArray'])==0){
 			$ShopcoinsGroupArray[] = $rows["group"];
 		
 		$tpl['shop']['MyShowArray'][$i]['shopcoinstheme'] = $shopcoinstheme;	
-		$tpl['shop']["MyShowArray"][$i]['kjkhk'] = 'hfghfhfgh';
 		$i++;	
 	}
 	

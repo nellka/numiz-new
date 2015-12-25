@@ -1,4 +1,4 @@
-<div >
+<div style="margin-top:25px;">
 <div id='item-top-menu' style='float: left; position: relative; height: 40px; z-index: 2000;overflow: hidden;'>
 <div class="menu-heading" onclick="showShopcoinsMenu();return false">
 	<a style="color:#ffffff;text-decoration:none;" href="#s" onclick="return false">
@@ -40,17 +40,19 @@
    }</script>
    
 </div>
-<div style='float:left'>
-<a href="<?=$cfg['site_dir']?>/shopcoins/?materialtype=<?=$materialtype?>">Вернуться к подбору товара</a>
+<div style='float:left; margin-left:30px;line-height:23px;'>
+<a style="text-decoration:none;" href="<?=$_SERVER['HTTP_REFERER']?>">Вернуться к подбору товара</a>
 </div>
 
-<div style='float:left'>
+<div style='float:left; margin-left:30px;'>
 <?php include $cfg['path'] . '/views/common/breadcrumb.tpl.php'; ?> 
 </div>	
-	        
-<div style='float:left'>
-<a href="">Предыдущий</a>
-<a href="">Следующий</a>
+    
+<div style='float:right;line-height:23px;'>
+
+
+<a style="text-decoration:none;color:#000000;" href="<?=$cfg['site_dir']?>shopcoins/<?=$tpl['show']['previos']["rehref"]?>">< Предыдущий</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a style="text-decoration:none;color:#000000;" href="<?=$cfg['site_dir']?>shopcoins/<?=$tpl['show']['next']["rehref"]?>">Следующий ></a>
 </div>		
 
 </div >

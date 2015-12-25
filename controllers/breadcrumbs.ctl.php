@@ -6,6 +6,41 @@ $tpl['breadcrumbs'][] = array(
 );
 $tpl['current_page'] = '/';
 
+if($tpl['module']=='shopcoins'&&$tpl['task']=='show'){
+    $tpl['breadcrumbs'][] = array(
+    	'text' => 'Магазин',
+    	'href' => $cfg['site_dir'].'shopcoins',
+    	'base_href' =>'ocenka-stoimost-monet'
+    );
+    
+    $tpl['breadcrumbs'][] = array(
+    	'text' => contentHelper::$menu[$materialtype],
+    	'href' => $cfg['site_dir']."shopcoins/index.php?materialtype=$materialtype",
+    	'base_href' =>"shopcoins/index.php?materialtype=$materialtype"
+    );
+    $tpl['breadcrumbs'][] = array(
+    	'text' => $rows_main["name"],
+    	'href' => '',
+    	'base_href' =>''
+    );
+    
+    $tpl['current_page'] = '';
+    
+} elseif ($tpl['module']=='shopcoins'&&$tpl['task']=='catalog_base'){
+      $tpl['breadcrumbs'][] = array(
+    	'text' => 'Магазин',
+    	'href' => $cfg['site_dir'].'shopcoins',
+    	'base_href' =>'ocenka-stoimost-monet'
+    );
+    
+    $tpl['breadcrumbs'][] = array(
+    	'text' => contentHelper::$menu[$materialtype],
+    	'href' => "",
+    	'base_href' =>""    );
+
+    
+    $tpl['current_page'] = '';
+}
 if($_SERVER['REQUEST_URI']=='/new/ocenka-stoimost-monet'){
     $tpl['breadcrumbs'][] = array(
     	'text' => 'Оценка стоимости монет',

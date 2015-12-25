@@ -1,4 +1,6 @@
 <script>	
+site_dir = '<?=$cfg['site_dir']?>';
+
 //рейтинг товара
 function initRaiting(id,total_reiting){
     var star_widht = total_reiting*17 ;
@@ -212,8 +214,7 @@ function ChangeSumSeeCoins (sumcoins,place) {
 	$("#sumseecoins").text(sumseecoins);	
 }
 
-function ShowSmallBascet (id,data)
-{
+function ShowSmallBascet (id,data) {
 	var bascetshopcoins = data.bascetshopcoins;	
 	if (!data.error){
 		var shopcoinsorder = data.shopcoinsorder;
@@ -226,8 +227,9 @@ function ShowSmallBascet (id,data)
 		var bascetinsurance = data.bascetinsurance;
 		var textbascet2 = data.textbascet2;		
 		
-		$("#inorderamount").html(bascetamount);				
-    		var str = '';
+		$("#inorderamount").html(bascetamount);		
+		$("#inordersum").html(bascetsum);		
+    	var str = '';
     		str = '<h1 class="yell_b">Корзина</h1>';
     		str += '<p><b>Заказ №</b> ' + shopcoinsorder + '</p>';
     		str += '<p><strong>Товаров:</strong> ' + bascetamount + ' <br><b>На сумму:</b> ' + bascetsum + ' р.';
@@ -301,9 +303,69 @@ function AddReview(id) {
 	});	
 }
 
+function AddNext (id, amount) {
+     $('#bascetshop' + id).html('<img src="'+site_dir+'images/wait.gif">');
+	 $.ajax({
+	    url: '<?=$cfg['site_dir']?>shopcoins/addnext.php', 
+	    type: "POST",
+	    data:{'shopcoins':id,'amount':amount},         
+	    dataType : "json",                   
+	    success: function (data, textStatus) {                
+        	if (!data.error) {
+        		$("#MainBascet").html('Вы в очереди на покупку монеты, в случае отказа от покупки предыдущего покупателя монета будет забронирована за вами в течении 5 часов. Ваша бронь будет действительна до '+data.datereserve);        		
+        	    $('#bascetshop' + id).html('<img src="'+site_dir+'images/corz77.gif" alt="Вы в очереди на монету">');
+        	} else if (data.error == 'noauth'){
+        		$("#MainBascet").html('Чтобы встать в очередь на товар пожалуйста, авторизуйтесь');   		    	} else if (data.error == 'reserved'){
+        		$("#MainBascet").html('Товар зарезервирован одновременно с другим пользователем');        
+        		$('#bascetshop' + id).html('<img src="'+site_dir+'images/corz6.gif" alt="Уже в корзине">');        		
+        	} else if (data.error == 'notavailable') {        		
+        		$("#MainBascet").html('Товар уже продан');        		
+        		$('#bascetshop' + id).html('<img src="'+site_dir+'images/corz6.gif" alt="Уже в корзине">');        
+        	} else if (data.error == 'stopsummax') {
+        		$("#MainBascet").html('Максимальная сумма заказа <? echo $stopsummax;?> руб.<br>Если вы не все сложили в корзину, проделайте следующим заказом."');
+        	}  
+        	              	
+            $("#MainBascet").dialog({
+            	position: { 
+                    my: 'top',
+                    at: 'top',
+                    of: $("#bascetshopcoins"+id)
+                },
+         		 modal:true,
+        		 buttons:{
+        		    Ok: function(){
+        		      $(this).dialog( "close" );
+        		    }
+        		  }
+            });	       
+        }
+	});	
+}
+function WaitSubscribeCatalog(id){
+	$("#mysubscribecatalog"+id).html('<img src="'+site_dir+'images/wait.gif">');
+	$.ajax({
+	    url: site_dir+'shopcoins/addsubscribecatalog.php', 
+	    type: "POST",
+	    data:{'catalog':id},         
+	    dataType : "json",                   
+	    success: function (data, textStatus) {          
+            if (!data.error){            
+                if (data.valueid){
+                  $("#mysubscribecatalog" + data.valueid).html('<b><font color=silver>Заявка принята</font></b>');
+                }
+           } else if (data.error == 'auth') {
+                $("#mysubscribecatalog" + data.valueid).html('<b><font color=silver>Вы не авторизованы</font></b>');
+            }  else {
+                $("#mysubscribecatalog" + data.valueid).html('<font color=red><b>'+data.error+ '</b></font>');
+            }
+	    }
+	});
+}
+
+
 function AddNominal(){
     $.ajax({
-	    url: '<?=$cfg['site_dir']?><?=$cfg['site_dir']?>shopcoins/detailscoins/addname.php', 
+	    url: '<?=$cfg['site_dir']?>shopcoins/detailscoins/addname.php', 
 	    type: "POST",
 	    data:{'group':$('#group2').val()},         
 	    dataType : "json",                   
@@ -311,206 +373,11 @@ function AddNominal(){
 	      console.log(data);       
        }
 	});
-
 }	
+
 function  CheckSubmitPrice(){
     console.log(10);
 }
-//var TextGroup = "'.$groupselect_v2.'";
-//this.group = AutoInput("group2",);
-//this.name = AutoInput("name2",MetalNameArray);
-function AddGroup2() {
-    console.log('jjj');
-	/*
-	// CONFIG 
-	
-	// this is id of the search field you want to add this script to. 
-	// ������������� ������ �� ��������� ����
-	var id = "group2";
-	
-	// ������� � ���� �� ����� �� ���� ������
-	var defaultText = "";	
-	
-	// set to either true or false
-	// when set to true it will generate search suggestions list for search field based on content of variable below
-	var suggestion = true;
-	
-	// static list of suggestion options, separated by comma
-	// � ����� ����� ������� ����������� ��� ��������� ��������
-	var suggestionText =  TextGroup;
-	
-	// END CONFIG (do not edit below this line, well unless you really, really want to change something :) )
-	
-	// Peace, 
-	// Alen
-
-	var field = document.getElementById(id);	
-	var classInactive = "sf_inactive";
-	var classActive = "sf_active";
-	var classText = "sf_text";
-	var classSuggestion = "sf_suggestion";
-	this.safari = ((parseInt(navigator.productSub)>=20020000)&&(navigator.vendor.indexOf("Apple Computer")!=-1));
-	if(field && !safari){
-		field.value = defaultText;
-		field.c = field.className;		
-		field.className = field.c + " " + classInactive;
-		field.onfocus = function(){
-			this.className = this.c + " "  + classActive;
-			this.value = (this.value == "" || this.value == defaultText) ?  "" : this.value;
-		};
-		field.onblur = function(){
-			this.className = (this.value != "" && this.value != defaultText) ? this.c + " " +  classText : this.c + " " +  classInactive;
-			this.value = (this.value != "" && this.value != defaultText) ?  this.value : defaultText;
-			clearList();
-		};
-		if (suggestion){
-			
-			var selectedIndex = 0;
-						
-			field.setAttribute("autocomplete", "off");
-			var div = document.createElement("div");
-			var list = document.createElement("ul");
-			list.style.display = "none";
-			div.className = classSuggestion;
-			list.style.width = field.offsetWidth + "px";
-			div.appendChild(list);
-			field.parentNode.appendChild(div);	
-
-			field.onkeypress = function(e){
-				
-				var key = getKeyCode(e);
-		
-				if(key == 13){ // enter
-					selectList();
-					selectedIndex = 0;
-					return false;
-				};	
-			};
-				
-			field.onkeyup = function(e){
-			
-				var key = getKeyCode(e);
-		
-				switch(key){
-				case 13:
-					return false;
-					break;			
-				case 27:  // esc
-					field.value = "";
-					selectedIndex = 0;
-					clearList();
-					break;				
-				case 38: // up
-					navList("up");
-					break;
-				case 40: // down
-					navList("down");		
-					break;
-				default:
-					startList();			
-					break;
-				};
-			};
-			
-			this.startList = function(){
-				var arr = getListItems(field.value);
-				if(field.value.length > 0){
-					createList(arr);
-				} else {
-					clearList();
-				};	
-			};
-			
-			this.getListItems = function(value){
-				var arr = new Array();
-				var src = suggestionText;
-				var src = src.replace(/, /g, ",");
-				var arrSrc = src.split(",");
-				for(i=0;i<arrSrc.length;i++){
-					if(arrSrc[i].substring(0,value.length).toLowerCase() == value.toLowerCase()){
-						arr.push(arrSrc[i]);
-					};
-				};				
-				return arr;
-			};
-			
-			this.createList = function(arr){				
-				resetList();			
-				if(arr.length > 0) {
-					for(i=0;i<arr.length;i++){				
-						li = document.createElement("li");
-						a = document.createElement("a");
-						a.href = "javascript:void(0);";
-						a.i = i+1;
-						a.innerHTML = arr[i];
-						li.i = i+1;
-						li.onmouseover = function(){
-							navListItem(this.i);
-						};
-						a.onmousedown = function(){
-							selectedIndex = this.i;
-							selectList(this.i);		
-							return false;
-						};					
-						li.appendChild(a);
-						list.setAttribute("tabindex", "-1");
-						list.appendChild(li);	
-					};	
-					list.style.display = "block";				
-				} else {
-					clearList();
-				};
-			};	
-			
-			this.resetList = function(){
-				var li = list.getElementsByTagName("li");
-				var len = li.length;
-				for(var i=0;i<len;i++){
-					list.removeChild(li[0]);
-				};
-			};
-			
-			this.navList = function(dir){			
-				selectedIndex += (dir == "down") ? 1 : -1;
-				li = list.getElementsByTagName("li");
-				if (selectedIndex < 1) selectedIndex =  li.length;
-				if (selectedIndex > li.length) selectedIndex =  1;
-				navListItem(selectedIndex);
-			};
-			
-			this.navListItem = function(index){	
-				selectedIndex = index;
-				li = list.getElementsByTagName("li");
-				for(var i=0;i<li.length;i++){
-					li[i].className = (i==(selectedIndex-1)) ? "selected" : "";
-				};
-			};
-			
-			this.selectList = function(){
-				li = list.getElementsByTagName("li");	
-				a = li[selectedIndex-1].getElementsByTagName("a")[0];
-				field.value = a.innerHTML;
-				clearList();
-			};			
-			
-		};
-	};
-	
-	this.clearList = function(){
-		if(list){
-			list.style.display = "none";
-			selectedIndex = 0;
-		};
-	};		
-	this.getKeyCode = function(e){
-		var code;
-		if (!e) var e = window.event;
-		if (e.keyCode) code = e.keyCode;
-		return code;
-	};*/
-	
-};
-
 
 function AddName2() {
 	/*
@@ -707,131 +574,6 @@ function AddName2() {
 /*
 
 
-function AddAccessory_3(shopcoins){
-	var str;
-	str = document.mainform.amount + shopcoins + value;
-	document.mainform.shopcoinsorder.value = shopcoins;
-	document.mainform.shopcoinsorderamount.value = eval(str);
-	if (eval(str) > 0)
-	{
-		//document.mainform.submit();
-		process ('addbascet.php?shopcoinsorder=".$shopcoinsorder."&shopcoins=' + shopcoins + '&amount=' + eval(str));
-	}
-	else
-		alert ('Введите количество');
-}
-
-function WaitSubscribeCatalog(catalog)
-{
-	
-	var str = "mysubscribecatalog"+catalog;
-	myDiv = document.getElementById(str);
-	myDiv.innerHTML = "<img src=<?echo $in?>images/wait.gif>";
-}
-
-function AddSubscribeCatalog ()
-{
-  error = xmlRoot.getElementsByTagName("error");
-  errorvalue = error.item(0).firstChild.data;
-
-  if (errorvalue == 'none')
-  {
-    var valueid = '';
-    var value = '';
-    valueid = xmlRoot.getElementsByTagName("valueid").item(0).firstChild.data;
-    value = xmlRoot.getElementsByTagName("value").item(0).firstChild.data;
-
-    if (valueid != "")
-    {
-      myDiv = document.getElementById("mysubscribecatalog" + valueid);
-      myDiv.innerHTML = '<b><font color=silver>������ �������</font></b>';
-    }
-  }
-  else if (errorvalue == 'auth')
-  {
-    myDiv = document.getElementById("mysubscribecatalog" + valueid);
-    myDiv.innerHTML = '<b><font color=silver>�� �� ������������</font></b>';
-  }
-  else
-  {
-    var valueid = '';
-    valueid = xmlRoot.getElementsByTagName("valueid").item(0).firstChild.data;
-
-    myDiv = document.getElementById("mysubscribecatalog" + valueid);
-    myDiv.innerHTML = '<font color=red><b>' + errorvalue + '</b></font>';
-  }
-}
-
-function AddBascet (shopcoins, amount)
-{
-	//vbhjckfd
-	process ('addbascet.php?shopcoinsorder=<?echo $shopcoinsorder;?>&shopcoins=' + shopcoins + '&amount=' + amount + '<?= cookiesWork() ? '' : '&'.SID ?>');
-	var str = '';
-	str = 'bascetshopcoins' + shopcoins;
-	myDiv = document.getElementById(str);
-	myDiv.innerHTML = '<img src=<?echo $in;?>images/wait.gif>';
-	//alert (shopcoins + " - " + amount);
-}
-
-function AddNext (shopcoins, amount)
-{
-	//vbhjckfd
-	//window.open ('addinorder.php?shopcoins=' + shopcoins + '&amount=' + amount + '<?= cookiesWork() ? '' : '&'.SID ?>');
-	process ('addnext.php?shopcoins=' + shopcoins + '&amount=' + amount + '<?= cookiesWork() ? '' : '&'.SID ?>');
-	var str = '';
-	str = 'bascetshop' + shopcoins;
-	myDiv = document.getElementById(str);
-	myDiv.innerHTML = '<img src=<?echo $in;?>images/wait.gif>';
-	//alert (shopcoins + " - " + amount);
-}
-
-
-function ShowNext (xmlRoot)
-{
-
-	error = xmlRoot.getElementsByTagName("error");
-	errorvalue = error.item(0).firstChild.data;
-	var bascetshopcoins = '';	
-	bascetshopcoins = xmlRoot.getElementsByTagName("bascetshopcoins").item(0).firstChild.data;
-	datereserve = xmlRoot.getElementsByTagName("datereserve").item(0).firstChild.data;
-	
-	if (errorvalue == 'none')
-	{
-		alert ('�� � ������� �� ������� ������, � ������ ������ �� ������� ����������� ���������� ������ ����� ������������� �� ���� � ������� 5 �����. ���� ����� ����� ������������� �� '+datereserve);
-		
-		var str = '';
-		str = 'bascetshop' + bascetshopcoins;
-		myDiv = document.getElementById(str);
-		myDiv.innerHTML = '<img src=<? echo $in; ?>images/corz77.gif border=0 alt="�� � ������� �� ������">';
-	}
-	else if (errorvalue == 'reserved')
-	{
-		alert ('����� �������������� ������������ � ������ �������������');
-
-		var str = '';
-		str = 'bascetshop' + bascetshopcoins;
-		myDiv = document.getElementById(str);
-		myDiv.innerHTML = '<img src=<? echo $in; ?>images/corz6.gif border=0 alt="��� � �������">';
-		
-	}
-	else if (errorvalue == 'notavailable')
-	{
-		
-		alert ('����� ��� ������');
-		
-		var str = '';
-		str = 'bascetshop' + bascetshopcoins;
-		myDiv = document.getElementById(str);
-		myDiv.innerHTML = '<img src=<? echo $in; ?>images/corz6.gif border=0 alt="��� � �������">';
-
-	}
-	else if (errorvalue == 'stopsummax')
-	{
-		alert ('������������ ����� ������ <? echo $stopsummax;?> ���. \n���� �� �� ��� ������� � �������, ���������� ��������� �������."');
-	}
-	
-}
-
 function ShowBascet2() {
 
 	var divstr = "";
@@ -843,34 +585,8 @@ function ShowBascet2() {
 		myDiv.style.display="none";
 }
 <script type="text/javascript" src="ajax.php" language="JavaScript"></script>
-<script type="text/javascript">
-
-	function AddAccessory(shopcoins)
-			{
-				var str='';
-				str = document.getElementById('amount' + shopcoins).value;
-				//document.mainform.shopcoinsorder.value = shopcoins;
-				//document.mainform.shopcoinsorderamount.value = eval(str);
-				//alert (eval(str) + shopcoins);
-				if (eval(str) > 0)
-				{
-					//document.mainform.submit();
-					process ('addbascet.php?shopcoinsorder="+<? echo $shopcoinsorder; ?> + "&shopcoins=' + shopcoins + '&amount=' + eval(str));
-				}
-				else
-					alert ('������� ����������');
-			}
+<script type="text/javascript">	
 			
-			
-
-function AddBascet (shopcoins, amount)
-{
-	//vbhjckfd
-	process ('addbascet.php?shopcoinsorder=<? echo $shopcoinsorder;?>&shopcoins=' + shopcoins + '&amount=' + amount + '');	
-	//window.setTimeout("reload(GET=true);",500);
-	//alert (shopcoins + " - " + amount);
-}
-
 function AddBascetTwo (shopcoins, amount, positioncoins)
 {
 	//vbhjckfd
@@ -926,47 +642,6 @@ function NotShowLot(auction)
 
 
 <script language="JavaScript">
-
-function AddBrightness ()
-{
-	myDiv = document.getElementById("Image_Big");
-	myDiv.innerHTML = "<img src=<?echo $cfg['site_dir']?>images/wait.gif>";
-	var digit = 10;
-	var str = 0;
-	str = document.mainform.brightnessvalue.value;
-	var returnvalue = digit + parseInt(str);
-	if (returnvalue > 100)
-	{
-		alert ('Значение должно быть <= -100');
-		window.event.cancelBubble=true;
-		window.event.returnValue=false;
-	} else {
-		document.mainform.brightnessvalue.value = returnvalue;
-		myDiv = document.getElementById("Image_Big");
-		myDiv.innerHTML = '<img src=http://www.numizmatik.ru/shopcoins/photoshop7.php?Image=<? echo (trim($imagebig)?$imagebig:$imagest); ?>&brightnessvalue=' + returnvalue + ' alt=\"<? echo $namest;?>\" border=1>';;
-	}
-}
-
-function ReduceBrightness ()
-{
-	myDiv = document.getElementById("Image_Big");
-	myDiv.innerHTML = "<img src=<?echo $cfg['site_dir']?>images/wait.gif>";
-
-	var digit = 10;
-	var str = 0;
-	str = document.mainform.brightnessvalue.value;
-	var returnvalue = parseInt(str) - digit ;
-	if (returnvalue < -100)
-	{
-		alert ('Значение должно быть >= -100');
-		window.event.cancelBubble=true;
-		window.event.returnValue=false;
-	} else {
-		document.mainform.brightnessvalue.value = returnvalue;
-		myDiv = document.getElementById("Image_Big");
-		myDiv.innerHTML = '<img src=http://www.numizmatik.ru/shopcoins/photoshop7.php?Image=<? echo (trim($imagebig)?$imagebig:$imagest); ?>&brightnessvalue=' + returnvalue + ' alt=\"<? echo $namest;?>\" border=1>';;
-	}
-}
 
 function CheckingValue ()
 {
@@ -1025,77 +700,6 @@ function NotShowLot(auction)
 <script type="text/javascript" src="ajax.php" language="JavaScript"></script>
 <script language="JavaScript">
 
-
-function AddAccessory(shopcoins)
-{
-	var str;
-	str = document.getElementById('amount' + shopcoins).value;
-	//document.mainform.shopcoinsorder.value = shopcoins;
-	//document.mainform.shopcoinsorderamount.value = eval(str);
-	//alert (eval(str) + shopcoins);
-	if (eval(str) > 0)
-	{
-		//document.mainform.submit();
-		process ('addbascet.php?shopcoinsorder="+<? echo $shopcoinsorder; ?> + "&shopcoins=' + shopcoins + '&amount=' + eval(str));
-	}
-	else
-		alert ('Введите количество');
-}
-
-function getRadioGroupValue(radioGroupObj)
-{
-  for (var i=0; i < radioGroupObj.length; i++)
-    if (radioGroupObj[i].checked) return radioGroupObj[i].value;
-
-  return null;
-}
-			
-function AddMark(user,shopcoins) {
-
-	if(!shopcoins)
-		return;
-	//alert(user);
-	var marks = getRadioGroupValue(document.markcoin.marks);
-	//alert(marks);
-	if (!marks) {
-		
-		alert('Выберите оценку.');
-		return;
-	}
-	
-	if (!user) {
-		
-		alert('Вы не авторизованны.');
-		return;
-	}
-	//alert('addmark.php?mark='+marks+'&user='+user+'&shopcoins='+shopcoins);
-	process('addmark.php?mark='+marks+'&user='+user+'&shopcoins='+shopcoins);
-	
-}
-
-function AddReview(user,shopcoins) {
-
-	if(!shopcoins)
-		return;
-	//alert(user);
-	var review = document.reviewcoin.reviewcointext.value;
-	//alert(marks);
-	if (!review) {
-		
-		alert('Заполните отзыв.');
-		return;
-	}
-	
-	if (!user) {
-		
-		alert('Вы не авторизованны.');
-		return;
-	}
-	//alert (review);
-	//alert('addreview.php?review='+encodeURI(review)+'&user='+user+'&shopcoins='+shopcoins);
-	process('addreview.php?review='+encodeURI(review)+'&user='+user+'&shopcoins='+shopcoins);
-}
-
 function ShowBascet2() {
 
 	var divstr = "";
@@ -1152,76 +756,6 @@ function ShowMarkCoin (xmlRoot) {
 	}
 }
 
-			
-
-function AddBascet (shopcoins, amount)
-{
-	//vbhjckfd
-	process ('addbascet.php?shopcoinsorder=<?echo $shopcoinsorder;?>&shopcoins=' + shopcoins + '&amount=' + amount + '<?=cookiesWork() ? '' : '&'.SID?>');	
-	var str = '';
-	str = 'bascetshopcoins' + shopcoins;
-	myDiv = document.getElementById(str);
-	myDiv.innerHTML = '<img src=<?echo $cfg['site_dir']?>images/wait.gif>';
-	//alert (shopcoins + " - " + amount);
-}
-
-function AddNext (shopcoins, amount)
-{
-	//vbhjckfd
-	//window.open ('addinorder.php?shopcoins=' + shopcoins + '&amount=' + amount + '<?= cookiesWork() ? '' : '&'.SID ?>');
-	process ('addnext.php?shopcoins=' + shopcoins + '&amount=' + amount + '<?= cookiesWork() ? '' : '&'.SID ?>');
-	var str = '';
-	str = 'bascetshop' + shopcoins;
-	myDiv = document.getElementById(str);
-	myDiv.innerHTML = '<img src=<?echo $cfg['site_dir'];?>images/wait.gif>';
-	//alert (shopcoins + " - " + amount);
-}
-
-function ShowNext (xmlRoot)
-{
-
-	error = xmlRoot.getElementsByTagName("error");
-	errorvalue = error.item(0).firstChild.data;
-	var bascetshopcoins = '';	
-	bascetshopcoins = xmlRoot.getElementsByTagName("bascetshopcoins").item(0).firstChild.data;
-	datereserve = xmlRoot.getElementsByTagName("datereserve").item(0).firstChild.data;
-	
-	if (errorvalue == 'none')
-	{
-		alert ('Вы в очереди на покупку монеты, в случае отказа от покупки предыдущего покупателя монета будет забронирована за вами в течении 5 часов. Ваша бронь будет действительна до '+datereserve);
-		
-		var str = '';
-		str = 'bascetshop' + bascetshopcoins;
-		myDiv = document.getElementById(str);
-		myDiv.innerHTML = '<img src=<? echo $cfg['site_dir']; ?>images/corz77.gif border=0 alt="Вы в очереди на монету">';
-	}
-	else if (errorvalue == 'reserved')
-	{
-		alert ('Товар зарезервирован одновременно с другим пользователем');
-
-		var str = '';
-		str = 'bascetshop' + bascetshopcoins;
-		myDiv = document.getElementById(str);
-		myDiv.innerHTML = '<img src=<? echo $cfg['site_dir']; ?>images/corz6.gif border=0 alt="Уже в корзине">';
-		
-	}
-	else if (errorvalue == 'notavailable')
-	{
-		
-		alert ('Товар уже продан');
-		
-		var str = '';
-		str = 'bascetshop' + bascetshopcoins;
-		myDiv = document.getElementById(str);
-		myDiv.innerHTML = '<img src=<? echo $cfg['site_dir']; ?>images/corz6.gif border=0 alt="Уже в корзине">';
-
-	}
-	else if (errorvalue == 'stopsummax')
-	{
-		alert ('Максимальная сумма заказа <? echo $stopsummax;?> руб. \nЕсли вы не все сложили в корзину, проделайте следующим заказом."');
-	}
-	
-}
 
 function AddBascetTwo (shopcoins, amount, positioncoins)
 {
@@ -1233,96 +767,6 @@ function AddBascetTwo (shopcoins, amount, positioncoins)
 	myDiv.innerHTML = '<<img src=<?echo $cfg['site_dir']?>images/wait.gif>>';
 	//alert (shopcoins + " - " + amount);
 }
-
-function ShowSmallBascet (xmlRoot)
-{
-	error = xmlRoot.getElementsByTagName("error");
-	errorvalue = error.item(0).firstChild.data;
-
-	var bascetshopcoins = '';
-	bascetshopcoins = xmlRoot.getElementsByTagName("bascetshopcoins").item(0).firstChild.data;
-	positioncoins = xmlRoot.getElementsByTagName("positioncoins").item(0).firstChild.data;
-	
-	if (errorvalue == 'none')
-	{
-		var shopcoinsorder = '';
-		var bascetamount = '';
-		var bascetsum = '';
-		var bascetweight = '';
-		var bascetreservetime = '';
-		var bascetpostweightmin = '';
-		var bascetpostweightmax = '';
-		var bascetinsurance = '';
-		var textbascet2 = '';
-		
-		shopcoinsorder = xmlRoot.getElementsByTagName("shopcoinsorder").item(0).firstChild.data;
-		bascetamount = xmlRoot.getElementsByTagName("bascetamount").item(0).firstChild.data;
-		bascetsum = xmlRoot.getElementsByTagName("bascetsum").item(0).firstChild.data;
-		bascetsumclient = xmlRoot.getElementsByTagName("bascetsumclient").item(0).firstChild.data;
-		bascetweight = xmlRoot.getElementsByTagName("bascetweight").item(0).firstChild.data;
-		bascetreservetime = xmlRoot.getElementsByTagName("bascetreservetime").item(0).firstChild.data;
-		bascetpostweightmin = xmlRoot.getElementsByTagName("bascetpostweightmin").item(0).firstChild.data;
-		bascetpostweightmax = xmlRoot.getElementsByTagName("bascetpostweightmax").item(0).firstChild.data;
-		bascetinsurance = xmlRoot.getElementsByTagName("bascetinsurance").item(0).firstChild.data;
-		textbascet2 = xmlRoot.getElementsByTagName("textbascet2").item(0).firstChild.data;
-		
-		myDiv = document.getElementById("inorderamount");
-		myDiv.innerHTML = "В вашей корзине <a href=<?=$cfg['site_dir']?>shopcoins/index.php?page=orderdetails> "+bascetamount+" </a> товаров, <a href=<?=$cfg['site_dir']?>shopcoins/index.php?page=orderdetails><img src=<?=$cfg['site_dir']?>images/basket.gif border=0></a>";
-		
-		var str = '';
-		str = '<table border=0 cellpadding=3 cellspacing=0 style="border:thin solid 1px #000000" id=tableshopcoinsorder width=180>';
-		str += '<tr class=tboard bgcolor=#006699><td><strong><font color=white>Корзина:</font></strong></td></tr>';
-		str += '<tr class=tboard bgcolor=#ffcc66><td class=tboard align=top><strong>Заказ №</strong> ' + shopcoinsorder + ' ';
-		str += '<br><strong>Товаров:</strong> ' + bascetamount + ' <br><strong>На сумму:</strong> ' + bascetsum + ' р.';
-		if (bascetsumclient>0) {
-			str += '<br><strong>Для постоянных клиентов:</strong> ' + bascetsumclient + ' р.';
-		}
-		str += '<br><strong>Вес ~ </strong> ' + bascetweight + ' гр. <br><strong>Бронь на:</strong> ' + bascetreservetime + '<br><center><a href=index.php?page=orderdetails><img src=<?echo $cfg['site_dir'];?>images/basket.gif border=0></a></center></td></tr>';
-		str += '<tr class=tboard bgcolor=#006699><td><strong><font color=white>Доставка:</font></strong></td></tr>';
-		str += '<tr class=tboard bgcolor=#ffcc66><td class=tboard align=top><strong>Москва:</strong><br><strong>Кольцевые станции:</strong> бесплатно<br><strong>В офис:</strong> от 170 р.';
-		str += '<br><br><strong>Почта России</strong><br><strong>Сбор по весу:</strong> от ' + bascetpostweightmin + ' до ' + bascetpostweightmax + ' р.';
-		str += '<br><strong>Страховка 4%:</strong> ' + bascetinsurance + ' р. <br><strong>Упаковка:</strong> 10 р. за конверт / ящик.</td></tr>';
-		str +='<tr class=tboard bgcolor=#ffcc66><td><div style="display:none" id=showbascet2>'+textbascet2+'</div></td></tr>'
-		str += '<tr class=tboard bgcolor=#EBE4D4><td align=center><img src=../images/windowsmaximize.gif onclick="ShowBascet2();" alt="Посмотреть содержимое"/></td></tr></table>';
-		
-		myDiv = document.getElementById("MainBascet");
-		myDiv.innerHTML = str;
-		
-		myDiv.style.position = "absolute";
-		myDiv.style.left = 797;
-		myDiv.style.top = document.body.scrollTop;
-
-		
-		var str = '';
-		if (positioncoins>0) str = 'bascetshopcoin' + positioncoins;
-		else str = 'bascetshopcoins' + bascetshopcoins;
-		myDiv = document.getElementById(str);
-		myDiv.innerHTML = '<img src=<? echo $cfg['site_dir']; ?>images/corz7.gif border=0 alt="Уже в корзине">';
-
-	}
-	else if (errorvalue == 'reserved')
-	{
-		alert ('Товар зарезервирован одновременно с другим пользователем');
-
-		var str = '';
-		if (positioncoins>0) str = 'bascetshopcoin' + positioncoins;
-		else str = 'bascetshopcoins' + bascetshopcoins;
-		myDiv = document.getElementById(str);
-		myDiv.innerHTML = '<img src=<? echo $cfg['site_dir']; ?>images/corz6.gif border=0 alt="Уже в корзине">';
-	}
-	else if (errorvalue == 'notavailable')
-	{
-		alert ('Товар уже продан');
-		
-		var str = '';
-		if (positioncoins>0) str = 'bascetshopcoin' + positioncoins;
-		else str = 'bascetshopcoins' + bascetshopcoins;
-		myDiv = document.getElementById(str);
-		alert (str);
-		myDiv.innerHTML = '<img src=<? echo $cfg['site_dir']; ?>images/corz6.gif border=0 alt="Уже в корзине">';
-	}
-}
-
 </script>
 */?>
 </script>

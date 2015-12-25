@@ -1,7 +1,7 @@
-<div style="width:600px;float:left">    
+<div style="width:600px;float:left;margin-top:30px;">    
             <?include($cfg['path'].'/views/shopcoins/item/imageBig.tpl.php');?>
     </div>
-    <div style="width:400px;float:left">
+    <div style="width:350px;float:left;padding-left:50px;">
         <h1><?=$rows_main["name"]?></h1>
         <?
 	if ($rows_main["gname"]){?>

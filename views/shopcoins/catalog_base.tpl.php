@@ -16,11 +16,11 @@ include('pager.tpl.php');
 <?
 $i=1;
 foreach ($tpl['shop']['MyShowArray'] as $key=>$rows){	
-	$textoneclick = '';	
+	/*$textoneclick = '';	
 	if (($rows['materialtype']==2 || $rows['materialtype']==4 || $rows['materialtype']==7 || $rows['materialtype']==8 || $rows['materialtype']==6) && $rows['amount']>10) 
 		$rows['amount'] = 10;	
-		
-	if(in_array($rows["materialtype"],array(7,4))){
+		*/
+	if(in_array($materialtype,array(7,4))){
 		echo "<div class='blockshop_spisok'>";
 		include('items/item_nabor.tpl.php');
 		echo "</div>";

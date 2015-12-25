@@ -90,7 +90,11 @@ if(!$tpl['filter']['price']['max'] = $cache->load("price_max_$materialtype")) {
 
 //($
 if ($search == 'revaluation') {
-    die('$search');
+    if(!$tpl['filters']['All_groups'] = $cache->load("revaluation_filter_group")) {
+        $tpl['filters']['All_groups'] = $shopcoins_class->getGroups(0,1,0);
+        $cache->save( $tpl['filters']['All_groups'], "revaluation_filter_group");	
+    }
+    
     $tpl['filters']['All_groups'] = $shopcoins_class->getGroups(0,1,0);
 	$sql = "select distinct `group` 
 	from shopcoins 

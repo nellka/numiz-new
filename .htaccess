@@ -12,6 +12,8 @@ RewriteRule shopcoins/.*_c([0-9]*)_pc([0-9]*)_m([0-9]*)_pp([0-9]*)\.html$ index.
 RewriteRule shopcoins/.*_c([0-9]*)_m([0-9]*)\.html$ index.php?module=shopcoins&task=show&catalog=$1&materialtype=$2 [L] 
 
 
+RewriteRule  shopcoins/addsubscribecatalog.php    index.php?module=shopcoins&task=addsubscribecatalog [L,QSA]
+RewriteRule  shopcoins/addnext.php    index.php?module=shopcoins&task=addnext [L,QSA]
 RewriteRule  shopcoins/addbascetlast.php    index.php?module=shopcoins&task=addbascetlast [L,QSA]
 RewriteRule  shopcoins/detailscoins/addname.php    index.php?module=detailscoins&task=addname [L,QSA]
 RewriteRule  shopcoins/addreview.php     index.php?module=shopcoins&task=addreview [L,QSA]

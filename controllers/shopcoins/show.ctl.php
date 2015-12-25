@@ -6,18 +6,6 @@ $catalogshopcoinsrelation_class = new model_catalogshopcoinsrelation($cfg['db'])
 
 $page = 'show';
 
-$host = "localhost";
-$db_user  = "tester";
-$db_password = "eh3Majyd";
-$database = "tet";
-$domain = ".numizmatik.ru";
-$server_name = "http://www.numizmatik.ru";
-$email_admin = "bodka@rt.mipt.ru";
-$link=mysql_connect($host, $db_user, $db_password);
-$result=mysql_select_db($database);
-$result=@mysql_query("set names cp1251");
-
-
 $arraynewcoins = Array(1=>date('Y')-2,2=>date('Y')-1,3=>date('Y'));
 $show50 = 0;
 
@@ -33,8 +21,6 @@ $ciclelink = "";
 
 $num = 0;
 $checkuser = 0;
-if(isset($_COOKIE['cookiesuserdate'])) $cookiesuserdate = $_COOKIE['cookiesuserdate'];
-else $cookiesuserdate = 0;
 
 $arraykeyword = array();
 /*
@@ -96,8 +82,14 @@ $tpl['show']['error'] = false;
 if ($catalog){	
     //стартовая инфа о монете независимо от родитея
 	$rows_main = $shopcoins_class ->getItem($catalog,true);	
+	
+	$next_coins = $shopcoins_class->getNext($catalog,$materialtype);
+	$previos_coins = $shopcoins_class->getPrevios($catalog,$materialtype);
+	$tpl['show']['next'] = contentHelper::getRegHref($next_coins,$materialtype,$parent);
+	$tpl['show']['previos'] = contentHelper::getRegHref($previos_coins,$materialtype,$parent);	
+
 	if ($rows_main&&$rows_main['check']==0) {	
-   		 die('check=0');
+   		// die('check=0');
     /*
 	
 		
@@ -135,6 +127,7 @@ if ($catalog){
 		$tpl['show']['resultcicle'] = $shopcoins_class->getPopular(3,array('materialtype' => $materialtype, 'shopcoins.group' => $rows_main["group"]));
 	
 		$tmp = Array();
+		$LastCatalog10_tmp = "";
 		if ($LastCatalog10)	{
 			$tmp = explode("#", $LastCatalog10);
 			$LastCatalog10_tmp ='';
@@ -172,20 +165,23 @@ if ($catalog){
 	$tpl['show']['described'] = false;
 	//кто описывал монету
 	if ($catalog && $tpl['user']['user_id'] ) {  
-		if(	$materialtype == 11 &&$tpl['user']['user_id'] &&$user_class->is_user_has_premissons() && !$shopcoins_class->is_already_described($catalog)
-		){ // if user has 5 orders && !is_locked && item not have description
+		//if(	$materialtype == 11 &&$tpl['user']['user_id'] &&$user_class->is_user_has_premissons() && !$shopcoins_class->is_already_described($catalog)
+		//){ // if user has 5 orders && !is_locked && item not have description
 	
-	        $tpl['show']['described'] = true;
-			/*$sql = "select * from `group` where type='shopcoins' and `group` not in (667,937,983,997,1014,1015,1062,1063,1097,1106) group by name;";
-			$result = mysql_query($sql);
-			var_dump($result);
+	        $tpl['show']['described'] = true;			
+			$result = $shopcoins_class->getGroupsForDescribe();
+            $groupselect_v = array();
+            $groupselect_v2 = "";
 			$i=0;
-			while ($rows = mysql_fetch_array($result)) {
-				$groupselect_v .= ($i!=0?",\"":"\"").str_replace('"','',$rows["name"])."\"";
-				$groupselect_v2 .= ($i!=0?",":"").str_replace('"','',$rows["name"])."";
-				$i++;
-			}*/
-		}
+			foreach ($result as $rows){
+			    $groupselect_v[] = $rows["name"];
+			     $groupselect_v2[] = $rows["name"];
+				//$groupselect_v .= ($i!=0?",\"":"\"").str_replace('"','',$rows["name"])."\"";
+				//$groupselect_v2 .= ($i!=0?",":"").str_replace('"','',$rows["name"])."";
+				//$i++;
+			}
+			
+		//}
 	}	
 	
 	//выбираем что он из аксессуаров/книг заказал
@@ -259,7 +255,7 @@ if ($catalog){
 	}	
 	
 	$tpl['shop']['resultp'] = $shopcoins_class->showedWith($catalog, $rows_main);
-	$tpl['shop']['resultp'][$i]['buy_status']=2;
+	//$tpl['shop']['resultp'][$i]['buy_status']=2;
 		
 	$tpl['shop']['result_show_relation2'] = array();
 	$tpl['shop']['result_show_relation3'] = array();

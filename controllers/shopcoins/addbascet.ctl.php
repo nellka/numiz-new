@@ -142,15 +142,17 @@ if(!$rows){
 				$helpshopcoinsorder_class->addNewRecord($data_insert);			
 			}
 			$_SESSION["shopcoinsorderamount"] =  intval($shopcoinsorderamount)+($amount?$amount:1);
+		} else {
+		    $_SESSION["shopcoinsorderamount"] =  intval($shopcoinsorderamount)+($amount?$amount:1);
 		}
 
 		//пересчет карзины
 		$clientdiscount = $order_class->getClientdiscount($tpl['user']['user_id'],$shopcoinsorder);
-		if(!$dataBasket = $cache->load("bascet_".$shopcoinsorder)){
-			$dataBasket = $order_class->forBasket($clientdiscount,$shopcoinsorder);
-			$cache->save($dataBasket, "bascet_".$shopcoinsorder);	
-		}
+		$dataBasket = $order_class->forBasket($clientdiscount,$shopcoinsorder);
+		$cache->save($dataBasket, "bascet_".$shopcoinsorder);	
+
 		$bascetsum = $dataBasket["mysum"];
+		$_SESSION['bascetsum'] = $bascetsum;
 		$_SESSION['bascetsum'] = $bascetsum;
 		
 		$bascetsumclient = $dataBasket["mysumclient"];

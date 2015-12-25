@@ -32,6 +32,11 @@ Abstract Class Model_Base {
         return $this->db->lastInsertId($this->table);
     }
     
+    public function addNew($table,$inserarray) {
+		$this->db->insert($table,$inserarray);         
+        return $this->db->lastInsertId($this->table);
+    }
+    
     public function getRowByParams($params=array()){
         $select = $this->db->select()
 		               ->from($this->table);
@@ -74,6 +79,16 @@ Abstract Class Model_Base {
     public function getRowSql($sql){
     	return $this->db->fetchRow($sql);
     }
+    
+    public function getRow($table,$params=array()){
+        $select = $this->db->select()
+		               ->from($table);
+		foreach ($params as $key=>$value) {
+		    $select->where("$key=?",$value) ;
+		}             
+    	return $this->db->fetchRow($select);  
+    }
+    
       /*
     // уделение записей из базы данных по условию
     public function deleteBySelect($select){

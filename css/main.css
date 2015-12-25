@@ -588,6 +588,9 @@ box-shadow:  6px #ccc;
 color:#ecb34e;
     background: transparent url("../images/strel-yellow.png") no-repeat scroll 250px 50%;
 }
+.main_img_big img {
+	width:500px;
+}
 /*стили для статического левого меню*/
 .menu-sidebar_static a span {
     padding: 15px;
@@ -603,6 +606,7 @@ color:#ecb34e;
     -moz-box-shadow: 0 8px 6px -6px #ccc;
     box-shadow: 0 8px 6px -6px #ccc;
 	padding-left:17px;
+	background-color:#ffffff;
 }
 
 .menu-sidebar_static ul {

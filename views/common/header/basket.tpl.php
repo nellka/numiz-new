@@ -11,7 +11,7 @@
     	<div class="basket-label">  <p>	
     	<b>В корзине:</b> <span><a href='<?=$cfg['site_dir']?>shopcoins/index.php?page=orderdetails'>
     	<span id=inorderamount><?=$tpl['user']['product_amount']?></span> товаров</a></span><br>
-    	<b>На сумму:</b> <span><?=$tpl['user']['summ']?> рублей </span>  </p>
+    	<b>На сумму:</b> <span id=inordersum><?=$tpl['user']['summ']?></span> рублей   </p>
     	
     	</div>	
     	<p class="basket-info"><b>Выберите несколько товаров и поместите их в корзину.</b> </p>
