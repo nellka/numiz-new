@@ -163,7 +163,6 @@ class contentHelper{
 			$namecoins = $rehref;
 			$rehrefdubdle = contentHelper::strtolower_ru($rehref)."_c".($mtype==1?$rows['parent']:$rows['shopcoins'])."_pc".($parent>0?$parent:(($mtype==7 || $mtype==8 || $mtype==6 || $mtype==4 || $mtype==2) && $rows["amount"]>1?$rows['shopcoins']:($mtype==1?$rows['parent']:0)))."_m".$rows['materialtype']."_pp1.html";
 			$rehref = contentHelper::strtolower_ru($rehref)."_c".$rows['shopcoins']."_m".$rows['materialtype'].".html";	
-			$tpl['shop']['MyShowArray'][$i]['amountall'] = ( !$rows["amount"])?1:$rows["amount"];		
 		} else {
 			if ($mtype==1) $rehref = "Монета ";
 			if ($mtype==8) $rehref = "Монета ";
@@ -190,6 +189,14 @@ class contentHelper{
 		return array('namecoins' => $namecoins, 'rehrefdubdle' => $rehrefdubdle,'rehref'=> $rehref);
     }
     
+    function to_cp($str){
+   		return iconv("utf-8", "windows-1251", $str);
+	}
+
+	function to_utf($str){
+   		return iconv("windows-1251","utf-8", $str);
+	}
+	
     static $menu = array(1=>"Монеты",
                          8=>"Мелочь",
                          6=>"Цветные монеты" ,

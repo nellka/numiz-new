@@ -52,7 +52,11 @@ class model_shopcoins extends Model_Base
 	    return   $this->db->fetchOne($select)?1:0;              
 	  
     }
-	
+	//��������� ������� � ���������
+    public function setCoinDescription($data,$id){
+    	$this->updateRow($data,"shopcoins = $id");
+    }
+    
 	public function getCoinsrecicle($id){
 	    $select = $this->db->select()
 	                      ->from('shopcoinsrecicle')
@@ -432,6 +436,7 @@ class model_shopcoins extends Model_Base
                       ->where("shopcoins.check=1")
                       ->order('rand()')
                       ->limit($limit);
+                      
        foreach ($params as $key=>$value){
        		$select->where("$key=?",$value);
        }
@@ -862,6 +867,45 @@ class model_shopcoins extends Model_Base
               ->order('name DESC');    
  
         return $this->db->fetchAll($select);  	     
+	}
+	
+	//для номиналов
+	public function searchGroups($SearchTempStr){
+		//var_dump($SearchTempStr);
+		//$this->db->query("SET names 'cp1251'");
+
+	    /*$sql_temp = "select distinct `group`.`name`, `group`.* from `group`, `shopcoins` 
+				where ((".($cookiesuser==811?(!$nocheck?"shopcoins.check=1 or (shopcoins.check>3 and shopcoins.check<20)":"(shopcoins.check>3 and shopcoins.check<20)"):"shopcoins.check=1").") ".($show50?"or shopcoins.check=50":"").") and shopcoins.`group`=`group`.`group`
+				and (".(sizeof($SearchTempStr)?"`group`.`name` like '%".implode("%' or `group`.`name` like '%",$SearchTempStr)."%')":"").";";
+*/
+	    $select = $this->db->select()
+                 ->from('shopcoins',array())
+                 ->join(array('group'),'shopcoins.group=group.group',array('distinct(group.name)','group.group','groupparent'));    
+ 		$select = $this->byAdmin($select); 
+ 		if($SearchTempStr){
+ 			$select->where("`group`.`name` like '%".implode("%' or `group`.`name` like '%",$SearchTempStr)."%'");
+ 		}
+ 		//echo $select->__toString();
+ 		//$this->db->query("SET names 'utf8'");
+        return $this->db->fetchAll($select);   
+	}
+	
+	public function searchParrentGroups($groups){
+	
+	    $select = $this->db->select()
+                 ->from('shopcoins',array())
+                 ->join(array('group'),'shopcoins.group=group.group',array('DISTINCT(group.group)'));    
+ 		$select = $this->byAdmin($select); 
+		$select->where("`group`.groupparent in ('".implode(',',$groups)."')");
+ 		//$this->db->query("SET names 'utf8'");
+        return 	 $this->db->fetchAll($select);   
+	}
+	public function group_id_from_name($group_name){
+		$select = $this->db->select()
+              ->from('group',array('group.group'))
+              ->where('group.name=?',$group_name)
+              ->where("type='shopcoins'");    
+        return $this->db->fetchOne($select); 	
 	}
 }
 ?>

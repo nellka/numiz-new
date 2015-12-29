@@ -21,13 +21,11 @@
    </ul>   
    
    <script> function showShopcoinsMenu(){
-       console.log(jQuery('#left_menu_shop'));
         /*if(!jQuery('#left_menu_shop').is(':visible')){
             jQuery('#left_menu_shop').show();
         } else {
             jQuery('#left_menu_shop').hide();
         }*/
-        console.log(jQuery('#item-top-menu').css("overflow"));
          jQuery('#item-top-menu').animate({height: "40px"}, function() {
              if(jQuery('#item-top-menu').css("overflow")=='hidden'){
                 jQuery('#item-top-menu').css("overflow", "visible");
@@ -50,9 +48,12 @@
     
 <div style='float:right;line-height:23px;'>
 
-
-<a style="text-decoration:none;color:#000000;" href="<?=$cfg['site_dir']?>shopcoins/<?=$tpl['show']['previos']["rehref"]?>">< Предыдущий</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<a style="text-decoration:none;color:#000000;" href="<?=$cfg['site_dir']?>shopcoins/<?=$tpl['show']['next']["rehref"]?>">Следующий ></a>
+<?if($tpl['show']['previos']){
+	?> <a style="text-decoration:none;color:#000000;" href="<?=$cfg['site_dir']?>shopcoins/<?=$tpl['show']['previos']["rehref"]?>">< Предыдущий</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<?}
+if($tpl['show']['next']){?>
+ <a style="text-decoration:none;color:#000000;" href="<?=$cfg['site_dir']?>shopcoins/<?=$tpl['show']['next']["rehref"]?>">Следующий ></a>
+ <?}?>
 </div>		
 
 </div >

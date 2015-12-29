@@ -21,19 +21,19 @@
 	</div>
 	<div id='pages' class="pages">Товаров на странице:
 		 <?foreach ($tpl['pager']['itemsOnpage'] as $k=>$v){
-			if($v==$tpl['onpage']){?>
+			if($k==$tpl['onpage']){?>
 				<button type="button" class="button15active" onclick="sendData('onpage','<?=$k?>')"><?=$v?></button>
 			<?} else { ?>
 				<button type="button" class="button15" onclick="sendData('onpage','<?=$k?>')"><?=$v?></button>
 			<?}
 		 }?>   
-	
+    	<div class="pages">
+    		 <?php echo $tpl['paginator']->printPager(); ?>
+    	</div>	
 	</div>
-	<div class="orderby" style="padding-top:12px;">
+	<!--<div class="orderby" style="padding-top:12px;">
 		<input type="checkbox" id="avilable"/><label for="avilable"><b>Только в наличии</b></label> 
 
-	</div>
-	<div class="pages">
-		 <?php echo $tpl['paginator']->printPager(); ?>
-	</div>	
+	</div>-->
+	
 </div>

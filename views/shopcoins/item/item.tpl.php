@@ -70,11 +70,11 @@ if(($rows_main['buy_status']==7||$rows_main['buy_status']==6)&&($minpriceoneclic
 	echo contentHelper::render('shopcoins/price/oneclick',$rows_main);
 }?>
 
-
+<!--
 <script type="text/javascript" src="//yandex.st/share/share.js" charset="utf-8"></script><br><div class="yashare-auto-init" data-yashareL10n="ru" data-yashareType="none"data-yashareQuickServices="vkontakte,odnoklassniki,yaru,facebook,moimir"></div>
-
+-->
 <?
 //оценки
-echo contentHelper::render('shopcoins/price/markitem',$tpl['show'][$rows_main["shopcoins"]]['mark']);
+echo contentHelper::render('shopcoins/price/markitem',$rows_main['mark']);
 ?>
 </div>

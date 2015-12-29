@@ -48,8 +48,9 @@ function AddMakeCall() {
     if (!callphone){
         error += "Введите номер телефона";          
     }    
+
     $('#addcall-error').html(error);
-    if(!error) {
+   // if(!error) {
         $.ajax({	
     	    url: '<?=$cfg['site_dir']?>addcall.php?ajax=1', 
     	    type: "POST",
@@ -59,7 +60,7 @@ function AddMakeCall() {
     	        $('#addcall').html(data);    	      
     	    }
          });    
-     }    
+   //  }    
 } 
 </script>
 </div>

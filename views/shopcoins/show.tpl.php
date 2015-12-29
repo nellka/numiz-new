@@ -1,16 +1,16 @@
+<div class="wraper clearfix">  
 <?
-//показываем количество страниц
-
 if($tpl['show']['error']['no_coins']){?>
     <div class="error">К сожалению, указанного товара не существует</div>
 <?} else {
     include($cfg['path'].'/views/shopcoins/item/item.tpl.php');   
-}
-
- 
-if ($tpl['show']['rowscicle']) {?>	
-<div style="float:left;width:100%">
-		<h5 style="margin-top:0px;">Похожие позиции в магазине:</h5>
+}?>
+</div>
+<?
+if ($tpl['show']['rowscicle']) {?>
+<div class="triger">	
+	<div class="wraper clearfix">
+		<h5>Похожие позиции в магазине:</h5>
 		<div class="coin_info">
 			<a href="./<?=$tpl['show']['rowscicle']['reff1']?>" title='<?=$tpl['show']['rowscicle']['title1']?>'>
 			<?=$tpl['show']['rowscicle']['title1']?>"
@@ -26,7 +26,8 @@ if ($tpl['show']['rowscicle']) {?>
 				<?=$tpl['show']['rowscicle']['title3']?>
 			</a>   
 		</div>
-</div>		
+	</div>	
+</div>	
 <?}	
 
 
@@ -64,23 +65,36 @@ if ($tpl['shop']['related']){?>
 <?}
 
 if(isset($tpl['show']['resultcicle'])&&$tpl['show']['resultcicle']){?>
-	<div style="float:left;width:100%;margin-bottom:30px;">
-		<h5 style="margin-top:0px;">Похожие позиции в магазине:</h5>
-		<div  style="float:left;;padding:20px; padding-top:10px; padding-bottom:10px;border:1px solid #cccccc;width:980px;background:#eeeeee;">
+<div class="wraper clearfix">
+	<h5>Похожие позиции в магазине:</h5>
+</div>
+<div class="triger">	
+	<div class="wraper clearfix" style="height:350px;padding-top:15px;">
+		<div>
 			<?foreach ($tpl['show']['resultcicle'] as $rowsp){?>
-				<div  class="coin_info">
-					<a href=index.php?page=show&group=<?=$rowsp['group']?>&materialtype=<?=$rowsp['materialtype']?>&catalog=<?=$rowsp['shopcoins']?>>Монета – <?=$rows_main["gname"]?> – <?=$rowsp['name'].($rowsp['metal']? " – ".$rowsp['metal'] : '')." – ".$rowsp['year']?> год</a>
+				<div class="coin_info">
+					<div id=show<?=$rowsp['shopcoins']?>></div>
+				<?	
+				$statuses = $shopcoins_class->getBuyStatus($rowsp["shopcoins"],$tpl['user']['can_see'],$ourcoinsorder,$shopcoinsorder);
+				$rowsp['buy_status'] = $statuses['buy_status'];
+				$rowsp['reserved_status'] = $statuses['reserved_status'];	
+				$rowsp['mark'] = $shopcoins_class->getMarks($rowsp["shopcoins"]);
+				echo contentHelper::render('shopcoins/item/itemmini',$rowsp);
+	            ?>				
 				</div>
 			<?}?>
+		</div>
 	</div>
-	</div>
+</div>
 <?}
 		
 if ($tpl['shop']['resultp']) {	?>
-	
-	<form action=# method=post  style='float:left;margin-bottom:30px;'>
-	<h5 style="margin-top:0px;">Вместе с этим товаром просматривали также:</h5>
-		<div style="float:left;min-height:80px; width:980px;padding:20px;padding-top:10px; padding-bottom:10px;border:1px solid #cccccc;background:#eeeeee;">
+	<div class="wraper clearfix">
+	<h5>Вместе с этим товаром просматривали также:</h5>
+	</div>
+	<div class="triger">	
+		<div class="wraper clearfix" style="height:350px;padding-top:15px;">
+		    <form action=# method=post>
 			<?$kn = 100;
 			$sumseecoins = 0;
 			foreach ($tpl['shop']['resultp']  as $rowsp ){
@@ -93,11 +107,12 @@ if ($tpl['shop']['resultp']) {	?>
 							value=<?=$rowsp["shopcoins"]?> onclick="ChangeSumSeeCoins('<?=$rowsp['price']?>',<?=$kn?>)">
 						</div>
 						<div id=showm<?=$kn?>  style="float:left;"></div>
-						<?=contentHelper::showImage("smallimages/".$rowsp['image_small'],"Монета ".$rowsp['name']." ".$rowsp['gname']." стоимость ".intval($rowsp['price'])." р.")?>
-						<br>
-						<a href=index.php?page=show&group=<?=$rowsp['group']?>&materialtype=<?=$rowsp['materialtype']?>&catalog=<?=$rowsp['shopcoins']?> 
-						title='Монета <?=$rowsp['name']?> <?=$rowsp['pgroup']?> цена <?=intval($rowsp['price'])?> р. найти'><?=$rowsp['gname']?>
-						<?=$rowsp['name']?><br><center><font color=red><?=intval($rowsp['price'])?> р.</font></center></a>
+						<?$statuses = $shopcoins_class->getBuyStatus($rowsp["shopcoins"],$tpl['user']['can_see'],$ourcoinsorder,$shopcoinsorder);
+						//$rowsp['buy_status'] = $statuses['buy_status'];
+						//$rowsp['reserved_status'] = $statuses['reserved_status'];	
+						$rowsp['mark'] = $shopcoins_class->getMarks($rowsp["shopcoins"]);
+						echo contentHelper::render('shopcoins/item/itemmini',$rowsp);?>
+
 					</div>
 						<?
 						$kn++;
@@ -112,36 +127,33 @@ if ($tpl['shop']['resultp']) {	?>
 			<div id='bascetshopcoins0'  style="float:left;margin-left:50px;margin-top:10px;">
 				<img src=../images/corz1.gif border=0 onclick="AddBascetLast2(<?=$kn?>);" title="Положить все отмеченные монеты из списка в корзину">
 			</div>
-		</div>
 	</form>
+	</div>
+</div>
 <?}
 
 	
 if( $tpl['shop']['result_show_relation2']) {	?>
-	<div style="float:left;width:100%">
-		<h5 style="margin-top:0px;">Подобные позиции в магазине:</h5>
-		<div  style="float:left;padding:20px;padding-top:10px; padding-bottom:10px;border:1px solid #cccccc;min-height:80px;width:980px;background:#eeeeee;">
-<?
-		foreach ($tpl['shop']['result_show_relation2'] as $rows_show_relation2){?>	
-				
-			<div id=show<?=$rows_show_relation2['shopcoins']?>></div>
-				<div class="coin_info" style="margin-left:8px;margin-right:8px;">
-				<?
-
-				echo contentHelper::showImage("smallimages/".$rows_show_relation2["image_small"],$rows_show_relation2["gname"]." | ".$rows_show_relation2["name"]);
-				echo "<br><a href=index.php?catalog=".$rows_show_relation2["shopcoins"]."&page=show&materialtype=".$rows_show_relation2["materialtype"].">".$rows_show_relation2["name"]."</a>";
-				echo $rows_show_relation2["gname"];
-				echo "<br><font color=red><b>".($rows_show_relation2["price"]==0)?"<br>бесплатно":round($rows_show_relation2["price"],2)." руб.";
-				echo "</b></font><br>";
-				
-				$statuses = $shopcoins_class->getBuyStatus($rows_show_relation2["price"],$tpl['user']['can_see'],$ourcoinsorder,$shopcoinsorder);
-				$rows_show_relation2['buy_status'] = $statuses['buy_status'];
-				$rows_show_relation2['reserved_status'] = $statuses['reserved_status'];	
-				echo contentHelper::render('shopcoins/price/buy_button',$rows_show_relation2);	
-			}?>	
+<div class="wraper clearfix">
+	<h5>Подобные позиции в магазине:</h5>
+	</div>
+	<div class="triger">	
+		<div class="wraper clearfix" style="height:350px;padding-top:15px;">
+		<?
+		foreach ($tpl['shop']['result_show_relation2'] as $rows_show_relation2){?>			
+			<div class="coin_info">
+				<div id=show<?=$rows_show_relation2['shopcoins']?>></div>
+			<?	
+			$statuses = $shopcoins_class->getBuyStatus($rows_show_relation2["shopcoins"],$tpl['user']['can_see'],$ourcoinsorder,$shopcoinsorder);
+			$rows_show_relation2['buy_status'] = $statuses['buy_status'];
+			$rows_show_relation2['reserved_status'] = $statuses['reserved_status'];	
+			$rows_show_relation2['mark'] = $shopcoins_class->getMarks($rows_show_relation2["shopcoins"]);
+			echo contentHelper::render('shopcoins/item/itemmini',$rows_show_relation2);
+            ?>				
 			</div>
-		</div>
-	</div>	
+		<?}?>
+	</div>
+</div>	
 <?}
 
 
@@ -227,20 +239,23 @@ if ($tpl['shop']['result_show_relation3']) {
 }
 
 
-echo "</center><br>";
+echo "</center><br >";
 ?>
 	
-	<div id=reviewcoindiv>
-<?	//if($tpl['show']['described'])	{ ?>			
-<form action=/detailcoins/addcomment.php name=mainform id="send_descr" method=post>
-		<h5>Опишите монету и получите 1 рубль на бонус-счет</b></h5>
+<?	//if($tpl['show']['described'])	{ ?>
+
+<div class="wraper clearfix" style="clear: both;">
+	<h5>Опишите монету и получите 1 рубль на бонус-счет</h5>
+	
+	<form action=/detailcoins/addcomment.php name=mainform id="send_descr" method=post>
 	  <script>
 		 $(function() {    
     var availableTags = <?=json_encode($groupselect_v2)?>;
         $('#group2').autocomplete({
           source: availableTags,
           select: function (event, ui) {
-            $('#id_group2').val(ui.item.id);
+            $('#id_group2').val(ui.item.id);            
+            AddNominal();
             return ui.item.label;
         }
         });
@@ -250,16 +265,15 @@ echo "</center><br>";
  
 <div class="ui-widget">
   <label for="group2"><b>Страна:</b> </label>
-  <input id="group2" size=40>
-  <input type="hidden" id="id_group2" size=40>
+  <input id="group2" name=group2 size=40>
+  <input type="hidden" id="id_group2" name=id_group2 size=80>
 </div>
 
 		<input type=hidden id=coins name=coin value="<?=$catalog?>">		
 
 		<div class="ui-widget" >
   <label for="name2""><b>Номинал:</b> </label>
-  <input id="name2"" size=40 onfocus="AddNominal();">
-  <input type="hidden" id="id_name2"" size=40>
+  <input id="name2"" size=40 name="name2">
 </div>
 		
 		<br>
@@ -297,12 +311,14 @@ echo "</center><br>";
 		<br>
 		<a name=details></a><b>Описание монеты:</b>
 		<textarea name=details id=details2 class=formtxt cols=60 rows=6></textarea> 
-		<input type=submit name=submit onclick="CheckSubmitPrice(0);" value="Сохранить описание" class=formtxt >		
+		<input type="button" name=submit onclick="CheckSubmitPrice(0);" value="Сохранить описание" class=formtxt >		
 </form>
+</div>
 <?//}
 
 //отзывы
 ?>
+<div class="wraper clearfix" style="clear: both;">
 <div style="float:left;width:980px;border:1px solid #cccccc;margin-top:50px;padding:20px;">
 	<div style="float:left;width:45%;padding:10px;">
 		<?php
@@ -503,6 +519,7 @@ echo "</center><br>";
 
 	</ul>
 	</div>
+</div>
 </div>
 <?
 }?>

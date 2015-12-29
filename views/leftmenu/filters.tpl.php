@@ -8,54 +8,32 @@
 <input type="hidden" id='priceend' name='priceend' value='<?=$priceend?>'>
 <input type="hidden" id='yearstart' name='yearstart' value='<?=$yearstart?>'>
 <input type="hidden" id='yearend' name='yearend' value='<?=$yearend?>'>
-<div style="float:left;width:280px;">
-	<ul class="menu-sidebar_static" style="padding-left:0px;margin-top:15px;float:left;">
-		<div class="box-heading ">
-			<div style="float:left;">Фильтр товаров</div>
-			<div style="float:right;padding-right:17px;padding-top:3px;">
-				<a  href="#" onclick="clear_filter();return false;">Очистить</a>
-			</div>
-		</div>		
-			<li style="float:left;width:95%;">
-			<? if($tpl['filter']['price']['max']){?>
-				
-				<br>
-				<div style="margin-left:10px;float:left;">
-					<b>Цена
-				</div> 	
-				<div style="float:right;">
-				<a style="color:#247bbd;font-size:12px;line-height:12px;text-decoration:underline;" href="">Сбросить</a>
-				</div> 
-				
-				<br><br>
-				<span style="margin-left:10px;">
-				От	<input type="text" id="amount1" name="fields_filter[amount1][0]" value="0" size="10" disabled/>
-				до <input type="text" id="amount2" name="fields_filter[amount2][1]" value="1000" size="10" disabled/> руб.
-				</span>
-				</b>
-			
-			<?}?>
 
-					
-			<p><div id="slider-range-price" style="margin-left:15px;margin-right:15px;"></div></p>
-		</li>
-	</ul>
-
+<div style="width:280px;">
+	
+	<div class="box-heading "  style="line-height: 30px;margin-top: 15px;padding: 0 10px;;">
+		<div style="float:left;">Фильтр товаров</div>
+		<div style="float:right;">
+			<a  href="#" onclick="clear_filter();return false;">Очистить</a>
+		</div>
+	</div>
+	<br style="clear: both;">
 
 	<?php     
-		foreach ($filter_groups as $filter_group) {      
-		?>
-		<div class="filter_heading">
-			<div style="float:left;"><?=$filter_group['name']?></div>
-			<div style="float:right;padding-right:17px;padding-top:3px;">
-				<a style="color:#247bbd;font-size:12px;line-height:12px;text-decoration:underline;"
-				href="#" onclick="clear_filter('<?=$filter_group['filter_group_id']?>');return false;">Сбросить</a>
-			</div>
-		</div>
+	 	foreach ($filter_groups as $filter_group) {?>
+	
+		<div class="filter-block">
+    		<div class="filter_heading">
+    			<div style="float:left;"><?=$filter_group['name']?></div>
+    			<div style="float:right;">
+    				<a style="color:#247bbd;font-size:12px;line-height:12px;text-decoration:underline;"
+    				href="#" onclick="clear_filter('<?=$filter_group['filter_group_id_full']?>');return false;">Сбросить</a>
+    			</div>
+    		</div>
 		
 		<ul class="filter_heading_ul">
 			<div id="filter-group<?=$filter_group['filter_group_id']?>_container">
-				<div class="customScrollBox" style="padding-left:10px;padding-top:5px;">
+				<div class="customScrollBox">
 					<div class="container">
 						<div class="content">
 							<?php 
@@ -84,26 +62,26 @@
 										  <?}?>
 									</div>
 								<?php
-										if(isset($filter['child'])){?>
-											<div style='margin:5px 20px;'>
-											<? foreach ($filter['child'] as $filter_child) {?>
-												<div class="checkbox">
-													<?php             
-													 if (is_array($$filter_group['filter_group_id_full'])&&in_array($filter_child['filter_id'], $$filter_group['filter_group_id_full'])) { ?>
-													<input type="checkbox" name="<?=$filter_group['filter_group_id_full']?>[]" value="<?=$filter_child['filter_id']?>" checked="checked" />
-													<a href="?materialtype=<?=$materialtype?>&<?=$filter_group['filter_group_id']?>=<?=urlencode(iconv("utf8","cp1251",$filter_child['filter_id']))?>"> <?=$filter_child['name'];?></a>
-													<?php } else { ?>
-													<input type="checkbox" name="<?php echo $filter_group['filter_group_id_full']; ?>[]" value="<?php echo $filter_child['filter_id']; ?>" />
-													  <a href="?materialtype=<?=$materialtype?>&<?=$filter_group['filter_group_id']?>=<?=urlencode(iconv("utf8","cp1251",$filter_child['filter_id']))?>"> <?=$filter_child['name'];?></a>
+									if(isset($filter['child'])){?>
+										<div style='margin:5px 20px;'>
+										<? foreach ($filter['child'] as $filter_child) {?>
+											<div class="checkbox">
+												<?php             
+												 if (is_array($$filter_group['filter_group_id_full'])&&in_array($filter_child['filter_id'], $$filter_group['filter_group_id_full'])) { ?>
+												<input type="checkbox" name="<?=$filter_group['filter_group_id_full']?>[]" value="<?=$filter_child['filter_id']?>" checked="checked" />
+												<a href="?materialtype=<?=$materialtype?>&<?=$filter_group['filter_group_id']?>=<?=urlencode(iconv("utf8","cp1251",$filter_child['filter_id']))?>"> <?=$filter_child['name'];?></a>
+												<?php } else { ?>
+												<input type="checkbox" name="<?php echo $filter_group['filter_group_id_full']; ?>[]" value="<?php echo $filter_child['filter_id']; ?>" />
+												  <a href="?materialtype=<?=$materialtype?>&<?=$filter_group['filter_group_id']?>=<?=urlencode(iconv("utf8","cp1251",$filter_child['filter_id']))?>"> <?=$filter_child['name'];?></a>
 
-													<?php } ?>
-												</div>
-												<?php     
-											   }?>
+												<?php } ?>
 											</div>
-										
-										<?}
-									}
+											<?php     
+										   }?>
+										</div>
+									
+									<?}
+								}
 							}?>  
 							
 						</div>
@@ -117,28 +95,36 @@
 						
 
 			<? if($filter_group['filter_group_id_full']=='years'){$i=0;?>   
-				<div style="float:left;margin-left:15px;margin-top:10px;font-weight:bold;">
-					От	<input type="text" id="amount3" name="fields_filter[amount3][0]" value="0" size="10" disabled/>
-					до <input type="text" id="amount4" name="fields_filter[amount4][1]" value="2015" size="10" disabled/>
+				<div style="font-weight:bold;padding: 15px 0;">
+					От <input type="text" id="amount-years0" name="fields_filter[amount-years0][0]" value="0" size="10" disabled/>
+					до <input type="text" id="amount-years1" name="fields_filter[amount-years1][1]" value="2015" size="10" disabled/>
 				</div>
-				<div style="float: left;width:85%;margin-left:15px;margin-top:10px;" id="slider-range-year"></div>			 
+				<div style="margin:0 5px;margin-top:5px;" id="slider-range-years"></div>			 
 			<?}?>       
 			</div>
 		</ul> 
+		</div>
 	<?php 
-		}
+		//break;
+	 	}
 	?>
-
-	
-</div>
-<div style="padding:20px;float:left;">
-	<a href="#" onclick="sendData()" class="iframe button24" >Найти</a>		
-</div>
+    <div class="filter-block">		
+			<? if($tpl['filter']['price']['max']){?>
+				<div style="float:left;"><b>Цена</b></div> 	
+				<div style="float:right;">
+				<a style="color:#247bbd;font-size:12px;line-height:12px;text-decoration:underline;" href="">
+				Сбросить
+				</a>
+				</div> 				
+				<br><br>
+				<span>
+				От <input type="text" id="amount-price0" name="fields_filter[amount-price0][0]" value="0" size="10" disabled/>
+				до <input type="text" id="amount-price1" name="fields_filter[amount-price1][1]" value="1000" size="10" disabled/> руб.
+				</span>			
+			<?}?>					
+			<p><div id="slider-range-price" style="margin-left:5px;margin-right:5px;"></div></p>
+	</div>
 </form>
-		
-
-
-
 <script type="text/javascript" charset="utf-8">
  jQuery(document).ready(function() {     	
      jQuery( "#slider-range-price" ).slider(
@@ -148,25 +134,31 @@
            max: <?=$tpl['filter']['price']['max']?>,
            values: [ <?=(integer)$pricestart?>,  <?=$priceend?$priceend:$tpl['filter']['price']['max']?>], 
            slide: function( event, ui ) {
-                $( "#amount1" ).val(ui.values[ 0 ]);
-                $( "#amount2" ).val(ui.values[ 1 ]);
-             }
+                $( "#amount-price0" ).val(ui.values[ 0 ]);
+                $( "#amount-price1" ).val(ui.values[ 1 ]);
+             },
+             stop: function(event, ui) {
+               sendData();
+	         }
          });
-     jQuery( "#amount1" ).val($( "#slider-range-price" ).slider( "values", 0 ));
-     jQuery( "#amount2" ).val($( "#slider-range-price" ).slider( "values", 1 ));
+     jQuery( "#amount-price0" ).val($( "#slider-range-price" ).slider( "values", 0 ));
+     jQuery( "#amount-price1" ).val($( "#slider-range-price" ).slider( "values", 1 ));
   
-  		jQuery( "#slider-range-year" ).slider({
+  		jQuery( "#slider-range-years" ).slider({
            range: true,
            min: 0,                            
            max: 2015,
            values: [ <?=(integer)$yearstart?>,  <?=$yearend?$yearend:$tpl['filter']['yearend']?>], 
            slide: function( event, ui ) {
-                $( "#amount3" ).val(ui.values[0]);
-                $( "#amount4" ).val(ui.values[1 ]);
-             }
+                $( "#amount-years0" ).val(ui.values[0]);
+                $( "#amount-years1" ).val(ui.values[1 ]);
+           },
+           stop: function(event, ui) {
+               sendData();
+           }
          });
-         jQuery( "#amount3" ).val($( "#slider-range-year" ).slider( "values", 0 ));
-     	 jQuery( "#amount4" ).val($( "#slider-range-year" ).slider( "values", 1 ));
+         jQuery( "#amount-years0" ).val($( "#slider-range-years" ).slider( "values", 0 ));
+     	 jQuery( "#amount-years1" ).val($( "#slider-range-years" ).slider( "values", 1 ));
   		 //jQuery("#filter-groupgroup").mCustomScrollbar("vertical",400,"easeOutCirc",1.05,"auto","yes","yes",10);
   		 mCustomScrollbars()
 
@@ -178,12 +170,24 @@
  	is_visible?jQuery('#'+filter).hide():jQuery('#'+filter).show();
  	jQuery('#'+filter+'-href').html(is_visible?"Показать":"Скрыть");
  }
+ 
+function resetSliderYear() {
+ 
+}
+
  function  clear_filter(filter){
      if(filter){
-      jQuery('input[name="'+filter+'[]"]:checked').attr('checked',false); 
+        jQuery('input[name="'+filter+'[]"]:checked').attr('checked',false); 
      } else {  
-         jQuery('.filterbox input').attr('checked',false); 
+         jQuery('#search-params input').attr('checked',false); 
      }
+     if(filter=='years'||filter=='price'){
+          var $slider = $("#slider-range-"+filter);
+          $slider.slider('option', 'values', [$slider.slider("option", "min"),$slider.slider("option", "max")]);
+           $( "#amount-"+filter+"0" ).val($slider.slider("option", "min"));
+           $( "#amount-"+filter+"1" ).val($slider.slider("option", "max"));
+     }
+     sendData();
      return false;
  }
 
@@ -223,3 +227,11 @@ function LoadNewContent(id,file){
 }*/
 </script>
 <?}?>
+</div>
+
+   <script type="text/javascript">  
+        $(function(){
+         $('#search-params input').on('change',function(){sendData();});          
+        });
+      
+    </script>

@@ -1,6 +1,6 @@
 <? 
 if($rows["materialtype"]==3){?>
-<a href='<?=$cfg['site_dir']?>shopcoins<?=$rows["rehref"]?>' title='<?=$cfg['site_dir']?>/shopcoins<?=$rows['namecoins']?>'>
+<a href='<?=$cfg['site_dir']?>shopcoins/<?=$rows["rehref"]?>' title='<?=$cfg['site_dir']?>/shopcoins<?=$rows['namecoins']?>'>
 	<?=contentHelper::showImage('images/'.$rows["image"],$rows['namecoins'])?>
 </a>
 <a name=coin<?=$rows["shopcoins"]?> title='<?=$rows["name"]?>'></a><strong><?=$rows['namecoins']?></strong>

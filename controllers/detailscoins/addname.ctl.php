@@ -21,7 +21,9 @@ else {
 }
 
 if (!$data_result['error']) {	
-	$data_result['arrayresult'] = implode(",",$ArrayResult);
+	//$data_result['arrayresult'] = implode(",",$ArrayResult);
+	$data_result['arrayresult'] = $ArrayResult;
+
 }
 
 echo json_encode($data_result);

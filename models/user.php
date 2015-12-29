@@ -7,12 +7,33 @@ class model_user extends Model_Base
     public $username;    
 	public $orderusernow;
     //получаем баланс пользователя
-    public function getUserBalance($user_id){
+    public function getUserBalance(){
         $select = $this->db->select()
 		               ->from('user_bonus_balance',array('balance'))
-		               ->where('user_id =?',$user_id);
+		               ->where('user_id =?',$this->user_id);
     	return (integer)$this->db->fetchOne($select);      
 	}
+
+	public function add_user_describe_log($coin_id){
+		 $data = array('coin_id'=>$coin_id,
+		               'event_date' =>time(),
+		               'user_id'=> $this->user_id);
+         $this->db->insert('user_describe_log',$data); 
+	}
+	
+	public function addUserBalance(){
+		 $select = $this->db->select()
+		               ->from('user_bonus_balance',array('user_id'))
+		               ->where('user_id =?',$this->user_id);		               
+		if (!$this->db->fetchOne($select)) {
+			$data = array('user_id' => $this->user_id, 'balance' => 1);
+			$this->db->insert('user_bonus_balance',$data);
+		} else{
+			$data = array('user_id' => $this->user_id, 'balance' => 'balance' + 1);
+			$this->db->update('user_bonus_balance',$data,"user_id = ".$this->user_id);
+		}
+	}
+	
 	//добавляем нового пользователя и подписываем на новости если надо
 	 public function addNewUser($data,$is_subsrib = false){
 	     $userId =$this->addNewRecord($data);
@@ -55,7 +76,7 @@ class model_user extends Model_Base
 	 	$data['user_id'] = $this->getIdentity();
 	 	$data['orderusernow'] = 0;
 		$data['username'] = $this->getUsername();
-    	$data['balance'] = $this->getUserBalance($this->getIdentity());
+    	$data['balance'] = $this->getUserBalance();
     	return $data;
 	 }
 	 

@@ -519,39 +519,37 @@ padding: 10px 0 0;
 }
 .filter_heading{
 	background-color: #ffffff;
-    border-bottom: 1px solid #ddd;
+    /*border-bottom: 1px solid #ddd;*/
     color: black;
     font-size: 12px;
-    line-height: 32px;
-    padding: 0;
-    width: 261px;
-	padding-left:17px;
-	font-weight:bold;
-	margin-top:15px;
-	float:left;
-	margin-top:10px;
-	 
+    line-height: 20px;
+    height: 20px;
+    /*width: 261px;*/
+	/*padding:0 10px;*/
+	font-weight:bold;	
 }
 
 .filter_heading_ul{
 	list-style-type: none;
-    border-bottom: 1px solid #ccc;
+    /*border-bottom: 1px solid #ccc;
     border-left: 1px solid #ccc;
-    border-right: 1px solid #ccc;
+    border-right: 1px solid #ccc;*/
     margin: 0;
-    padding: 5px 15;  
+    padding: 0;
+   /* padding: 5px 15;  
     -webkit-box-shadow: 0 8px 6px -6px #ccc;
     -moz-box-shadow: 0 8px 6px -6px #ccc;
     box-shadow: 0 8px 6px -6px #ccc;
 	float:left;
-	padding-left:0px;
-	width:277px;
+	padding-left:0px;*/
+	/*width:220px;*/
 }
 .filter_heading_ul  a{
 	color:black;
 	font-weight:bold;
 	font-size:12px;
 	text-decoration:none;
+	text-decoration: underline;
 }
 /*
 leftmenu
@@ -613,7 +611,7 @@ color:#ecb34e;
 .menu-sidebar_static a span {
     padding: 15px;
 }
-.menu-sidebar_static, .menu-sidebar_static ul{
+.menu-sidebar_static, .menu-sidebar_static ul, .filter-block{
 	 list-style-type: none;
     border-bottom: 1px solid #ccc;
     border-left: 1px solid #ccc;
@@ -625,6 +623,12 @@ color:#ecb34e;
     box-shadow: 0 8px 6px -6px #ccc;
 	padding-left:17px;
 	background-color:#ffffff;
+}
+
+.filter-block {
+    border: 1px solid #ccc;
+    margin: 20px 0;
+    padding: 10px;
 }
 
 .menu-sidebar_static ul {
@@ -885,13 +889,14 @@ a.button24:active { background: linear-gradient(#f59500, #f5ae00) #f59500; }
 
 /*пейджер*/
 .pager {
-	float:left;
-	background:#eeeeee;
-	width:812px;
-	padding-top:5px;
+	background: #eeeeee none repeat scroll 0 0;
+    display: table-cell;
+    margin: 10px;
+    padding: 10px 0 0 5px;
+    width: 715px;
 }
 .orderby{
-	float:left;
+	/*float:left;*/
 	width:490px;
 	
 }
@@ -940,18 +945,19 @@ a.button24:active { background: linear-gradient(#f59500, #f5ae00) #f59500; }
 }
 
 .blockshop {
-	width:245px;
-	height:405px;
-	
-	float:left; 
-	border:1px solid #cccccc;
-	margin:5 5 5 0px;
-	padding:5px;
-	cursor:pointer;
-	margin:2px;
+    border: 1px solid #cccccc;
+    cursor: pointer;
+    display: inline-block;
+    float: left;
+    height: 290px;
+    margin: 2px;
+    overflow: hidden;
+    padding: 5px;
+    position: relative;
+    width: 225px;
 }
 
-.blockshop:hover{ border:1px solid #7f7979;}
+.blockshop:hover{ border:1px solid #7f7979;overflow:visible;z-index:2000;background: #fff none repeat scroll 0 0;}
 
 .blockshop_spisok{
 	width:400px;
@@ -1128,3 +1134,23 @@ div.fancybox-showcalllink{left: 820px !important;top: 165px !important;}*/
 #raiting_hover {background:url(../images/ratings.png) 0 -32px; display:none}  /*  звездочки при голосовании */ 
 #raiting_info {margin-left:100px}
 #raiting_info img{vertical-align:middle; margin:0 5px; display:none}
+
+
+.amount {
+	width:200px;
+}
+.amount span {
+	display:inline-block;
+	width:20px;
+	height:20px;
+	background:#ededed;
+	cursor:pointer;
+	text-align:center;
+}
+.amount span:hover {
+	background:#dfdfdf;
+}
+.amount input {
+	width:20px;
+	text-align:center;
+}

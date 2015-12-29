@@ -27,15 +27,47 @@ jQuery( document ).ready(function( $ ) {});*/
 <script src="<?=$cfg['site_dir']?>js/jquery.easing.1.3.js" type= "text/javascript"></script>
 <script src="<?=$cfg['site_dir']?>js/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="<?=$cfg['site_dir']?>js/jquery.maskedinput.min.js"></script>
+<script src="<?=$cfg['site_dir']?>js/shopcoins.js"></script>
 <script type="text/javascript">
 
 $(document).ready(function() {
+    site_dir = '<?=$cfg['site_dir']?>';
     $('.iframe').click(function () {        
         href = this.href;
         showOn(href);
         return false; ////cancel eventbubbeling
     });
+    
+    $('#globalsearch').autocomplete({
+      source: 'shopcoins/index.php?search=1',
+      minLength:3,
+      select: function (event, ui) {
+            window.location = ui.item.href;
+            return ui.item.label;
+        }
+    });
+
+    $('.down').click(function () {
+		var $input = $(this).parent().find('input[type=text]');
+		var $amountall = $(this).parent().find('input[type=hidden]');
+		var count = parseInt($input.val()) - 1;
+		count = count < 1 ? 1 : count;
+		$input.val(count);
+		$input.change();
+		return false;
+	});
+	$('.up').click(function () {
+		var $input = $(this).parent().find('input[type=text]');
+		var $amountall = $(this).parent().find('input[type=hidden]');
+		count = parseInt($input.val()) + 1;
+		count = count > $amountall.val() ? $amountall.val() : count;
+		$input.val(count);
+		$input.change();
+		return false;
+	});
 });
+
+
 function showOn(href){
      $('#MainBascet').dialog({
         modal: true,

@@ -46,6 +46,7 @@ if ($tpl['user']['is_logined']){
 	$tpl['user'] = array_merge($tpl['user'],$user_base_data);
 } else $tpl['user']['user_id'] = 0;
 
+//var_dump($tpl);
 //если пользователь залогинен и запрещено делать заказы, то проверяем те заказы, которые были
 //зачем на главное - под вопросом
 if ($blockend < time()&& $tpl['user']['user_id']) {

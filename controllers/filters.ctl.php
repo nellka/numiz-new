@@ -76,10 +76,6 @@ if(in_array($materialtype,array(1,8,6,2))){
 	}
 }
 
-if($childen_data_conditions) $filter_groups[] = array('name'=>'Состояние','filter_group_id'=>'condition','filter_group_id_full'=>'conditions','filter'=>$childen_data_conditions);
-if($childen_data_metal) $filter_groups[] = array('name'=>'Металл','filter_group_id'=>'metal','filter_group_id_full'=>'metals','filter'=>$childen_data_metal);
-if($childen_data_years) $filter_groups[] = array('name'=>'Год','filter_group_id'=>'year','filter_group_id_full'=>'years','filter'=>$childen_data_years);
-if($childen_data_thems) $filter_groups[] = array('name'=>'Тематика','filter_group_id'=>'theme','filter_group_id_full'=>'themes','filter'=>$childen_data_thems);
 $tpl['filter']['price']['min'] = 0;
 
 if(!$tpl['filter']['price']['max'] = $cache->load("price_max_$materialtype")) {  
@@ -160,10 +156,14 @@ if(!in_array($materialtype,array(5))){
 	        	
 				 
 		}
-		$cache->save($groups_filter, "groups_$materialtype");		
+		$cache->save($groups_filter, "groups_$materialtype"."_".$group);		
 	}
 	if($groups_filter) $filter_groups[] = $groups_filter;
 }
+if($childen_data_years) $filter_groups[] = array('name'=>'Год','filter_group_id'=>'year','filter_group_id_full'=>'years','filter'=>$childen_data_years);
+if($childen_data_metal) $filter_groups[] = array('name'=>'Металл','filter_group_id'=>'metal','filter_group_id_full'=>'metals','filter'=>$childen_data_metal);
+if($childen_data_conditions) $filter_groups[] = array('name'=>'Состояние','filter_group_id'=>'condition','filter_group_id_full'=>'conditions','filter'=>$childen_data_conditions);
+if($childen_data_thems) $filter_groups[] = array('name'=>'Тематика','filter_group_id'=>'theme','filter_group_id_full'=>'themes','filter'=>$childen_data_thems);
 
 
 ?>

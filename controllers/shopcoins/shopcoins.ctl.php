@@ -3,8 +3,12 @@ require($cfg['path'].'/helpers/Paginator.php');
 require $cfg['path'] . '/configs/config_shopcoins.php';
 
 $search = request('search');
+$group = request('group');
+$materialtype = request('materialtype')?request('materialtype'):1;
+
 
 require($cfg['path'].'/controllers/filters.ctl.php');
+
 
 $tpl['shop']['errors'] = array();
 
@@ -24,7 +28,6 @@ if(request('onpage')){
 if(!isset($tpl['onpage']))	$tpl['onpage'] = 9;
 setcookie('onpage', $tpl['onpage'],  time()+ 86400 * 90,'/',$cfg['domain']);
 
-  
 //сохраняем сортировку элементов на странице в куке
 if(request('orderby')){
     $tpl['orderby'] = request('orderby');
@@ -46,7 +49,7 @@ $year_data = array();
 $group_data = array();
 $condition_data  = array(); 
 $years_data  = array(); 
-$materialtype = request('materialtype')?request('materialtype'):1;
+
 $pricestart =request('pricestart');
 $priceend =request('priceend');
 $searchid = request('searchid');
@@ -95,7 +98,6 @@ $theme  =request('theme');
 $themes  =request('theme');
 $metal  = iconv("cp1251",'utf8',request('metal'));
 $metals  =request('metals');
-$group = request('group');
 $groups = request('groups');
 
 //это старые данные в виде строки
@@ -186,14 +188,14 @@ if ($search == 'newcoins') {
 } elseif ($search == 'revaluation') {
 	$WhereParams['revaluation'] = true;
 }
-	
+
 $countpubs = $shopcoins_class->countallByParams($materialtype,$WhereParams,$yearsearch);
 
 if($addhref) $addhref = substr($addhref,1);  
 $tpl['paginator'] = new Paginator(array(
         'url'        => $cfg['site_dir']."shopcoins/index.php?".$addhref,
         'count'      => $countpubs,
-        'per_page'   => $tpl['onpage'],
+        'per_page'   => ($tpl['onpage']=='all')?$countpubs:$tpl['onpage'],
         'page'       => $tpl['pagenum'],
         'border'     =>4));
     
@@ -454,6 +456,8 @@ if ($search && $search != 'revaluation' && $search != 'newcoins'){
     $shopcoins_class->addSearchStatistic();
 	
 }		
+
+
 
 /*
 if ($GroupDescription)

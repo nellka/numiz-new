@@ -85,8 +85,9 @@ if ($catalog){
 	
 	$next_coins = $shopcoins_class->getNext($catalog,$materialtype);
 	$previos_coins = $shopcoins_class->getPrevios($catalog,$materialtype);
-	$tpl['show']['next'] = contentHelper::getRegHref($next_coins,$materialtype,$parent);
-	$tpl['show']['previos'] = contentHelper::getRegHref($previos_coins,$materialtype,$parent);	
+	
+	$tpl['show']['next'] = ($next_coins)? contentHelper::getRegHref($next_coins,$materialtype,$parent):null;
+	$tpl['show']['previos'] = ($previos_coins)? contentHelper::getRegHref($previos_coins,$materialtype,$parent):null;	
 
 	if ($rows_main&&$rows_main['check']==0) {	
    		// die('check=0');
@@ -124,8 +125,8 @@ if ($catalog){
 		}
 		
 		$tpl['show']['rowscicle'] = $shopcoins_class->getCoinsrecicle($catalog);
-		$tpl['show']['resultcicle'] = $shopcoins_class->getPopular(3,array('materialtype' => $materialtype, 'shopcoins.group' => $rows_main["group"]));
-	
+		$tpl['show']['resultcicle'] = $shopcoins_class->getPopular(4,array('materialtype' => $materialtype, 'shopcoins.group' => $rows_main["group"]));
+	//var_dump($tpl['show']['resultcicle']);
 		$tmp = Array();
 		$LastCatalog10_tmp = "";
 		if ($LastCatalog10)	{
@@ -191,12 +192,9 @@ if ($catalog){
 	
 	//выбираем что он из аксессуаров/книг заказал
 	if (($materialtype==3 || $materialtype==5) || $rows_main["materialtype"]==3 || $rows_main["materialtype"]==5){
-		die('$shopcoinsorder');
-		if ($shopcoinsorder > 1){
-			$sql_ourorder = "select * from orderdetails where `order`='$shopcoinsorder' and date > ".(time() - $reservetime).";";
-			//echo $sql_ourorder;
-			$result_ourorder = mysql_query($sql_ourorder);
 		
+		if ($shopcoinsorder > 1){
+			$result_ourorder = $shopcoins_class->getMyOrderdetails($shopcoinsorder);
 			$ourcoinsorder = Array();
 			$ourcoinsorderamount = Array();
 		
@@ -208,15 +206,16 @@ if ($catalog){
 			}
 		}
 	}	
-	$tpl['show'][$rows_main["shopcoins"]]['mark'] = $shopcoins_class->getMarks($rows_main["shopcoins"]);
-	//$tpl['show']['reviews'] = $shopcoins_class->getReviews($rows_main["shopcoins"]);
 	
+	$rows_main['mark'] = $shopcoins_class->getMarks($rows_main["shopcoins"]);
+	//$tpl['show']['reviews'] = $shopcoins_class->getReviews($rows_main["shopcoins"]);
 	if(!$tpl['show']['reviews']['reviewusers'] = $cache->load("Reviews_$catalog")) {	   
 	    $tpl['show']['reviews']['reviewusers'] =  $shopcoins_class->getAdditionalReviews();	 
 	    $cache->save($tpl['show']['reviews']['reviewusers'], "Reviews_$catalog");	 
 	} 	
 
 	$tpl['show']['rows_main'] = $rows_main;
+	
 	
 	//тематика
 	$shopcoinstheme = array();

@@ -79,7 +79,9 @@ Abstract Class Model_Base {
     public function getRowSql($sql){
     	return $this->db->fetchRow($sql);
     }
-    
+    public function getDataSql($sql){
+    	return $this->db->fetchAll($sql);
+    }
     public function getRow($table,$params=array()){
         $select = $this->db->select()
 		               ->from($table);

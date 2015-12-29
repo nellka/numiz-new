@@ -8,13 +8,10 @@
         <?php        
         if($tpl['module']=='shopcoins'){
             if($tpl['task']=='show'){?>
-                <div class="subheader">
-        			<div class="wraper clearfix">  
-        			     <?php include $cfg['path'] . '/views/shopcoins/itemtop.tpl.php'; ?>
-        			      <? include $cfg['path'] . '/views/' . $tpl['module'] . '.tpl.php'; ?>	
-        			
-        			    </div> 
-        		    </div>       
+    			<div class="wraper clearfix">  
+			     <?php include $cfg['path'] . '/views/shopcoins/itemtop.tpl.php'; ?>
+			    </div> 
+        		<? include $cfg['path'] . '/views/' . $tpl['module'] . '.tpl.php'; ?>    
            <? } else {
             ?>
 			<div class="subheader">
