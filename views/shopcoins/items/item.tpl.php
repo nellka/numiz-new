@@ -1,6 +1,6 @@
 <? 
 if($rows["materialtype"]==3){?>
-<a href='<?=$cfg['site_dir']?>shopcoins/<?=$rows["rehref"]?>' title='<?=$cfg['site_dir']?>/shopcoins<?=$rows['namecoins']?>'>
+<a href='<?=$cfg['site_dir']?>shopcoins/<?=$rows["rehref"]?>' title='<?=$cfg['site_dir']?>/shopcoins<?=$rows['namecoins']?>' >
 	<?=contentHelper::showImage('images/'.$rows["image"],$rows['namecoins'])?>
 </a>
 <a name=coin<?=$rows["shopcoins"]?> title='<?=$rows["name"]?>'></a><strong><?=$rows['namecoins']?></strong>
@@ -13,14 +13,18 @@ if($rows["materialtype"]==3){?>
 <?}	else {
 
 	$title = contentHelper::setHrefTitle($rows["name"],$rows["materialtype"],$rows['gname']).' - подробная информация';?>
-	<a href='<?=$cfg['site_dir']?>shopcoins/<?=$rows['rehref']?>' title='<?=$title?>'>
-		<?=contentHelper::showImage('images/'.$rows["image"],'Подробная информация о '.contentHelper::setWordAbout($rows["materialtype"])." ".$rows["gname"]." ".$rows["name"])?>			
-	</a>	
-	<a name=coin<?=$rows["shopcoins"]?> title='<?=contentHelper::setHrefTitle($rows["name"],$rows["materialtype"],$rows["gname"])?>'></a>
-	<strong><?=$rows['namecoins']?></strong> 
+		<center>
+		<a href='<?=$cfg['site_dir']?>shopcoins/<?=$rows['rehref']?>' title='<?=$title?>' class="borderimage">
+			<?=contentHelper::showImage('images/'.$rows["image"],'Подробная информация о '.contentHelper::setWordAbout($rows["materialtype"])." ".$rows["gname"]." ".$rows["name"])?>			
+		</a>
+		</center>		
+		<div class="coinname">
+		<a name=coin<?=$rows["shopcoins"]?> title='<?=contentHelper::setHrefTitle($rows["name"],$rows["materialtype"],$rows["gname"])?>'></a>
+		<strong><?=$rows['namecoins']?></strong> 
+	</div>
 <?}?>
 
-<div id='info'>	
+<div id='info' class="info_ext">	
 	<?
 	if($rows['year'] == 1990 && $materialtype==12) $rows['year'] = '1990 ЛМД';
 	if($rows['year'] == 1991 && $materialtype==12) $rows['year'] = '1991 ЛМД';
@@ -42,13 +46,19 @@ if($rows["materialtype"]==3){?>
 <?echo contentHelper::render('shopcoins/price/buy_button',$rows);?>
 <?
 if(($rows['buy_status']==7||$rows['buy_status']==6)&&($minpriceoneclick<=$rows['price'])) {
-	echo contentHelper::render('shopcoins/price/oneclick',$rows);
+	//echo contentHelper::render('shopcoins/price/oneclick',$rows);
 }?>
-
-<?
-echo contentHelper::render('shopcoins/price/reserved',$rows);
-echo contentHelper::render('shopcoins/price/markitem',$rows['mark']);	?>
-<div id=subinfo>
+<div class="reserv">
+	<?
+	echo contentHelper::render('shopcoins/price/reserved',$rows);
+	?>
+</div>
+<div class="stars">
+	<?php
+	echo contentHelper::render('shopcoins/price/markitem',$rows['mark']);	
+	?>
+</div>
+<div id=subinfo class="subinfo">
 Название: <strong><?=$rows["name"]?></strong><br>
 Номер: <strong><?=$rows["number"]?></strong><br>
 <?
@@ -94,7 +104,7 @@ if ($rows["dateinsert"]>time()-86400*180 && !$mycoins){
 <?
 if($rows['tmpsmallimage']){?>
 <!-- блок подобные-->	
-<div id='other'>
+<div id='other' class="other">
     <a href='<?=$rows['rehrefdubdle']?>' title='Посмотреть список подобных <?=contentHelper::setWordWhat($rows["materialtype"])?> - <?=$rows["gname"]?> <?=$rows["name"]?>'>
      <? foreach ($rows['tmpsmallimage'] as $img){
      	echo $img;

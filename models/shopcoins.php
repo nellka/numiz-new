@@ -15,13 +15,12 @@ class model_shopcoins extends Model_Base
 	    $this->arraynewcoins = Array(1=>date('Y')-2,2=>date('Y')-1,3=>date('Y'));
 	  //  $this->db->query("SET names 'cp1251'");
 	}
-	public function countByParams($where){
+	public function countByParams($sql){
 	   // $this->_getSelect($select) );	    
-	    $sql = "Select count(*) from shopcoins $where;";
+	    // = "Select count(*) from shopcoins $where;";
 	    //echo $sql."<br>";
     	//$result=mysql_query($sql);
-    	$result = $this->db->fetchOne($sql);
-    	return $result;
+    	return $this->db->fetchOne($sql);
 	}
 		
 	public function showedWith($id,$rows99){
@@ -163,7 +162,7 @@ class model_shopcoins extends Model_Base
 			
 			$statusopt = 0;			
 
-			if ($item['price1'] && $item['amount1'] && ($item['amount'] -$reserveamount)>=$rows['amount1']) {
+			if ($item['price1'] && $item['amount1'] && ($item['amount'] -$reserveamount)>=$item['amount1']) {
 				$statusopt = 1;		
 			} elseif (($item['amount'] - $reserveamount)>1)	{
 				$statusopt = 1;	
@@ -172,10 +171,10 @@ class model_shopcoins extends Model_Base
 			
 			if ($statusshopcoins) {
 			    $buy_status = 2;
-			} elseif ( ($reservedForSomeUser || (!$this->user_id && $reservedForSomeGroup) || (false === $isInRerservedGroup)) && $reserveamount>=$rows["amount"]){
+			} elseif ( ($reservedForSomeUser || (!$this->user_id && $reservedForSomeGroup) || (false === $isInRerservedGroup)) && $reserveamount>=$item["amount"]){
 			     $buy_status = 3;
 			} elseif($statusopt>0) {				
-				if (sizeof($ourcoinsorder) and in_array($rows["shopcoins"], $ourcoinsorder)) {
+				if (sizeof($ourcoinsorder) and in_array($item["shopcoins"], $ourcoinsorder)) {
 					$buy_status = 8;
 				} elseif ($can_see) {
 				    $buy_status = 6;
@@ -345,6 +344,14 @@ class model_shopcoins extends Model_Base
 		if (isset($WhereParams['pricestart'])) {
         	$select->where("shopcoins.`price` >= ?",floatval($WhereParams['pricestart']));
         }
+        if (isset($WhereParams['nominals'])) {
+        	$nominals = array();
+            foreach ($WhereParams['nominals'] as $nominal){
+                $nominal = str_replace("'","",$nominal);
+                $nominals[] = "'".$nominal."'";
+            }        	
+        	$select->where("shopcoins.name in (".implode(",",$nominals).")");
+        }
         if (isset($WhereParams['priceend'])) {        	
         	$select->where("shopcoins.`price` <=?",floatval($WhereParams['priceend']));
         }
@@ -503,7 +510,14 @@ class model_shopcoins extends Model_Base
                 $select->where("(".implode(' or ',$whereTheme).')');
             }        	
         }
-        
+        if (isset($WhereParams['nominals'])) {
+        	$nominals = array();
+            foreach ($WhereParams['nominals'] as $nominal){
+                $nominal = str_replace("'","",$nominal);
+                $nominals[] = "'".$nominal."'";
+            }        	
+        	$select->where("shopcoins.name in (".implode(",",$nominals).")");
+        }
         if (isset($WhereParams['series'])){
         	$select->where("shopcoins.series = ?",intval($WhereParams['series']));
         }
@@ -593,7 +607,7 @@ class model_shopcoins extends Model_Base
 	
     
 	public function addSearchStatistic(){
-	    
+	    /*
 	    $sql_key = "select count(*) from keywords where word='".lowstring($search)."' and page='$script';";
 		$result_key = mysql_query($sql_key);
 		$rows_key = mysql_fetch_array($result_key);
@@ -615,7 +629,7 @@ class model_shopcoins extends Model_Base
 			$sql_tmp2 = "update searchkeywords set counter=counter+1, maxcoefficient='$maxcoefficient', sumcoefficient='$sumcoefficient', amount='$amountsearch' where keywords='".lowstring($search)."' and page='$script';";
 		}
 		$result_tmp2 = mysql_query($sql_tmp2);
-		//echo $sql_tmp2."=sql_tmp2<br>";
+		//echo $sql_tmp2."=sql_tmp2<br>";*/
 			//����� ������
 	}
 	
@@ -676,6 +690,19 @@ class model_shopcoins extends Model_Base
 	   }  
 	   return  $select;    
 	}
+	public function getNominals($materialtype=1,$groups=array()){
+	    if(!$groups) return array();
+	    
+	    $select = $this->db->select()
+	                      ->from('shopcoins',array('distinct(shopcoins.name)'))
+	                      ->join(array('group'),'shopcoins.group=group.group',array())
+	                      ->where("(shopcoins.materialtype=? or shopcoins.materialtypecross & pow(2,?))",$materialtype)
+	                      ->where("group.group in (".implode(",",$groups).")")
+	                      ->where("shopcoins.check=1")
+	                      ->order('shopcoins.name desc');  
+	    return $this->db->fetchAll($select);    
+	}
+	
 	public function getConditions($materialtype=1){
 		$select = $this->db->select()
 	                      ->from('shopcoins',array('distinct(`condition`)'))
@@ -879,9 +906,11 @@ class model_shopcoins extends Model_Base
 				and (".(sizeof($SearchTempStr)?"`group`.`name` like '%".implode("%' or `group`.`name` like '%",$SearchTempStr)."%')":"").";";
 */
 	    $select = $this->db->select()
-                 ->from('shopcoins',array())
-                 ->join(array('group'),'shopcoins.group=group.group',array('distinct(group.name)','group.group','groupparent'));    
- 		$select = $this->byAdmin($select); 
+                 //->from('shopcoins',array())
+                // ->join(array('group'),'shopcoins.group=group.group',array('distinct(group.name)','group.group','groupparent'));    
+ 	//$select = $this->byAdmin($select); 
+ 	 	             ->from('group',array('distinct(group.name)','group.group','groupparent'));  
+
  		if($SearchTempStr){
  			$select->where("`group`.`name` like '%".implode("%' or `group`.`name` like '%",$SearchTempStr)."%'");
  		}
@@ -893,9 +922,10 @@ class model_shopcoins extends Model_Base
 	public function searchParrentGroups($groups){
 	
 	    $select = $this->db->select()
-                 ->from('shopcoins',array())
-                 ->join(array('group'),'shopcoins.group=group.group',array('DISTINCT(group.group)'));    
- 		$select = $this->byAdmin($select); 
+                // ->from('shopcoins',array())
+               //  ->join(array('group'),'shopcoins.group=group.group',array('DISTINCT(group.group)'));
+               ->from('group',array('DISTINCT(group.group)'));    
+ 		//$select = $this->byAdmin($select); 
 		$select->where("`group`.groupparent in ('".implode(',',$groups)."')");
  		//$this->db->query("SET names 'utf8'");
         return 	 $this->db->fetchAll($select);   

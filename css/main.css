@@ -247,6 +247,11 @@ color: black;
     height: 40px;
     vertical-align: middle;  
 }
+.borderimage img{
+	border:1px solid #cccccc;
+	padding:3px;
+	width:180px;
+}
 #basket .user_details p{
     margin: 0 0 5px;
 }
@@ -873,28 +878,26 @@ a.button24:active { background: linear-gradient(#f59500, #f5ae00) #f59500; }
   text-decoration: none;
   padding: .5em 2em;
   outline: none;
-  border-width: 2px 0;
-  border-style: solid none;
-  border-color: #007d1d #000 #007d1d;
-  border-radius: 6px;
-  background: linear-gradient(#007d1d, #056e1d) #056e1d;
+  background:#367e9b;
   transition: 0.2s;
+  width:55px;
+  text-align:center;
 } 
 .button25:hover { 
-	background: linear-gradient(#035015, #0c541c) #035015; 
 	 color: white;
 	 cursor:pointer;
 	}
-.button25:active { background: linear-gradient(#035015, #0c541c) #035015; }
+
 
 /*пейджер*/
-.pager {
+.pager, .pager_s {
 	background: #eeeeee none repeat scroll 0 0;
     display: table-cell;
     margin: 10px;
     padding: 10px 0 0 5px;
     width: 715px;
 }
+ .pager_s{width:1000px}
 .orderby{
 	/*float:left;*/
 	width:490px;
@@ -949,7 +952,7 @@ a.button24:active { background: linear-gradient(#f59500, #f5ae00) #f59500; }
     cursor: pointer;
     display: inline-block;
     float: left;
-    height: 290px;
+    height: 300px;
     margin: 2px;
     overflow: hidden;
     padding: 5px;
@@ -957,7 +960,7 @@ a.button24:active { background: linear-gradient(#f59500, #f5ae00) #f59500; }
     width: 225px;
 }
 
-.blockshop:hover{ border:1px solid #7f7979;overflow:visible;z-index:2000;background: #fff none repeat scroll 0 0;}
+.blockshop:hover{ border:1px solid #7f7979;overflow:visible;z-index:2000;background: #fff none repeat scroll 0 0; height: 500px;}
 
 .blockshop_spisok{
 	width:400px;
@@ -1137,7 +1140,8 @@ div.fancybox-showcalllink{left: 820px !important;top: 165px !important;}*/
 
 
 .amount {
-	width:200px;
+	width:225px;
+	text-align:center;
 }
 .amount span {
 	display:inline-block;
@@ -1153,4 +1157,39 @@ div.fancybox-showcalllink{left: 820px !important;top: 165px !important;}*/
 .amount input {
 	width:20px;
 	text-align:center;
+}
+span.extdown{
+		background:#ffffff;
+	display:inline-block;
+	width:20px;
+	height:20px;
+}
+span.extup{
+	background:#ffffff;
+	display:inline-block;
+	width:20px;
+	height:20px;
+}
+div.coinname {
+	height:30px;
+	overflow:hidden;
+}
+div.subinfo{
+	background:#ffffff;
+}
+div.other{
+	background:#ffffff;
+}
+div.reserv{
+	height:15px;
+	color: #666666;
+	font-size:11px;
+	text-align:center;
+}
+div.stars {
+	height:15px;
+	margin-bottom:5px;
+}
+.info_ext{
+	height:60px;
 }

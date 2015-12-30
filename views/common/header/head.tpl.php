@@ -38,7 +38,7 @@ $(document).ready(function() {
         return false; ////cancel eventbubbeling
     });
     
-    $('#globalsearch').autocomplete({
+    $('#search-top-module #search').autocomplete({
       source: 'shopcoins/index.php?search=1',
       minLength:3,
       select: function (event, ui) {

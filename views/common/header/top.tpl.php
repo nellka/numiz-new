@@ -22,7 +22,7 @@
      <a id="showcalllink" rel='showcalllink' class="iframe button24" href="<?=$cfg['site_dir']?>addcall.php?ajax=1">Заказать обратный звонок</a>   
     </div>
     <div id="search-top-module">   
-         <form action="<?=$cfg['site_dir']?>search.php" method=get>   
+         <form action="<?=$cfg['site_dir']?>shopcoins/index.php" method=get>   
          <!--<select name=globalsearch_type class=topform >
          <option value=0>Все категории
             <option value=4>Магазин
@@ -35,11 +35,11 @@
 	<table>
 		<tr>
 			<td>  
-				<input type="hidden"    value="4">    
-	          	  	<input type="text" class="search rounded" name=globalsearch id=globalsearch>
+				<input type="hidden"  value="4">    
+	          	  	<input type="text" class="search rounded" name=search id=search>
 			</td>
 			<td>
-				<input type="submit" name=globalsearch-submit id=globalsearch-submit value="">
+				<input type="submit" name=submit id=globalsearch-submit value="1">
 			</td>
 		</tr>
 	</table> 

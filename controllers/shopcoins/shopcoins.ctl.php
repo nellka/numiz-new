@@ -6,10 +6,6 @@ $search = request('search');
 $group = request('group');
 $materialtype = request('materialtype')?request('materialtype'):1;
 
-
-require($cfg['path'].'/controllers/filters.ctl.php');
-
-
 $tpl['shop']['errors'] = array();
 
 $sortname = request('sortname');
@@ -17,7 +13,7 @@ $sortname = request('sortname');
 $tpl['pager']['sorts'] = array('dateinsert'=>'новизне',                     
                       'price'=>'по цене',
                       'year'=>'году');
-$tpl['pager']['itemsOnpage'] = array(9=>9,16=>16,36=>36,33=>33,'all'=>'Все');
+$tpl['pager']['itemsOnpage'] = array(9=>9,16=>16,36=>36,33=>33,66=>66);
 
 //сохраняем количество элементов на странице в куке
 if(request('onpage')){
@@ -54,6 +50,16 @@ $pricestart =request('pricestart');
 $priceend =request('priceend');
 $searchid = request('searchid');
 $yearsearch= request('yearsearch');
+
+$groups = request('groups');
+$nominals = request('nominals');
+$group = request('group');
+
+//на случай если парамет передали из прямой ссылки надо поддержать и такой формат
+if ($groups) $group_data =$groups;
+elseif($group) $group_data =  array($group);
+
+require($cfg['path'].'/controllers/filters.ctl.php');
 //если границы цены дефолтные то убираем их из выборки78
 if($priceend==$tpl['filter']['price']['max']||$priceend<=0){
 	$priceend='';
@@ -61,6 +67,12 @@ if($priceend==$tpl['filter']['price']['max']||$priceend<=0){
 
 $yearstart  =request('yearstart');
 $yearend  =request('yearend');
+
+$theme  =request('theme');
+$themes  =request('theme');
+$metal  = iconv("cp1251",'utf8',request('metal'));
+$metals  =request('metals');
+
 
 if($yearend==date('Y',time())){
 	$yearend='';
@@ -94,23 +106,17 @@ if($yearstart||$yearend){
 	$years_data[] = array($yearstart,$yearend);
 }
 
-$theme  =request('theme');
-$themes  =request('theme');
-$metal  = iconv("cp1251",'utf8',request('metal'));
-$metals  =request('metals');
-$groups = request('groups');
 
 //это старые данные в виде строки
 $condition = iconv("cp1251",'utf8',request('condition'));
 //это новые данные в виде массива
 $conditions = (array)request('conditions');
-//на случай если парамет передали из прямой ссылки надо поддержать и такой формат
-if ($groups) $group_data =$groups;
-elseif($group) $group_data =  array($group);
+
 
 if ($metals) $metal_data =$metals;
 elseif($metal) $metal_data =  array($metal);
 
+elseif($metal) $metal_data =  array($metal);
 if ($conditions) $condition_data =$conditions;
 elseif($condition) $condition_data =  array($condition);
 
@@ -138,11 +144,13 @@ if($years_data) $WhereParams['year'] = $years_data;
 if($condition_data) $WhereParams['condition'] = $condition_data;
 if($group_data) $WhereParams['group'] = $group_data;
 if($coinssearch) $WhereParams['coinssearch'] = $coinssearch;
-
+if($nominals)  $WhereParams['nominals'] = $nominals;
 if($searchname) {
     //так как ссылки были вида cp1251
     $WhereParams['searchname'] = str_replace("'","",iconv("cp1251",'utf8',$searchname));
 }
+
+
 
 $dateinsert_orderby = "dateinsert";
 
@@ -175,6 +183,9 @@ foreach ((array)$years as $y){
 }
 foreach ((array)$themes as $th){
     $addhref .="&themes[]=$th";
+}
+foreach ((array)$nominals as $th){
+    $addhref .="&nominals[]=$th";
 }
 
 

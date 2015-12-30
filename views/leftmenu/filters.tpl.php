@@ -22,7 +22,7 @@
 	<?php     
 	 	foreach ($filter_groups as $filter_group) {?>
 	
-		<div class="filter-block">
+		<div class="filter-block" id='fb-<?=$filter_group['filter_group_id_full']?>'>
     		<div class="filter_heading">
     			<div style="float:left;"><?=$filter_group['name']?></div>
     			<div style="float:right;">
@@ -203,7 +203,9 @@ function mCustomScrollbars(){
 	7) Прокрутка с помощью клавиш (значения: "yes" или "no")
 	8) Скорость прокрутки (значение: 1-20, 1 соответствует самой медленной скорости)
 	*/
-	jQuery("#filter-groupgroup_container").mCustomScrollbar("vertical",0,"easeOutCirc",1.05,"auto","yes","yes",10);
+	if(jQuery("#filter-groupgroup_container")) jQuery("#filter-groupgroup_container").mCustomScrollbar("vertical",0,"easeOutCirc",1.05,"auto","yes","yes",10);
+	console.log(jQuery("#filter-grouptheme_container"));
+	if(jQuery("#filter-grouptheme_container")) jQuery("#filter-grouptheme_container").mCustomScrollbar("vertical",0,"easeOutCirc",1.05,"auto","yes","yes",10);
 	/*$("#mcs2_container").mCustomScrollbar(); 
 	$("#mcs3_container").mCustomScrollbar("vertical",900,"easeOutCirc",1.05,"auto","no","no",0); 
 	$("#mcs4_container").mCustomScrollbar("vertical",200,"easeOutCirc",1.25,"fixed","yes","no",0); 
@@ -231,7 +233,8 @@ function LoadNewContent(id,file){
 
    <script type="text/javascript">  
         $(function(){
-         $('#search-params input').on('change',function(){sendData();});          
+        	
+         $('#search-params input').on('change',function(){console.log(this);sendData();});          
         });
       
     </script>

@@ -9,6 +9,14 @@ RewriteRule .* index.php?module=shopcoins&task=%1 [L,QSA]
 RewriteCond %{QUERY_STRING} term=(.*)$ [NC]
 RewriteRule .* index.php?module=shopcoins&task=searchajax [L,QSA]
 
+RewriteCond %{QUERY_STRING} search=revaluation [NC]
+RewriteRule .* index.php?module=shopcoins&task=shopcoins [L,QSA]
+RewriteCond %{QUERY_STRING} search=newcoins [NC]
+RewriteRule .* index.php?module=shopcoins&task=shopcoins [L,QSA]
+
+
+RewriteCond %{QUERY_STRING} search=(.*)$ [NC]
+RewriteRule .* index.php?module=shopcoins&task=search [L,QSA]
 
 #RewriteCond %{REQUEST_URI}	^/shopcoins/.*_pp([0-9]*)\.html
 RewriteRule shopcoins/.*_c([0-9]*)_pc([0-9]*)_m([0-9]*)_pp([0-9]*)\.html$ index.php?module=shopcoins&task=show&catalog=$1&parent=$2&materialtype=$3&pagenumparent=$4 [L]

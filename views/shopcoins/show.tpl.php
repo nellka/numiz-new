@@ -6,6 +6,37 @@ if($tpl['show']['error']['no_coins']){?>
     include($cfg['path'].'/views/shopcoins/item/item.tpl.php');   
 }?>
 </div>
+<?php
+		if ($tpl['user']['user_id']) {   ?> 
+			<br><a name=addreview></a>
+			<form name=reviewcoin>
+			<h5 style="margin-top:0px;">Написать отзыв:</h5>
+			<div id='error-review' class="error"></div>
+			<div><b>Пользователь: <input type=text name=fio value='<?=$tpl['user']['username']?>' size=40 maxlength=150 disabled></b></div>
+			<div><b>Отзыв:</b><br>
+			<textarea name=reviewcointext id=reviewcointext cols=60 rows=5 ></textarea></div>
+			<div><input type=button value='Оставить отзыв' onclick="AddReview('<?=$catalog?>');"></div>
+			</form>
+		<?}?>
+			<div id=allreviews>
+				<a name=showreview></a>
+				<h5 style="margin-top:0px;">Оставленные отзывы:</h5>
+				<div id=reviewsdiv>
+				<? if (sizeof($tpl['show']['reviews']['reviewusers'])) {
+					foreach ($tpl['show']['reviews']['reviewusers'] as $key=>$value) {     
+						?>
+						<blockquote>
+				   <div id='review<?=(isset($value["catalog"])&&$value["catalog"])?$value["catalog"]:$value["shopcoins"]?>'>
+					   <b><?=date('d-m-Y',$value['dateinsert'])?> <?=$value['fio']?></b>
+					   <?=$value['review']?>
+				   </div>
+				   </blockquote>
+				<?}
+				} else {
+					echo "<div id=emptyreview class=error>Отзывы отсутствуют</div>";
+				}?>
+				</div>
+			</div>
 <?
 if ($tpl['show']['rowscicle']) {?>
 <div class="triger">	
@@ -320,49 +351,24 @@ echo "</center><br >";
 ?>
 <div class="wraper clearfix" style="clear: both;">
 <div style="float:left;width:980px;border:1px solid #cccccc;margin-top:50px;padding:20px;">
+<h5  style="margin-top:0px;">Гарантия:</h5>
 	<div style="float:left;width:45%;padding:10px;">
-		<?php
-		if ($tpl['user']['user_id']) {   ?> 
-			<br><a name=addreview></a>
-			<form name=reviewcoin>
-			<h5 style="margin-top:0px;">Написать отзыв:</h5>
-			<div id='error-review' class="error"></div>
-			<div><b>Пользователь: <input type=text name=fio value='<?=$tpl['user']['username']?>' size=40 maxlength=150 disabled></b></div>
-			<div><b>Отзыв:</b><br>
-			<textarea name=reviewcointext id=reviewcointext cols=60 rows=5 ></textarea></div>
-			<div><input type=button value='Оставить отзыв' onclick="AddReview('<?=$catalog?>');"></div>
-			</form>
-		<?}?>
-			<div id=allreviews>
-				<a name=showreview></a>
-				<h5 style="margin-top:0px;">Оставленные отзывы:</h5>
-				<div id=reviewsdiv>
-				<? if (sizeof($tpl['show']['reviews']['reviewusers'])) {
-					foreach ($tpl['show']['reviews']['reviewusers'] as $key=>$value) {     
-						?>
-				   <div id='review<?=(isset($value["catalog"])&&$value["catalog"])?$value["catalog"]:$value["shopcoins"]?>'>
-					   <b><?=date('d-m-Y',$value['dateinsert'])?> <?=$value['fio']?></b>
-					   <?=$value['review']?>
-				   </div>
-				<?}
-				} else {
-					echo "<div id=emptyreview class=error>Отзывы отсутствуют</div>";
-				}?>
-				</div>
-			</div>
+	<!--
+		-->
+			<b>Гарантии на нумизматический материал (монеты, банкноты).</b>
+			<br><br>
+			После поступления материала в наш офис, каждая монета просматривается мной  для выяснения ее подлинности.<br>
+			Как правило, монеты и банкноты поступают к нам от известных мировых дилеров, нумизматических магазинов и т.п.
+			Если у меня возникают какие-то сомнения, я пытаюсь узнать о подлинности монеты или банкноты от известных
+			нумизматических дилеров города Москвы.<br>
+		   По своей практике могу сказать следующее, фальшивые монеты существовали, существуют и будут существовать.
+		   Были случаи (5-10) когда клиенты, у которых возникали вопросы о подлинности, приносили монету назад –
+		   все инциденты решались в положительную сторону покупателя. Господа, все иногда ошибаются и я тоже.
+		<br><br>
 	</div>
 	<div style="float:right;width:45%;padding:10px;">
-	<h5  style="margin-top:0px;">Гарантия:</h5>
-	    <b>Гарантии на нумизматический материал (монеты, банкноты).</b>
-	<br><br>
-    После поступления материала в наш офис, каждая монета просматривается мной  для выяснения ее подлинности.<br>
-	Как правило, монеты и банкноты поступают к нам от известных мировых дилеров, нумизматических магазинов и т.п.
-	Если у меня возникают какие-то сомнения, я пытаюсь узнать о подлинности монеты или банкноты от известных
-	нумизматических дилеров города Москвы.<br>
-   По своей практике могу сказать следующее, фальшивые монеты существовали, существуют и будут существовать.
-   Были случаи (5-10) когда клиенты, у которых возникали вопросы о подлинности, приносили монету назад –
-   все инциденты решались в положительную сторону покупателя. Господа, все иногда ошибаются и я тоже.
-<br><br>
+	
+	   
            
      <b>Наши гарантии на монеты и банкноты. </b>
 <br><br>

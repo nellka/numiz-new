@@ -1,4 +1,4 @@
-<div id='pager' class="pager">
+<div id='pager' class="pager<?=isset($prefix)?$prefix:""?>">
 	<div id='order' class="orderby" style="padding-left:5px;">
 		<div style="float:left;"><b>Сортировать по:</b></div>
 		<?php 

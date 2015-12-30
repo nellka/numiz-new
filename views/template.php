@@ -12,6 +12,11 @@
 			     <?php include $cfg['path'] . '/views/shopcoins/itemtop.tpl.php'; ?>
 			    </div> 
         		<? include $cfg['path'] . '/views/' . $tpl['module'] . '.tpl.php'; ?>    
+           <? } else if($tpl['task']=='catalog_search'){?>
+    			<div class="wraper clearfix">  
+			     <?php include $cfg['path'] . '/views/shopcoins/topsearch.tpl.php'; ?>
+			    </div> 
+        		<? include $cfg['path'] . '/views/' . $tpl['module'] . '.tpl.php'; ?>    
            <? } else {
             ?>
 			<div class="subheader">
