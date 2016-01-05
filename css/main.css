@@ -1,5 +1,4 @@
-body
-{
+body {
 	margin: 0;
 	padding: 0;
 	color: #000;
@@ -41,9 +40,13 @@ a:hover{color:#006699;font-weight:bold;}
 	position:relative;
 	width: 1200px;
 }
-#header {	
+.header {	
 	padding: 70px 0 0;
     height: 205px;
+}
+.header-mini {	
+	padding: 70px 0 0;
+    height: 55px;
 }
 #header-menu {	
 	background: #4f5965 none repeat scroll 0 0;
@@ -206,7 +209,7 @@ color: black;
     padding: 0 0 0 5px;
 }
 
-.wraper  {
+.wraper {
 	margin:0 auto;
 	width: 1024px;	
 }
@@ -246,6 +249,19 @@ color: black;
     padding: 0 7px 0 0;  */
     height: 40px;
     vertical-align: middle;  
+}
+
+.close-top,.open-top{
+display:block;
+position:absolute;
+width:20px;
+height:20px;
+background: url("../images/close-o.png") no-repeat scroll left center;
+right:0;
+cursor:pointer;
+}
+.open-top{
+background: url("../images/expand.jpg") no-repeat scroll left center;
 }
 .borderimage img{
 	border:1px solid #cccccc;
@@ -297,12 +313,12 @@ padding:20px  0 0;
 }
 
 
-/*#search-top-module {
+/*.search-top-module {
     width: 100%;
 }*/
 
 
-#search-top-module .topform {
+.search-top-module .topform {
     border: 1px solid #eeeeee;
     color: #663333;
     font-size: 10px;
@@ -311,7 +327,7 @@ padding:20px  0 0;
     background: #eeeeee none repeat scroll 0 0;
 }
 
-#search-top-module input#globalsearch {    
+.search-top-module input#search {    
     border: 1px solid #eeeeee;
     border-radius: 3px;
     color: #7da2aa;
@@ -322,9 +338,7 @@ padding:20px  0 0;
     width: 490px;
 }
 
-#search-top-module #globalsearch-submit:hover{
-}
-#search-top-module{
+.search-top-module{
     margin: 0;
     padding: 0;
     text-align: right;
@@ -334,7 +348,7 @@ padding:20px  0 0;
 color:red;
 text-align:center;
 }
-#search-top-module #globalsearch-submit {
+.search-top-module #globalsearch-submit {
      background: #eeeeee url("../images/search.png") no-repeat scroll center center;
     border: 1px solid #eeeeee;
     border-radius: 3px;
@@ -418,7 +432,7 @@ padding: 10px 0 0 35px;
 #headergrid div {
     float: left;
 }
-#contact-top-module, #contact-top-phone,#search-top-module   {
+#contact-top-module, #contact-top-phone,.search-top-module   {
 
 }
 a#showcalllink{margin: 10px 0 0 70px;}
@@ -955,12 +969,38 @@ a.button24:active { background: linear-gradient(#f59500, #f5ae00) #f59500; }
     height: 300px;
     margin: 2px;
     overflow: hidden;
-    padding: 5px;
     position: relative;
-    width: 225px;
+    width: 235px;
+    z-index:1;
 }
 
-.blockshop:hover{ border:1px solid #7f7979;overflow:visible;z-index:2000;background: #fff none repeat scroll 0 0; height: 500px;}
+.blockshop-full:hover{
+   box-shadow: 0px 0px 7px -1px #000000;
+  border:1px solid #7f7979;  
+}
+
+
+.blockshop-full {
+    background: white none repeat scroll 0 0;    
+    position: absolute;
+    z-index: 100;
+    width: 223px;
+    padding: 5px;
+    /*border:1px solid #7f7979;*/
+    overflow:visible;
+    z-index:2000;
+}
+
+.blockshop:hover{
+ /*border:0px solid #7f7979;overflow:visible;z-index:2000;
+ background: red !important;
+ position:absolute;
+ left:0;
+ 
+  border: 1px solid blue !important;*/
+  overflow: visible;
+ z-index:100;
+}
 
 .blockshop_spisok{
 	width:400px;

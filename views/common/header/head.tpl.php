@@ -22,6 +22,7 @@ jQuery( document ).ready(function( $ ) {});*/
 <!--<script type="text/javascript" src="<?=$cfg['site_dir']?>js/jquery.fancybox-1.3.3.js"></script>-->
 
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type= "text/javascript"></script>
+<script src="<?=$cfg['site_dir']?>js/jquery.cookie.js"></script>
 <script src= "<?=$cfg['site_dir']?>js/jquery.mousewheel.min.js" type= "text/javascript"></script> 
 <link href="<?=$cfg['site_dir']?>css/jquery.mCustomScrollbar.css" rel="stylesheet" type= "text/css"/>
 <script src="<?=$cfg['site_dir']?>js/jquery.easing.1.3.js" type= "text/javascript"></script>
@@ -38,7 +39,7 @@ $(document).ready(function() {
         return false; ////cancel eventbubbeling
     });
     
-    $('#search-top-module #search').autocomplete({
+    $('.search-top-module #search').autocomplete({
       source: 'shopcoins/index.php?search=1',
       minLength:3,
       select: function (event, ui) {

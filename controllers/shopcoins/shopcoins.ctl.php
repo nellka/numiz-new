@@ -5,6 +5,14 @@ require $cfg['path'] . '/configs/config_shopcoins.php';
 $search = request('search');
 $group = request('group');
 $materialtype = request('materialtype')?request('materialtype'):1;
+if ($search == 'newcoins') {
+    $shopcoins_class->setCategoryType(model_shopcoins::NEWCOINS);
+} elseif ($search == 'revaluation') {
+	$shopcoins_class->setCategoryType(model_shopcoins::REVALUATION);
+} else {
+    $shopcoins_class->setMaterialtype($materialtype);
+}
+
 
 $tpl['shop']['errors'] = array();
 
@@ -49,7 +57,6 @@ $years_data  = array();
 $pricestart =request('pricestart');
 $priceend =request('priceend');
 $searchid = request('searchid');
-$yearsearch= request('yearsearch');
 
 $groups = request('groups');
 $nominals = request('nominals');
@@ -194,13 +201,8 @@ if ($searchid)
 	<br>����� ��������� ����������� ����� - ������� <a href=$script>�����</a>.</p>";
 
 
-if ($search == 'newcoins') {
-	$WhereParams['newcoins'] = true;
-} elseif ($search == 'revaluation') {
-	$WhereParams['revaluation'] = true;
-}
 
-$countpubs = $shopcoins_class->countallByParams($materialtype,$WhereParams,$yearsearch);
+$countpubs = $shopcoins_class->countallByParams($WhereParams);
 
 if($addhref) $addhref = substr($addhref,1);  
 $tpl['paginator'] = new Paginator(array(
@@ -332,7 +334,7 @@ else*/if ($checkuser && $tpl['user']['user_id'] && ($num > 3) ) {
 	".($group>0&&!$page?($sortname?" order by ".($coinssearch?"shopcoins.shopcoins=".intval($coinssearch)." desc,":"")." groupparent asc,param2,param1,".$dateinsert_orderby." desc":" order by ".($coinssearch?"shopcoins.shopcoins=".intval($coinssearch)." desc,":"")." groupparent asc,".$dateinsert_orderby." desc,price desc, param2,param1"):$orderby)." 
 	$limit;";
 	echo $sql;*/
-	$data = $shopcoins_class->getItemsByParams($materialtype,$WhereParams,$yearsearch,$tpl['pagenum'],$tpl['onpage'],$orderby);
+	$data = $shopcoins_class->getItemsByParams($WhereParams,$tpl['pagenum'],$tpl['onpage'],$orderby);
 	
 }
 
@@ -464,8 +466,7 @@ if (sizeof($tpl['shop']['MyShowArray'])==0){
 
 //записываем статистике по тому, что искали
 if ($search && $search != 'revaluation' && $search != 'newcoins'){		
-    $shopcoins_class->addSearchStatistic();
-	
+    //$shopcoins_class->addSearchStatistic();	
 }		
 
 

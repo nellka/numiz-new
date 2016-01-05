@@ -3,7 +3,25 @@
     </div>
     <div style="width:350px;float:left;padding-left:50px;">
         <h1><?=$rows_main["name"]?></h1>
-        <?
+       
+    <?php
+		if ($tpl['user']['user_id']) {   ?> 
+			<div id='review-block'><a name=addreview class="iframe" href="#" onclick="showReviewForm();return false;">Написать отзыв</a> 
+    			<div id='reviewcoin' style="display:none">
+    			    <form name='reviewcoin'>
+        			
+        			<h1 class="yell_b">Написать отзыв</h1>
+        			<div id='error-review' class="error"></div>
+        			<div><b>Пользователь: <br><input type=text name=fio value='<?=$tpl['user']['username']?>' size=40 maxlength=150 disabled></b></div>
+        			<div><b>Отзыв:</b><br>
+        			<textarea name=reviewcointext id=reviewcointext cols=57 rows=10 ></textarea></div>
+        			<div><input type=button class="yell_b" value='Оставить отзыв' onclick="AddReview('<?=$catalog?>');"></div>
+        			</form>
+    			</div>
+			</div>
+		<?}?>
+		
+     <?
 	if ($rows_main["gname"]){?>
 	<?=in_array($rows_main["materialtype"],array(9,3,5))?"Группа":"Страна"?>: 
 	<a href=<?=$cfg['site_dir']?>/shopcoins?group=<?=$rows_main['group']?>&materialtype=<?=$rows_main["materialtype"]?> title='Посмотреть <?=contentHelper::setWordThat($rows_main["materialtype"])?> <?=$rows_main["gname"]?>'>

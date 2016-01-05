@@ -1,7 +1,7 @@
 <?
 require($cfg['path'].'/helpers/Paginator.php');
 require($cfg['path'].'/models/catalogshopcoinsrelation.php');
-
+require $cfg['path'] . '/configs/config_shopcoins.php';
 $catalogshopcoinsrelation_class = new model_catalogshopcoinsrelation($cfg['db']);
 
 $page = 'show';
@@ -198,8 +198,7 @@ if ($catalog){
 			$ourcoinsorder = Array();
 			$ourcoinsorderamount = Array();
 		
-			while ($rows_ourorder = mysql_fetch_array($result_ourorder))
-			{
+			foreach ($result_ourorder as $rows_ourorder) {
 				$ourcoinsorder[] = $rows_ourorder["catalog"];
 				$ourcoinsorderamount[$rows_ourorder["catalog"]] = $rows_ourorder["amount"];
 				//echo "<br>".$rows_ourorder["catalog"]." - ".$rows_ourorder["amount"];
@@ -244,6 +243,7 @@ if ($catalog){
 	if ($materialtype==3){
 		//показ сопутствующих товаров
 		$tpl['shop']['related'] = $shopcoins_class->getRelated($catalog);
+
 		$i = 0;
 		$oldmaterialtype = 0;
 		if ($tpl['shop']['related']){		

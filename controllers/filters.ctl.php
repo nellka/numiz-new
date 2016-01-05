@@ -15,8 +15,8 @@ $childen_data_nominals = array();
 */
 if(in_array($materialtype,array(1,7,8,6,4))){
 	if(!$tpl['filters']['metalls'] = $cache->load("metalls_$materialtype")) {	   
-	    $tpl['filters']['metalls'] = $shopcoins_class->getMetalls($materialtype);	 
-	    $cache->save($tpl['filters']['metalls'], "metalls_$materialtype");	 
+	    $tpl['filters']['metalls'] = $shopcoins_class->getMetalls();	 
+	    $cache->save($tpl['filters']['metalls'], "metalls_$materialtype"."_$search");	 
 	} 	
 	foreach ($tpl['filters']['metalls'] as $value){
 	    $childen_data_metal[] = array(
@@ -33,8 +33,8 @@ if(in_array($materialtype,array(1,7,8,6,4))){
 */
 if(in_array($materialtype,array(1,7,8,6,4))){
 	if(!$tpl['filters']['conditions'] = $cache->load("conditions_$materialtype")) {	   
-	    $tpl['filters']['conditions'] = $shopcoins_class->getConditions($materialtype);
-	    $cache->save($tpl['filters']['conditions'], "conditions_$materialtype");	 
+	    $tpl['filters']['conditions'] = $shopcoins_class->getConditions();
+	    $cache->save($tpl['filters']['conditions'], "conditions_$materialtype"."_$search");	 
 	} 	
 	
 	foreach ($tpl['filters']['conditions'] as $value){
@@ -80,39 +80,21 @@ if(in_array($materialtype,array(1,8,6,2))){
 $tpl['filter']['price']['min'] = 0;
 
 if(!$tpl['filter']['price']['max'] = $cache->load("price_max_$materialtype")) {  
-	$tpl['filter']['price']['max'] = (integer)$shopcoins_class->getMaxPrice($materialtype);
-	$cache->save($tpl['filter']['price']['max'], "price_max_$materialtype");	
+	$tpl['filter']['price']['max'] = (integer)$shopcoins_class->getMaxPrice();
+	$cache->save($tpl['filter']['price']['max'], "price_max_$materialtype"."_$search");	
 }
 
 
 //($
-if ($search == 'revaluation') {
-    if(!$tpl['filters']['All_groups'] = $cache->load("revaluation_filter_group")) {
-        $tpl['filters']['All_groups'] = $shopcoins_class->getGroups(0,1,0);
-        $cache->save( $tpl['filters']['All_groups'], "revaluation_filter_group");	
-    }
-    
-    $tpl['filters']['All_groups'] = $shopcoins_class->getGroups(0,1,0);
-	$sql = "select distinct `group` 
-	from shopcoins 
-	where shopcoins.datereprice>0
-	and (".($tpl['user']['user_id']==811?(!$nocheck?"shopcoins.check=1 or shopcoins.check>3":"shopcoins.check>3"):"shopcoins.check=1").")
-	and shopcoins.dateinsert>0;";
-} elseif ($search == 'newcoins') {    
-	if(!$tpl['filters']['All_groups'] = $cache->load("newcoins_filter_group")) {
-        $tpl['filters']['All_groups'] = $shopcoins_class->getGroups(0,0,1);
-        $cache->save( $tpl['filters']['All_groups'], "newcoins_filter_group");	
-    }
-}	else {
-    if(!$tpl['filters']['All_groups'] = $cache->load("all_groups_$materialtype")) {
-        $tpl['filters']['All_groups'] = $shopcoins_class->getGroups($materialtype);
-        $cache->save( $tpl['filters']['All_groups'], "all_groups_$materialtype");	
-    }
+if(!$tpl['filters']['All_groups'] = $cache->load("all_groups_$materialtype"."_$search")) {
+    $tpl['filters']['All_groups'] = $shopcoins_class->getGroups();
+    $cache->save( $tpl['filters']['All_groups'], "all_groups_$materialtype"."_$search");	
 }
+
 
 if(!in_array($materialtype,array(5))){
 	
-	if(!$groups_filter = $cache->load("groups_$materialtype")) {  
+	if(!$groups_filter = $cache->load("groups_$materialtype"."_$search")) {  
 	    $Group = array();
 		foreach ($tpl['filters']['All_groups'] as $rows) {			
 			$Group[] = $rows["group"];
@@ -157,15 +139,15 @@ if(!in_array($materialtype,array(5))){
 	        	
 				 
 		}
-		$cache->save($groups_filter, "groups_$materialtype"."_".$group);		
+		$cache->save($groups_filter, "groups_$materialtype"."_$search");		
 	}
 	if($groups_filter) $filter_groups[] = $groups_filter;
 }
 
 //фильтр по номиналам
-if(!$tpl['filters']['nominals'] = $cache->load("nominals_$materialtype".implode("_",$group_data))) { 
-    $tpl['filters']['nominals'] = $shopcoins_class->getNominals($materialtype,$group_data);
-    $cache->save($childen_data_nominals, "nominals_$materialtype".implode("_",$group_data));
+if(!$tpl['filters']['nominals'] = $cache->load("nominals_$materialtype".implode("_",$group_data)."_$search")) { 
+    $tpl['filters']['nominals'] = $shopcoins_class->getNominals($group_data);
+    $cache->save($childen_data_nominals, "nominals_$materialtype".implode("_",$group_data)."_$search");
 }
 
 foreach ($tpl['filters']['nominals'] as $value){

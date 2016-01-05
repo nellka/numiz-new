@@ -33,9 +33,12 @@ if($tpl['shop']['errors']){?>
     		include('items/item_nabor.tpl.php');
     		echo "</div>";
     	} else {
-    		echo "<div class='blockshop'>";
+    		echo "<div class='blockshop'>
+    		<div class='blockshop-full'>
+    		";
     		include('items/item.tpl.php');
-    		echo "</div>";
+    		echo "</div>
+    		</div>";
     	}	
     	$i++;	
     }?>

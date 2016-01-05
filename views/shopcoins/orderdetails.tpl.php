@@ -65,10 +65,26 @@ foreach ($tpl['orderdetails']['ArrayShopcoinsInOrder'] as 	$rows ){
 	<td class=tboard><?=$rows["year"]?></td>
 	<td class=tboard><?=$rows["number"]?></td>
 	<td class=tboard>"<?=($rows["price"]==0)?"бесплатно":round($rows["price"])." руб."?></td>
-	<td class=tboard align=center><input type=hidden name=shopcoins<?=$i?> value='<?=$rows["catalog"]?>'>
-	<input type=hidden name=sqlamount<?=$i?> value='<?=$rows["amount"]?>'>
-	<input type="<?=($rows["materialtype"]==3||$rows["materialtype"]==5?"text":"hidden")?>" name=amount_<?=$i?> value='<?=$rows["oamount"]?>' size=2 maxlength=5 class=formtxt>
-	<?($rows["materialtype"]!=3&&$rows["materialtype"]!=5?$rows["oamount"]:"")?>
+	<td class=tboard align=center>
+	
+	<input type=hidden name=shopcoins<?=$i?> value='<?=$rows["catalog"]?>'>
+	<!--<input type=hidden name=sqlamount<?=$i?> value='<?=$rows["amount"]?>'>
+	<input type="<?=($rows["oamount"]?"text":"hidden")?>" name=amount_<?=$i?> value='<?=$rows["oamount"]?>' size=2 maxlength=5 class=formtxt>
+	<?($rows["oamount"]?$rows["oamount"]:"")?>
+	-->
+
+<? 
+
+if($rows["amountAll"]>1){?>
+<input id="amountall<?=$rows["catalog"]?>" type="hidden" value="<?=$rows["amountAll"]?>">
+<span class="down">-</span>
+<input id="amount<?=$rows["catalog"]?>" type="text" value="<?=$rows["oamount"]?>" size="1" name="amount_<?=$i?>">
+<span class="up">+</span>
+<?} else {?>
+	<?=$rows["oamount"]?>
+<?}?>
+
+<br>
 	</td>
 	<td class=tboard width=25><a href=<?=$cfg['site_dir']?>/shopcoins?page=orderdetails&pageinfo=delete&shopcoins=<?=$rows["catalog"]?> title='Удалить из корзины'>Удалить</a></td>
 	</tr>
@@ -105,155 +121,109 @@ if ($sum>$stopsummax) {?>
 <?}?>
 
 <?
-if (sizeof($tpl['orderdetails']['ArrayShopcoinsInOrder'])) {
+if ($tpl['orderdetails']['related']) {?>
+
+<div class="wraper clearfix">
+	<h5>СОВЕТУЕМ ОБРАТИТЬ ВНИМАНИЕ ТАКЖЕ НА:</h5>
+</div>
+<div class="triger">	
+	<div class="wraper clearfix" style="height:350px;padding-top:15px;">
+		<div>
+			<?foreach ($tpl['orderdetails']['related'] as $rowsp){?>
+				<div class="coin_info">
+					<div id=show<?=$rowsp['shopcoins']?>></div>
+				<?	
+				$statuses = $shopcoins_class->getBuyStatus($rowsp["shopcoins"],$tpl['user']['can_see'],array(),array());
+				$rowsp['buy_status'] = $statuses['buy_status'];
+				$rowsp['reserved_status'] = $statuses['reserved_status'];	
+				$rowsp['mark'] = $shopcoins_class->getMarks($rowsp["shopcoins"]);
+				echo contentHelper::render('shopcoins/item/itemmini',$rowsp);
+	            ?>				
+				</div>
+			<?}?>
+		</div>
+	</div>
+</div>
+
+<!--
+	<table border=0 cellpadding=3 cellspacing=1 align=center width=180>
+	<tr bgcolor=#EBE4D4 valign=top>
+	<td class=tboard bgcolor=#99CCFF><b></b></td></tr>";
 	
-	if (sizeof($tpl['orderdetails']['ArrayGroupShopcoins'])) {
+	 foreach ($tpl['orderdetails']['related'] as $rows) {?>
+		<tr bgcolor=#EBE4D4 valign=top onMouseover=\"javascript:ShowMainCoins('".$rows['shopcoins']."','<img border=1 bordercolor=black src=images/".$rows['image_big'].">');\" onMouseout=\"javascript:NotShowMainCoina('".$rows['shopcoins']."');\">
+		<td class=tboard id=image".$rows['shopcoins']."><div id=show".$rows['shopcoins']."></div><img src=smallimages/".$rows["image_small"]." border=1 alt='".$rows["gname"]." | ".$rows["name"]."' width=80 align=left >
+		<a href=index.php?catalog=".$rows["shopcoins"]."&page=show&materialtype=".$rows["materialtype"].">".$rows["name"]."</a><br>
+		".$rows["gname"]."<br>
+		<font color=red><b>";
+		if ($rows["price"]==0)
+			$RelationText .= "бесплатно";
+		else
+			$RelationText .= round($rows["price"],2)." руб.";
+		$RelationText .= "</b></font>
+		</td></tr><tr bgcolor=#EBE4D4 ><td class=tboard>";
 		
-		$sql = "select `group` from `group` where `group` in(".implode(",",$ArrayGroupShopcoins).") or `groupparent` in(".implode(",",$ArrayGroupShopcoins).");";
-		$result = mysql_query($sql);
-		while ($rows = mysql_fetch_array($result)) {
-		
-			$ArrayGroupIn[] = $rows['group'];
-		}
-	}
-	
-	foreach ($ArrayShopcoinsInOrder as $key=>$value) {
-	
-		switch ($value['materialtype']) {
-		
-			case 1:
-				$wherein[] = "(((shopcoins.materialtype in(1,10,12) and shopcoins.amountparent>0) or shopcoins.materialtype in(4,7,8,9)) and shopcoins.metal = '".$value['metal']."' and ABS(shopcoins.year-".$value['year'].") <= 10 )";
-				break;
-			case 2:
-				$wherein[] = "(shopcoins.materialtype=2 and ABS(shopcoins.year-".$value['year'].") <= 10 )";
-				break;
-			case 3:
-				$wherein[] = "(shopcoins.materialtype=3)";
-				break;
-			case 4:
-				$wherein[] = "(((shopcoins.materialtype in(1,10,12) and shopcoins.amountparent>0) or shopcoins.materialtype in(4,7,8,9)) and shopcoins.metal = '".$value['metal']."' and ABS(shopcoins.year-".$value['year'].") <= 10 )";
-				break;
-			case 5:
-				$wherein[] = "(shopcoins.materialtype=3)";
-				break;
-			case 7:
-				$wherein[] = "(((shopcoins.materialtype in(1,10,12) and shopcoins.amountparent>0) or shopcoins.materialtype in(4,7,8,9)) and shopcoins.metal = '".$value['metal']."' and ABS(shopcoins.year-".$value['year'].") <= 10 )";
-				break;
-			case 8:
-				$wherein[] = "(((shopcoins.materialtype in(1,10,12) and shopcoins.amountparent>0) or shopcoins.materialtype in(4,7,8,9)) and shopcoins.metal = '".$value['metal']."' and ABS(shopcoins.year-".$value['year'].") <= 10 )";
-				break;
-			case 9:
-				$wherein[] = "(((shopcoins.materialtype in(1,10,12) and shopcoins.amountparent>0) or shopcoins.materialtype in(4,7,8,9)) and shopcoins.metal = '".$value['metal']."' and ABS(shopcoins.year-".$value['year'].") <= 10 )";
-				break;
-			case 10:
-				$wherein[] = "(((shopcoins.materialtype in(1,10,12) and shopcoins.amountparent>0) or shopcoins.materialtype in(4,7,8,9)) and shopcoins.metal = '".$value['metal']."' and ABS(shopcoins.year-".$value['year'].") <= 10 )";
-				break;
-			case 12:
-				$wherein[] = "(((shopcoins.materialtype in(1,10,12) and shopcoins.amountparent>0) or shopcoins.materialtype in(4,7,8,9)) and shopcoins.metal = '".$value['metal']."' and ABS(shopcoins.year-".$value['year'].") <= 10 )";
-				break;
-			
-		}
-		$ArrayIn[] = $value['shopcoins'];
-	}
-	
-	
-	
-	$sql = "SELECT shopcoins.*, g.name as gname 
-		FROM 
-		`shopcoins`, `group` as g  
-		where 
-			(".implode(" or ",$wherein).") 
-			".(sizeof($ArrayGroupIn)?" and shopcoins.group in (".implode(",", $ArrayGroupIn).")":"")." 
-			and shopcoins.shopcoins not in(".implode(",",$ArrayIn).")  
-			and shopcoins.`check`=1 and shopcoins.`group` = `g`.`group` group by shopcoins.shopcoins desc order by rand() limit 10;";
-	$result = mysql_query($sql);
-	//echo $sql;
-	$result = mysql_query($sql);
-	$i = 0;
-	$oldmaterialtype = 0;
-	if (@mysql_num_rows($result))
-	{
-		$RelationText = "
-		<table border=0 cellpadding=3 cellspacing=1 align=center width=180>
-		<tr bgcolor=#EBE4D4 valign=top>
-		<td class=tboard bgcolor=#99CCFF><b>СОВЕТУЕМ ОБРАТИТЬ ВНИМАНИЕ ТАКЖЕ НА:</b></td></tr>";
-		
-		while ($rows = mysql_fetch_array($result))
+		if ($rows["materialtype"]==3)
 		{
-			$RelationText .= "<tr bgcolor=#EBE4D4 valign=top onMouseover=\"javascript:ShowMainCoins('".$rows['shopcoins']."','<img border=1 bordercolor=black src=images/".$rows['image_big'].">');\" onMouseout=\"javascript:NotShowMainCoina('".$rows['shopcoins']."');\">
-			<td class=tboard id=image".$rows['shopcoins']."><div id=show".$rows['shopcoins']."></div><img src=smallimages/".$rows["image_small"]." border=1 alt='".$rows["gname"]." | ".$rows["name"]."' width=80 align=left >
-			<a href=index.php?catalog=".$rows["shopcoins"]."&page=show&materialtype=".$rows["materialtype"].">".$rows["name"]."</a><br>
-			".$rows["gname"]."<br>
-			<font color=red><b>";
-			if ($rows["price"]==0)
-				$RelationText .= "бесплатно";
+			if (sizeof($ourcoinsorder) and in_array($rows["shopcoins"], $ourcoinsorder))
+				$RelationText .= "
+				<input type=text id=amount".$rows["shopcoins"]." name=amount".$rows["shopcoins"]." size=4 class=formtxt value='".$ourcoinsorderamount[$rows["shopcoins"]]."'> 
+				<a href='#' onclick='javascript:AddAccessory(".$rows["shopcoins"].")'><div id=bascetshopcoins".$rows["shopcoins"].">
+				<img src=".$in."images/corz7.gif border=0 alt='Уже в корзине'></div>
+				</a>";
 			else
-				$RelationText .= round($rows["price"],2)." руб.";
-			$RelationText .= "</b></font>
-			</td></tr><tr bgcolor=#EBE4D4 ><td class=tboard>";
-			
-			if ($rows["materialtype"]==3)
 			{
-				if (sizeof($ourcoinsorder) and in_array($rows["shopcoins"], $ourcoinsorder))
+				if ($REMOTE_ADDR!="213.180.194.162" 
+				and $REMOTE_ADDR!="213.180.194.133" 
+				and $REMOTE_ADDR!="213.180.194.164" 
+				and $REMOTE_ADDR!="213.180.210.2" 
+				and $REMOTE_ADDR!="83.149.237.18"
+				and $REMOTE_ADDR!="83.237.234.171"
+				and !substr_count($HTTP_SERVER_VARS["HTTP_USER_AGENT"],"ia_archiver")
+				and !substr_count($HTTP_SERVER_VARS["HTTP_USER_AGENT"],"coona")
+				)
+				{
 					$RelationText .= "
-					<input type=text id=amount".$rows["shopcoins"]." name=amount".$rows["shopcoins"]." size=4 class=formtxt value='".$ourcoinsorderamount[$rows["shopcoins"]]."'> 
-					<a href='#' onclick='javascript:AddAccessory(".$rows["shopcoins"].")'><div id=bascetshopcoins".$rows["shopcoins"].">
-					<img src=".$in."images/corz7.gif border=0 alt='Уже в корзине'></div>
-					</a>";
-				else
-				{
-					if ($REMOTE_ADDR!="213.180.194.162" 
-					and $REMOTE_ADDR!="213.180.194.133" 
-					and $REMOTE_ADDR!="213.180.194.164" 
-					and $REMOTE_ADDR!="213.180.210.2" 
-					and $REMOTE_ADDR!="83.149.237.18"
-					and $REMOTE_ADDR!="83.237.234.171"
-					and !substr_count($HTTP_SERVER_VARS["HTTP_USER_AGENT"],"ia_archiver")
-					and !substr_count($HTTP_SERVER_VARS["HTTP_USER_AGENT"],"coona")
-					)
-					{
-						$RelationText .= "
-						<input type=text name=amount".$rows["shopcoins"]." size=4 class=formtxt value='0'> 
-						<a href='#' onclick='javascript:AddAccessory(".$rows["shopcoins"].");'><div id=bascetshopcoins".$rows["shopcoins"]."><img src=".$in."images/corz1.gif border=0 alt='В корзину'></div></a>
-						
-						";
-					}
+					<input type=text name=amount".$rows["shopcoins"]." size=4 class=formtxt value='0'> 
+					<a href='#' onclick='javascript:AddAccessory(".$rows["shopcoins"].");'><div id=bascetshopcoins".$rows["shopcoins"]."><img src=".$in."images/corz1.gif border=0 alt='В корзину'></div></a>
+					
+					";
 				}
 			}
-			elseif ($rows["materialtype"]==1||$rows["materialtype"]==2|| $rows['materialtype']==8|| $rows['materialtype']==4|| $rows['materialtype']==7|| $rows['materialtype']==9|| $rows['materialtype']==10)
-			{
-				
-				if (sizeof($ourcoinsorder) and in_array($rows["shopcoins"], $ourcoinsorder))
-					$RelationText .=  "<img src=".$in."images/corz7.gif border=0 alt='Уже в корзине'>";
-				elseif (sizeof($CoinsNow) and in_array($rows["shopcoins"], $CoinsNow))
-					$RelationText .=  "<img src=".$in."images/corz6.gif border=0 alt='Покупает другой посетитель'><br><font color=gray size=-2>Бронь до ".date("H:i", $rows["reserve"]+$reservetime)."</font>";
-				else
-				{
-					if ($REMOTE_ADDR!="213.180.194.162" 
-					and $REMOTE_ADDR!="213.180.194.133" 
-					and $REMOTE_ADDR!="213.180.194.164" 
-					and $REMOTE_ADDR!="213.180.210.2" 
-					and $REMOTE_ADDR!="83.149.237.18"
-					and $REMOTE_ADDR!="83.237.234.171"
-					and !substr_count($HTTP_SERVER_VARS["HTTP_USER_AGENT"],"ia_archiver")
-					and !substr_count($HTTP_SERVER_VARS["HTTP_USER_AGENT"],"coona")
-					)
-						
-						if ($rows["materialtype"]==1|| $rows['materialtype']==9|| $rows['materialtype']==10)
-							$RelationText .=  "<div id=bascetshopcoins".$rows["shopcoins"]." ><a href='#coin".$rows["shopcoins"]."' onclick=\"javascript:AddBascet('".$rows["shopcoins"]."','1');\" rel=\"nofollow\"><img src=".$in."images/corz1.gif border=0 alt='В корзину'></a></div>";
-						else
-							$RelationText .=  "<div id=bascetshopcoin".($i+1)."><div id=bascetshopcoins".$rows["shopcoins"]." ><a href='#coin".$rows["shopcoins"]."' onclick=\"javascript:AddBascetTwo('".$rows["shopcoins"]."','1','".($i+1)."');\" rel=\"nofollow\"><img src=".$in."images/corz1.gif border=0 alt='В корзину'></a></div></div>";
-				}
-				
-			}
-		
-			$RelationText .= "</td>
-			</tr>";
-			$i++;
 		}
-		$RelationText .= "</table>";
-		
-		//echo $RelationText;
+		elseif ($rows["materialtype"]==1||$rows["materialtype"]==2|| $rows['materialtype']==8|| $rows['materialtype']==4|| $rows['materialtype']==7|| $rows['materialtype']==9|| $rows['materialtype']==10)
+		{
+			
+			if (sizeof($ourcoinsorder) and in_array($rows["shopcoins"], $ourcoinsorder))
+				$RelationText .=  "<img src=".$in."images/corz7.gif border=0 alt='Уже в корзине'>";
+			elseif (sizeof($CoinsNow) and in_array($rows["shopcoins"], $CoinsNow))
+				$RelationText .=  "<img src=".$in."images/corz6.gif border=0 alt='Покупает другой посетитель'><br><font color=gray size=-2>Бронь до ".date("H:i", $rows["reserve"]+$reservetime)."</font>";
+			else
+			{
+				if ($REMOTE_ADDR!="213.180.194.162" 
+				and $REMOTE_ADDR!="213.180.194.133" 
+				and $REMOTE_ADDR!="213.180.194.164" 
+				and $REMOTE_ADDR!="213.180.210.2" 
+				and $REMOTE_ADDR!="83.149.237.18"
+				and $REMOTE_ADDR!="83.237.234.171"
+				and !substr_count($HTTP_SERVER_VARS["HTTP_USER_AGENT"],"ia_archiver")
+				and !substr_count($HTTP_SERVER_VARS["HTTP_USER_AGENT"],"coona")
+				)
+					
+					if ($rows["materialtype"]==1|| $rows['materialtype']==9|| $rows['materialtype']==10)
+						$RelationText .=  "<div id=bascetshopcoins".$rows["shopcoins"]." ><a href='#coin".$rows["shopcoins"]."' onclick=\"javascript:AddBascet('".$rows["shopcoins"]."','1');\" rel=\"nofollow\"><img src=".$in."images/corz1.gif border=0 alt='В корзину'></a></div>";
+					else
+						$RelationText .=  "<div id=bascetshopcoin".($i+1)."><div id=bascetshopcoins".$rows["shopcoins"]." ><a href='#coin".$rows["shopcoins"]."' onclick=\"javascript:AddBascetTwo('".$rows["shopcoins"]."','1','".($i+1)."');\" rel=\"nofollow\"><img src=".$in."images/corz1.gif border=0 alt='В корзину'></a></div></div>";
+			}
+			
+		}
+	
+		$RelationText .= "</td>
+		</tr>";
+		$i++;
 	}
-}
-?>
+	$RelationText .= "</table>";
+	
+	//echo $RelationText;
+}-->
+<?}?>

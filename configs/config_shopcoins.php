@@ -161,6 +161,10 @@ $MaterialTypeArray[1] = "Монеты";
 $MaterialTypeArraySort[1] = 1;			
 $MaterialTypeArrayTitle[1] = "Монеты со всего мира стоимость(цены)";
 
+$MaterialTypeArray[6] = "Цветные монеты"; 											
+$MaterialTypeArraySort[6] = 6;			
+$MaterialTypeArrayTitle[6] = "Цветные монеты";
+
 $MaterialTypeArray[12] = "Монеты СССР";										
 $MaterialTypeArraySort[2] = 12;			
 $MaterialTypeArrayTitle[12] = "Дешевые монеты СССР (цены и стоимость покупки и продажи)";

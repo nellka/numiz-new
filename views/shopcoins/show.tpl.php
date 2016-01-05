@@ -6,37 +6,26 @@ if($tpl['show']['error']['no_coins']){?>
     include($cfg['path'].'/views/shopcoins/item/item.tpl.php');   
 }?>
 </div>
-<?php
-		if ($tpl['user']['user_id']) {   ?> 
-			<br><a name=addreview></a>
-			<form name=reviewcoin>
-			<h5 style="margin-top:0px;">Написать отзыв:</h5>
-			<div id='error-review' class="error"></div>
-			<div><b>Пользователь: <input type=text name=fio value='<?=$tpl['user']['username']?>' size=40 maxlength=150 disabled></b></div>
-			<div><b>Отзыв:</b><br>
-			<textarea name=reviewcointext id=reviewcointext cols=60 rows=5 ></textarea></div>
-			<div><input type=button value='Оставить отзыв' onclick="AddReview('<?=$catalog?>');"></div>
-			</form>
-		<?}?>
-			<div id=allreviews>
-				<a name=showreview></a>
-				<h5 style="margin-top:0px;">Оставленные отзывы:</h5>
-				<div id=reviewsdiv>
-				<? if (sizeof($tpl['show']['reviews']['reviewusers'])) {
-					foreach ($tpl['show']['reviews']['reviewusers'] as $key=>$value) {     
-						?>
-						<blockquote>
-				   <div id='review<?=(isset($value["catalog"])&&$value["catalog"])?$value["catalog"]:$value["shopcoins"]?>'>
-					   <b><?=date('d-m-Y',$value['dateinsert'])?> <?=$value['fio']?></b>
-					   <?=$value['review']?>
-				   </div>
-				   </blockquote>
-				<?}
-				} else {
-					echo "<div id=emptyreview class=error>Отзывы отсутствуют</div>";
-				}?>
-				</div>
-			</div>
+<div class="wraper clearfix">
+	<div id=allreviews>
+		<a name=showreview></a>
+		<h5 style="margin-top:0px;">Оставленные отзывы:</h5>
+		<div id=reviewsdiv>
+		<? if (sizeof($tpl['show']['reviews']['reviewusers'])) {
+			foreach ($tpl['show']['reviews']['reviewusers'] as $key=>$value) {?>
+				<b><?=date('d-m-Y',$value['dateinsert'])?> <?=$value['fio']?></b>
+				<blockquote>
+		   <div id='review<?=(isset($value["catalog"])&&$value["catalog"])?$value["catalog"]:$value["shopcoins"]?>'>			   
+			   <?=$value['review']?>
+		   </div>
+		   </blockquote>
+		<?}
+		} else {
+			echo "<div id=emptyreview class=error>Отзывы отсутствуют</div>";
+		}?>
+		</div>
+	</div>
+</div>
 <?
 if ($tpl['show']['rowscicle']) {?>
 <div class="triger">	
@@ -66,33 +55,29 @@ if(!$tpl['show']['error']['no_coins']){
 
 //сейчас показываем токо для аксессуаров
 if ($tpl['shop']['related']){?>
-	<table border=0 cellpadding=3 cellspacing=1 align=center width=98%>
-	<tr bgcolor=#EBE4D4 valign=top>
-	<td colspan=6 class=tboard bgcolor=#99CCFF><b>СОПУТСТВУЮЩИЕ ТОВАРЫ</b></td></tr>
-	<tr bgcolor=#ffcc66>
-	<td class=tboard><b>Изображение</b></td>
-	<td class=tboard><b>Название</b></td>
-	<td class=tboard><b>Группа (страны)</b></td>
-	<td class=tboard><b>Номер</b></td>
-	<td class=tboard><b>Цена</b></td>
-	<td class=tboard><b>Заказать</b></td>
-	</tr>
+<div class="wraper clearfix">
+	<h5>СОПУТСТВУЮЩИЕ ТОВАРЫ:</h5>
+</div>
+<div class="wraper clearfix" style="height:350px;padding-top:15px;">
 	
-	<? foreach ($tpl['shop']['related'] as $rows){
-		if ($tpl['shop']['related'][$i]['additional_title']) {?>
-			<tr bgcolor=#EBE4D4 valign=top><td colspan=6 class=tboard bgcolor=#99CCFF><b><?=$tpl['shop']['related'][$i]['additional_title']?></b></td></tr>
-		<?}?>
-		
-		<tr bgcolor=#EBE4D4 valign=top>
-		<td class=tboard><?=contentHelper::showImage("smallimages/".$rows["image_small"],$rows["gname"]." | ".$rows["name"])?></td>
-		<td class=tboard><a href=index?catalog=<?=$rows["shopcoins"]."&page=show&materialtype=".$rows["materialtype"]?>&catalog='<?=$rows["shopcoins"]?>'><?=$rows["name"]?></a></td>
-		<td class=tboard><a href=index.php?group=<?=$rows["group"]?>&materialtype=<?=$rows["materialtype"]?>><?=$rows["gname"]?></a></td>
-		<td class=tboard><?=$rows["number"]?></td>
-		<td class=tboard><?=($rows["price"]==0?"бесплатно":round($rows["price"],2)." руб.")?></td>
-		<td class=tboard nowrap> БЛОК КУПИТЬ</td>
-		</tr>
+<?
+//сейчас показываем токо для аксессуаров
+if ($tpl['shop']['related']){?>	
+	<? foreach ($tpl['shop']['related'] as $rowsp){?>
+		<div class="coin_info">
+			<div id=show<?=$rowsp['shopcoins']?>></div>
+			<?	
+			$statuses = $shopcoins_class->getBuyStatus($rowsp["shopcoins"],$tpl['user']['can_see'],$ourcoinsorder,$shopcoinsorder);
+			$rowsp['buy_status'] = $statuses['buy_status'];
+			$rowsp['reserved_status'] = $statuses['reserved_status'];	
+			$rowsp['mark'] = $shopcoins_class->getMarks($rowsp["shopcoins"]);
+			echo contentHelper::render('shopcoins/item/itemmini',$rowsp);
+            ?>				
+		</div>
 	<?}?>
-	</table>
+	</div>
+<?}?>
+</div>
 <?}
 
 if(isset($tpl['show']['resultcicle'])&&$tpl['show']['resultcicle']){?>

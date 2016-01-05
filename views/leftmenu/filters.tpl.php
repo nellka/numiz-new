@@ -19,7 +19,44 @@
 	</div>
 	<br style="clear: both;">
 
-	<?php     
+	<?php   
+	//вводим фильтр для стран
+	if(isset($filter_groups[0])&&$filter_groups[0]["filter_group_id"]=='group'){?>
+		<div class="filter-block">
+    		<div class="filter_heading">
+    			<div style="float:left;">Название страны</div>
+    			<div style="float:right;">
+    				<a style="color:#247bbd;font-size:12px;line-height:12px;text-decoration:underline;"
+    				href="#g" onclick="clear_filter('group_name');return false;">Сбросить</a>
+    			</div>
+    		</div>
+    		<ul class="filter_heading_ul">
+    		<input type="text" value="" id='group_name' name="group_name" size="35">
+    		</ul>
+    	</div>
+    	<script>
+    	$('#group_name').on('keyup', function() {
+		    var query = this.value.toLowerCase();
+		    
+			if(query.length>1){
+			    $('#fb-groups .checkbox').each(function(i, elem) {			    	
+			          if ( $(elem).find('a').text().toLowerCase().indexOf(query) != -1) {
+			              $(elem).show();
+			          }else{
+			              $(elem).hide();
+			          }
+			          mCustomScrollbars();
+			    });
+			} else {
+				$('#fb-groups .checkbox').each(function(i, elem) {			    	
+			        $(elem).show();
+			    });
+			}
+		});
+		
+    	</script>
+	<?}
+	
 	 	foreach ($filter_groups as $filter_group) {?>
 	
 		<div class="filter-block" id='fb-<?=$filter_group['filter_group_id_full']?>'>
@@ -123,8 +160,9 @@
 				</span>			
 			<?}?>					
 			<p><div id="slider-range-price" style="margin-left:5px;margin-right:5px;"></div></p>
-	</div>
+	</div>	
 </form>
+
 <script type="text/javascript" charset="utf-8">
  jQuery(document).ready(function() {     	
      jQuery( "#slider-range-price" ).slider(
@@ -143,7 +181,7 @@
          });
      jQuery( "#amount-price0" ).val($( "#slider-range-price" ).slider( "values", 0 ));
      jQuery( "#amount-price1" ).val($( "#slider-range-price" ).slider( "values", 1 ));
-  
+    <? if(isset($tpl['filter']['yearend'])){?>
   		jQuery( "#slider-range-years" ).slider({
            range: true,
            min: 0,                            
@@ -159,6 +197,7 @@
          });
          jQuery( "#amount-years0" ).val($( "#slider-range-years" ).slider( "values", 0 ));
      	 jQuery( "#amount-years1" ).val($( "#slider-range-years" ).slider( "values", 1 ));
+     	 <?}?>
   		 //jQuery("#filter-groupgroup").mCustomScrollbar("vertical",400,"easeOutCirc",1.05,"auto","yes","yes",10);
   		 mCustomScrollbars()
 
@@ -176,12 +215,21 @@ function resetSliderYear() {
 }
 
  function  clear_filter(filter){
-     if(filter){
+ 	if(filter=='group_name'){
+ 		$("#group_name").val('');
+ 		$('#fb-groups .checkbox').each(function(i, elem) {			    	
+	        $(elem).show();
+	    });
+	    mCustomScrollbars();
+	    return;
+ 	}
+    if(filter){
         jQuery('input[name="'+filter+'[]"]:checked').attr('checked',false); 
-     } else {  
+    } else {  
          jQuery('#search-params input').attr('checked',false); 
-     }
-     if(filter=='years'||filter=='price'){
+    }
+    
+    if(filter=='years'||filter=='price'){
           var $slider = $("#slider-range-"+filter);
           $slider.slider('option', 'values', [$slider.slider("option", "min"),$slider.slider("option", "max")]);
            $( "#amount-"+filter+"0" ).val($slider.slider("option", "min"));
@@ -204,7 +252,7 @@ function mCustomScrollbars(){
 	8) Скорость прокрутки (значение: 1-20, 1 соответствует самой медленной скорости)
 	*/
 	if(jQuery("#filter-groupgroup_container")) jQuery("#filter-groupgroup_container").mCustomScrollbar("vertical",0,"easeOutCirc",1.05,"auto","yes","yes",10);
-	console.log(jQuery("#filter-grouptheme_container"));
+	//console.log(jQuery("#filter-grouptheme_container"));
 	if(jQuery("#filter-grouptheme_container")) jQuery("#filter-grouptheme_container").mCustomScrollbar("vertical",0,"easeOutCirc",1.05,"auto","yes","yes",10);
 	/*$("#mcs2_container").mCustomScrollbar(); 
 	$("#mcs3_container").mCustomScrollbar("vertical",900,"easeOutCirc",1.05,"auto","no","no",0); 
@@ -234,7 +282,12 @@ function LoadNewContent(id,file){
    <script type="text/javascript">  
         $(function(){
         	
-         $('#search-params input').on('change',function(){console.log(this);sendData();});          
+         $('#search-params input').on('change',function(){  
+         	console.log($(this).attr('id'));       	
+         	if($(this).attr('id')!='group_name'){
+         		sendData();
+         	}
+         });          
         });
       
     </script>

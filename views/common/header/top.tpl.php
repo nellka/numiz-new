@@ -1,3 +1,4 @@
+<div id='closeTop' class="close-top" onclick="setMini(1)"></div>
 <div id="logo">
     <a class="logo-img" href="http://www.numizmatik.ru"><img src="<?=$cfg['site_dir']?>images/logo_small.jpg" border=0></a>
     <a href="<?=$cfg['site_dir']?>ocenka-stoimost-monet">Оценка монет</a>
@@ -21,30 +22,11 @@
      </p>
      <a id="showcalllink" rel='showcalllink' class="iframe button24" href="<?=$cfg['site_dir']?>addcall.php?ajax=1">Заказать обратный звонок</a>   
     </div>
-    <div id="search-top-module">   
-         <form action="<?=$cfg['site_dir']?>shopcoins/index.php" method=get>   
-         <!--<select name=globalsearch_type class=topform >
-         <option value=0>Все категории
-            <option value=4>Магазин
-            <option value=5>Кат. монет
-            <option value=6>Кат. бон
-            <option value=1>Новости
-            <option value=2>Библиотека
-            <option value=3>Конференция
-            </select>  --> 
-	<table>
-		<tr>
-			<td>  
+    <div class="search-top-module">   
+         <form action="<?=$cfg['site_dir']?>shopcoins/index.php" method=get id='globalsearch-form'>          
 				<input type="hidden"  value="4">    
-	          	  	<input type="text" class="search rounded" name=search id=search>
-			</td>
-			<td>
-				<input type="submit" name=submit id=globalsearch-submit value="1">
-			</td>
-		</tr>
-	</table> 
-          
-           
+	          	<input type="text" class="search rounded" name=search id=search>
+			<input type="submit" id=globalsearch-submit name="submit" value="">                
         </form>    
     </div>
 </div>

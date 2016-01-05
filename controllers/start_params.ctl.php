@@ -5,7 +5,7 @@ $page = request('page');
 $parent= request('parent');
 //для магазина - тип категории
 $materialtype = (integer)(isset($_REQUEST['materialtype'])?$_REQUEST['materialtype']:'');
-
+$mini= (isset($_COOKIE['mini'])&&$_COOKIE['mini']>0)?true:false;
 //номер заказа
 $shopcoinsorder = 0;
 
