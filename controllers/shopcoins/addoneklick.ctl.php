@@ -9,7 +9,7 @@ $amount = request('amount');
 
 $helpshopcoinsorder_class = new model_helpshopcoinsorder($cfg['db']);
 $order_class = new model_order($cfg['db']);
-$orderdetails_class = new model_orderdetails($cfg['db']);
+$orderdetails_class = new model_orderdetails($cfg['db'],$shopcoinsorder);
 
 $data_result = array();
 $data_result['error'] = null;

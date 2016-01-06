@@ -26,7 +26,7 @@ try {
      
     // получение объекта Zend_Cache_Core
     $cache = Zend_Cache::factory('Core',  'File',   $frontendOptions,  $backendOptions);
-    	
+    Zend_Registry::set("cache",$cache);	
     //будем на стадии Index проверять залогинивание
     ob_start();
     $user_class = new model_user($cfg['db']);

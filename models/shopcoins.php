@@ -137,7 +137,7 @@ class model_shopcoins extends Model_Base
 		return false;
 	}
 
-	public function getItemAmount($id,$shopcoinsorder){
+	public function getItemAmount($id,$can_see=false,$ourcoinsorder=array(),$shopcoinsorder=0){
 		$item = $this->getItem($id);
 		if($item["check"] == 0) {		
 			return 0;			
@@ -1039,7 +1039,7 @@ class model_shopcoins extends Model_Base
                   ->where("(".implode(" or ",$wherein).")")
                   ->where('shopcoins.`check`=1')
                   ->group('shopcoins.shopcoins')
-                  ->limit(10)
+                  ->limit(4)
                   ->order("rand()");  
         if($groupIn) $select->where("shopcoins.group in (".implode(",", $groupIn).")");      
         return $this->db->fetchAll($select);  	

@@ -5,7 +5,7 @@ require_once $cfg['path'] . '/models/order.php';
 require_once $cfg['path'] . '/models/orderdetails.php';
 
 $helpshopcoinsorder_class = new model_helpshopcoinsorder($cfg['db']);
-$orderdetails_class = new model_orderdetails($cfg['db']);
+$orderdetails_class = new model_orderdetails($cfg['db'],$shopcoinsorder);
 $order_class = new model_order($cfg['db']);
 
 $shopcoinslast =request("shopcoinslast");
@@ -105,8 +105,7 @@ if (sizeof($arrayresult)>0) {
 	}
 	
 	foreach ($arrayresult as $key => $shopcoins) {
-		$rows_info = $orderdetails_class->getRowByParams(array('`order`'=>$shopcoinsorder,'catalog'=>$shopcoins)); 
-		
+		$rows_info = $orderdetails_class->getPostion($shopcoins); 
 		if ($rows_info){			
 			if (in_array($ShopcoinsMaterialtypeLast[$key],array(8,6,7,4,2))){
 				$amountsql = $rows_info['amount']+($amount?$amount:1);
@@ -145,11 +144,7 @@ if (sizeof($arrayresult)>0) {
 		}		
 	}
 	//пересчет карзины
-	$clientdiscount = $order_class->getClientdiscount($tpl['user']['user_id'],$shopcoinsorder);
-	if(!$dataBasket = $cache->load("bascet_".$shopcoinsorder)){
-		$dataBasket = $order_class->forBasket($clientdiscount,$shopcoinsorder);
-		$cache->save($dataBasket, "bascet_".$shopcoinsorder);	
-	}
+	$dataBasket = $orderdetails_class->forBasket($tpl['user']['user_id']);		
 	$bascetsum = $dataBasket["mysum"];
 	$_SESSION['bascetsum'] = $bascetsum;
 	
@@ -161,7 +156,7 @@ if (sizeof($arrayresult)>0) {
 	
 	$mymaterialtype =($bascetsum>0)?$dataBasket["mymaterialtype"]:1;
 	
-	$bascetamount = $orderdetails_class->getCounter($shopcoinsorder);
+	$bascetamount = $orderdetails_class->getCounter();
 	$orderstarttime = $orderdetails_class->getMinDate($shopcoinsorder);
 	
 	/*$bascetreservetimestr = "<? echo (floor((".($reservetime+$orderstarttime)."-time())/3600)>=1?floor((".($reservetime+$orderstarttime)."-time())/3600).\" ч. \":\"\").

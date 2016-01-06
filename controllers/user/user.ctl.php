@@ -11,7 +11,7 @@ $tpl['user']['send_status'] = false;
 
 $validator = new Zend_Validate_EmailAddress(); 
 $mail_class = new mails();
- 
+ var_dump($_REQUEST);
 switch ($tpl['task']){    
     case 'registration':{
         $tpl['user']['password'] = request('password');

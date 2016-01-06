@@ -1,17 +1,19 @@
 <?
 require('Zend/Db.php');
+require('Zend/Registry.php');
 
 Abstract Class Model_Base {
  
     protected $db;
     protected $table;
     private $dataResult;
-    
+    protected  $cache;
     function __construct($db){
 		$this->db = Zend_Db::factory('PDO_MYSQL', $db);
 	 	$this->db->query("SET names 'utf8'");
 	 	$modelName = get_class($this);
 	 	
+	 	$this->cache = Zend_Registry::get('cache');
         
         $arrExp = explode('_', $modelName);
         $tableName = strtolower($arrExp[1]);

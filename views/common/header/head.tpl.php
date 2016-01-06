@@ -22,6 +22,11 @@ jQuery( document ).ready(function( $ ) {});*/
 <!--<script type="text/javascript" src="<?=$cfg['site_dir']?>js/jquery.fancybox-1.3.3.js"></script>-->
 
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type= "text/javascript"></script>
+
+
+<?
+if(!in_array($tpl["task"],array('login_order','registration','login','remind'))){
+?>
 <script src="<?=$cfg['site_dir']?>js/jquery.cookie.js"></script>
 <script src= "<?=$cfg['site_dir']?>js/jquery.mousewheel.min.js" type= "text/javascript"></script> 
 <link href="<?=$cfg['site_dir']?>css/jquery.mCustomScrollbar.css" rel="stylesheet" type= "text/css"/>
@@ -29,13 +34,13 @@ jQuery( document ).ready(function( $ ) {});*/
 <script src="<?=$cfg['site_dir']?>js/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="<?=$cfg['site_dir']?>js/jquery.maskedinput.min.js"></script>
 <script src="<?=$cfg['site_dir']?>js/shopcoins.js"></script>
+<?}?>
 <script type="text/javascript">
 
 $(document).ready(function() {
     site_dir = '<?=$cfg['site_dir']?>';
-    $('.iframe').click(function () {        
-        href = this.href;
-        showOn(href);
+    $('.iframe').click(function () {    
+        showOn(this.href,this.id);
         return false; ////cancel eventbubbeling
     });
     
@@ -69,21 +74,40 @@ $(document).ready(function() {
 });
 
 
-function showOn(href){
+function showOn(href,id){
+   // console.log('show'+href)
+   //console.log($('#MainBascet'));
      $('#MainBascet').dialog({
         modal: true,
+        position: { 
+           /* my: 'top',
+            at: 'top',
+            of: $("#"+id)*/
+              my: "center center",
+        at: "center center",
+        of: window
+        },
+        close: function(event, ui){
+            console.log("close");
+            $(this).dialog("close");
+            $('#MainBascet').html('');
+           // $(this).remove();
+        },
         open: function (){
-            $(this).load(href);
+            //$('div.ui-widget-overlay').hide();
+           // $("div.ui-dialog").not(':first').remove();
+            // console.log(href);
+             $(this).load(href);
              $('.ui-dialog-titlebar-close').addClass('ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only');
 $('.ui-dialog-titlebar-close').append('<span class="ui-button-icon-primary ui-icon ui-icon-closethick"></span><span class="ui-button-text">close</span>');
         },
-        height: 330, 
+       // height: 330, 
         width: 400
     });
      return false;   
 } 
 </script>
-	
+
 <title><?=isset($tpl[$tpl['module']]['_Title'])?$tpl[$tpl['module']]['_Title']:$tpl['base']['_Title']?></title>
 <meta name="Keywords" content="<?=isset($tpl[$tpl['module']]['_Keywords'])?$tpl[$tpl['module']]['_Keywords']:$tpl['base']['_Keywords']?>" >
 <meta name="Description" content="<?=isset( $tpl[$tpl['module']]['_Description'])?$tpl[$tpl['module']]['_Description']:$tpl['base']['_Description']?>">

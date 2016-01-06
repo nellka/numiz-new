@@ -7,12 +7,17 @@
     <div class="clearfix" id='content-<?=$tpl['module']?>'>
         <?php        
         if($tpl['module']=='shopcoins'){
-            if($tpl['task']=='show'){?>
+            if(in_array($tpl['task'],array('show','catalog_search','orderdetails'))){?>
     			<div class="wraper clearfix">  
-			     <?php include $cfg['path'] . '/views/shopcoins/itemtop.tpl.php'; ?>
+			     <?php include $cfg['path'] . '/views/pagetop/'.$tpl['task'].'.tpl.php'; ?>
 			    </div> 
         		<? include $cfg['path'] . '/views/' . $tpl['module'] . '.tpl.php'; ?>    
-           <? } else if($tpl['task']=='catalog_search'){?>
+           <? } else   if($tpl['task']=='orderdetails'){?>
+    			<div class="wraper clearfix">  
+			     <?php include $cfg['path'] . '/views/shopcoins/orderdetails.tpl.php'; ?>
+			    </div> 
+        		<? include $cfg['path'] . '/views/' . $tpl['module'] . '.tpl.php'; ?>    
+           <? } elseif($tpl['task']=='catalog_search'){?>
     			<div class="wraper clearfix">  
 			     <?php include $cfg['path'] . '/views/shopcoins/topsearch.tpl.php'; ?>
 			    </div> 

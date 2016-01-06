@@ -6,7 +6,13 @@ body {
 	font-family:Arial,Tahoma, sans-serif;	
 	/* 'Roboto',*/
 }
-
+.left{
+float:left;
+text-align: left;
+}
+.right{
+float:right;
+}
 .bg_shadow {
     background: none repeat scroll 0 0 #000000;
     display: none;
@@ -21,15 +27,30 @@ body {
     z-index: 211;
 }
 
-.clearfix:before,
+/*.clearfix:before,
 .clearfix:after {
     content: " ";
     display: table;
-}
+}*/
 .clearfix:after {
     clear: both;
 }
 
+
+.clearfix:before,
+.clearfix:after {
+  content: '.';
+  display: block;
+  overflow: hidden;
+  visibility: hidden;
+  font-size: 0;
+  line-height: 0;
+  width: 0;
+  height: 0;
+}
+h5.left{
+    margin: 5px 0 0;
+}
 a{color:#247bbd;font-weight:bold;} 
 a:hover{color:#006699;font-weight:bold;}
 /*CENTER TOP IS THE TOP PART OF THE SITE. SEE yjsg_main.php FOR REFERENCE*/
@@ -856,7 +877,23 @@ blockquote {
         background-clip: padding-box;
 }
 
-a.button24 {
+.video_u {
+    margin: 20px 0 0;
+}
+/*
+.button25 {
+  display: inline-block;
+  color: white;
+  text-decoration: none;
+  padding: .5em 2em;
+  outline: none;
+  background:#367e9b;
+  transition: 0.2s;
+  width:55px;
+  text-align:center;
+} */
+
+a.button24  {
   display: inline-block;
   color: white;
   text-decoration: none;
@@ -883,26 +920,27 @@ a.button24 {
 a.button24:hover { background: linear-gradient(#f5ae00, #f59500) #f5ae00; }
 a.button24:active { background: linear-gradient(#f59500, #f5ae00) #f59500; }
 
-.video_u {
-    margin: 20px 0 0;
+
+
+.button25,.button26,.button27 {
+    background: #367e9b none repeat scroll 0 0;
+    border: 0 none;
+    color: white;
+    display: inline-block;
+    outline: medium none;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.2s ease 0s;
+    min-width: 190px;
+    cursor: pointer;
 }
-.button25 {
-  display: inline-block;
-  color: white;
-  text-decoration: none;
-  padding: .5em 2em;
-  outline: none;
-  background:#367e9b;
-  transition: 0.2s;
-  width:55px;
-  text-align:center;
-} 
-.button25:hover { 
-	 color: white;
-	 cursor:pointer;
-	}
+.button25:hover {  color: white; cursor:pointer;}
 
-
+.button26 { background: #999999 none repeat scroll 0 0;}
+.button26:hover { background: #eee none repeat scroll 0 0;}
+.button27 { background: #ffcc33 none repeat scroll 0 0;}
+.button27:hover { background: #eee none repeat scroll 0 0;}
 /*пейджер*/
 .pager, .pager_s {
 	background: #eeeeee none repeat scroll 0 0;
