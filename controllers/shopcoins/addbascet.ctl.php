@@ -145,42 +145,9 @@ if(!$rows){
 		    $_SESSION["shopcoinsorderamount"] =  intval($shopcoinsorderamount)+($amount?$amount:1);
 		}
 
+		$orderdetails_class->removeOrderCache($tpl['user']['user_id']);
 		//пересчет карзины
-		$dataBasket = $orderdetails_class->forBasket($tpl['user']['user_id']);
-
-		$bascetsum = $dataBasket["mysum"];
-		$_SESSION['bascetsum'] = $bascetsum;
-		$_SESSION['bascetsum'] = $bascetsum;
-		
-		$bascetsumclient = $dataBasket["mysumclient"];
-		if ($bascetsumclient >= $bascetsum) 
-			$bascetsumclient=0;
-		$bascetweight = $dataBasket["myweight"];
-		$bascetinsurance = $bascetsum * 0.04;
-		
-		$mymaterialtype =($bascetsum>0)?$dataBasket["mymaterialtype"]:1;
-		
-		$bascetamount = $orderdetails_class->getCounter();
-		$orderstarttime = $orderdetails_class->getMinDate($shopcoinsorder);
-		
-		/*$bascetreservetimestr = "<? echo (floor((".($reservetime+$orderstarttime)."-time())/3600)>=1?floor((".($reservetime+$orderstarttime)."-time())/3600).\" ч. \":\"\").
-		//(floor((".($reservetime+$orderstarttime)."-time()-floor((".($reservetime+$orderstarttime)."-time())/3600)*3600)/60).\" мин.\"); ?>";
-		//$ShowWarningTimeValue = "<? echo (".($reservetime+$orderstarttime)."-time()<".$mintime."?1:0);?>";*/
-		
-		$bascetreservetime = (floor(($reservetime+$orderstarttime-time())/3600)>=1?floor(($reservetime+$orderstarttime-time())/3600)." ч. ":"").
-		(floor(($reservetime+$orderstarttime-time()-floor(($reservetime+$orderstarttime-time())/3600)*3600)/60)." мин.");
-		
-		//расчет почтового сбора
-		if ($mymaterialtype!=0)	{
-			$bascetpostweightmin = $PostZone[1] + $PackageAddition[1]*($bascetweight<500?0:ceil(($bascetweight-500)/500));
-			$bascetpostweightmax = $PostZone[5] + $PackageAddition[5]*($bascetweight<500?0:ceil(($bascetweight-500)/500));
-		} else {
-			$bascetpostweightmin = $PostZone1[1] + $PackageAddition[1]*($bascetweight<500?0:ceil(($bascetweight-500)/500));
-			$bascetpostweightmax = $PostZone1[5] + $PackageAddition[5]*($bascetweight<500?0:ceil(($bascetweight-500)/500));
-		}
-		
-		//$sql2 = "select shopcoins.*, group.name as gname from shopcoins,orderdetails,`group` where shopcoins.shopcoins=orderdetails.catalog and shopcoins.group=group.group and orderdetails.order='".$shopcoinsorder."'  and orderdetails.status=0";
-		//$result2 = mysql_query($sql2);
+		$dataBasket = $orderdetails_class->basket($tpl['user']['user_id']);	
 	}
 }
 
@@ -188,14 +155,14 @@ if (!$data_result['error']){
 	//$xml .= "<error>none</error>
 	$data_result['shopcoinsorder'] = $shopcoinsorder;
 	$data_result['bascetshopcoins'] = $shopcoins;
-	$data_result['bascetamount'] = $bascetamount;
-	$data_result['bascetsum'] = $bascetsum;
-	$data_result['bascetsumclient']=$bascetsumclient;
-	$data_result['bascetweight']=$bascetweight;
-	$data_result['bascetreservetime']=$bascetreservetime;
-	$data_result['bascetpostweightmin']=$bascetpostweightmin;
-	$data_result['bascetpostweightmax']=$bascetpostweightmax;
-	$data_result['bascetinsurance']=$bascetinsurance;
+	$data_result['bascetamount'] = $dataBasket["bascetamount"];
+	$data_result['bascetsum'] = $dataBasket["bascetsum"];
+	$data_result['bascetsumclient']=$dataBasket["bascetsumclient"];
+	$data_result['bascetweight']=$dataBasket["bascetweight"];
+	$data_result['bascetreservetime']=$dataBasket["bascetreservetime"];
+	$data_result['bascetpostweightmin']=$dataBasket["bascetpostweightmin"];
+	$data_result['bascetpostweightmax']=$dataBasket["bascetpostweightmax"];
+	$data_result['bascetinsurance']=$dataBasket["bascetinsurance"];
 	//$data_result['textbascet'] = $textbascet2?htmlspecialchars($textbascet2):"none")."</textbascet2>
 } else {
 	$data_result['error'] = $data_result['error'];

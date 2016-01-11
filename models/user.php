@@ -20,6 +20,23 @@ class model_user extends Model_Base
 		               'user_id'=> $this->user_id);
          $this->db->insert('user_describe_log',$data); 
 	}
+	 public function getUserCouponType(){	   
+	      $select = $this->db->select()
+		               ->from('coupon',array('type'))
+		               ->where('user =?',$this->user_id)
+		               ->where('`check`=1')
+		               ->order(array('type desc','dateinsert desc'))
+		               ->limit(1);	
+		  return (integer)$this->db->fetchOne($select);
+	 }
+	 public function getUserCouponCode(){	  
+	      $select = $this->db->select()
+		               ->from('coupon',array('coupon.code'))
+		               ->join('userfrend','coupon.fromuser=userfrend.frend',array())
+		               ->where('coupon.user =?',$this->user_id)
+		               ->where('coupon.check=1 and coupon.user=userfrend.user and coupon.type=1');	
+		  return (integer)$this->db->fetchOne($select);
+	}
 	
 	public function addUserBalance(){
 		 $select = $this->db->select()
@@ -33,7 +50,12 @@ class model_user extends Model_Base
 			$this->db->update('user_bonus_balance',$data,"user_id = ".$this->user_id);
 		}
 	}
-	
+	public function getUserData(){
+	   $select = $this->db->select()
+		               ->from('user')
+		               ->where('user =?',$this->user_id);	         
+		return $this->db->fetchRow($select); 
+	}
 	//добавляем нового пользователя и подписываем на новости если надо
 	 public function addNewUser($data,$is_subsrib = false){
 	     $userId =$this->addNewRecord($data);
@@ -52,18 +74,19 @@ class model_user extends Model_Base
 	     return $this->username;
 	 }
 	 
-	 public function addsubscribe($user_id){
+	 public function addsubscribe($user_id,$data=array('news'=>1)){
 	     if($user_id){
     	     $select = $this->db->select()
     		               ->from('subscribe')
     		               ->where('user =?',$user_id);
-        	 $subscribs = $this->db->fetchRow($select);    
+        	 $subscribs = $this->db->fetchRow($select); 
+        	 $data['user'] = $user_id; 
+        	 $data['dateupdate'] = time();
+        	 $data['typemail'] = 1;
         	 if(!$subscribs){
-        	     $data = array('news'=>1,
-        	                   'user'=>$user_id);
+        	     $data['dateinsert'] = time();     	     
         	     $this->db->insert('subscribe',$data); 
         	 } else {
-        	     $data = array('news'=>1);
         	     $this->db->update('subscribe',$data,"user=$user_id"); 
         	 }
         	 return true;
@@ -81,11 +104,10 @@ class model_user extends Model_Base
 	 }
 	 
 	 public function is_user_has_premissons(){
-	    return true;
 	     if($this->user_id == 336844) return TRUE;
 		 $sql = "SELECT 1 FROM `order` WHERE order.check = 1 and order.user =".$this->user_id." having COUNT(1) >= 5";
     	
-    	return $this->db->fetchRow($sql)?true:FALSE;  	
+    	 return $this->db->fetchRow($sql)?true:FALSE;
     
     }
     //если пользователь залогинен и запрещено делать заказы, то проверяем те заказы, которые были
@@ -292,11 +314,10 @@ die();
         	$cookiesuserlogin = trim($_SESSION['cookiesuserlogin']);
                 	        
         if (isset($_COOKIE['cookiesuserpassword'])&&trim($_COOKIE['cookiesuserpassword']))
-        	$cookiesuserpassword = (integer)trim($_COOKIE['cookiesuserpassword']);
+        	$cookiesuserpassword = trim($_COOKIE['cookiesuserpassword']);
         elseif(isset($_SESSION['cookiesuserpassword'])&&trim($_SESSION['cookiesuserpassword']))
-        	$cookiesuserpassword = (integer)trim($_SESSION['cookiesuserpassword']);
+        	$cookiesuserpassword = trim($_SESSION['cookiesuserpassword']);
      
-        
         $userlogin = trim(str_replace("'","",$cookiesuserlogin));
         $userpassword = trim(str_replace("'","",$cookiesuserpassword)); 
         return $this->loginUser($userlogin,$userpassword);

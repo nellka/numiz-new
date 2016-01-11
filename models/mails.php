@@ -20,6 +20,10 @@ class mails
 	    $mytext .= "<p>E-mail: ".$dataUser['email']."</p>";
 		$mytext .= "<p>Пароль: ".$dataUser['userpassword']."</p>";	
 		$mytext .= "<p>Подписка на новости: ".($dataUser['subsription']?"Да":"Нет")."</p>";	
+		if(isset($dataUser['subsription_shop'])){
+		    $mytext .= "<p>Подписка на новости магазина: ".($dataUser['subsription_shop']?"Да":"Нет")."</p>";	
+		}
+		
 		$mytext .= "<br /><p class=txt><b>Уважаемый коллега.</b></p>
 <p>Благодарим за регистрацию на нашем портале. Надеемся на наше долгое и взаимовыгодное сотрудничество.</p>
 <p>С уважением, администрация Клуба Нумизмат.</p>";					

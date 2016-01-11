@@ -46,7 +46,7 @@ if($rows["materialtype"]==3){?>
 <?echo contentHelper::render('shopcoins/price/buy_button',$rows);?>
 <?
 if(($rows['buy_status']==7||$rows['buy_status']==6)&&($minpriceoneclick<=$rows['price'])) {
-	//echo contentHelper::render('shopcoins/price/oneclick',$rows);
+	echo contentHelper::render('shopcoins/price/oneclick',$rows);
 }?>
 <div class="reserv">
 	<?

@@ -4,20 +4,21 @@
     <?
     if($tpl['can_order']){?>
       <?if(!$tpl['user']['user_id']){?>
-    	    <a class="button25 right" onclick="showOn('<?=$cfg['site_dir']?>user/login_order.php?ajax=1',500);return false;" href="#" style="width:150px" id='of-1'>Оформить заказ</a>
+    	    <a class="button25 right" onclick="showWin('<?=$cfg['site_dir']?>user/login_order.php?ajax=1',500);return false;" href="#" style="width:150px" id='of-1'>Оформить заказ</a>
     	<?} else {?>
         	<form action="<?=$cfg['site_dir']?>shopcoins?page=order" method="post">
         	<input type=hidden name=page2 value=1>	
         	<input type=submit  class="button25 right" name=submit value='Оформить заказ' style="width:150px">
         	</form>
     	<?}?>
-    <?} else {?>
-        <input type="button"  class="button20 right" value='Оформить заказ'>
+    <?} elseif($tpl['orderdetails']['ArrayShopcoinsInOrder']) {?>
+        <input type="button"  class="button26 right" value='Оформить заказ'>
     <?}?>
     </div>
 </div>
 <p><b>Доставка</b> осуществляется на сумму <b><font color=red>не менее 500 руб.</font></b> и <b><font color=red>не более <?=$stopsummax?> руб.</font></b> по территории РФ. </p>
-
+<?
+if($tpl['orderdetails']['ArrayShopcoinsInOrder']){?>
 <form action=<?=$cfg['site_dir']?>shopcoins?page=orderdetails method=post id=order-form>
 <div class="cart-info">
 <table width="100%">
@@ -116,7 +117,9 @@ if($rows["amountAll"]>1){?>
 <!--<a class="button25 right" style="width:100px" onclick="$('#order-form').submit()">Пересчитать</a>-->
 </div>
 </div>
-
+<?} else {?>
+<div class="error">Ваша корзина пуста</div>
+<?}?>
 <div class="clearfix">
 <a href='<?=$cfg['site_dir']?>shopcoins' class="left c-b">Продолжить покупки </a>
  <div class="right">
@@ -124,15 +127,28 @@ if($rows["amountAll"]>1){?>
     if($tpl['can_order']){?>
         
     	<?if(!$tpl['user']['user_id']){?>
-    	    <a class="button25 right" onclick="showOn('<?=$cfg['site_dir']?>user/login_order.php?ajax=1',500);return false;" href="#" style="width:150px" id='of-1'>Оформить заказ</a>
+    	    <a class="button25 right" onclick="showWin('<?=$cfg['site_dir']?>user/login_order.php?ajax=1',500);return false;" href="#" style="width:150px" id='of-1'>Оформить заказ</a>
 	<?} else {?>
         	<form action="<?=$cfg['site_dir']?>shopcoins?page=order" method="post">
         	<input type=hidden name=page2 value=1>	
         	<input type=submit  class="button25 right" name=submit value='Оформить заказ' style="width:150px">
         	</form>
     	<?}?>
-    <?} else {?>
-        <input type="button"  class="button20 right" value='Оформить заказ'>
+    <?} elseif($tpl['orderdetails']['ArrayShopcoinsInOrder']) { ?>
+        <input type="button"  class="button26 right" value='Оформить заказ'>
+        <div style="width:300px; clear: both; color: red;text-align: right;">
+       <?  if ($tpl['order_status']==1) {?>
+        	<div class="error">Сумма заказа должна быть не более <?=$stopsummax?> руб</div>
+        <?} elseif ($tpl['order_status']==2) {?>
+        	Сумма заказа должна быть больше 500 рублей.
+        	</div>
+        <?} else {?>
+        	<form action=<?=$cfg['site_dir']?>shopcoins?page=order method=post>
+        	<input type=hidden name=page2 value=2>
+        	<input type=submit name=submit value='Перейти к добавлению к предыдущему заказу' class=formtxt>
+        	</div>
+        <?}?>
+        </div>
     <?}?>
     </div>
 </div>
@@ -162,28 +178,8 @@ if ($tpl['orderdetails']['related']) {?>
 	</div>
 </div>
 
-<?}
-
-if ($sum>$stopsummax) {
-    ?>
-	<div><input type=button name=submit value='' style="font-weight:bold; COLOR: #FF0000;">
-	</div>
-<?} elseif ((($sum<500 && ($tpl['user']['orderusernow'] == 0 || $blockend > time())) || $sum<=0) && $tpl['user']['user_id'] != 811) {?>
-	<div><input type=button name=submit value='Сумма заказа должна быть более чем на 500 руб.' style="font-weight:bold; COLOR: #FF0000;"><br>
-	Заказ на сумму менее 500 руб. могут сделать <strong>авторизованые</strong> пользователи, у которых <strong>есть ранее сделанный заказ</strong>, но еще не отправленный покупателю.</div>
-<?} elseif ($sum >= 500 || $tpl['user']['user_id'] == 811) {?>
-	<form action=<?=$cfg['site_dir']?>shopcoins?page=order method=post>
-	<input type=hidden name=page2 value=1>
-	<div>
-	<input type=submit name=submit value='Приступить к оформлению заказа'>
-	</form>
-	</div>
-<?} else {?>
-	<form action=<?=$cfg['site_dir']?>shopcoins?page=order method=post>
-	<input type=hidden name=page2 value=2>
-	<input type=submit name=submit value='Перейти к добавлению к предыдущему заказу' class=formtxt>
-	</div>
 <?}?>
+
 <script type="text/javascript">  
 $(function(){        	
      $('#order-form input').on('change',function(){  

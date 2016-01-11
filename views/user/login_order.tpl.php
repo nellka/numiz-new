@@ -94,7 +94,7 @@ $.ajax({
             $('form#orderForm #orderForm-errors').html(error);
         } else if(data.send_status){
         	console.log(parent);
-            parent.location='<?=$cfg['site_dir']?>shopcoins/index.php?page=order';
+            parent.location='<?=$cfg['site_dir']?>shopcoins/index.php?page=order&page2=1';
            //location.reload();
         }   	      
     }

@@ -6,7 +6,37 @@ $tpl['breadcrumbs'][] = array(
 );
 $tpl['current_page'] = '/';
 
-if($tpl['module']=='shopcoins'&&$tpl['task']=='show'){
+if($tpl['module']=='order'&&$tpl['task']=='showorders'){
+     $tpl['breadcrumbs'][] = array(
+    	'text' => 'Магазин',
+    	'href' => $cfg['site_dir'].'shopcoins',
+    	'base_href' =>'shopcoins'
+    );
+    
+    $tpl['breadcrumbs'][] = array(
+    	'text' => "Мои заказы",
+    	'href' => "",
+    	'base_href' =>""    );
+
+    
+    $tpl['current_page'] = '';
+    
+} elseif($tpl['module']=='order'&&$tpl['task']=='userorder'){
+     $tpl['breadcrumbs'][] = array(
+    	'text' => 'Магазин',
+    	'href' => $cfg['site_dir'].'shopcoins',
+    	'base_href' =>'shopcoins'
+    );
+    
+    $tpl['breadcrumbs'][] = array(
+    	'text' => "Оформление заказа",
+    	'href' => "",
+    	'base_href' =>""    );
+
+    
+    $tpl['current_page'] = '';
+    
+}elseif ($tpl['module']=='shopcoins'&&$tpl['task']=='show'){
     $tpl['breadcrumbs'][] = array(
     	'text' => 'Магазин',
     	'href' => $cfg['site_dir'].'shopcoins',
@@ -40,7 +70,7 @@ if($tpl['module']=='shopcoins'&&$tpl['task']=='show'){
 
     
     $tpl['current_page'] = '';
-} elseif ($tpl['module']=='shopcoins'&&$tpl['task']=='orderdetails'){
+} elseif ($tpl['module']=='order'&&$tpl['task']=='orderdetails'){
       $tpl['breadcrumbs'][] = array(
     	'text' => 'Магазин',
     	'href' => $cfg['site_dir'].'shopcoins',

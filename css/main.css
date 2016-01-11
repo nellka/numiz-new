@@ -645,7 +645,9 @@ color:#ecb34e;
     background: transparent url("../images/strel-yellow.png") no-repeat scroll 250px 50%;
 }
 .main_img_big img {
-	width:500px;
+	width:300px;
+	border:1px solid #cccccc;
+	padding:10px;
 }
 /*стили для статического левого меню*/
 .menu-sidebar_static a span {

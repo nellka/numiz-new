@@ -3,6 +3,18 @@ RewriteBase     /new
 RewriteRule ^index\.php$ - [L]
 RewriteRule (css|images|js)/(.*)  $1/$2 [L,QSA]
 
+RewriteCond %{QUERY_STRING} page=order$ [NC]
+RewriteRule .* index.php?module=order [L,QSA]
+
+RewriteCond %{QUERY_STRING} page=orderdetails$ [NC]
+RewriteRule .* index.php?module=order&task=orderdetails [L,QSA]
+
+RewriteCond %{QUERY_STRING} page=order&page2=1$ [NC]
+RewriteRule .* index.php?module=order&task=userorder [L,QSA]
+
+RewriteCond %{QUERY_STRING} page=order&page2=2$ [NC]
+RewriteRule .* index.php?module=order&task=addinorder [L,QSA]
+
 RewriteCond %{QUERY_STRING} page=(.*)$ [NC]
 RewriteRule .* index.php?module=shopcoins&task=%1 [L,QSA]
 
@@ -23,6 +35,14 @@ RewriteRule shopcoins/.*_c([0-9]*)_pc([0-9]*)_m([0-9]*)_pp([0-9]*)\.html$ index.
 #RewriteCond %{REQUEST_URI}	^/shopcoins/.*_m([0-9]*)\.html
 RewriteRule shopcoins/.*_c([0-9]*)_m([0-9]*)\.html$ index.php?module=shopcoins&task=show&catalog=$1&materialtype=$2 [L] 
 
+
+
+RewriteRule  shopcoins/postcalculate.php          index.php?module=order&task=postcalculate [L,QSA]
+RewriteRule  shopcoins/paymentdescription.php     index.php?module=delivery&task=paymentdescription [L,QSA]
+RewriteRule  shopcoins/deliverydescription.php    index.php?module=delivery&task=deliverydescription [L,QSA]
+RewriteRule  shopcoins/showallmetro.php           index.php?module=delivery&task=showallmetro [L,QSA]
+RewriteRule  shopcoins/showinoffice.php           index.php?module=delivery&task=showinoffice [L,QSA]
+RewriteRule  shopcoins/showringmetro.php          index.php?module=delivery&task=showringmetro [L,QSA]
 
 
 RewriteRule  shopcoins/change_coin.php    index.php?module=shopcoins&task=change_coin [L,QSA]

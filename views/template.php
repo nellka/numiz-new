@@ -5,14 +5,19 @@
    
         
     <div class="clearfix" id='content-<?=$tpl['module']?>'>
-        <?php        
-        if($tpl['module']=='shopcoins'){
-            if(in_array($tpl['task'],array('show','catalog_search','orderdetails'))){?>
+        <?php      
+
+        if($tpl['module']=='shopcoins'||$tpl['module']=='order'){
+            if(in_array($tpl['task'],array('show','catalog_search'))||$tpl['module']=='order'){?>
     			<div class="wraper clearfix">  
-			     <?php include $cfg['path'] . '/views/pagetop/'.$tpl['task'].'.tpl.php'; ?>
+			     <?php
+                if(file_exists($cfg['path'] . '/views/pagetop/'.$tpl['task'].'.tpl.php')){
+			         include $cfg['path'] . '/views/pagetop/'.$tpl['task'].'.tpl.php'; 
+                } else include $cfg['path'] . '/views/pagetop/top.tpl.php'; 
+                ?>
 			    </div> 
-        		<? include $cfg['path'] . '/views/' . $tpl['module'] . '.tpl.php'; ?>    
-           <? } else   if($tpl['task']=='orderdetails'){?>
+        		<? include $cfg['path'] . '/views/' . $tpl['module'] . '/'.$tpl['task'].'.tpl.php'; ?>    
+           <? /*} else   if($tpl['task']=='orderdetails'){?>
     			<div class="wraper clearfix">  
 			     <?php include $cfg['path'] . '/views/shopcoins/orderdetails.tpl.php'; ?>
 			    </div> 
@@ -22,7 +27,7 @@
 			     <?php include $cfg['path'] . '/views/shopcoins/topsearch.tpl.php'; ?>
 			    </div> 
         		<? include $cfg['path'] . '/views/' . $tpl['module'] . '.tpl.php'; ?>    
-           <? } else {
+           <?*/ } else {
             ?>
 			<div class="subheader">
 			<div class="wraper clearfix">

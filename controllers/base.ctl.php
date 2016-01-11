@@ -48,6 +48,7 @@ if ($tpl['user']['is_logined']){
 
 //var_dump($tpl);
 //если пользователь залогинен и запрещено делать заказы, то проверяем те заказы, которые были
+$tpl['user']['orderusernow'] = 0;  
 //зачем на главное - под вопросом
 if ($blockend < time()&& $tpl['user']['user_id']) {
 	$tpl['user']['orderusernow'] = $user_class->setOrderusernow();   
@@ -119,6 +120,7 @@ if($tpl["datatype"]=='json'){
 	//echo json_encode($tpl[$tpl['task']]);
 	//die();
 }
+
 if($tpl["datatype"]=='text_html'){
     require_once $cfg['path'] .  '/views/'.$tpl['module'].'.tpl.php';
     die();

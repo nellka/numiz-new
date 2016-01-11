@@ -15,6 +15,7 @@ $MetroArray = Array (
 				12 => "Проспект Мира",
 	);
 	
+	
 $metallArray = array(1 => 'Алюминий',
 				2 => 'Биллон',
 				3 => 'Биметалл',
@@ -192,18 +193,20 @@ $MaterialTypeArray[4] = "Подарочные наборы";
 $MaterialTypeArraySort[10] = 4;			
 $MaterialTypeArrayTitle[4] = "Подарочные наборы монет со всего мира стоимость(цены)";
 //[Weight][Zone]
+/*
 $PostZone[1] = 138.80;
 $PostZone[2] = 140.70;
 $PostZone[3] = 146.40;
 $PostZone[4] = 178.30;
-$PostZone[5] = 199.00;
+$PostZone[5] = 199.00;*/
 
 //за каждые 500 грамм
+/*
 $PackageAddition[1] = 12.00;
 $PackageAddition[2] = 13.90;
 $PackageAddition[3] = 20.30;
 $PackageAddition[4] = 29.20;
-$PackageAddition[5] = 33.70;
+$PackageAddition[5] = 33.70;*/
 
 //а теперь бандероли и почта идет нах
 $PostZone1[1] = 138.80;
@@ -224,9 +227,8 @@ $WeightPostLatter = 28;
 $WeightPostBox = 100;
 $PriceLatter = 16;
 
+$DeliveryName[2] = 'В офисе м.Тверская';
 $DeliveryName[1] = 'Встречи на кольцевых';
-$DeliveryName[2] = 'В офисе (Новослободская)';
-
 $DeliveryName[3] = 'Доставка в офис';
 $DeliveryName[4] = 'Отправка по почте';
 $DeliveryName[5] = 'Экспресс доставка (СПСР)';
@@ -274,13 +276,6 @@ $WeightPostLatter = 28;
 $WeightPostBox = 100;
 $PriceLatter = 16;
 
-$DeliveryName[1] = 'Встречи на кольцевых';
-$DeliveryName[2] = 'В офисе (Тверская) - самовывоз';
-$DeliveryName[3] = 'Доставка в офис';
-$DeliveryName[4] = 'Отправка по почте';
-$DeliveryName[5] = 'Экспресс доставка (СПСР)';
-$DeliveryName[6] = 'Экспресс доставка (ЕМС)';
-$DeliveryName[7] = 'Метро Тверская (самовывоз)';
 
 $DeliveryProperties[1] = '<ul>
 <li>Доставка осуществляется <font color=red><b>бесплатно</b></font></li>

@@ -1,7 +1,7 @@
-<div style="width:600px;float:left;margin-top:30px;">    
+<div style="width:400px;display: inline-block;vertical-align:top;margin-top:30px;">    
             <?include($cfg['path'].'/views/shopcoins/item/imageBig.tpl.php');?>
     </div>
-    <div style="width:350px;float:left;padding-left:50px;">
+    <div style="width:200px;display: inline-block;padding-left:50px;">
         <h1><?=$rows_main["name"]?></h1>
        
     <?php
@@ -91,8 +91,14 @@ if(($rows_main['buy_status']==7||$rows_main['buy_status']==6)&&($minpriceoneclic
 <!--
 <script type="text/javascript" src="//yandex.st/share/share.js" charset="utf-8"></script><br><div class="yashare-auto-init" data-yashareL10n="ru" data-yashareType="none"data-yashareQuickServices="vkontakte,odnoklassniki,yaru,facebook,moimir"></div>
 -->
+
+</div>
+  <div style="width:160px;display: inline-block;margin-top:30px;vertical-align:top;text-align:right;">
 <?
 //оценки
 echo contentHelper::render('shopcoins/price/markitem',$rows_main['mark']);
 ?>
+
+<br>
+<a href="">Написать отзыв</a>
 </div>

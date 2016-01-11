@@ -75,7 +75,6 @@ $sum = 0;
 $oldmaterialtype = 0;
 $tpl['orderdetails']['ArrayShopcoinsInOrder'] = array();
 $tpl['orderdetails']['ArrayGroupShopcoins'] = array();
- 
 
 $i=0;
 foreach ($orderdetails as 	$rows ){	

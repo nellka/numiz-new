@@ -5,6 +5,8 @@ class model_orderdetails extends Model_Base
 	
 	static $WeightCoins = 5;
 	static $reservetime = 18000;
+	static  $PostZone = array(1 => 138.80,2 => 140.70,3 => 146.40,4 => 178.30,5 => 199.00);
+	static  $PackageAddition= array(1 => 12.00,2 => 13.90,3 => 20.30,4 => 29.20,5 => 33.70);
 	public function __construct($db,$shopcoinsorder){
 	    parent::__construct($db);
 	    $this->shopcoinsorder = $shopcoinsorder;	  
@@ -60,20 +62,28 @@ class model_orderdetails extends Model_Base
 		
 		//var_dump($bascetamount);
 		//DIE();
-		/*$orderstarttime = $this->getMinDate();
+		$orderstarttime = $this->getMinDate();
 		
 		$bascetreservetime = (floor((self::$reservetime+$orderstarttime-time())/3600)>=1?floor((self::$reservetime+$orderstarttime-time())/3600)." ч. ":"").
 		(floor((self::$reservetime+$orderstarttime-time()-floor((self::$reservetime+$orderstarttime-time())/3600)*3600)/60)." мин.");
 		
 		//расчет почтового сбора
 		if ($mymaterialtype!=0)	{
-			$bascetpostweightmin = $PostZone[1] + $PackageAddition[1]*($bascetweight<500?0:ceil(($bascetweight-500)/500));
-			$bascetpostweightmax = $PostZone[5] + $PackageAddition[5]*($bascetweight<500?0:ceil(($bascetweight-500)/500));
+			$bascetpostweightmin = self::$PostZone[1] + self::$PackageAddition[1]*($bascetweight<500?0:ceil(($bascetweight-500)/500));
+			$bascetpostweightmax = self::$PostZone[5] + self::$PackageAddition[5]*($bascetweight<500?0:ceil(($bascetweight-500)/500));
 		} else {
-			$bascetpostweightmin = $PostZone1[1] + $PackageAddition[1]*($bascetweight<500?0:ceil(($bascetweight-500)/500));
-			$bascetpostweightmax = $PostZone1[5] + $PackageAddition[5]*($bascetweight<500?0:ceil(($bascetweight-500)/500));
-		}*/
-		return  array('bascetsum'=>$bascetsum,'bascetamount'=>$bascetamount);		
+			$bascetpostweightmin = $PostZone1[1] + self::$PackageAddition[1]*($bascetweight<500?0:ceil(($bascetweight-500)/500));
+			$bascetpostweightmax = $PostZone1[5] + self::$PackageAddition[5]*($bascetweight<500?0:ceil(($bascetweight-500)/500));
+		}
+
+		return  array('bascetsum'=>$bascetsum,
+		              'bascetamount'=>$bascetamount,
+		              'bascetsumclient'=>$bascetsumclient,		              
+		              'bascetweight'=>$bascetweight,
+		              'bascetreservetime'=>$bascetreservetime,
+		              'bascetpostweightmin'=>$bascetpostweightmin,
+		              'bascetpostweightmax'=>$bascetpostweightmax,
+		              'bascetinsurance'=>$bascetinsurance);		
     }
     
     public function getClientdiscount($user_id=0){			 	
@@ -111,7 +121,24 @@ class model_orderdetails extends Model_Base
     						)
     					)
     				)
-    			) as mysum,  
+    			) as mysum,
+	            sum(orderdetails.amount*
+				if
+				(orderdetails.amount>=shopcoins.amount5 and shopcoins.price5>0,shopcoins.price5,
+					if
+					(orderdetails.amount>=shopcoins.amount4 and shopcoins.price4>0,shopcoins.price4,
+						if
+						(orderdetails.amount>=shopcoins.amount3 and shopcoins.price3>0,shopcoins.price3,
+							if
+							(orderdetails.amount>=shopcoins.amount2 and shopcoins.price2>0,shopcoins.price2,
+								if
+								(orderdetails.amount>=shopcoins.amount1 and shopcoins.price1>0,shopcoins.price1,0)
+							)
+						)
+					)
+				)
+			) as mysumamount,
+			sum(orderdetails.amount*if(shopcoins.materialtype=12,shopcoins.price,0)) as vipcoinssum,
     		sum(orderdetails.amount*if
     				(orderdetails.amount>=shopcoins.amount5 and shopcoins.price5>0,shopcoins.price5,
     					if
@@ -170,15 +197,42 @@ class model_orderdetails extends Model_Base
 	   if($use_status)  $select->where('status=0'); 		
        return $this->db->fetchRow($select);   	   
 	}
-	
+
+	//упаковка книг, аксесуров
+/*
+$sql = "select count(catalog) as postcounter from orderdetails as o, shopcoins as s
+where ".(sizeof($shopcoinsorder)>1?"o.order in (".implode(",", $shopcoinsorder).")":"o.order='".$shopcoinsorder."'")."
+and o.catalog=s.shopcoins ".($checking?"":"and s.`check`='1'")."
+and s.materialtype<>'1' and s.materialtype<>2 and o.status=0;";*/
+
+	public function getPaking(){
+		$select = $this->db->select()
+			->from($this->table,array('count(catalog)'))
+			->join('shopcoins','orderdetails.catalog=shopcoins.shopcoins',array())
+			->where($this->table.'.order=?',$this->getIdentity())
+			->where('shopcoins.materialtype<>1 and shopcoins.materialtype<>2 and shopcoins.check=1 and orderdetails.status=0');
+		return $this->db->fetchOne($select);
+	}
+
+	public function getPost($postindex){
+		$select = $this->db->select()
+			->from('Post')
+			->where('PostIndex=?',$postindex);
+		return $this->db->fetchRow($select);
+	}
+
 	public function getCounter(){
 		$select = $this->db->select()
 		               ->from($this->table,array('count(catalog)'))
 		               ->where($this->table.'.order=?',$this->getIdentity())
 		               ->where('status=0'); 		
        return $this->db->fetchOne($select);       
-	}	
-	
+	}
+	/*
+$sql = "select count(catalog) as counter from orderdetails as o, shopcoins as s
+//where ".(sizeof($shopcoinsorder)>1?"o.order in (".implode(",", $shopcoinsorder).")":"o.order='".$shopcoinsorder."'")."
+and o.catalog=s.shopcoins ".($checking?"":"and s.`check`='1'")." and o.status=0;";*/
+
 	public function getMinDate(){		
 		$select = $this->db->select()
 		               ->from($this->table,array('min(date)'))
