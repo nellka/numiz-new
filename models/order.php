@@ -17,6 +17,13 @@ class model_order extends Model_Base
         return $this->db->fetchOne($select);
 	}
 	
+	public function getOrder(){
+	    $select = $this->db->select()
+                  ->from($this->table)
+                  ->where('`order`=?',$this->shopcoinsorder);
+        return $this->db->fetchRow($select);
+	}
+	
 	public function getInOffice(){
 	    $select = $this->db->select()
                   ->from('order')
@@ -56,7 +63,17 @@ class model_order extends Model_Base
          return   $this->db->fetchRow($select);  
 	 }
 	 
-	 public function OrderSum(){
+	 public function countFullAmount(){
+        $select = $this->db->select()
+		               ->from('order',array('count(orderdetails.amount)'))
+		               ->join('orderdetails','order.order=orderdetails.order')
+		               ->where('order.user=?',$this->user_id)		               
+		               ->where('order.check=1 and orderdetails.status=0'); 	
+		               	
+       return $this->db->fetchOne($select);       
+    }
+    
+    public function OrderSum(){
         $sql = "select sum(orderdetails.amount*shopcoins.price) as mysum, sum(orderdetails.amount*if
         		(orderdetails.amount>=shopcoins.amount5 and shopcoins.price5>0,shopcoins.price5,
         			if
@@ -80,6 +97,45 @@ class model_order extends Model_Base
         and (shopcoins.`check` in(1,4,5) ".($this->user_id==811?"or shopcoins.`check`>3":"").");";
         return $this->db->fetchRow($sql);
 	 }
+	 
+	 public function OrderSumDetails($clientdiscount){
+	   $sql = "select o.*, o.amount as oamount, s.number, s.name, s.year, s.materialtype, if(o.amount>=s.amount5 and s.price5>0,s.price5,
+					if 
+					(o.amount>=s.amount4 and s.price4>0,s.price4,
+						if
+						(o.amount>=s.amount3 and s.price3>0,s.price3,
+							if
+							(o.amount>=s.amount2 and s.price2>0,s.price2,
+								if
+								(o.amount>=s.amount1 and s.price1>0,s.price1,".($clientdiscount==1?"if(s.clientprice>0, s.clientprice, s.price)":"s.price").")
+							)
+						)
+					)
+				) as price, g.name as gname,
+			if
+			(o.amount>=s.amount5 and s.price5>0,s.price5,
+				if
+				(o.amount>=s.amount4 and s.price4>0,s.price4,
+					if
+					(o.amount>=s.amount3 and s.price3>0,s.price3,
+						if
+						(o.amount>=s.amount2 and s.price2>0,s.price2,
+							if
+							(o.amount>=s.amount1 and s.price1>0,s.price1,0)
+						)
+					)
+				)
+			) as priceamount 
+		from orderdetails as o, shopcoins as s, `group` as g 
+		where o.`order`='".$this->shopcoinsorder."'
+		and o.catalog=s.shopcoins
+		and (s.`check`=1 or s.`check`>3)
+		and s.`group` = g.`group` and o.status=0
+		order by s.materialtype;";
+	 
+		return $this->db->fetchAll($sql);
+	 }
+		
 	 public function getDelivery(){
 	      $select = $this->db->select()
                   ->from('order',array('count(*)'))
@@ -102,7 +158,14 @@ class model_order extends Model_Base
                   ->order('metro');
 	       return $this->db->fetchAll($select);
 	 }
+    public function getMetroName($id){
+	      $select = $this->db->select()
+                  ->from('metro',array('name','price'))
+                  ->where('metro=?',$id);
+	       return $this->db->fetchRow($select);
+	 }
 
+	 
 	 public function getCurrentOrders(){	     
 	    $select = $this->db->select()
                   ->from('order',array('order','ReminderComment'))

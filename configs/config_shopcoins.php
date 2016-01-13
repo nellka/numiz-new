@@ -229,7 +229,7 @@ $PriceLatter = 16;
 
 $DeliveryName[2] = 'В офисе м.Тверская';
 $DeliveryName[1] = 'Встречи на кольцевых';
-$DeliveryName[3] = 'Доставка в офис';
+$DeliveryName[3] = 'Доставка в пределах МКАД';
 $DeliveryName[4] = 'Отправка по почте';
 $DeliveryName[5] = 'Экспресс доставка (СПСР)';
 $DeliveryName[6] = 'Экспресс доставка (ЕМС)';

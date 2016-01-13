@@ -993,7 +993,8 @@ class model_shopcoins extends Model_Base
               ->where("type='shopcoins'");    
         return $this->db->fetchOne($select); 	
 	}
-	public function relatedByOrder($orderData=array(),$groupIn = array()){		
+	public function relatedByOrder($orderData=array(),$groupIn = array()){	
+        $wherein = array();
 		foreach ($orderData as $key=>$value) {	
 			switch ($value['materialtype']) {		
 				case 1:
@@ -1004,6 +1005,9 @@ class model_shopcoins extends Model_Base
 					break;
 				case 3:
 					$wherein[] = "(shopcoins.materialtype=3)";
+					break;
+				case 6:
+					$wherein[] = "(shopcoins.materialtype=6)";
 					break;
 				case 4:
 					$wherein[] = "(((shopcoins.materialtype in(1,10,12) and shopcoins.amountparent>0) or shopcoins.materialtype in(4,7,8,9)) and shopcoins.metal = '".$value['metal']."' and ABS(shopcoins.year-".$value['year'].") <= 10 )";
@@ -1035,12 +1039,12 @@ class model_shopcoins extends Model_Base
                   ->from('shopcoins')
                   ->join(array('group'),'shopcoins.group=group.group',array('gname'=>'group.name'))
                 //  ->where('shopcoins.group=?',$id)
-                  ->where("shopcoins.shopcoins not in(".implode(",",$ArrayIn).")")
-                  ->where("(".implode(" or ",$wherein).")")
+                  ->where("shopcoins.shopcoins not in(".implode(",",$ArrayIn).")")                  
                   ->where('shopcoins.`check`=1')
                   ->group('shopcoins.shopcoins')
                   ->limit(4)
-                  ->order("rand()");  
+                  ->order("rand()");
+        if($wherein) $select->where("(".implode(" or ",$wherein).")") ;
         if($groupIn) $select->where("shopcoins.group in (".implode(",", $groupIn).")");      
         return $this->db->fetchAll($select);  	
 	}

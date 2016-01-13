@@ -6,6 +6,9 @@ class model_user extends Model_Base
     public $user_id;    
     public $username;    
 	public $orderusernow;
+	
+	static $ArrayForCode = array ("0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f","g","h","j","k","l",
+	"m","n","o","p","q","r","v","u","w","i","x","y","z");
     //получаем баланс пользователя
     public function getUserBalance(){
         $select = $this->db->select()
@@ -38,6 +41,11 @@ class model_user extends Model_Base
 		  return (integer)$this->db->fetchOne($select);
 	}
 	
+    public function decrementUserBalance($how_much){
+	    $data = array('user_id' => $this->user_id, 'balance' => 'balance' - intval($how_much));
+		$this->db->update('user_bonus_balance',$data,"balance >= 0 and user_id = ".$this->user_id);    	
+    }
+
 	public function addUserBalance(){
 		 $select = $this->db->select()
 		               ->from('user_bonus_balance',array('user_id'))
@@ -50,6 +58,37 @@ class model_user extends Model_Base
 			$this->db->update('user_bonus_balance',$data,"user_id = ".$this->user_id);
 		}
 	}
+	
+	public function addOrderBonusLog($order_id, $sum){
+	    $data = array(
+                    'user_id' => $this->user_id, 
+	                'order_id' => $order_id, 
+	                'sum' => $sum, 
+	                'created_at' => time());
+		$this->db->insert('user_bonus_log',$data);
+    }
+    public function createFreandCoupon(){
+        $couponups = 1;
+        while ($couponups==1) {        
+            $code = '';
+            for ($i=0;$i<12;$i++) {        
+            	$code .= self::$ArrayForCode[rand(0,15)];
+            }
+
+            $select = $this->db->select()
+		               ->from('user',array('user'))
+		               ->where('codeforfrend =?',$code);	         
+		    $coupon_exist = $this->db->fetchOne($select); 
+
+		    if(!$coupon_exist) $couponups = 2;           	
+        }
+        
+        $data = array('codeforfrend' => $code);
+        $this->db->update('user',$data,"user = ".$this->user_id);
+        
+        return 	$code;
+    }
+    			
 	public function getUserData(){
 	   $select = $this->db->select()
 		               ->from('user')

@@ -101,7 +101,8 @@ class model_orderdetails extends Model_Base
 	 	return  0;
 	 }
 	 
-    public function forBasket($clientdiscount){	 	
+    public function forBasket($clientdiscount){	   
+		
 	 	if(!$dataBasket = $this->cache->load("bascet_".$this->getIdentity())){ 	 
     	 	//var_dump($this->cache->load("bascet_".$this->getIdentity()));
     	 	//выборка корзины - вес считается по формуле pi*d^3*10.5/80
@@ -237,10 +238,11 @@ and o.catalog=s.shopcoins ".($checking?"":"and s.`check`='1'")." and o.status=0;
 		$select = $this->db->select()
 		               ->from($this->table,array('min(date)'))
 		               ->where($this->table.'.order=?',$this->getIdentity())
-		               ->where('status=0'); 		
+		               ->where('status=0'); 	
+		               	
        return $this->db->fetchOne($select);       
-	}
-		
+	}   
+    	
 	public function getDetails($user_id){
 	    $clientdiscount = $this->getClientdiscount($user_id);		
         if(!$orderdetails = $this->cache->load("orderdetails_".$clientdiscount.'_'.$this->getIdentity().'_'.$user_id)){	     
@@ -269,4 +271,37 @@ and o.catalog=s.shopcoins ".($checking?"":"and s.`check`='1'")." and o.status=0;
         return $orderdetails;
 	}
 	
+	public function  getOrderDetails(){
+	 /*$sql = "select o.*, s.*, g.name as gname, o.amount as orderamount, s.amount as samount 
+				from  as o, shopcoins as s, `group` as g 
+				where o.`order`='$shopcoinsorder'
+				and o.catalog=s.shopcoins and o.status=0
+				and (s.`check`=1 or s.`check`>3)
+				and s.`group` = g.`group`;";
+				$result = mysql_query($sql);*/
+	    $select = $this->db->select()
+                  ->from(array('o'=>'orderdetails'))
+                  ->join(array('s'=>'shopcoins'),'o.catalog=s.shopcoins')
+                  ->join(array('g'=>'group'),'s.group = g.group',array('gname' => 'g.name', 'orderamount' => 'o.amount', 'samount' => 's.amount'))
+                  ->where('o.order=?',$this->shopcoinsorder)
+                  ->where('o.status=0 and (s.`check`=1 or s.`check`>3)');	
+
+	    return $this->db->fetchAll($select);
+	 }
+	 public function  getDeleted(){
+	 /*$sql = "select o.*, s.*
+			from orderdetails as o, shopcoins as s
+			where o.`order`='$shopcoinsorder'
+			and o.catalog=s.shopcoins
+			and s.`check`='0' and o.status=0;";*/
+	   $select = $this->db->select()
+                  ->from(array('o'=>'orderdetails'))
+                  ->join(array('s'=>'shopcoins'),'o.catalog=s.shopcoins')                  
+                  ->where('o.order=?',$this->shopcoinsorder)
+                  ->where('o.status=0 and s.check=0');	
+	    return $this->db->fetchAll($select);
+	 }
+	 public function  deleteItem($id){
+	     $this->db->delete($this->table,"`order` = '".$this->shopcoinsorder."' and catalog=$id");	     
+	 }
 }
