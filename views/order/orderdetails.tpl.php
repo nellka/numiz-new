@@ -15,7 +15,7 @@
     <?}?>
     </div>
 </div>
-<p><b>Доставка</b> осуществляется на сумму <b><font color=red>не менее 500 руб.</font></b> и <b><font color=red>не более <?=$stopsummax?> руб.</font></b> по территории РФ. </p>
+
 <?
 if($tpl['orderdetails']['ArrayShopcoinsInOrder']){?>
 <form action=<?=$cfg['site_dir']?>shopcoins?page=orderdetails method=post id=order-form>
@@ -97,7 +97,8 @@ if($rows["amountAll"]>1){?>
 	<?=$rows["oamount"]?>
 <?}?>
 	</td>
-	<td><?=$rows["price"]*$rows["oamount"]?> рублей <a href=<?=$cfg['site_dir']?>shopcoins?page=orderdetails&pageinfo=delete&shopcoins=<?=$rows["catalog"]?> title='Удалить из корзины'><img src="<?=$cfg['site_dir']?>images/delete-item.png"></a></td>
+	<td><?=$rows["price"]*$rows["oamount"]?> рублей</td>
+	<td><a href=<?=$cfg['site_dir']?>shopcoins?page=orderdetails&pageinfo=delete&shopcoins=<?=$rows["catalog"]?> title='Удалить из корзины'><img src="<?=$cfg['site_dir']?>images/delete-item.png"></a></td>
 	</tr>
 	<?
 	$i++;
@@ -109,7 +110,7 @@ if($rows["amountAll"]>1){?>
 <input type=hidden name=amount value='<?=$i?>'>
 </form>
 <div class="clearfix"> 
-
+<p><b>Доставка</b> осуществляется на сумму <b><font color=red>не менее 500 руб.</font></b> и <b><font color=red>не более <?=$stopsummax?> руб.</font></b> по территории РФ. </p>
 <p style="border: 1px solid #cccccc;margin: 0;  padding: 10px; width: 450px;" class="left">Заказ на сумму менее 500 руб. могут сделать авторизованые пользователи, у которых есть ранее сделанный заказ, но еще не отправленный покупателю. В таком случае новый заказ будет объединен с предыдущим не отправленным.
 К стоимости Вашего заказа будет добавлена стоимость почтовых услуг по упаковке, страховке и доставке его Вам, которая зависит от пункта назначения, массы и стоимости товара.</p>
 <div class="right">Итого(без суммы доставки): <b><?=$sum?> рублей</b> 
@@ -142,7 +143,7 @@ if($rows["amountAll"]>1){?>
         	</div>
         <?} else {?>
         	<form action=<?=$cfg['site_dir']?>shopcoins?page=order&page2=2 method=post>
-        	<input type=submit name=submit value='Перейти к добавлению к предыдущему заказу' class=formtxt>
+        	<input type=submit name=submit  class="button25 right"  value='Перейти к добавлению к предыдущему заказу' class=formtxt>
         	</div>
         <?}?>
         </div>

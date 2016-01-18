@@ -31,6 +31,9 @@ class mails
 		$this->mail->setBodyHtml($html,"Регистрация в Клубе Нумизмат");			   
 		$this->mail->send();
 	}
+	public function orderLetter($email,$data){
+	    //письмо о заказе
+	}
 	
 	//формирование письма "забыли пароль"
 	public function forgetPwdLetter($dataUser){

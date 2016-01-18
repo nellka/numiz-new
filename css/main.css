@@ -934,7 +934,7 @@ a.button24:active { background: linear-gradient(#f59500, #f5ae00) #f59500; }
     text-align: center;
     text-decoration: none;
     transition: all 0.2s ease 0s;
-    min-width: 190px;
+    min-width: 90px;
     cursor: pointer;
 }
 .button25:hover {  color: white; cursor:pointer;}
@@ -1006,7 +1006,7 @@ a.button24:active { background: linear-gradient(#f59500, #f5ae00) #f59500; }
     cursor: pointer;
     display: inline-block;
     float: left;
-    height: 300px;
+    height: 320px;
     margin: 2px;
     overflow: hidden;
     position: relative;
@@ -1210,7 +1210,7 @@ div.fancybox-showcalllink{left: 820px !important;top: 165px !important;}*/
   border-color:transparent transparent white;
 }
 
-.raiting {position:relative; height:16px; cursor:pointer; width:83px; float:left} /* Блок рейтинга*/
+.raiting {position:relative; height:16px; cursor:pointer; width:83px;margin-left:140px; } /* Блок рейтинга*/
 #raiting_blank, #raiting_votes, #raiting_hover {height:16px; position:absolute}
 #raiting_blank { background:url(../images/ratings.png); width:83px; } /* "Чистые" звездочки */
 #raiting_votes {background:url(../images/ratings.png) 0 -16px} /*  Закрашенные звездочки */ 
@@ -1267,8 +1267,9 @@ div.reserv{
 	text-align:center;
 }
 div.stars {
-	height:15px;
-	margin-bottom:5px;
+	height:27px;
+	margin-bottom:12px;
+	text-align:right;
 }
 .info_ext{
 	height:60px;

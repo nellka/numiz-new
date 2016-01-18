@@ -95,7 +95,7 @@ if( is_dir($dir)){
 } else {
     $controller = $cfg['path'] .  '/controllers/'.$tpl['module'].'.ctl.php';   
 }
-
+//var_dump($controller);
 $static_page = true;
 if(file_exists($controller)){
     $static_page = false;

@@ -6,8 +6,8 @@
 			
 				
 	if($rows["oldprice"]>0){?>
-	    <?=$price_text_old?>: <strong><s><?=round($rows["oldprice"],2)?> руб.</s></strong><br>
-	    <?=$price_text_new?>: <strong><font color=red><?=($rows["price"]==0?"бесплатно":round($rows["price"],2)." руб.")?></font></strong>
+	   <strong><s><?=round($rows["oldprice"],2)?> руб.</s></strong>
+	    <strong><font color=red><?=($rows["price"]==0?"бесплатно":round($rows["price"],2)." руб.")?></font></strong>
 	 <?}?>
         <?=$price_text?>: <strong><font color=red><?=($rows["price"]==0?"бесплатно":round($rows["price"],2)." руб.")?></font></strong>
         <?if($rows["clientprice"]>0){?>

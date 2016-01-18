@@ -10,7 +10,7 @@
 <div id="header-mini" class="wraper header-mini" style="display:<?=$mini?'block':'none'?>">
     <?php include $cfg['path'] . '/views/common/header/top-mini.tpl.php'; ?>
 </div>  
-<div class="triger">
+<div class="triger" id='small-logo' style="display:<?=$mini?'none':'block'?>">
 <?php include $cfg['path'] . '/views/common/small-logo.tpl.php';?>
 </div>
         

@@ -30,9 +30,10 @@ $data_result['DaysArray'] = $DaysData;
 
 $TimesArray = array();
 $n = 0;
-for ($i = 36000; $i <= 64800; $i = $i+90){
+for ($i = 36000; $i <= 64800; $i = $i+900){
+
 	$TimesArray[$n]['val'] = $i;
-	$TimesArray[$n]['text'] = date("H-i", $timenow+$i);
+	$TimesArray[$n]['text'] = date("H-i", time()+$i);
 	$n++;
 }
 

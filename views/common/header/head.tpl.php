@@ -34,6 +34,9 @@ if(!in_array($tpl["task"],array('login_order','registration','login','remind')))
 <script src="<?=$cfg['site_dir']?>js/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="<?=$cfg['site_dir']?>js/jquery.maskedinput.min.js"></script>
 <script src="<?=$cfg['site_dir']?>js/shopcoins.js"></script>
+<?}
+if( $tpl['is_mobile']){?>
+   <script src="<?=$cfg['site_dir']?>js/jquery.ui.touch-punch.min.js"></script> 
 <?}?>
 <script type="text/javascript">
 

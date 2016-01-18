@@ -4,6 +4,13 @@ require_once $cfg['path'] . '/models/orderdetails.php';
 require_once $cfg['path'] . '/models/order.php';
 $data_result = array();
 $data_result['error'] = null;
+
+$code1 = request('code1');
+$code2 = request('code2');
+$code3 = request('code3');
+$code4 = request('code4');
+
+
 if(!$tpl['user']['user_id']) $data_result['error'] = "noauth";
 
 $shopcoins = (integer)request('shopcoins');
@@ -29,7 +36,23 @@ $amountbascetsum = $rows['mysumamount'];
 $vipcoinssum = $rows['vipcoinssum'];
 
 $discountcoupon = 0;
-//откладываем на будущее
+
+//проверяем купон
+if ($code1 && $code2 && $code3 && $code4 && $tpl['user']['user_id'] && $tpl['user']['user_id']<>811 && $shopcoinsorder) {
+	//получаем данные о введенном купоне
+	$code = strtolower($code1."-".$code2."-".$code3."-".$code4);
+	if (!preg_match("/[^-0-9a-zA-Z]{19}/",$code)){
+		$couponData = $user_class->getUserCoupon(array('code'=>$code ));
+		$friendCoupon = $user_class->getFriendCouponCode();
+		if($couponData&&$couponData['check'] !== 0&&$couponData['dateend']>time()) {
+			if ($couponData['type']==2) {
+				$discountcoupon = floor(($bascetsum-$amountbascetsum-$vipcoinssum)*$couponData['sum']/100);
+			} elseif ($couponData['type']==1) {
+				$discountcoupon += $couponData['sum'];
+			}
+		}
+	}
+}
 //echo $sql;
 /*
 $sql2 = "select coupon.* from ordercoupon, coupon where ".(sizeof($shopcoinsorder)>1?"ordercoupon.order in (".implode(",",$shopcoinsorder).")":"ordercoupon.order='".$shopcoinsorder."'")." and ordercoupon.order>0 and ordercoupon.`check`=1 and coupon.coupon=ordercoupon.coupon group by coupon.coupon order by coupon.type desc, coupon.dateinsert desc;";
@@ -97,6 +120,8 @@ if ($mymaterialtype!=0){
 	$PostZonePrice = $orderdetails_class::$PostZone1[$PostZoneNumber] + $orderdetails_class::$PackageAddition[$PostZoneNumber]*($bascetpostweight<500?0:ceil(($bascetpostweight-500)/500));
 }
 $PostAllPrice = $PostZonePrice + $PriceLatter + $bascetinsurance + $bascetsum;
+
+
 /*
 if ($checking)
 {
@@ -130,13 +155,7 @@ if ($delivery==6) {
 		
 //echo $discountcoupon;
 
-$data_result['FinalSum']=$FinalSum;
-$data_result['bascetamount']=$bascetamount;
-$data_result['bascetsum']=$bascetsum;
-$data_result['bascetweight']=$bascetweight;
-$data_result['error'] ='NotPost';
-$data_result['shopcoinsorder'] = $shopcoinsorder;
-	
+
 if ($delivery==4 && $postindex){	
     $data_result['bascetinsurance']=$bascetinsurance;
 	$data_result['bascetpostindex']=$postindex;
@@ -163,6 +182,7 @@ if ($metro and $delivery == 1) {
     $metro_data = $order_class->getMetroName($metro);
 	$data_result['metro'] = $metro_data['name'];
 	$data_result['metroprice'] = $metro_data['price'];
+	$FinalSum +=$metro_data['price'];
 }
 
 $data_result['meetingdate'] = "";
@@ -179,6 +199,14 @@ $data_result['meetingtotime'] = "";
 if ($meetingtotime and ($delivery == 1 || $delivery == 2 || $delivery == 3 || $delivery == 7)) {
 	$data_result['meetingtotime'] = date("H-i", time() + $meetingtotime);
 }
+
+
+$data_result['FinalSum']=$FinalSum;
+$data_result['bascetamount']=$bascetamount;
+$data_result['bascetsum']=$bascetsum;
+$data_result['bascetweight']=$bascetweight;
+$data_result['error'] ='NotPost';
+$data_result['shopcoinsorder'] = $shopcoinsorder;
 
 echo json_encode($data_result);
 die();

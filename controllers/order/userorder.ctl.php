@@ -86,54 +86,18 @@ if (!$adress&&trim($user_data["adress"])){
 
 if ($tpl['user']['user_id']<>811) {
     
-/* купленные ранее пока не используюся
+    //купленные ранее
 	$arraycoins = array();
-	
-	$sql = "select shopcoins1.*, group.name as gname from shopcoins,`catalogshopcoinsrelation`, `order`, orderdetails, orderdetails as orderdetails1, 
-		catalogshopcoinsrelation as catalogshopcoinsrelation1,shopcoins as shopcoins1, `group` 
-		where 
-			orderdetails.catalog=shopcoins.shopcoins
-			and `orderdetails`.`order` = '$shopcoinsorder'
-			and shopcoins.shopcoins=catalogshopcoinsrelation.shopcoins
-			and catalogshopcoinsrelation.catalog=catalogshopcoinsrelation1.catalog
-			and catalogshopcoinsrelation1.shopcoins=orderdetails1.catalog
-			and orderdetails1.order=order.order
-			and order.user='$cookiesuser'
-			and order.check=1
-			and order.order<>'$shopcoinsorder'
-			and orderdetails1.catalog=shopcoins1.shopcoins
-			and shopcoins1.materialtype in(1,4,7,8)
-			and shopcoins1.group=group.group;";
-	//echo $sql;		
-	$result = mysql_query($sql);
-	$i=1;
-	while ($rows=mysql_fetch_array($result)) {
-	
-		$js .= "parent.ArrayName[".$i."]='".$rows['name']."'; parent.ArrayYear[".$i."] = '".$rows['year']."'; parent.ArrayNameGroup[".$i."] = '".$rows['gname']."'; parent.ArrayShopcoins[".$i."] = '".$rows['shopcoins']."'; parent.ArrayImages[".$i."] = '".(filesize("./images/".$rows['images'])>100?$rows['image']:"none")."';";
-		$i++;
+	$tpl['orderdetails']['alreadyBye']= $order_class->alreadyByeCoins();
+
+	foreach ($tpl['orderdetails']['alreadyBye'] as $rows) {
 		$arraycoins[] = $rows['shopcoins'];
 	}
-	
-	$sql = "select shopcoins1.*, group.name as gname from shopcoins, `order`, orderdetails, orderdetails as orderdetails1, 
-		shopcoins as shopcoins1, `group` 
-		where 
-			orderdetails.catalog=shopcoins.shopcoins
-			and `orderdetails`.`order` = '$shopcoinsorder'
-			and shopcoins.parent=shopcoins1.parent
-			and orderdetails1.order=order.order
-			and order.user='$cookiesuser'
-			and order.check=1
-			and order.order<>'$shopcoinsorder'
-			and orderdetails1.catalog=shopcoins1.shopcoins
-			and ((shopcoins1.materialtype=1 and shopcoins1.parent>0) or (shopcoins1.materialtype in(4,7,8)))
-			and shopcoins1.group=group.group ".(sizeof($arraycoins)?"and shopcoins1.shopcoins not in(".implode(",",$arraycoins).")":"").";";
-	//echo $sql;		
-	$result = mysql_query($sql);
-	while ($rows=mysql_fetch_array($result)) {
-	
-		$js .= "parent.ArrayName[".$i."]='".$rows['name']."'; parent.ArrayYear[".$i."] = '".$rows['year']."'; parent.ArrayNameGroup[".$i."] = '".$rows['gname']."'; parent.ArrayShopcoins[".$i."] = '".$rows['shopcoins']."'; parent.ArrayImages[".$i."] = '".(filesize("./images/".$rows['images'])>100?$rows['image']:"none")."';";
-		$i++;
-	}*/
+	//без связей
+	$result = $order_class->alreadyByeCoins2();
+	foreach($result as $rows) {
+		$tpl['orderdetails']['alreadyBye'][] = $rows;
+	}
 }
 
 $tpl['user']['fio'] = $user_data['fio'];
@@ -151,40 +115,29 @@ if ($tpl['myOrders']) {
 	}
 }
 
-$iscoupon = $user_class->getUserCouponType();
+$tpl['orderdetails']['coupons'] = array();
 
-$iscoup=0;	
+$iscoupon = $user_class->getUserCouponType();
+$iscoup=0;
 
 if ($iscoupon==2) {
-die('$iscoupon');
-	$sql_tmp = "select * from ordercoupon where coupon='".$rows['coupon']."' and `order`='".$shopcoinsorder."';";
-	$result_tmp = mysql_query($sql_tmp);
-	//echo $sql_tmp;
-	if (@mysql_num_rows($result_tmp)==0) {
-		
-		$sql_ins = "insert into ordercoupon (`ordercoupon`,`coupon`,`order`,`dateinsert`,`check`) 
-			values (NULL, '".$rows['coupon']."','$shopcoinsorder','".time()."','1');";
-		$result_ins = mysql_query($sql_ins);
-		
+
+	$couponData = $user_class->getUserCoupon(array('`check`'=>1, 'type'=>2));
+
+	$tpl['orderdetails']['coupons'][2] = $couponData['code'];
+	$order_class->tempUseCoupon($couponData['coupon']);
+
+	$iscoup1 = $user_class->getUserCoupon(array('`check`'=>1, 'type'=>1, '`order`'=>0));
+	if($iscoup1){
+		$iscoup = 1;
+		$tpl['orderdetails']['coupons'][1] = $iscoup1['code'];
 	}
-	
-	$sql = "select * from coupon where `user`='$cookiesuser' and `check`=1 and type=1 and `order`=0 ;";
-	$result = mysql_query($sql);
-	if (mysql_num_rows($result)>0)
-		$iscoup=1;
 }
 
-$codetmp_ = $user_class->getUserCouponCode();
-if ($codetmp_) {
-	$codetmp = explode("-",$codetmp_);
-} else {
-	$codetmp[0] = '';
-	$codetmp[1] = '';
-	$codetmp[2] = '';
-	$codetmp[3] = '';
+$codetmp_ = $user_class->getFriendCouponCode();
+if($codetmp_){
+	$tpl['orderdetails']['coupons']['friends'] = explode("-",$codetmp_);
 }
-
-
 
 $rows = $order_class->OrderSum();
 $bascetsum = $rows["mysum"];

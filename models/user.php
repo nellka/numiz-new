@@ -29,16 +29,39 @@ class model_user extends Model_Base
 		               ->where('user =?',$this->user_id)
 		               ->where('`check`=1')
 		               ->order(array('type desc','dateinsert desc'))
-		               ->limit(1);	
+		               ->limit(1);
 		  return (integer)$this->db->fetchOne($select);
 	 }
-	 public function getUserCouponCode(){	  
+	 //при оформлении заказа
+
+	 public function getUserCoupon($data=array()){
+		$select = $this->db->select()
+			->from('coupon')
+			->where('user =?',$this->user_id);
+
+		foreach($data as $key=>$value){
+			$select->where("$key=?",$value);
+		}
+		return $this->db->fetchRow($select);
+	 }
+
+	public function getUserCouponCount($data=array()){
+		$select = $this->db->select()
+			->from('coupon',array())
+			->where('user =?',$this->user_id);
+		foreach($data as $key=>$value){
+			$select->where("$key=?",$value);
+		}
+		return $this->db->fetchOne($select);
+	}
+
+	 public function getFriendCouponCode(){
 	      $select = $this->db->select()
 		               ->from('coupon',array('coupon.code'))
 		               ->join('userfrend','coupon.fromuser=userfrend.frend',array())
 		               ->where('coupon.user =?',$this->user_id)
 		               ->where('coupon.check=1 and coupon.user=userfrend.user and coupon.type=1');	
-		  return (integer)$this->db->fetchOne($select);
+		  return $this->db->fetchOne($select);
 	}
 	
     public function decrementUserBalance($how_much){
@@ -67,6 +90,37 @@ class model_user extends Model_Base
 	                'created_at' => time());
 		$this->db->insert('user_bonus_log',$data);
     }
+    
+    public function addCoupon($shopcoinsorder,$dis,$dateend){
+        $couponups = 1;
+        
+		while ($couponups==1) {
+			$code = '';
+            for ($i=0;$i<16;$i++) {  
+                if ($i==4 || $i == 8 || $i==12)
+					$code .= "-";      
+            	$code .= self::$ArrayForCode[rand(0,9)];
+            }
+
+            $select = $this->db->select()
+		               ->from('coupon',array('count(*)'))
+		               ->where('code =?',$code);	         
+		    $coupon_exist = $this->db->fetchOne($select); 
+
+		    if(!$coupon_exist) $couponups = 2;     
+		}
+
+		$data = array('user' => $this->user,
+		              'order'=>$shopcoinsorder,
+		              'sum'=>$dis,
+		              'code'=>$code,
+		              'dateend'=>$dateend,
+		              'type'=>1,
+		              'dateinsert'=>time(),
+		              'check'=>1);
+        $this->db->insert('coupon',$data);
+    }
+    
     public function createFreandCoupon(){
         $couponups = 1;
         while ($couponups==1) {        
@@ -155,162 +209,9 @@ class model_user extends Model_Base
     		               ->from('order',array('count(*)'))
     		               ->where('user =?',$this->user_id)
     		               ->where('`check`=1 and SendPost=0 and sum>=500');
-        return  $this->db->fetchOne($select)?1:0;   
+        return  $this->db->fetchOne($select)?1:0;
     }
 
-	 /*
-	 
-		if (!$rows[0])
-		{			
-			//при вставке отправляем письмо с ключом
-			$message = "Добрый день.
-
-			Ваш email ( $email ) был подписан на рассылку Клуба Нумизмат
-			http://www.numizmatik.ru/subscribe
-
-			Для подтверждения рассылки пройдите по следующей ссылке.
-			___ссылка___
-			Без подтверждения, рассылка будет не действительна.
-
-
-			С уважением, администрация Клуба Нумизмат.
-
-			Телефон: 8-926-236-31-92
-			Email: administrator@numizmatik.ru
-			Web: http://www.numizmatik.ru
-			";
-		}
-		else
-		{
-			$sql_update = "update subscribe set
-			shopcoins = '".($shopcoins=="on"?1:0)."',
-			news = '".($news=="on"?1:0)."',
-			tboard = '".($tboard=="on"?1:0)."', 
-			blacklist = '".($blacklist=="on"?1:0)."', 
-			buycoins = '".($buycoins=="on"?1:0)."',
-			biblio = '".($biblio=="on"?1:0)."', 
-			advertise = '".($advertise=="on"?1:0)."',
-			typemail = '$typemail',
-			dateupdate = '".time()."'
-			where user='$user';
-			";
-			//echo $sql_update;
-			$result_update = mysql_query($sql_update);
-		}
-		
-	 
-	 */
-	/*
-	письмо о регистрации
-	//далее отправляем письмо пользователю
-					$mytext = "<br><br><p class=txt><b>Ваши данные</b>";
-					$mytext .= "<p class=txt>ФИО: ".$fio;
-					$mytext .= "<p class=txt>Логин: ".$userlogin1;
-					$mytext .= "<p class=txt>Пароль: ".$userpassword1;
-					$mytext .= "<p class=txt>E-mail: ".$email;
-					$mytext .= "<p class=txt>Домашняя страница: ".$url;
-					$mytext .= "<p class=txt>Пол: ";
-					if ($sex==0) { $mytext .= "Мужчина"; } else { $mytext .= "Женщина";}
-					$mytext .= "<p class=txt>Город: ";
-					for ($i=0; $i<count($city_array); $i++)
-					{
-						if ($city==$i and $i!=0) $mytext .= $city_array[$i];
-					}
-					$mytext .= $city1;
-					$mytext .= "<p class=txt>Телефон: ".$phone;
-					$mytext .= "<p class=txt>Получать SMS-уведомления: ".($sms?"Да":"Нет");
-					$mytext .= "<p class=txt>Информация о Вас: ".$text;
-					//echo $mytext;
-					//echo "<br><br><p class=txt>Данная информация отправлена на Ваш почтовый адрес, указанный при регистрации<br><br>";
-					
-					$file = fopen($in."mail/top.html", "r");
-					while (!feof ($file)) 
-					{
-						$message .= fgets ($file, 1024);
-					}
-					fclose($file);
-					$message .= "<tr bgcolor=\"#006699\"><td rowspan=2 width=\"1\" bgcolor=\"#000000\"></td>
-					<td width=498><p><b><font color=white>Регистрация пользователя</font></b></td>
-					<td rowspan=2 width=\"1\" bgcolor=\"#000000\"></td></tr>
-					<tr>
-					<td width=498 bgcolor=\"#fff8e8\"><p>$info1.$mytext
-					<br><br>Клуб Нумизмат - <a href=http://www.numizmatik.ru>www.numizmatik.ru</a><br><br>
-					</td>
-					</tr>";
-					
-					$file = fopen($in."mail/bottom.html", "r");
-					while (!feof ($file)) 
-					{
-						$message .= fgets ($file, 1024);
-					}
-					fclose($file);
-					$recipient = $email;
-					$subject = "Регистрация в Клубе Нумизмат";
-					$headers = "From: Numizmatik.Ru<administrator@numizmatik.ru>\nContent-type: text/html; charset=\"windows-1251\"";
-					mail($recipient, $subject, $message, $headers);
-					header("Location: ".$in."auth.php?userlogin=".urlencode($userlogin1)."&userpassword=".urlencode($userpassword1)."&login=1");
-				}
-	
-	*/
-	
-	/*
-	echo "<p class=txt align=center><b><font color=red>Данная информация отправлена на Ваш почтовый адрес, указанный при регистрации!!!</font></b>";
-			//далее отправляем письмо пользователю
-			$mytext = "<br><br><p class=txt><b>Ваши данные</b>";
-			$mytext .= "<p class=txt>ФИО: ".$rows[1];
-			$mytext .= "<p class=txt>Логин: ".$rows[2];
-			$mytext .= "<p class=txt>Пароль: ".$rows[3];
-			$mytext .= "<p class=txt>E-mail: ".$rows[4];
-			$mytext .= "<p class=txt>Домашняя страница: ".$rows[5];
-			$mytext .= "<p class=txt>Пол: ";
-			if ($rows[6]==0) { $mytext .= "Мужчина"; } else { $mytext .= "Женщина";}
-			$mytext .= "<p class=txt>Город: ";
-			for ($i=0; $i<count($city_array); $i++)
-			{
-				if ($rows[7]==$i and $i!=0) $mytext .= $city_array[$i];
-			}
-			$mytext .= $rows[7];
-			$mytext .= "<p class=txt>Телефон: ".$rows[8];
-			$mytext .= "<p class=txt>Информация о Вас: ".$rows[9];
-			
-			$file = fopen($in."mail/top.html", "r");
-			while (!feof ($file)) 
-			{
-				$message .= fgets ($file, 1024);
-			}
-			fclose($file);
-			$message .= "<tr bgcolor=\"#006699\"><td rowspan=2 width=\"1\" bgcolor=\"#000000\"></td>
-			<td width=498><p><b><font color=white>Востановление пароля</font></b></td>
-			<td rowspan=2 width=\"1\" bgcolor=\"#000000\"></td></tr>
-			<tr>
-			<td width=498 bgcolor=\"#fff8e8\"><p>$info1.$mytext
-			<br><br>Клуб Нумизмат - <a href=http://www.numizmatik.ru>www.numizmatik.ru</a><br><br>
-			</td>
-			</tr>";
-			
-			$file = fopen($in."mail/bottom.html", "r");
-			while (!feof ($file)) 
-			{
-				$message .= fgets ($file, 1024);
-			}
-			fclose($file);
-			$recipient = $rows["email"];
-			$subject = "Регистрация в Клубе Нумизмат";
-			$headers = "From: Numizmatik.Ru<administrator@numizmatik.ru>\nContent-type: text/html; charset=\"windows-1251\"";
-			InsertMail ($rows["email"], $subject, $message, $headers, "1");
-	
-	*/
-	 //получаем число пользователей на данный момент
-  /*  public function countAll(){
-        $sql = "SELECT count(*) FROM user";
-       // return $this->countAll();
-    	return $this->db->getOne($sql);
-        $count = $this->countAll();
-   var_dump($count);
-die();
-	  //  $sql = "SELECT count(*) FROM from `user`";
-    	//return $this->db->getOne($sql);
-	}*/
 	//проверяем, что пользователь залогинен
 	public function loginUser($email,$userpassword){
 	   if ($email &&$userpassword){
@@ -339,9 +240,9 @@ die();
         	} else {
         		return false;
         	}
-        }
-	    
+        }	    
 	}
+	
 	public function is_logged_in(){
 	    $cookiesuserlogin = 0;
 	    $cookiesuserpassword = 0;

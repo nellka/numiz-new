@@ -337,6 +337,28 @@ class model_shopcoins extends Model_Base
 		//echo  $select->__toString();
     	return $this->db->fetchAll($select);
 	}
+	public function coinsParents($ParentArray){	
+	    /*SELECT shopcoins.*, if((shopcoins.realization=0 or shopcoins.dateinsert>".($timenow-4*24*3600)."),0,1) as param FROM shopcoins WHERE (shopcoins.check =1 or shopcoins.`check`>3) and parent in (".implode(",", $ParentArray).") GROUP BY shopcoins.parent order by shopcoins.`check` asc, param asc, shopcoins.dateinsert desc*/
+	     $select = $this->db->select()   
+	                        ->from(array('s'=>'shopcoins'),array('*','param'=>'if(s.realization=0 or s.dateinsert>'.(time()-4*24*3600).',0,1)'));
+		 $select->where("parent in (".implode(",", $ParentArray).")");
+		 $select->where('s.check =1 or s.check>3');
+		 $select->order(array("s.check asc","param asc","s.dateinsert desc"));
+		 $select->group('s.parent');    
+		 
+		 return $this->db->fetchAll($select);
+	}
+	public function countChilds($ParentID){	
+	    /*select count(*) from shopcoins where (`check`='1' or `check`>3) and parent='".$rows["parent"]."';*/
+	    $select = $this->db->select()   
+	                      ->from(array('s'=>'shopcoins'),array('count(*)'))
+		                  ->where("s.parent =?",$ParentID);
+		$select->where('s.check =1 or s.check>3');
+		
+		return $this->db->fetchOne($select);
+	}
+	
+	
 	
 	public function countAll(){
         $select = $this->db->select()

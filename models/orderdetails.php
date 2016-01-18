@@ -48,7 +48,8 @@ class model_orderdetails extends Model_Base
 		$dataBasket = $this->forBasket($clientdiscount);
 		$bascetsum = $dataBasket["mysum"];
 		$_SESSION['bascetsum'] = $bascetsum;
-		
+		var_dump($dataBasket);
+
 		$bascetsumclient = $dataBasket["mysumclient"];
 		if ($bascetsumclient >= $bascetsum) 
 			$bascetsumclient=0;

@@ -19,5 +19,22 @@ class model_catalogshopcoinsrelation extends Model_Base
 			and shopcoins1.`check`=1 and shopcoins1.`group` = `g`.`group` group by shopcoins1.shopcoins order by odsum desc limit 10;";
 		return $this->db->fetchAll($sql);
 	}
+	public function getReserved($id,$user_id){
+	   /*$sql_info = "select shopcoins.*, catalogshopcoinssubscribe.catalog 
+						from `shopcoins`, catalogshopcoinsrelation, catalogshopcoinssubscribe  
+						WHERE shopcoins.shopcoins = '".$rows['shopcoins']."' and shopcoins.materialtype = '1'
+						and catalogshopcoinsrelation.shopcoins = shopcoins.shopcoins
+						and catalogshopcoinssubscribe.catalog = catalogshopcoinsrelation.catalog 
+						and catalogshopcoinssubscribe.user = '".$rows['userreserve']."';";*/
+						
+	   $select = $this->db->select()
+                  ->from(array('catalogshopcoinssubscribe'),array('catalog'))
+                  ->join(array('catalogshopcoinsrelation'),'catalogshopcoinssubscribe.catalog = catalogshopcoinsrelation.catalog',array())
+                  ->join(array('shopcoins'),'catalogshopcoinsrelation.shopcoins = shopcoins.shopcoins',array())
+                  ->where('catalogshopcoinssubscribe.user=?',$user_id)
+                  ->where('shopcoins.shopcoins=?',$id)
+                  ->where('shopcoins.materialtype = 1');	
+	    return $this->db->fetchOne($select);
+	}
 		
 }

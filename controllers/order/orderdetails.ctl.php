@@ -116,7 +116,7 @@ if (sizeof($tpl['orderdetails']['ArrayShopcoinsInOrder'])) {
 
 //статусы заказа
  $tpl['can_order'] = false;
- 
+
 if ($sum>$stopsummax) {
   $tpl['order_status'] = 1;
 } elseif ((($sum<500 && ($tpl['user']['orderusernow'] == 0 || $blockend > time())) || $sum<=0) && $tpl['user']['user_id'] != 811) {

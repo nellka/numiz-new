@@ -78,6 +78,9 @@ Abstract Class Model_Base {
     public function updateRow($data,$where){
         $this->db->update($this->table,$data,$where);
     }
+	public function updateTableRow($table,$data,$where){
+		$this->db->update($table,$data,$where);
+	}
     public function getRowSql($sql){
     	return $this->db->fetchRow($sql);
     }
@@ -92,7 +95,10 @@ Abstract Class Model_Base {
 		}             
     	return $this->db->fetchRow($select);  
     }
-    
+    public function deleteRow($table,$where){
+         $this->db->delete($table, $where);	     
+    }
+      
       /*
     // уделение записей из базы данных по условию
     public function deleteBySelect($select){

@@ -1,3 +1,5 @@
+<div style="position:absolute;width:30px;height:14px;background-color:red;right:23px;color: #ffffff;">NEW</div>
+
 <? 
 if($rows["materialtype"]==3){?>
 <a href='<?=$cfg['site_dir']?>shopcoins/<?=$rows["rehref"]?>' title='<?=$cfg['site_dir']?>/shopcoins<?=$rows['namecoins']?>' >
@@ -43,6 +45,11 @@ if($rows["materialtype"]==3){?>
 </div>
 
 <? echo contentHelper::render('shopcoins/price/prices',$rows);?>
+<div class="stars">
+	<?php
+	echo contentHelper::render('shopcoins/price/markitem',$rows['mark']);	
+	?>
+</div>
 <?echo contentHelper::render('shopcoins/price/buy_button',$rows);?>
 <?
 if(($rows['buy_status']==7||$rows['buy_status']==6)&&($minpriceoneclick<=$rows['price'])) {
@@ -53,11 +60,7 @@ if(($rows['buy_status']==7||$rows['buy_status']==6)&&($minpriceoneclick<=$rows['
 	echo contentHelper::render('shopcoins/price/reserved',$rows);
 	?>
 </div>
-<div class="stars">
-	<?php
-	echo contentHelper::render('shopcoins/price/markitem',$rows['mark']);	
-	?>
-</div>
+
 <div id=subinfo class="subinfo">
 Название: <strong><?=$rows["name"]?></strong><br>
 Номер: <strong><?=$rows["number"]?></strong><br>
@@ -100,6 +103,7 @@ if (trim($rows["details"]))
 if ($rows["dateinsert"]>time()-86400*180 && !$mycoins){
 	echo "<br>Добавлено: <strong>".($rows["dateinsert"]>time()-86400*14?"<font color=red>NEW</font> ".date("Y-m-d", $rows["dateinsert"]):date("Y-m-d", $rows["dateinsert"]))."</strong>";
 }?>
+	
 </div>		
 <?
 if($rows['tmpsmallimage']){?>

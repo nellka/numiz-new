@@ -21,42 +21,6 @@
 
 	<?php   
 	//вводим фильтр для стран
-	if(isset($filter_groups[0])&&$filter_groups[0]["filter_group_id"]=='group'){?>
-		<div class="filter-block">
-    		<div class="filter_heading">
-    			<div style="float:left;">Название страны</div>
-    			<div style="float:right;">
-    				<a style="color:#247bbd;font-size:12px;line-height:12px;text-decoration:underline;"
-    				href="#g" onclick="clear_filter('group_name');return false;">Сбросить</a>
-    			</div>
-    		</div>
-    		<ul class="filter_heading_ul">
-    		<input type="text" value="" id='group_name' name="group_name" size="35">
-    		</ul>
-    	</div>
-    	<script>
-    	$('#group_name').on('keyup', function() {
-		    var query = this.value.toLowerCase();
-		    
-			if(query.length>1){
-			    $('#fb-groups .checkbox').each(function(i, elem) {			    	
-			          if ( $(elem).find('a').text().toLowerCase().indexOf(query) != -1) {
-			              $(elem).show();
-			          }else{
-			              $(elem).hide();
-			          }
-			          mCustomScrollbars();
-			    });
-			} else {
-				$('#fb-groups .checkbox').each(function(i, elem) {			    	
-			        $(elem).show();
-			    });
-			}
-		});
-		
-    	</script>
-	<?}
-	
 	 	foreach ($filter_groups as $filter_group) {?>
 	
 		<div class="filter-block" id='fb-<?=$filter_group['filter_group_id_full']?>'>
@@ -67,7 +31,13 @@
     				href="#" onclick="clear_filter('<?=$filter_group['filter_group_id_full']?>');return false;">Сбросить</a>
     			</div>
     		</div>
-		
+<?
+		if($filter_group['filter_group_id']=='group'){?> 		
+    		
+    		<input type="text" value="" id='group_name' placeholder='Название страны' name="group_name" size="30"><input type="button" value="X" onclick="clear_filter('group_name');return false;" style="float:right">
+
+		<?}
+		?>
 		<ul class="filter_heading_ul">
 			<div id="filter-group<?=$filter_group['filter_group_id']?>_container">
 				<div class="customScrollBox">
@@ -287,7 +257,28 @@ function LoadNewContent(id,file){
          	if($(this).attr('id')!='group_name'){
          		sendData();
          	}
-         });          
+         });
+
+         if($('#group_name')){
+        	$('#group_name').on('keyup', function() {
+    		    var query = this.value.toLowerCase();		    
+    			if(query.length>1){
+    			    $('#fb-groups .checkbox').each(function(i, elem) {			    	
+    			          if ($(elem).find('a').text().toLowerCase().indexOf(query) != -1) {
+    			              $(elem).show();
+    			          }else{
+    			              $(elem).hide();
+    			          }
+    			          mCustomScrollbars();
+    			    });
+    			} else {
+    				$('#fb-groups .checkbox').each(function(i, elem) {			    	
+    			        $(elem).show();
+    			    });
+    			}
+    		});
+        }        
         });
-      
+        
+
     </script>

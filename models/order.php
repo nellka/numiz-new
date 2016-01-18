@@ -16,14 +16,105 @@ class model_order extends Model_Base
                   ->limit(1);
         return $this->db->fetchOne($select);
 	}
-	
+
+	public function getPreviosOrder(){
+		/*select * from `order` where `user`='$cookiesuser' and `check`=1 and SendPost=0 and sum>=500 order by  limit 1;";*/
+		$select = $this->db->select()
+			->from('order')
+			->where('user =?',$this->user_id)
+			->where('`check`=1 and SendPost=0 and sum>=500')
+			->order('date desc')
+			->limit (1);
+		return  $this->db->fetchRow($select);
+	}
+
+	public function sumOrders($id){
+		$sql = "select sum(orderdetails.amount*shopcoins.price) as mysum
+				from orderdetails, shopcoins
+				where orderdetails.order in('".$this->shopcoinsorder."','".$id."')
+				and orderdetails.catalog=shopcoins.shopcoins and orderdetails.status=0;";
+		return  $this->db->fetchOne($sql);
+	}
+
+	public function alreadyByeCoins(){
+		$sql = "select shopcoins1.*, group.name as gname from shopcoins,`catalogshopcoinsrelation`, `order`, orderdetails, orderdetails as orderdetails1,
+		catalogshopcoinsrelation as catalogshopcoinsrelation1,shopcoins as shopcoins1, `group`
+		where
+			orderdetails.catalog=shopcoins.shopcoins
+			and `orderdetails`.`order` = '".$this->shopcoinsorder."'
+			and shopcoins.shopcoins=catalogshopcoinsrelation.shopcoins
+			and catalogshopcoinsrelation.catalog=catalogshopcoinsrelation1.catalog
+			and catalogshopcoinsrelation1.shopcoins=orderdetails1.catalog
+			and orderdetails1.order=order.order
+			and order.user='".$this->user_id."'
+			and order.check=1
+			and order.order<>'".$this->shopcoinsorder."'
+			and orderdetails1.catalog=shopcoins1.shopcoins
+			and shopcoins1.materialtype in(1,4,7,8)
+				and shopcoins1.group=group.group;";
+
+		/*$select = $this->db->select()
+			->from(array('s'=>'shopcoins'))
+			->join(array('g'=>'group'),'s.group = g.group',array('gname' => 'g.name'))
+			->join(array('o'=>'order'),'o.catalog=s.shopcoins',array())
+			->join(array('od'=>'orderdetails'),'cr.shopcoins=od.catalog',array())
+			->join(array('cr'=>'catalogshopcoinsrelation'),'cr.shopcoins=od.catalog',array())
+			->where('o.order=?',$this->shopcoinsorder)
+			->where('o.status=0 and (s.`check`=1 or s.`check`>3)');*/
+
+		return $this->db->fetchAll($sql);
+	}
+	public function alreadyByeCoins2($arraycoins=array())
+	{
+		$sql = "select shopcoins1.*, group.name as gname from shopcoins, `order`, orderdetails, orderdetails as orderdetails1,
+		shopcoins as shopcoins1, `group`
+		where
+			orderdetails.catalog=shopcoins.shopcoins
+			and `orderdetails`.`order` = '".$this->shopcoinsorder."'
+			and shopcoins.parent=shopcoins1.parent
+			and orderdetails1.order=order.order
+			and order.user='".$this->user_id."'
+			and order.check=1
+			and order.order<>'".$this->shopcoinsorder."'
+			and orderdetails1.catalog=shopcoins1.shopcoins
+			and ((shopcoins1.materialtype=1 and shopcoins1.parent>0) or (shopcoins1.materialtype in(4,7,8)))
+			and shopcoins1.group=group.group " . (sizeof($arraycoins) ? "and shopcoins1.shopcoins not in(" . implode(",", $arraycoins) . ")" : "") . ";";
+
+		return $this->db->fetchAll($sql);
+	}
+
 	public function getOrder(){
 	    $select = $this->db->select()
                   ->from($this->table)
                   ->where('`order`=?',$this->shopcoinsorder);
         return $this->db->fetchRow($select);
 	}
-	
+
+	public function getUseCoupon($coupon)
+	{
+		$select = $this->db->select()
+			->from('ordercoupon')
+			->where('`order` =?',$this->shopcoinsorder)
+			->where('coupon =?',$coupon);
+
+		return $this->db->fetchRow($select);
+	}
+
+	public function tempUseCoupon($coupon){
+		$select = $this->db->select()
+			->from('ordercoupon',array('count(*)'))
+			->where('`order` =?',$this->shopcoinsorder)
+			->where('coupon =?',$coupon);
+		if (!$this->db->fetchOne($select)) {
+			$data = array(
+				'coupon'=>$coupon,
+				'order' =>$this->shopcoinsorder,
+				'dateinsert'=> time(),
+				'check'=>1);
+			$this->db->insert('ordercoupon',$data);
+		}
+	}
+
 	public function getInOffice(){
 	    $select = $this->db->select()
                   ->from('order')
