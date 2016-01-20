@@ -14,7 +14,7 @@ if($rows["materialtype"]==3){?>
 	$title = contentHelper::setHrefTitle($rows["name"],$rows["materialtype"],$rows['gname']).' - подробная информация';?>
 	<a href='<?=$rows['rehref']?>' title='<?=$title?>'>
 		<?=contentHelper::showImage('images/'.$rows["image"],'Подробная информация о '.contentHelper::setWordAbout($rows["materialtype"])." ".$rows["gname"]." ".$rows["name"])?>			
-	</a>	
+	</a>	<br>
 	<a name=coin<?=$rows["shopcoins"]?> title='<?=contentHelper::setHrefTitle($rows["name"],$rows["materialtype"],$rows["gname"])?>'></a>
 	<strong><?=$rows['namecoins']?></strong> 
 <?}?>
@@ -35,9 +35,16 @@ if($rows["materialtype"]==3){?>
 
 <? echo contentHelper::render('shopcoins/price/prices',$rows);?>
 <?echo contentHelper::render('shopcoins/price/buy_button',$rows);?>
+<br>
 <?
 if(($rows['buy_status']==7||$rows['buy_status']==6)&&($minpriceoneclick<=$rows['price'])) {
+?>
+	<div style="width:230px;">
+<?php
 	echo contentHelper::render('shopcoins/price/oneclick',$rows);
+?>
+	</div>
+<?php
 }?>
 
 <?

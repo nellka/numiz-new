@@ -6,7 +6,7 @@ class model_order extends Model_Base
     public function __construct($db,$shopcoinsorder=0,$user_id=0){
 	    parent::__construct($db);
 	    $this->shopcoinsorder = $shopcoinsorder;
-	    $this->user_id = $shopcoinsorder;
+	    $this->user_id = $user_id;
     }	
 	public function getUserfio(){
 	    $select = $this->db->select()
@@ -25,6 +25,7 @@ class model_order extends Model_Base
 			->where('`check`=1 and SendPost=0 and sum>=500')
 			->order('date desc')
 			->limit (1);
+		
 		return  $this->db->fetchRow($select);
 	}
 
@@ -96,6 +97,15 @@ class model_order extends Model_Base
 			->from('ordercoupon')
 			->where('`order` =?',$this->shopcoinsorder)
 			->where('coupon =?',$coupon);
+
+		return $this->db->fetchRow($select);
+	}
+	public function getOrdergiftcertificate($order)
+	{
+		$select = $this->db->select()
+			->from('ordergiftcertificate')
+			->where('`order` =?',$order)
+			->where('`check`=1');
 
 		return $this->db->fetchRow($select);
 	}

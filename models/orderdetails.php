@@ -5,9 +5,12 @@ class model_orderdetails extends Model_Base
 	
 	static $WeightCoins = 5;
 	static $reservetime = 18000;
+	static $PriceLatter = 16;
 	static  $PostZone = array(1 => 138.80,2 => 140.70,3 => 146.40,4 => 178.30,5 => 199.00);
 	static  $PackageAddition= array(1 => 12.00,2 => 13.90,3 => 20.30,4 => 29.20,5 => 33.70);
-	public function __construct($db,$shopcoinsorder){
+	static  $WeightPostLatter = 28;
+	static $WeightPostBox = 100;
+	public function __construct($db,$shopcoinsorder=0){
 	    parent::__construct($db);
 	    $this->shopcoinsorder = $shopcoinsorder;	  
 	}	
@@ -48,7 +51,6 @@ class model_orderdetails extends Model_Base
 		$dataBasket = $this->forBasket($clientdiscount);
 		$bascetsum = $dataBasket["mysum"];
 		$_SESSION['bascetsum'] = $bascetsum;
-		var_dump($dataBasket);
 
 		$bascetsumclient = $dataBasket["mysumclient"];
 		if ($bascetsumclient >= $bascetsum) 
@@ -280,10 +282,12 @@ and o.catalog=s.shopcoins ".($checking?"":"and s.`check`='1'")." and o.status=0;
 				and (s.`check`=1 or s.`check`>3)
 				and s.`group` = g.`group`;";
 				$result = mysql_query($sql);*/
+	 
+	 	
 	    $select = $this->db->select()
-                  ->from(array('o'=>'orderdetails'))
-                  ->join(array('s'=>'shopcoins'),'o.catalog=s.shopcoins')
-                  ->join(array('g'=>'group'),'s.group = g.group',array('gname' => 'g.name', 'orderamount' => 'o.amount', 'samount' => 's.amount'))
+                  ->from(array('o'=>'orderdetails'),array('*', 'orderamount' => 'o.amount'))
+                  ->join(array('s'=>'shopcoins'),'o.catalog=s.shopcoins',array('samount' => 's.amount','*'))
+                  ->join(array('g'=>'group'),'s.group = g.group',array('gname' => 'g.name'))
                   ->where('o.order=?',$this->shopcoinsorder)
                   ->where('o.status=0 and (s.`check`=1 or s.`check`>3)');	
 
@@ -305,4 +309,106 @@ and o.catalog=s.shopcoins ".($checking?"":"and s.`check`='1'")." and o.status=0;
 	 public function  deleteItem($id){
 	     $this->db->delete($this->table,"`order` = '".$this->shopcoinsorder."' and catalog=$id");	     
 	 }
+	 
+	public function PostSum($postindex,$clientdiscount,$shopcoinsorder=0){
+	    if($shopcoinsorder) $this->shopcoinsorder = $shopcoinsorder;
+	    
+        $rows = $this->forBasket($clientdiscount);
+
+        $bascetsum = $rows["mysum"];
+        $amountbascetsum = $rows['mysumamount'];
+        $vipcoinssum = $rows['vipcoinssum'];
+        
+        
+    	$bascetweight = $rows["myweight"];
+    	$bascetamount = $this->getCounter();
+        $postcounter = $this->getPaking();
+
+        $sql = "select coupon.* from ordercoupon, coupon where ".(sizeof($this->shopcoinsorder)>1?"ordercoupon.order in (".implode(",",$this->shopcoinsorder).")":"ordercoupon.order='".$this->shopcoinsorder."'")." and ordercoupon.order>0 and ordercoupon.`check`=1 and coupon.coupon=ordercoupon.coupon group by coupon.coupon order by coupon.type desc, coupon.dateinsert desc;";
+
+    	$discountcoupon = 0;
+    	$arraycoupcode = array();
+		$typec = 1;
+		foreach ($this->db->fetchAll($sql) as $row) {		
+			
+			if ($rows2['type']==2 && $typec==1) {
+			
+				$discountcoupon = floor(($bascetsum-$amountbascetsum-$vipcoinssum)*$rows2['sum']/100);
+				$typec = 2;
+				$arraycoupcode[] = "VIP";
+			}
+			elseif ($rows2['type']==1 && ($typec==1 || ($typec==2 && $rows2['order']==0))) {
+			
+				$discountcoupon += $rows2['sum'];
+				$arraycoupcode[] = strtoupper($rows2['code']);
+			}
+		}
+
+    	if ($discountcoupon<0)
+    		$discountcoupon = 0;
+		
+    	$bascetsum = $bascetsum - $discountcoupon;
+    	if ($bascetsum<0)
+    		$bascetsum = 0;
+    
+    	$bascetweight = $rows["myweight"];
+    	
+    	if ($bascetsum>0)
+    		$mymaterialtype = $rows["mymaterialtype"];
+    	else
+    		$mymaterialtype = 1;
+    	
+    	
+        $suminsurance = $this->getSuminsurance();
+        if ($suminsurance>0){
+        	$bascetinsurance = $suminsurance * 0.04;
+        } else {
+        	$bascetinsurance = $bascetsum * 0.04;
+        }
+        
+    	if ($postcounter)
+        	$bascetpostweight = $bascetweight + self::$WeightPostBox;
+        else
+        	$bascetpostweight = $bascetweight + self::$WeightPostLatter;
+        	
+    	$rows = $this->getPost($postindex);
+    	$PostZoneNumber = 5;
+    	if($postindex){
+        	//тариф по зоне обслуживания
+        	//select * from Post where PostIndex='600023';
+        	$PostZoneNumber = $rows["PostZone"];
+        	$PostRegion = ($rows["Region"]?$rows["Region"]:$rows["Autonom"]);
+        	$PostCity = ($rows["City"]?$rows["City"]:$PostRegion);
+        }
+    
+        if (!$PostZoneNumber)	$PostZoneNumber = 5;
+        if ($mymaterialtype!=0){
+        	$PostZonePrice = self::$PostZone[$PostZoneNumber] + self::$PackageAddition[$PostZoneNumber]*($bascetpostweight<500?0:ceil(($bascetpostweight-500)/500));
+        }else {
+        	$PostZonePrice = self::$PostZone1[$PostZoneNumber] + self::$PackageAddition[$PostZoneNumber]*($bascetpostweight<500?0:ceil(($bascetpostweight-500)/500));
+        }
+        $PostAllPrice = $PostZonePrice + self::$PriceLatter + $bascetinsurance + $bascetsum;
+
+    	/*if ($checking) {
+    		$sql = "select s.* from orderdetails as o, shopcoins as s 
+    		where ".(sizeof($shopcoinsorder)>1?"o.order in (".implode(",", $shopcoinsorder).")":"o.order='".$shopcoinsorder."'")."
+    		and o.catalog=s.shopcoins and o.status=0;";
+    		$result = mysql_query($sql);
+    		$BascetNameArray = Array();
+    		while ($rows = mysql_fetch_array($result))
+    			$BascetNameArray[] = $rows["name"];
+    		
+    		$BascetName = implode(", ", $BascetNameArray);
+    	}*/
+
+    	return array('bascetsum'=>$bascetsum,'bascetpostweight'=>$bascetpostweight,'PostAllPrice'=>$PostAllPrice);
+
+	 }
+	 
+	 public function getSuminsurance(){
+		$select = $this->db->select()
+			->from('order',array('sum(suminsurance)'))
+			->where('`order`=?',$this->shopcoinsorder);
+		return $this->db->fetchOne($select);
+	}
 }

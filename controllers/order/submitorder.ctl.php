@@ -67,7 +67,7 @@ if(!$payment || !$userfio ||!$fio){
 		
 		//делаем проверку на все товары из магазина и показ отчета 		
 		$tpl['submitorder']['result'] = $order_class->OrderSumDetails($clientdiscount);
-		var_dump($tpl['submitorder']['result']);
+
 		$vipcoinssum = 0;
 		$sum = 0;	
 		$sumamountprice = 0;
@@ -326,7 +326,6 @@ if(!$payment || !$userfio ||!$fio){
 			if (sizeof($ParentArray)>0) {				
 				$result = $shopcoins_class->coinsParents($ParentArray);				
 				foreach ($result as $rows) {
-					var_dump($rows);
 					$count  = $shopcoins_class->countChilds($rows["parent"]);
 					
 					$data_update = array('amountparent'=>$count);
@@ -489,9 +488,11 @@ if(!$payment || !$userfio ||!$fio){
             
             unset($_SESSION['shopcoinsorder']);
             unset($_SESSION['order']);            
-            
-            session_start();
+                            
             session_destroy();
+            $shopcoinsorder = 0;
+            $tpl['user']['product_amount'] = 0;
+            $tpl['user']['summ']= 0;
 		}
 	}
 }

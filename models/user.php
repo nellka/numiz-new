@@ -209,6 +209,7 @@ class model_user extends Model_Base
     		               ->from('order',array('count(*)'))
     		               ->where('user =?',$this->user_id)
     		               ->where('`check`=1 and SendPost=0 and sum>=500');
+
         return  $this->db->fetchOne($select)?1:0;
     }
 

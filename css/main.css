@@ -1274,3 +1274,14 @@ div.stars {
 .info_ext{
 	height:60px;
 }
+
+/*order-page start*/
+#payment-block > div {
+    line-height: 40px;
+}
+
+#payment-block div img {
+    line-height: 40px;
+    vertical-align: middle;
+}
+/*order-page end*/

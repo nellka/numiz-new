@@ -277,6 +277,13 @@ $WeightPostBox = 100;
 $PriceLatter = 16;
 
 
+$robokassapasword1 = 'dfsh76erthkl7kps83md';
+$robokassapasword2 = 'kjf893bdhjske3ldor83';
+$urlrobokassa = "https://merchant.roboxchange.com";
+$krobokassa = 1.04;
+$ipmyshop = "212.233.78.26";
+
+
 $DeliveryProperties[1] = '<ul>
 <li>Доставка осуществляется <font color=red><b>бесплатно</b></font></li>
 <li>Место встречи: <font color=red><b>кольцевые станции</b></font> метрополитена</li>
@@ -844,11 +851,6 @@ $bigsumcoupondis = 5;
 $smallsumcoupon = 2000;
 $smallsumcoupondis = 3;
 
-$robokassapasword1 = 'dfsh76erthkl7kps83md';
-$robokassapasword2 = 'kjf893bdhjske3ldor83';
-$urlrobokassa = "https://merchant.roboxchange.com";
-$krobokassa = 1.04;
-$ipmyshop = "212.233.78.26";
 
 $newsimagesfolder = $cfg['site_dir']."news/images/";
 $biblioimagesfolder = $cfg['site_dir']."biblio/images/";

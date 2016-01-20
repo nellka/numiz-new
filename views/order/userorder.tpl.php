@@ -241,27 +241,7 @@
 		<?
 	}?>
 
-	<? if ($tpl['orderdetails']['alreadyBye']) {?>
-		<div>
-			<strong>На нижеприведенные монеты Вы уже делали заказы в нашем магазине ранее. Если Вы желаете еще раз приобрести эти позиции, то просто продолжите оформление заказа. Для корректировки заказа перейдите по ссылле:</strong> <a href='<?=$cfg['site_dir']?>shopcoins/?page=orderdetails'>Изменить содержимое заказа</a></strong>
-			<?foreach ($tpl['orderdetails']['alreadyBye'] as 	$rows ){?>
-				<div>
-					<div class=tboard id=image<?=$rows['catalog']?>>
-						<div id=show<?=$rows['catalog']?>></div>
-						<?
-						echo contentHelper::showImage("smallimages/".$rows["image_small"],$rows["gname"]." | ".$rows["name"],array('onMouseover'=>"ShowMainCoins(\"{$rows['catalog']}\");","onMouseout"=>"NotShowMainCoina(\"{$rows['catalog']}\");"));
-						?>
-						<br><a href="<?=$cfg['site_dir']?>shopcoins?catalog=<?=$rows["catalog"]?>&page=show&materialtype=<?=$rows["materialtype"]?>" target=_blank><?=$rows["name"]?></a>
-						<br>Количество: <?=$rows["oamount"]?> шт.
-					</div>
-					<div><?=$rows["price"]*$rows["oamount"]?> рублей </div>
-				</div>
-				<?
-			}?>
-		</div>
-	<?}
-	/*CheckFormDelivery()*/
-	?>
+	
 	<div>
 		Стоимость заказа: <?=$bascetsum?> руб.
 		<input type="hidden" id="bascetsum" name="bascetsum" value="<?=$bascetsum?>">
@@ -278,6 +258,29 @@
 	<div> <img src="<?=$cfg['site_dir']?>images/p1.jpg">Не сомневайтесь, все платежи проходят через защищенное 128-bit SSL соединение.</div>
 	<div> Нет желаемого способа оплаты или доставки? Возникли вопросы? <br><br>
 		Звоните бесплатно на 8-800-123-45-67 и мы поможем Вам!</div>
+		
+		<? if ($tpl['orderdetails']['alreadyBye']) {?>
+		<div>
+			<h5>На нижеприведенные монеты Вы уже делали заказы в нашем магазине ранее.</h5> 
+			Если Вы желаете еще раз приобрести эти позиции, то просто продолжите оформление заказа. <br>
+			Для корректировки заказа перейдите по ссылле:</strong> <a href='<?=$cfg['site_dir']?>shopcoins/?page=orderdetails'>Изменить содержимое заказа</a></strong>
+			<?foreach ($tpl['orderdetails']['alreadyBye'] as 	$rows ){
+			    ?>
+				<div>
+					<div class=tboard id=image<?=$rows["shopcoins"]?>>
+						<div id=show<?=$rows["shopcoins"]?>></div>
+						<?
+						echo contentHelper::showImage("smallimages/".$rows["image_small"],$rows["gname"]." | ".$rows["name"],array('onMouseover'=>"ShowMainCoins(\"{$rows['shopcoins']}\");","onMouseout"=>"NotShowMainCoina(\"{$rows["shopcoins"]}\");"));
+						?>
+						<br><a href="<?=$cfg['site_dir']?>shopcoins?catalog=<?=$rows["shopcoins"]?>&page=show&materialtype=<?=$rows["materialtype"]?>" target=_blank><?=$rows["name"]?></a>
+					</div>
+				</div>
+				<?
+			}?>
+		</div>
+	<?}
+	/*CheckFormDelivery()*/
+	?>
 </div>
 <input type="hidden" id="timelimit" name="timelimit" value="<?=$timelimit?>">
 <!--Конец блока информации о заказе-->
