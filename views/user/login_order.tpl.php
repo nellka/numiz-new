@@ -12,18 +12,18 @@
 
 <div class="error" id='orderForm-errors'><?=implode("<br>",$tpl['user']['errors'])?></div>
 <div class="auth_form left">
-    <input type=text name=email value='<?=$tpl['user']['email']?>' id='email' size="40" placeholder="Введите e-mail">
+    <input class="auth_form left" type=text name=email value='<?=$tpl['user']['email']?>' id='email' size="40" placeholder="Введите e-mail">
 </div>
 <div class="auth_form left" id=password-block style="display:<?=$tpl['user']['user_exist']?'block':'none'?>">
     <input type=password name=password id=password size="40" value='<?=$tpl['user']['password']?>' placeholder="Введите пароль">
     
 </div>
 <div class="auth_form  left">
-    <p><img src="<?=$cfg['site_dir']?>images/warn.png">Мы не рассылаем спам и не предлагаем Ваши контакты третьим лицам</p>
+    <p><img src="<?=$cfg['site_dir']?>images/warn.png"> &nbsp;Мы не рассылаем спам и не предлагаем Ваши контакты третьим лицам</p>
 </div>
 <div class="auth_form">
-    <input type="button" name=newUser id='newUser' value='Я новый покупатель' onclick="Login()" class="button27 left" >
-    <input type="button" name=existUser id=existUser value='Я уже заказывал ранее' onclick="Login(1)" class="button26">
+    <input type="button" name=newUser id='newUser' value='Я новый покупатель' onclick="Login()" class="button27 left" style="font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp;
+    <input type="button" name=existUser id=existUser value='Я уже заказывал ранее' onclick="Login(1)" class="button26" style="font-weight:bold;">
 </div>
 
 <div class="auth_form">    
@@ -32,7 +32,7 @@
           <input type="checkbox" name=subscr_shop <?=checked_box($tpl['user']['subscr_shop'])?> value='<?=$tpl['user']['subscr_shop']?>' id='subscr_shop'> <label for="subscr_shop"><b>Подписаться на новости магазина</b></label>
     </div>
 </div>
-
+<br>
 <div class="auth_form">
 <input type="button" class="button25" value="Перейти к оформлению заказа" onclick="Order()">
 
@@ -43,7 +43,7 @@
 
 <input type="hidden" name='user_exist' id='user_exist' value="<?=$tpl['user']['user_exist']?>">
 </form>
-
+<br><br>
 <script>
 function Login(on) { 
 	console.log(on);

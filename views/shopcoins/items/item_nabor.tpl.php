@@ -32,14 +32,16 @@ if($rows["materialtype"]==3){?>
 	<?=(trim($rows["condition"])?"Состояние: <strong><font color=blue>".$rows["condition"]."</font></strong>":"")?>
 
 </div>
+<? echo contentHelper::render('shopcoins/price/markitem',$rows['mark']); ?>
 
 <? echo contentHelper::render('shopcoins/price/prices',$rows);?>
+<br>
 <?echo contentHelper::render('shopcoins/price/buy_button',$rows);?>
 <br>
 <?
 if(($rows['buy_status']==7||$rows['buy_status']==6)&&($minpriceoneclick<=$rows['price'])) {
 ?>
-	<div style="width:230px;">
+	<div style="width:230px;margin-bottom:10px;">
 <?php
 	echo contentHelper::render('shopcoins/price/oneclick',$rows);
 ?>
@@ -49,7 +51,7 @@ if(($rows['buy_status']==7||$rows['buy_status']==6)&&($minpriceoneclick<=$rows['
 
 <?
 echo contentHelper::render('shopcoins/price/reserved',$rows);
-echo contentHelper::render('shopcoins/price/markitem',$rows['mark']);	?>
+	?>
 	
 <div id=subinfo>
 Название: <strong><?=$rows["name"]?></strong><br>

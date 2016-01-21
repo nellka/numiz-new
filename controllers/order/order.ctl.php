@@ -17,7 +17,12 @@ $type = Array ("rusichbank"=>'Монеты',
 
 if (!$tpl['user']['user_id']){
     $tpl['shop']['errors'][] = "Авторизуйтесь!";
+    
     header("location: ".$cfg['site_dir']."shopcoins?page=orderdetails");
+    /*else {
+		echo "Для просмотра заказов необходима авторизация!";
+		echo form_login($error);
+	}*/
     die();	
 } else {
     $order_class = new model_order($cfg['db'],$shopcoinsorder,$tpl['user']['user_id']);
@@ -25,18 +30,24 @@ if (!$tpl['user']['user_id']){
 	if (!$action) $action = "showorders";
 	
 	if ($action=="postreceipt" && $parent) {
-	    die("postreceipt");
-		$mark = intval($mark);
-		$parent = intval($parent);
-		$Reminder = intval($Reminder);
+	   
+		$mark = (int) request('mark');
+		$parent = (int) request('parent');
+		$Reminder = (int) request('Reminder');
+		$ReminderComment = request('ReminderComment');
+		
 		if ($Reminder==3) {
-			$complected = intval($complected);
+			$complected = (int) request('complected');
 		} else	$complected = 0;
 		
-		$sql_up = "UPDATE `order` SET ".($Reminder==3?"`PhonePostReceipt`='1',":"")." Reminder='$Reminder', ReminderComment='".strip_string($ReminderComment)."', 
-	ReminderCommentDate = '".time()."', mark='".$mark."',complected=$complected WHERE `order`='".$parent."'";
-		$result_up = mysql_query($sql_up);
-		//echo $sql_up;
+		$data_update = array('Reminder' => $Reminder, 
+		                     'ReminderComment' => $ReminderComment, 
+		                     'ReminderCommentDate' => time(), 
+		                     'mark'=>$mark,
+		                     'complected'=>$complected);
+		                     
+	    if($Reminder==3) $data_update['PhonePostReceipt'] = 1;
+		$order_class->updateRow($data_update,"`order`=".$parent);  		
 		$action = "showorders";
 	}
 	
@@ -118,52 +129,17 @@ if (!$tpl['user']['user_id']){
 				$tpl['orders'][$i]['crcode']  = md5("numizmatikru:".sprintf ("%01.2f",round($resultsum*$krobokassa-$dissert,2)).":".$rows['order'].":$robokassapasword1:Shp_idu=".$tpl['user']['user_id']);				
 				
 				$tpl['orders'][$i]['OutSum'] = sprintf ("%01.2f",round($resultsum*$krobokassa-$dissert,2));				
-			}
-			
-			if (!$rows["SendPost"] && !$rows["ReceiptMoney"] && !$rows["SendPostBanderoleNumber"] && $rows["ParentOrder"]==0 && $rows['payment'] !=1 && 1==2) {
-			
-				echo "<div id=sertificate".$rows["order"]."><input type=button value='Использовать подарочный сертификат' onclick=\"javascript:ShowSertificate(".($rows["delivery"] == 4 || $rows["delivery"] == 6?1:0).",".$rows["order"].");\"></div>";
-			}
-			
-			echo "</nobr></td>
-			<td class=tboard>".($rows["SendPostBanderoleNumber"]?$rows["SendPostBanderoleNumber"]."<br><center>[ <form action=\"http://www.russianpost.ru/resp_engine.aspx?Path=rp/servise/ru/home/postuslug/trackingpo\" method=post target=_blank>
-			<input type=hidden name=searchsign value=1>
-			<input type=hidden name=BarCode value=".$rows["SendPostBanderoleNumber"].">
-			<input type=submit name=submit value=Отследить class=formtxt ></form> ]</center>":"-")."</td>
-			<td class=tboard>".($rows["weight"]>0?$rows["weight"]." кг.":"")."</td>
-			<td class=tboard>".round($rows["sum"])."</td>
-			<td class=tboard>".($rows["FinalSum"]>0 && date("Y", $rows["date"])>=2008?$rows["FinalSum"]:"-")."</td>
-			<td class=tboard><a name=order".$rows["order"]."></a><div id=PhonePostReceipt".$rows["order"].">".($rows["Reminder"]==3?"<b>Получен</b>":"<a href=#order".$rows["order"]." onclick=\"javascript:ShowFormPhonePostReceipt('".$rows["order"]."','".$rows["Reminder"]."','".$rows['mark']."','".$rows['complected']."');\">Сообщить</a></div>")." ".($rows["ReminderComment"]?"<br>".$rows["ReminderComment"]:"")."</td>
-			<td class=tboard align=center>";
-			if ($rows["ParentOrder"]==0 && ($rows["payment"]==3 || $rows["payment"]==4 || $rows["payment"]==5 || $rows["payment"]==6) )
-			{
-				echo ($rows["ReceiptMoney"]>0?date("y-m-d",$rows["ReceiptMoney"]):"<b><font color=red>НЕТ</font></b>");
-			}
-			else
-			{
-				echo "-";
-			}
+			}		
 			$i++;			
 		}
 
 	} elseif ($action=="showorderhtml" and $order) {
 		//формируем отчет в html
 		//монеты
-		$order = intval($order);
-		echo "<html>
-		<head>
-		<title>Отчет</title>
-		<meta name=\"keywords\">
-		<meta name=\"description\">
-		<meta http-equiv=\"Content-Type\" content=\"text/html; charset=windows-1251\">
-		</head>
-		<link rel=stylesheet type=text/css href=".$in."bodka.css>
-		<link rel=\"SHORTCUT ICON\" href=\"".$in."favicon.ico\"> 
-		<body bgcolor=white bottommargin=10 leftmargin=10 rightmargin=10 marginheight=10 topmargin=10 marginwidth=10>";
-		
-		echo "<br><b class=txt>Номер заказа $order</b>";
+			
 		$sql = "select o.*, o.admincheck, u.fio, u.email from `order` as o left join user as u on o.user=u.user
 		where o.order='".$order."';";
+		
 		$result = mysql_query($sql);
 		echo "<table border=1 cellpadding=1 cellspacing=0>
 		<tr><td class=tboard bgcolor=silver colspan=2><b>Информация о покупателе</b> [<a href=# onclick=\"javascitp:window.open('shopcoinsuseredit.php?order=$order','shopcoinsuseredit".$order."','width=400,height=300, scrollbars=1');\">Редактировать</a>]</td></tr>";
@@ -353,42 +329,7 @@ if (!$tpl['user']['user_id']){
 			
 		} elseif ($type=="Book") {
 			$BookImagesFolder = $in."book/images";
-			//сначала о пользователе
-			/*
-			echo "<a href=$script?frame=$frame&pagenum=$pagenum&search=$search&sendposttype=$sendposttype&PaymentOrder=$PaymentOrder&type=".$_GET["type"]."><img src=".$in."images/back.gif alt='Назад' border=0></a>";
-			echo "<br><b class=txt>Номер заказа $order</b>";
-			$sql = "select o.*, o.admincheck, u.fio, u.email from `order` as o left join user as u on o.user=u.user
-			where o.order='".$order."' and type='$type';";
-			$result = mysql_query($sql);
-			echo "<table border=1 cellpadding=3 cellspacing=0>
-			<tr><td class=tboard bgcolor=silver colspan=2><b>Информация о покупателе</b></td></tr>";
-			while ($rows = mysql_fetch_array($result))
-			{
-				echo "<tr><td class=tboard>ФИО:</td><td class=tboard>&nbsp;".$rows["fio"]."</td></tr>";
-				echo "<tr><td class=tboard>Город:</td><td class=tboard>";
-				if (!ereg("^\-{0,1}[0-9]{1,}$", $rows["city"])) {$city = $rows["city"];} else {$city = $city_array[$rows["city"]];}
-				echo "$city</td></tr>";
-				echo "<tr><td class=tboard>Контактный телефон:</td><td class=tboard>".$rows["phone"]."</td></tr>";
-				echo "<tr><td class=tboard>E-mail:</td><td class=tboard>&nbsp;<a href=mailto:".$rows["email"].">".$rows["email"]."</a></td></tr>";
-				echo "<tr><td class=tboard>Адрес доставки:</td><td class=tboard>".str_replace("\n", "<br>", $rows["adress"])."</td></tr>";
-				echo "<tr><td class=tboard>Тип оплаты:</td><td class=tboard>";
-				if ($rows["payment"]=="webmoney") {
-					echo "Webmoney";
-					$discount = 0.1;
-				} elseif ($rows["payment"]=="yandexmoney") {
-					echo "Yandex.Деньги";
-					$discount = 0.1;
-				} else {
-					echo "Наложенный платеж";
-					$discount = 0;
-				}
-				echo "</td></tr>";
-				$admincheck = $rows["admincheck"];
-				$adress_recipient = $city.", ".str_replace("\n", " ", $rows["adress"]);
-				$fio_recipient = $rows["fio"];
-			}
-			echo "</table>";
-			*/
+			//сначала о пользователе			
 			//содержимое заказа
 			echo "<br><b class=txt>Содержимое заказа:</b>";
 			echo "<table border=0 cellpadding=3 cellspacing=1>
@@ -424,42 +365,7 @@ if (!$tpl['user']['user_id']){
 			echo "</table>";
 		} elseif ($type=="Album") {
 			$AlbumImagesFolder = $in."album/images";
-			/*
-			//сначала о пользователе
-			echo "<a href=$script?frame=$frame&pagenum=$pagenum&search=$search&PaymentOrder=$PaymentOrder&type=".$_GET["type"]."><img src=".$in."images/back.gif alt='Назад' border=0></a>";
-			echo "<br><b class=txt>Номер заказа $order</b>";
-			$sql = "select o.*, o.admincheck, u.fio, u.email from `order` as o left join user as u on o.user=u.user
-			where o.order='".$order."' and type='$type';";
-			$result = mysql_query($sql);
-			echo "<table border=1 cellpadding=3 cellspacing=0>
-			<tr><td class=tboard bgcolor=silver colspan=2><b>Информация о покупателе</b></td></tr>";
-			while ($rows = mysql_fetch_array($result))
-			{
-				echo "<tr><td class=tboard>ФИО:</td><td class=tboard>&nbsp;".$rows["fio"]."</td></tr>";
-				echo "<tr><td class=tboard>Город:</td><td class=tboard>";
-				if (!ereg("^\-{0,1}[0-9]{1,}$", $rows["city"])) {$city = $rows["city"];} else {$city = $city_array[$rows["city"]];}
-				echo "$city</td></tr>";
-				echo "<tr><td class=tboard>Контактный телефон:</td><td class=tboard>".$rows["phone"]."</td></tr>";
-				echo "<tr><td class=tboard>E-mail:</td><td class=tboard>&nbsp;<a href=mailto:".$rows["email"].">".$rows["email"]."</a></td></tr>";
-				echo "<tr><td class=tboard>Адрес доставки:</td><td class=tboard>".str_replace("\n", "<br>", $rows["adress"])."</td></tr>";
-				echo "<tr><td class=tboard>Тип оплаты:</td><td class=tboard>";
-				if ($rows["payment"]=="webmoney") {
-					echo "Webmoney";
-					$discount = 0.1;
-				} elseif ($rows["payment"]=="yandexmoney") {
-					echo "Yandex.Деньги";
-					$discount = 0.1;
-				} else {
-					echo "Наложенный платеж";
-					$discount = 0;
-				}
-				echo "</td></tr>";
-				$admincheck = $rows["admincheck"];
-				$adress_recipient = $city.", ".str_replace("\n", " ", $rows["adress"]);
-				$fio_recipient = $rows["fio"];
-			}
-			echo "</table>";
-			*/
+			
 			//содержимое заказа
 			echo "<br><b class=txt>Содержимое заказа:</b>";
 			echo "<table border=0 cellpadding=3 cellspacing=1>
@@ -500,10 +406,8 @@ if (!$tpl['user']['user_id']){
 		echo "<center>[<img src=../images/printer.gif> <a href=# onclick=\"window.print();\">Распечатать</a>]</center>";
 		echo "</body>
 		</html>";
-	} else {
-		echo "Для просмотра заказов необходима авторизация!";
-		echo form_login($error);
-	}
+		$tpl["datatype"]='text_html';
+	} 
 }
 
 

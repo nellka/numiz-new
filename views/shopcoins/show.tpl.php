@@ -122,7 +122,7 @@ if(isset($tpl['show']['resultcicle'])&&$tpl['show']['resultcicle']){?>
 	<h5>Похожие позиции в магазине:</h5>
 </div>
 <div class="triger">	
-	<div class="wraper clearfix" style="height:350px;padding-top:15px;">
+	<div class="wraper clearfix" style="height:270px;padding-top:15px;">
 		<div>
 			<?foreach ($tpl['show']['resultcicle'] as $rowsp){?>
 				<div class="coin_info">
@@ -146,13 +146,13 @@ if ($tpl['shop']['resultp']) {	?>
 	<h5>Вместе с этим товаром просматривали также:</h5>
 	</div>
 	<div class="triger">	
-		<div class="wraper clearfix" style="height:350px;padding-top:15px;">
+		<div class="wraper clearfix" style="height:270px;padding-top:15px;">
 		    <form action=# method=post>
 			<?$kn = 100;
 			$sumseecoins = 0;
 			foreach ($tpl['shop']['resultp']  as $rowsp ){
 				if(isset($rowsp["shopcoins"])){?>
-					<?=($kn>100?"<div style='float:left;margin-top:30px;'><font size=+2>+</font></div>":"")?>
+					<?=($kn>100?"<div style='float:left;margin-top:130px;'><font size=+2>+</font></div>":"")?>
 					
 					<div id=imagem<?=$kn?>  class="coin_info" style="margin-left:8px;margin-right:8px;">
 						<div id=lastcatalogis<?=$rowsp["shopcoins"]?> style="float:left;"> 
@@ -174,7 +174,7 @@ if ($tpl['shop']['resultp']) {	?>
 				}	
 			}?>
 			<input type=hidden value='<?=$sumseecoins?>' id='sumseecoins_val' name='sumseecoins_val'>
-			<div id=sumseecoins style="float:left; margin-left:20px;margin-top: 30px;">	
+			<div id=sumseecoins style="float:left; margin-left:20px;margin-top: 130px;">	
 				<font size=+2> =	<?=$sumseecoins?>  руб.</font>
 			</div>
 			<div id='bascetshopcoins0'  style="float:left;margin-left:50px;margin-top:10px;">
@@ -191,7 +191,7 @@ if( $tpl['shop']['result_show_relation2']) {	?>
 	<h5>Подобные позиции в магазине:</h5>
 	</div>
 	<div class="triger">	
-		<div class="wraper clearfix" style="height:350px;padding-top:15px;">
+		<div class="wraper clearfix" style="height:270px;padding-top:15px;">
 		<?
 		foreach ($tpl['shop']['result_show_relation2'] as $rows_show_relation2){?>			
 			<div class="coin_info">
@@ -300,7 +300,7 @@ echo "</center><br >";
 <div class="wraper clearfix" style="clear: both;">
 	<h5>Опишите монету и получите 1 рубль на бонус-счет</h5>
 	
-	<form action=/detailcoins/addcomment.php name=mainform id="send_descr" method=post>
+	<form action=/detailcoins/addcomment.php name=mainform id="send_descr" method=post style="width:500px;">
 	  <script>
 		 $(function() {    
     var availableTags = <?=json_encode($groupselect_v2)?>;
@@ -317,7 +317,7 @@ echo "</center><br >";
 
  
 <div class="ui-widget">
-  <label for="group2"><b>Страна:</b> </label>
+  <label for="group2"><p class="formitem"><b>Страна:</b></p> </label>
   <input id="group2" name=group2 size=40>
   <input type="hidden" id="id_group2" name=id_group2 size=80>
 </div>
@@ -325,13 +325,13 @@ echo "</center><br >";
 		<input type=hidden id=coins name=coin value="<?=$catalog?>">		
 
 		<div class="ui-widget" >
-  <label for="name2""><b>Номинал:</b> </label>
+  <label for="name2""><p class="formitem"><b>Номинал:</b></p> </label>
   <input id="name2"" size=40 name="name2">
 </div>
 		
 		<br>
-		<a name=year></a><b>Год: </b><input class=formtxt id="year2" name="year" required size=4/> <br>
-		<b>Металл: </b>
+		<a name=year></a><p class="formitem"><b>Год: </b></p><input class=formtxt id="year2" name="year" required size=4/> <br>
+		<p class="formitem"><b>Металл: </b></p>
 		<select name=metal id="metal2" class=formtxt >
 		  <option value=0>Выберите</option>
 		  <option value=1>Алюминий</option>
@@ -351,7 +351,7 @@ echo "</center><br >";
 		  <option value=15>Неопределено</option>
 		  </select>
 		<br>
-		<a name=metal></a><b>Состояние: </b>
+		<a name=metal></a><p class="formitem"><b>Состояние: </b></p>
 		<select name=condition id=condition2 class=formtxt >
 		  <option value=0>Выберите</option>
 		  <option value=1>VF</option>

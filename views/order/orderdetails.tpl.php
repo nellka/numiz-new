@@ -1,5 +1,7 @@
 <div class="clearfix order-cart">
+	<br>
     <h5 class="left">Корзина</h5>
+	
     <div class="right">
     <?
     if($tpl['can_order']){?>
@@ -15,29 +17,30 @@
     <?}?>
     </div>
 </div>
-
+<br>
 <?
 if($tpl['orderdetails']['ArrayShopcoinsInOrder']){?>
 <form action=<?=$cfg['site_dir']?>shopcoins?page=orderdetails method=post id=order-form>
 <div class="cart-info">
-<table width="100%">
+<table width="100%" cellpadding="0" cellspacing="0" style="border: 1px solid #cccccc; border-collapse: collapse;">
 <thead>
 <tr>
-    <td nowrap>Фото товара</td>
-    <td width="200">Наименование</td>
-    <td>Группа(страна)</td>
-    <td>Год</td>
-    <td>Номер</td>
-    <td>Цена</td>
-    <td>Количество</td>
-    <td>Сумма</td>
+    <td class="tboardtop" nowrap>Фото товара</td>
+    <td  class="tboardtop" width="200">Наименование</td>
+    <td class="tboardtop" >Группа(страна)</td>
+    <td class="tboardtop" >Год</td>
+    <td class="tboardtop" >Номер</td>
+    <td class="tboardtop" >Цена</td>
+    <td class="tboardtop" >Количество</td>
+    <td style="border-bottom: 1px solid #cccccc;padding-left:10px;"><b>Сумма</b></td>
+	<td  style="border-bottom: 1px solid #cccccc;padding-left:10px;"></td>
 </tr>
 </thead>
 <?
 $i=0;
 foreach ($tpl['orderdetails']['ArrayShopcoinsInOrder'] as 	$rows ){	
 	if ($rows["title_materialtype"]) {?>
-		<tr><td colspan=8 class=h-cat><?=$rows["title_materialtype"]?></td></tr>		
+		<tr><td colspan=9 class=h-cat><?=$rows["title_materialtype"]?></td></tr>		
 	<?}?>	
 	<tr>
 	   <td class=tboard id=image<?=$rows['catalog']?>>
@@ -97,8 +100,8 @@ if($rows["amountAll"]>1){?>
 	<?=$rows["oamount"]?>
 <?}?>
 	</td>
-	<td><?=$rows["price"]*$rows["oamount"]?> рублей</td>
-	<td><a href=<?=$cfg['site_dir']?>shopcoins?page=orderdetails&pageinfo=delete&shopcoins=<?=$rows["catalog"]?> title='Удалить из корзины'><img src="<?=$cfg['site_dir']?>images/delete-item.png"></a></td>
+	<td class=tboard><?=$rows["price"]*$rows["oamount"]?> рублей</td>
+	<td class=tboard><a href=<?=$cfg['site_dir']?>shopcoins?page=orderdetails&pageinfo=delete&shopcoins=<?=$rows["catalog"]?> title='Удалить из корзины'><img src="<?=$cfg['site_dir']?>images/delete-item.png"></a></td>
 	</tr>
 	<?
 	$i++;

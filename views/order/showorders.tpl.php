@@ -7,8 +7,10 @@
 телефону <b>8-800-333-14-77 (бесплатный звонок по России) </b>.
 		
 <br><br>
-<table cellpadding=3 cellspacing=1 border=0 align=center width=95%>
-		<tr bgcolor=#EBE4D4>
+
+	
+<table cellpadding="0">
+		<tr>
 		<td class=tboard><b>№</b></td>
 		<td class=tboard><b>Заказан</b></td>
 		<td class=tboard><b>Отправка</b></td>
@@ -23,10 +25,10 @@
 		</tr>
 		<? foreach ($tpl['orders'] as $rows){?>
 			<tr valign=top >
-			<td class=tboard nowrap>"<?=($rows["ParentOrder"]>0?"<img src='".$cfg['site_dir']."shopcoins/images/folderfor.gif>'":"").$rows["order"].($tpl['user']['user_id'] == 811?"<br>".$rows['userfio']:"")?></td>
+			<td class=tboard nowrap><?=($rows["ParentOrder"]>0?"<img src='".$cfg['site_dir']."shopcoins/images/folderfor.gif>'":"").$rows["order"].($tpl['user']['user_id'] == 811?"<br>".$rows['userfio']:"")?></td>
 			<td class=tboard><?=date("y-m-d", $rows["date"])?></td>
 			<td class=tboard align=center><?=($rows["SendPost"]?date("y-m-d", $rows["SendPost"]):"-")?></td>
-			<td class=tboard><nobr><?=$SumName[$rows["payment"]];
+			<td class=tboard><?=$SumName[$rows["payment"]];
 						
 			if ($rows["payment"]==6) {?>
 			    <br><a href='kak_oplatit_kartoi_sberbanka.html' target=_blank>Как оплатить заказ картой Сбербанка</a>
@@ -42,52 +44,55 @@
 				
 				<form action='<?=$urlrobokassa?>/Index.aspx' method=POST>
                <input type=hidden name=MrchLogin value='numizmatikru'>
-               <input id=OutSum".$rows['order']." type=hidden name=OutSum value='<?=$rows['OutSum']?>'>
+               <input id=OutSum<?=$rows['order']?> type=hidden name=OutSum value='<?=$rows['OutSum']?>'>
                <input type=hidden name=InvId value='<?=$rows['order']?>'>
                <input type=hidden name=Desc value='Оплата предметов нумизматики'>
                <input id=SignatureValue".$rows['order']." type=hidden name=SignatureValue value='<?=$rows['crcode']?>'>
                <input type=hidden name=Shp_idu value='<?=$tpl['user']['user_id']?>'>
                <input type=hidden name=IncCurrLabel value='BANKOCEAN2R'>
                <input type=hidden name=Culture value='ru'>
-               <input class=tboard type=submit value='Оплатить VISA, MasterCard'> - <div id=info<?=$rows['order']?>><?=$rows['OutSum']?> руб.</div> 
+               <input class=button25 type=submit value='Оплатить VISA, MasterCard'> - <div id=info<?=$rows['order']?>><?=$rows['OutSum']?> руб.</div> 
                (При оплате банковскими картами комиссия 4%)
                </form>
-			<?}
+			<?}?>		
 			
-			if (!$rows["SendPost"] && !$rows["ReceiptMoney"] && !$rows["SendPostBanderoleNumber"] && $rows["ParentOrder"]==0 && $rows['payment'] !=1 && 1==2) {
-			
-				echo "<div id=sertificate".$rows["order"]."><input type=button value='Использовать подарочный сертификат' onclick=\"javascript:ShowSertificate(".($rows["delivery"] == 4 || $rows["delivery"] == 6?1:0).",".$rows["order"].");\"></div>";
-			}
-			
-			echo "</nobr></td>
-			<td class=tboard>".($rows["SendPostBanderoleNumber"]?$rows["SendPostBanderoleNumber"]."<br><center>[ <form action=\"http://www.russianpost.ru/resp_engine.aspx?Path=rp/servise/ru/home/postuslug/trackingpo\" method=post target=_blank>
-			<input type=hidden name=searchsign value=1>
-			<input type=hidden name=BarCode value=".$rows["SendPostBanderoleNumber"].">
-			<input type=submit name=submit value=Отследить class=formtxt ></form> ]</center>":"-")."</td>
-			<td class=tboard>".($rows["weight"]>0?$rows["weight"]." кг.":"")."</td>
-			<td class=tboard>".round($rows["sum"])."</td>
-			<td class=tboard>".($rows["FinalSum"]>0 && date("Y", $rows["date"])>=2008?$rows["FinalSum"]:"-")."</td>
-			<td class=tboard><a name=order".$rows["order"]."></a><div id=PhonePostReceipt".$rows["order"].">".($rows["Reminder"]==3?"<b>Получен</b>":"<a href=#order".$rows["order"]." onclick=\"javascript:ShowFormPhonePostReceipt('".$rows["order"]."','".$rows["Reminder"]."','".$password."','".$login."','".$rows['mark']."','".$rows['complected']."');\">Сообщить</a></div>")." ".($rows["ReminderComment"]?"<br>".$rows["ReminderComment"]:"")."</td>
-			<td class=tboard align=center>";
-			if ($rows["ParentOrder"]==0 && ($rows["payment"]==3 || $rows["payment"]==4 || $rows["payment"]==5 || $rows["payment"]==6) )
-			{
-				echo ($rows["ReceiptMoney"]>0?date("y-m-d",$rows["ReceiptMoney"]):"<b><font color=red>НЕТ</font></b>");
-			}
-			else
-			{
-				echo "-";
-			}
-			echo "</td>
-			<td class=tboard>
-			<form action=$script method=post target=_blank name=ttform>
-			<input type=hidden name=login value='$login'>
-			<input type=hidden name=password value='$password'>
-			<input type=hidden name=order value='".$rows["order"]."'>
-			<input type=hidden name=action value='showorderhtml'>
-			<input type=submit name=submit value='Отчет' class=formtxt>
 			</td>
+			<td class=tboard><?
+			if($rows["SendPostBanderoleNumber"]){?>
+			   <?= $rows["SendPostBanderoleNumber"]?><br><center>[ <form action="http://www.russianpost.ru/resp_engine.aspx?Path=rp/servise/ru/home/postuslug/trackingpo" method=post target=_blank>}
+			<input type=hidden name=searchsign value=1>
+			<input type=hidden name=BarCode value=<?=$rows["SendPostBanderoleNumber"]?>>
+			<input type=submit name=submit value=Отследить class=formtxt ></form> ]</center>
+            <?} else {?>
+            -
+            <?}?>
+            </td>
+			<td class=tboard><?=($rows["weight"]>0?$rows["weight"]." кг.":"")?></td>
+			<td class=tboard><?=round($rows["sum"])?></td>
+			<td class=tboard><?=($rows["FinalSum"]>0 && date("Y", $rows["date"])>=2008?$rows["FinalSum"]:"-")?></td>
+			<td class=tboard><a name=order<?=$rows["order"]?> id=order<?=$rows["order"]?>></a>			
+			<?if($rows["Reminder"]==3){?>
+			<b>Получен</b>						
+            <?} else {?><a href=#order<?=$rows["order"]?> onclick="ShowFormPhonePostReceipt('<?=$rows["order"]?>')">Сообщить</a>  
+            <?  echo contentHelper::render('shopcoins/items/sendresponse',$rows);    
+            }?>
+            </div>
+			<?=($rows["ReminderComment"]?"<br>".$rows["ReminderComment"]:"")?>			
+			</td>
+			<td class=tboard align=center>
+			<?if ($rows["ParentOrder"]==0 && ($rows["payment"]==3 || $rows["payment"]==4 || $rows["payment"]==5 || $rows["payment"]==6) ) {
+				echo ($rows["ReceiptMoney"]>0?date("y-m-d",$rows["ReceiptMoney"]):"<b><font color=red>НЕТ</font></b>");
+			} else {
+				echo "-";
+			}?>
+			</td>
+			<td class=tboard>
+			<form action='' method=post target=_blank name=ttform>
+			<input type=hidden name=order value='<?=$rows["order"]?>'>
+			<input type=hidden name=action value='showorderhtml'>
+			<input type=submit  class=button26 name=submit value='Отчет' class=formtxt>			
 			</form>
-			</tr>";
-		}
-		echo "</table><br><br>";
-		?>
+			</td>
+			</tr>
+		<?}?>
+		</table><br><br>

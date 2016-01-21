@@ -41,7 +41,7 @@ if($rows['buy_status']==2){?>
 	</div>	
 <?} elseif ($rows['buy_status']==7) {?>
 
-    <div id=bascetshopcoins<?=$rows["shopcoins"]?>>
+    <div id=bascetshopcoins<?=$rows["shopcoins"]?> >
    		<a class="button25" href='#coin<?=$rows["shopcoins"]?>' onclick='javascript:AddAccessory(<?=$rows["shopcoins"]?>)' title='Положить в корзину <?=contentHelper::setWordOn($rows["materialtype"])?> <?=$rows["name"]?>'>Купить</a>
     </div>
 	</a>
