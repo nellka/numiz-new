@@ -295,7 +295,7 @@ if ($tpl['shop']['result_show_relation3']) {
 echo "</center><br >";
 ?>
 	
-<?	//if($tpl['show']['described'])	{ ?>
+<?	if($tpl['show']['described'])	{ ?>
 
 <div class="wraper clearfix" style="clear: both;">
 	<h5>Опишите монету и получите 1 рубль на бонус-счет</h5>
@@ -367,7 +367,7 @@ echo "</center><br >";
 		<input type="button" name=submit onclick="CheckSubmitPrice(0);" value="Сохранить описание" class=formtxt >		
 </form>
 </div>
-<?//}
+<?}
 
 //отзывы
 ?>

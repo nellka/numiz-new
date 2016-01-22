@@ -28,6 +28,14 @@ class model_order extends Model_Base
 		
 		return  $this->db->fetchRow($select);
 	}
+	public function getAdminOrderDetails($order){
+		/*select o.*, o.admincheck, u.fio, u.email from `order` as o left join user as u on o.user=u.user	where o.order='".$order."";*/
+		$select = $this->db->select()
+			->from(array('o'=>'order'))
+			->join(array('u'=>'user'),'o.user=u.user',array('u.fio', 'u.email'))
+			->where('o.order =?',$order);		
+		return  $this->db->fetchRow($select);
+	}
 
 	public function sumOrders($id){
 		$sql = "select sum(orderdetails.amount*shopcoins.price) as mysum
@@ -132,7 +140,7 @@ class model_order extends Model_Base
                   ->where('order.check=1 and SendPost>0')
                   ->order('date desc')
                   ->limit(10);
-        return $this->db->fetchRow($select);
+        return $this->db->fetchAll($select);
 	}
 	
 	
@@ -197,6 +205,28 @@ class model_order extends Model_Base
         and orderdetails.catalog=shopcoins.shopcoins and orderdetails.status=0
         and (shopcoins.`check` in(1,4,5) ".($this->user_id==811?"or shopcoins.`check`>3":"").");";
         return $this->db->fetchRow($sql);
+	 }
+	 
+	 public function OrderShopcoinsDetails($clientdiscount,$order){
+	      $sql = "select o.*, c.name, if(o.amount>=c.amount5 and c.price5>0,c.price5,
+				if 
+				(o.amount>=c.amount4 and c.price4>0,c.price4,
+					if
+					(o.amount>=c.amount3 and c.price3>0,c.price3,
+						if
+						(o.amount>=c.amount2 and c.price2>0,c.price2,
+							if
+							(o.amount>=c.amount1 and c.price1>0,c.price1,".($clientdiscount==1?"if(c.clientprice>0, c.clientprice, c.price)":"c.price").")
+						)
+					)
+				)
+			) as price, c.image, c.metal, c.year, 
+			c.condition, c.number, c.shopcoins, g.name as gname, c.materialtype, c.details
+			 from `orderdetails` as o left join shopcoins as c 
+			on o.catalog = c.shopcoins 
+			left join `group` as g on c.group=g.group 
+			where o.order='".$order."' and o.typeorder=1 and o.status=0 order by c.materialtype, c.number;";
+	      return $this->db->fetchAll($sql);
 	 }
 	 
 	 public function OrderSumDetails($clientdiscount){

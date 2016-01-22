@@ -137,196 +137,57 @@ if (!$tpl['user']['user_id']){
 		//формируем отчет в html
 		//монеты
 			
-		$sql = "select o.*, o.admincheck, u.fio, u.email from `order` as o left join user as u on o.user=u.user
-		where o.order='".$order."';";
-		
-		$result = mysql_query($sql);
-		echo "<table border=1 cellpadding=1 cellspacing=0>
-		<tr><td class=tboard bgcolor=silver colspan=2><b>Информация о покупателе</b> [<a href=# onclick=\"javascitp:window.open('shopcoinsuseredit.php?order=$order','shopcoinsuseredit".$order."','width=400,height=300, scrollbars=1');\">Редактировать</a>]</td></tr>";
-		while ($rows = mysql_fetch_array($result))
-		{
-			echo "<tr><td class=tboard>ФИО:</td><td class=tboard>&nbsp;".$rows["fio"]."</td></tr>";
-			echo "<tr><td class=tboard>Город:</td><td class=tboard>&nbsp;";
-			if (!ereg("^\-{0,1}[0-9]{1,}$", $rows["city"])) {$city = $rows["city"];} else {$city = $city_array[$rows["city"]];}
-			echo "$city</td></tr>";
-			echo "<tr><td class=tboard>Контактный телефон:</td><td class=tboard>".$rows["phone"]."</td></tr>";
-			echo "<tr><td class=tboard>E-mail:</td><td class=tboard>&nbsp;<a href=mailto:".$rows["email"].">".$rows["email"]."</a></td></tr>";
-			if ($rows["adress"])
-				echo "<tr><td class=tboard>Адрес доставки:</td><td class=tboard>".str_replace("\n", "<br>", $rows["adress"])."</td></tr>";
-			echo "<tr><td class=tboard>Тип оплаты:</td><td class=tboard>".$SumName[$rows["payment"]]."</td></tr>";
-			
-			if ($rows["payment"] == 2)
-			{
-				if ($rows["MetroMeeting"])
-					echo "<tr><td class=tboard>Метро:</td><td class=tboard>".$MetroArray[$rows["MetroMeeting"]]."</td></tr>";
-				if ($rows["DateMeeting"])
-					echo "<tr><td class=tboard>Время встречи:</td><td class=tboard>".date("Y-m-d H:i", $rows["DateMeeting"])."</td></tr>";
-			}
-			if ($rows["OtherInformation"])
-				echo "<tr><td class=tboard>Другая информация:</td><td class=tboard>".str_replace("\n", "<br>", $rows["OtherInformation"])."</td></tr>";
-			
-			$admincheck = $rows["admincheck"];
-			$adress_recipient = $city.", ".str_replace("\n", " ", $rows["adress"]);
-			$fio_recipient = $rows["fio"];
-			$type = $rows["type"];
-			$checking = 1;
-			if (!$postindex) 
-				$postindex = intval(substr(trim($rows['adress']),0,6));
-			$shopcoinsorder = $rows['order'];
-			PostSum ($postindex, $shopcoinsorder,$clientdiscount);
+		$tpl['order'] = $order_class->getAdminOrderDetails($order);
+		//if (preg_match ('/^[a-zA-Z0-9 \\._\\-]/',$names))
+		if (!preg_match("/^\-{0,1}[0-9]{1,}$/", $tpl['order']["city"])) {
+		    $city = $tpl['order']["city"];
+		} else {
+		    $city = $city_array[$tpl['order']["city"]];
 		}
-		echo "</table>";
 		
-		//echo $type;
-		
+		$admincheck = $tpl['order']["admincheck"];
+		$adress_recipient = $city.", ".str_replace("\n", " ", $tpl['order']["adress"]);
+		$fio_recipient = $tpl['order']["fio"];
+		$type = $tpl['order']["type"];
+		//$postindex = 
+		$checking = 1;
+		//if (!$postindex) 
+			$postindex = intval(substr(trim($tpl['order']['adress']),0,6));
+		$shopcoinsorder = $tpl['order']['order'];
+		//PostSum ($postindex, $shopcoinsorder,$clientdiscount);
+		$clientdiscount = $orderdetails_class->getClientdiscount($tpl['user']['user_id']);
+        $bastet_details = $orderdetails_class->PostSum($postindex, $clientdiscount, $order);
+		$bascetsum = $bastet_details['bascetsum'];
+		$bascetpostweight = $bastet_details['bascetpostweight'];	
+		$PostAllPrice = $bastet_details['PostAllPrice'];	
+		//получаем скидку по купону
+        $discountcoupon = 0;	
 		//монеты
-		if ($type =="shopcoins")
-		{
+		if ($type =="shopcoins"){	
 			
-			$sql_tmp = "select count(*) from `order` where `user`='".$authorization."' and `user`<>811 and `check`=1 and `order`<'".$order."' and `date`>(".time()."-365*24*60*60);";
-			$result_tmp = mysql_query($sql_tmp);
-			$rows_tmp = mysql_fetch_array($result_tmp);
-			if ($rows_tmp[0]>=3)
-				$clientdiscount = 1;
-			else
-				$clientdiscount = 0;
-			//echo "<br>".$sql_tmp."<br>";
-			//содержимое заказа
-			$order_doc .= "<b class=txt>Содержимое заказа:</b>";
-			$order_doc .= "<table border=0 cellpadding=3 cellspacing=1 align=center width=100% >
-			<tr bgcolor=#ffcc66>
-			<td class=tboard><b>Изображение</b></td>
-			<td class=tboard><b>Описание</b></td>
-			<td class=tboard><b>Изображение</b></td>
-			<td class=tboard><b>Описание</b></td>
-			</tr>";
-			$sql = "select o.*, c.name, if(o.amount>=c.amount5 and c.price5>0,c.price5,
-				if 
-				(o.amount>=c.amount4 and c.price4>0,c.price4,
-					if
-					(o.amount>=c.amount3 and c.price3>0,c.price3,
-						if
-						(o.amount>=c.amount2 and c.price2>0,c.price2,
-							if
-							(o.amount>=c.amount1 and c.price1>0,c.price1,".($clientdiscount==1?"if(c.clientprice>0, c.clientprice, c.price)":"c.price").")
-						)
-					)
-				)
-			) as price, c.image, c.metal, c.year, 
-			c.condition, c.number, c.shopcoins, g.name as gname, c.materialtype, c.details
-			 from `orderdetails` as o left join shopcoins as c 
-			on o.catalog = c.shopcoins 
-			left join `group` as g on c.group=g.group 
-			where o.order='".$order."' and o.typeorder=1 and o.status=0 order by c.materialtype, c.number;";
-			$result = mysql_query($sql);
+			$tpl['order_results'] = $order_class->OrderShopcoinsDetails($clientdiscount,$order);
+			
 			$sum = 0;
 			$what = "";
 			$k=0;
-			$oldmaterialtype = 0;
-			
-			while (	$rows = mysql_fetch_array($result))
-			{
+			$oldmaterialtype = 0;		
 				
-				if ($oldmaterialtype != $rows["materialtype"])
-				{
-					
-					if ($k%2 == 0 and $k!= 0)
-						$order_doc .= "</tr>";
-					elseif ($k%2 == 0 and $k==0)
-					{}
-					else
-						$order_doc .= "<td>&nbsp;</td><td>&nbsp;</td></tr>";
-					
-					if ($k!=0)
-						$order_doc .= "<tr><td colspan=4 class=tboard><b>".$MaterialTypeArray[$oldmaterialtype].": $k</b></td></tr>";
-					
-					$order_doc .= "<tr><td colspan=4 class=tboard bgcolor=#99CCFF><b>".$MaterialTypeArray[$rows["materialtype"]]."</b></td></tr>";
-					$oldmaterialtype = $rows["materialtype"];
-					$k = 0;
+			foreach ($tpl['order_results'] as $rows){		
+			    $tpl['order_results'][$k]['title'] = ''	;
+			   
+				if ($oldmaterialtype != $rows["materialtype"]) {				
+					$tpl['order_results'][$k]['title'] = $MaterialTypeArray[$rows["materialtype"]];					
 				}
+				 $oldmaterialtype = 	$rows["materialtype"];
 				
-				if ($k%2==0)
-				{
-					if ($k!=0)
-						$order_doc .= "</tr><tr bgcolor=#EBE4D4 valign=top>";
-					else
-						$order_doc .= "<tr bgcolor=#EBE4D4 valign=top>";
-				}
 				$what .= $rows["name"].", ";
-				$temp = GetImageSize($DOCUMENT_ROOT."/shopcoins/images/".$rows["image"]);
-				$imagewidth = $temp[0];
-				$order_doc .= "<td class=tboard width=220>
-				<img src=../shopcoins/images/".$rows["image"]." border=1 width=\"$imagewidth\" WIDTH='$imagewidth' width=$imagewidth WIDTH=$imagewidth>
-				</td>";
-				
-				if ($rows["materialtype"]==1 || $rows["materialtype"]==10 || $rows["materialtype"]==12)
-				{
-				
-					$order_doc .= "<td class=tboard valign=top width=200>
-					<a name=s".$rows["shopcoins"]."></a>";
-					$order_doc .= "<br>".$rows["name"];
-					if ($rows["year"]) $order_doc .= "<br><b>Год: </b>".$rows["year"];
-					if (trim($rows["metal"])) $order_doc .= "<br><b>Метал: </b>".$rows["metal"];
-					if ($rows["gname"]) $order_doc .=  "<br><b>Страна: </b>".$rows["gname"];
-					if ($rows["number"]) $order_doc .=  "<br><b>Каталог: </b>".$rows["number"];
-					if ($rows["condition"]) $order_doc .=  "<br><b>Состояние: </b>".$rows["condition"];
-					if ($rows["details"]) $order_doc .=  "<br><b>Описание: </b>".str_replace("\n","<br>",$rows["details"]);
-					$order_doc .= "<br><b>Цена: </b> ".round($rows["price"],2)." руб.
-					</td>";
-				}
-				elseif ($rows["materialtype"]==8  or $rows["materialtype"]==7 or $rows["materialtype"]==4 or $rows["materialtype"]==2)
-				{
-					$order_doc .= "<td class=tboard valign=top width=200>
-					<a name=s".$rows["shopcoins"]."></a>";
-					$order_doc .= "<br>".$rows["name"];
-					$order_doc .= "<br><b>Количество: <font color=blue>".($rows["amount"]?$rows["amount"]:"1")."</font></b>";
-					if ($rows["year"]) $order_doc .= "<br><b>Год: </b>".$rows["year"];
-					if (trim($rows["metal"])) $order_doc .= "<br><b>Метал: </b>".$rows["metal"];
-					if ($rows["gname"]) $order_doc .=  "<br><b>Страна: </b>".$rows["gname"];
-					if ($rows["number"]) $order_doc .=  "<br><b>Каталог: </b>".$rows["number"];
-					if ($rows["condition"]) $order_doc .=  "<br><b>Состояние: </b>".$rows["condition"];
-					if ($rows["details"]) $order_doc .=  "<br><b>Описание: </b>".str_replace("\n","<br>",$rows["details"]);
-					$order_doc .= "<br><b>Цена: </b> ".round($rows["price"],2)." руб.
-					</td>";
-				}
-				elseif ($rows["materialtype"]==3)
-				{
-					$order_doc .= "<td class=tboard valign=top width=200>
-					<a name=s".$rows["shopcoins"]."></a>";
-					$order_doc .= "<br>".$rows["name"];
-					$order_doc .= "<br><b>Количество: <font color=blue>".$rows["amount"]."</font></b>";
-					if ($rows["gname"]) $order_doc .=  "<br><b>Группа: </b>".$rows["gname"];
-					if ($rows["accessoryProducer"]) $order_doc .= "<br><b>Изготовитель: </b>".$rows["accessoryProducer"];
-					if (trim($rows["accessoryColors"])) $order_doc .= "<br><b>Цвета: </b>".$rows["accessoryColors"];
-					if ($rows["accessorySize"]) $order_doc .=  "<br><b>Размеры: </b>".$rows["accessorySize"];
-					if ($rows["details"]) $order_doc .=  "<br><b>Описание: </b>".str_replace("\n","<br>",$rows["details"]);
-					$order_doc .= "<br><b>Цена: </b> ".round($rows["price"],2)." руб.
-					</td>";
-				}
-				$shopcoins_string .= "#".$rows["shopcoins"];
-				//$order_doc .=  "</td><td class=tboard>".$rows["price"]." руб.</td>";
+				//$temp = GetImageSize($DOCUMENT_ROOT."/shopcoins/images/".$rows["image"]);
+				//$imagewidth = $temp[0];				
 				$sum += $rows["amount"]*$rows["price"];
 				$k++;
 			}
-			if ($k%2 == 0)
-				$order_doc .= "</tr>";
-			else
-				$order_doc .= "<td>&nbsp;</td><td>&nbsp;</td></tr>";
-			$what = substr($what, 0, -2);
-			
-			if ($discountcoupon>0) {
-			
-				$order_doc .=  "<tr><td colspan=2 class=tboard><b>".$MaterialTypeArray[$oldmaterialtype].": $k</b></td><td class=tboard align=right><b>Сумма заказа:</b></td><td class=tboard>".$sum." руб.</td></tr>";
-				$order_doc .=  "<tr bgcolor=#ddaaee><td colspan=2 class=tboard><b>&nbsp;</b></td><td class=tboard align=right><b>Скидка по купону(ам):</b></td><td class=tboard>".$discountcoupon." руб.</td></tr>";
-				$order_doc .=  "<tr><td colspan=2 class=tboard><b>&nbsp;</b></td><td class=tboard align=right><b>Итого:</b></td><td class=tboard>".(($sum-$discountcoupon<0)?0:$sum-$discountcoupon)." руб.</td></tr>";
-			}
-			else
-				$order_doc .=  "<tr><td colspan=2 class=tboard><b>".$MaterialTypeArray[$oldmaterialtype].": $k</b></td><td class=tboard align=right><b>Итого:</b></td><td class=tboard>".$sum." руб.</td></tr>";
-			
-			$order_doc .=  "</table>";
-			
-			echo $order_doc;
-			
+			$tpl['order']['sum'] = $sum;	 
+			$what = substr($what, 0, -2);			
 		} elseif ($type=="Book") {
 			$BookImagesFolder = $in."book/images";
 			//сначала о пользователе			
@@ -402,11 +263,9 @@ if (!$tpl['user']['user_id']){
 			echo "</table>";
 		}
 		
-		
-		echo "<center>[<img src=../images/printer.gif> <a href=# onclick=\"window.print();\">Распечатать</a>]</center>";
-		echo "</body>
-		</html>";
 		$tpl["datatype"]='text_html';
+		$tpl['module'] = $tpl['module'].'/'.$tpl['task'];
+
 	} 
 }
 

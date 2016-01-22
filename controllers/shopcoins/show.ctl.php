@@ -164,14 +164,16 @@ if ($catalog){
 		}*/
 		
 	$tpl['show']['described'] = false;
+	$groupselect_v2 = array();
 	//кто описывал монету
 	if ($catalog && $tpl['user']['user_id'] ) {  
-		//if(	$materialtype == 11 &&$tpl['user']['user_id'] &&$user_class->is_user_has_premissons() && !$shopcoins_class->is_already_described($catalog)
-		//){ // if user has 5 orders && !is_locked && item not have description
+		if($materialtype == 11 &&$tpl['user']['user_id'] &&$user_class->is_user_has_premissons() && !$shopcoins_class->is_already_described($catalog)){
+		    // if user has 5 orders && !is_locked && item not have description
+		
 	
 	        $tpl['show']['described'] = true;			
 			$result = $shopcoins_class->getGroupsForDescribe();
-            $groupselect_v2 = array();
+           
             //$groupselect_v2 = "";
 			$i=0;
 
@@ -185,9 +187,8 @@ if ($catalog){
 				//$groupselect_v .= ($i!=0?",\"":"\"").str_replace('"','',$rows["name"])."\"";
 				//$groupselect_v2 .= ($i!=0?",":"").str_replace('"','',$rows["name"])."";
 				//$i++;
-			}
-			
-		//}
+			}			
+		}
 	}	
 	
 	//выбираем что он из аксессуаров/книг заказал

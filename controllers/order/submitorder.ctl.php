@@ -37,7 +37,7 @@ if(!$payment || !$userfio ||!$fio){
     $order_class = new model_order($cfg['db'],$shopcoinsorder,$tpl['user']['user_id']);
     $orderdetails_class = new model_orderdetails($cfg['db'],$shopcoinsorder);
     $catalogshopcoinsrelation_class = new model_catalogshopcoinsrelation($cfg['db']);
-    
+   
 	$user_data =  $user_class->getUserData();
 					
 	$userstatus = (integer) $user_data['userstatus'];
@@ -47,6 +47,7 @@ if(!$payment || !$userfio ||!$fio){
     $timelimit = $user_data['timelimit'];
     
     $rows90 = $order_class->getOrder();
+
 	if ($userstatus==2) {
 		$tpl['submitorder']['error_userstatus'] = true;
 	} elseif (!$rows90||$rows90['check']==1) {
@@ -67,7 +68,7 @@ if(!$payment || !$userfio ||!$fio){
 		
 		//делаем проверку на все товары из магазина и показ отчета 		
 		$tpl['submitorder']['result'] = $order_class->OrderSumDetails($clientdiscount);
-
+var_dump($tpl['submitorder']['result']);
 		$vipcoinssum = 0;
 		$sum = 0;	
 		$sumamountprice = 0;
@@ -98,7 +99,6 @@ if(!$payment || !$userfio ||!$fio){
 				$couponData = $user_class->getUserCoupon(array('code'=>$code ));
 				$friendCoupon = $user_class->getFriendCouponCode();
 				if($couponData&&$couponData['check'] !== 0&&$couponData['dateend']>time()) {
-
 					$data = array(
 						'coupon'=>$couponData['coupon'],
 						'order' => $shopcoinsorder,
@@ -113,7 +113,7 @@ if(!$payment || !$userfio ||!$fio){
 						$discountcoupon = $couponData['sum'];
 					}
 					$data = array('check'=>0,'order'=>$shopcoinsorder);
-					$shopcoins_class->updateTableRow('coupon',$data,"`check`=1 and type=1 and coupon='".$couponData['coupon']."'");
+					$shopcoins_class->updateTableRow('coupon',$data,"`check`=1 and coupon='".$couponData['coupon']."'");
 				}
 			}
 		}
@@ -321,7 +321,6 @@ if(!$payment || !$userfio ||!$fio){
 				    $shopcoins_class->deleteRow('catalogshopcoinssubscribe',"user='".$tpl['user']['user_id']."' and catalog='".$rows["catalog"]."'");			
 				}
 			}
-			
 
 			if (sizeof($ParentArray)>0) {				
 				$result = $shopcoins_class->coinsParents($ParentArray);				
@@ -329,8 +328,9 @@ if(!$payment || !$userfio ||!$fio){
 					$count  = $shopcoins_class->countChilds($rows["parent"]);
 					
 					$data_update = array('amountparent'=>$count);
+					
 					//сам update
-					$shopcoins_class->updateRow($data_update,"shopcoins='".$rows["catalog"]."'"); 
+					$shopcoins_class->updateRow($data_update,"shopcoins='".$rows["shopcoins"]."'"); 
 				}
 			}
 			

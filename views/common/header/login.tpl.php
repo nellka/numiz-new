@@ -4,8 +4,8 @@
 if (!$tpl['user']["is_logined"]) {
 ?>
 <div class="reg_link link_group"> 
- <a class="iframe" style="text-decoration:underline;" href="<?=$cfg['site_dir']?>user/login.php?ajax=1" id='login_form'>Войти</a> 
- <a class="iframe" style="text-decoration:underline;" href="<?=$cfg['site_dir']?>user/registration.php?ajax=1" title='Регистрация' id='reg_form'>Зарегистрироваться</a>
+ <a style="text-decoration:underline;" onclick="showWin('<?=$cfg['site_dir']?>user/login.php?ajax=1',500);return false;" href="#" id='login_form'>Войти</a> 
+ <a style="text-decoration:underline;" onclick="showWin('<?=$cfg['site_dir']?>user/registration.php?ajax=1',500);return false;" href="#" title='Регистрация' id='reg_form'>Зарегистрироваться</a>
 </div>
 
 

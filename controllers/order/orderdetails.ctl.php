@@ -85,7 +85,7 @@ foreach ($orderdetails as 	$rows ){
 	
 	$sum += $rows["oamount"]*$rows["price"];
 	$tpl['orderdetails']['ArrayShopcoinsInOrder'][$i]['title_materialtype'] = '';	
-	
+
 	if ($oldmaterialtype != $rows["materialtype"]) {		
 		$oldmaterialtype = $rows["materialtype"];
 		$tpl['orderdetails']['ArrayShopcoinsInOrder'][$i]['title_materialtype'] = $MaterialTypeArray[$rows["materialtype"]];

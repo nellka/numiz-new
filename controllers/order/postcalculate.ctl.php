@@ -205,7 +205,7 @@ $data_result['FinalSum']=$FinalSum;
 $data_result['bascetamount']=$bascetamount;
 $data_result['bascetsum']=$bascetsum;
 $data_result['bascetweight']=$bascetweight;
-$data_result['error'] ='NotPost';
+if(!($delivery==4&&$postindex)) $data_result['error'] ='NotPost';
 $data_result['shopcoinsorder'] = $shopcoinsorder;
 
 echo json_encode($data_result);

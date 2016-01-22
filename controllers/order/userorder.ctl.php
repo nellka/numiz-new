@@ -64,7 +64,8 @@ if(!$email){
 $amount_inoffice = 0;
 $sum_inoffice = 0;
 $order_inoffice = array();
-//хз засем
+//хз зачем
+
 foreach ((array)$order_class->getInOffice() as $rows_inoffice){
 	$amount_inoffice ++;
 	$sum_inoffice += $rows_inoffice["sum"];

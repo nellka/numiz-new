@@ -2,25 +2,30 @@
             <?include($cfg['path'].'/views/shopcoins/item/imageBig.tpl.php');?>
     </div>
     <div style="width:200px;display: inline-block;padding-left:50px;">
-        <h1><?=$rows_main["name"]?></h1>
-       
-    <?php
-		if ($tpl['user']['user_id']) {   ?> 
-			<div id='review-block'><a name=addreview class="iframe" href="#" onclick="showReviewForm();return false;">Написать отзыв</a> 
+        <h1><?=$rows_main["name"]?></h1>       
+  
+    <div id='review-block'>
+	  <?php	if ($tpl['user']['user_id']) {   ?> 
+			<a name=addreview href="#" onclick="showReviewForm();return false;">Написать отзыв</a> 
     			<div id='reviewcoin' style="display:none">
-    			    <form name='reviewcoin'>
-        			
+    			    <form name='reviewcoin'>        			
         			<h1 class="yell_b">Написать отзыв</h1>
         			<div id='error-review' class="error"></div>
         			<div><b>Пользователь: <br><input type=text name=fio value='<?=$tpl['user']['username']?>' size=40 maxlength=150 disabled></b></div>
         			<div><b>Отзыв:</b><br>
-        			<textarea name=reviewcointext id=reviewcointext cols=57 rows=10 ></textarea></div>
-        			<div><input type=button class="yell_b" value='Оставить отзыв' onclick="AddReview('<?=$catalog?>');"></div>
+        			<textarea name=reviewcointext id=reviewcointext cols=40 rows=10 ></textarea></div>
+        			<div class="web-form"><input type=button class="yell_b" value='Оставить отзыв' onclick="AddReview('<?=$catalog?>');"></div>
         			</form>
     			</div>
-			</div>
+			
+		<?} else {?>
+		   
+		    <div id='reviewcoin' style="display:none">
+		     <h1 class="yell_b">Написать отзыв</h1>
+        	<div id='error-review' class="error">Отзывы могут оставлять только зарегистрированные пользователи!</div>
+        	</div>
 		<?}?>
-		
+		</div>
      <?
 	if ($rows_main["gname"]){?>
 	<?=in_array($rows_main["materialtype"],array(9,3,5))?"Группа":"Страна"?>: 
@@ -100,5 +105,5 @@ echo contentHelper::render('shopcoins/price/markitem',$rows_main['mark']);
 ?>
 
 <br>
-<a href="">Написать отзыв</a>
+<a  name=addreview href="#" onclick="showReviewForm();return false;">Написать отзыв</a>
 </div>

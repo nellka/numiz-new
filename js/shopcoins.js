@@ -30,7 +30,9 @@ function showReviewForm(){
     	});
 }
 function showWin(href,width){
+    //console.log(href);
 	if(!width) width = 400;
+	//console.log($('#MainBascet'));
      $('#MainBascet').dialog({
         modal: true,
         position: { 
@@ -39,10 +41,10 @@ function showWin(href,width){
         of: window
         },
         close: function(event, ui){
-            //console.log("close");
+            console.log("close");
             $(this).dialog("close");
             //$('#MainBascet').html('');
-            $(this).remove();
+            //$(this).remove();
         },
         open: function (){           
              $(this).load(href);
@@ -721,9 +723,7 @@ function CheckCorrectFormOrher(){
 	if ($('#phone').val().length < 5){
 		error +="Введите телефон<br>";
 	}
-	if ($('#email').val().length < 5){
-		error +="Введите email<br>";
-	}
+
 	if (delivery == 1 || delivery == 3) {
 		if (!$('#metro').val()||$('#metro').val()==0){
 			error +="Укажите метро<br>";
@@ -865,7 +865,7 @@ function calculateOrder(on){
 				//$('#allprice-result').text(eval(parseInt(sum)+parseInt(data.metroprice)));
 			}
 
-
+            console.log(data);
 			if(!data.error){
 				$('#post-block-result').show();
 				$('#post-zone-result').text(data.PostZoneNumber+(data.PostRegion?'('+data.PostRegion+')':''));

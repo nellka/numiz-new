@@ -18,7 +18,11 @@ class model_orderdetails extends Model_Base
 	public function getIdentity(){
 	    return $this->shopcoinsorder;
     }
-	 
+    
+	public function setShopcoinsorder($order){
+	    $this->shopcoinsorder = $order;
+    } 
+    
 	public function getMySum(){
 		//получаем сумму по заказу
 	  $select = $this->db->select()
@@ -228,8 +232,8 @@ and s.materialtype<>'1' and s.materialtype<>2 and o.status=0;";*/
 	public function getCounter(){
 		$select = $this->db->select()
 		               ->from($this->table,array('count(catalog)'))
-		               ->where($this->table.'.order=?',$this->getIdentity())
-		               ->where('status=0'); 		
+		               ->where($this->table.'.order=?',$this->getIdentity())		               
+		               ->where('status=0'); 
        return $this->db->fetchOne($select);       
 	}
 	/*
@@ -401,7 +405,7 @@ and o.catalog=s.shopcoins ".($checking?"":"and s.`check`='1'")." and o.status=0;
     		$BascetName = implode(", ", $BascetNameArray);
     	}*/
 
-    	return array('bascetsum'=>$bascetsum,'bascetpostweight'=>$bascetpostweight,'PostAllPrice'=>$PostAllPrice);
+    	return array('bascetamount'=>$bascetamount,'bascetsum'=>$bascetsum,'bascetpostweight'=>$bascetpostweight,'PostAllPrice'=>$PostAllPrice);
 
 	 }
 	 

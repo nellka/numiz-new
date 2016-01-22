@@ -162,6 +162,10 @@ $MaterialTypeArray[1] = "Монеты";
 $MaterialTypeArraySort[1] = 1;			
 $MaterialTypeArrayTitle[1] = "Монеты со всего мира стоимость(цены)";
 
+$MaterialTypeArray[5] = "Книги"; 											
+$MaterialTypeArraySort[5] = 1;			
+$MaterialTypeArrayTitle[5] = "Книги о монетах";
+
 $MaterialTypeArray[6] = "Цветные монеты"; 											
 $MaterialTypeArraySort[6] = 6;			
 $MaterialTypeArrayTitle[6] = "Цветные монеты";

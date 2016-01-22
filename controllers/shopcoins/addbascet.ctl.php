@@ -100,6 +100,7 @@ if(!$rows){
 			setcookie("shopcoinsorder", $shopcoinsorder, time() + $reservetime, "/");
 						
 			$_SESSION['shopcoinsorder'] = $shopcoinsorder;
+			$orderdetails_class->setShopcoinsorder($shopcoinsorder);
 		}
 		$rows_info = $orderdetails_class->getPostion($shopcoins); 
 		
@@ -149,6 +150,7 @@ if(!$rows){
 		//пересчет карзины
 		$dataBasket = $orderdetails_class->basket($tpl['user']['user_id']);	
 	}
+	
 }
 
 if (!$data_result['error']){
