@@ -69,7 +69,7 @@
 					<option value=1>Убрать заявки</option>
 				</select>
 			</div>
-			<input type="button"  class="button25" onblur="SubmitOrder();" value='Подтвердить заказ и перейти к оплате' style="width:350px">
+			<input type="button"  class="button25" onclick="SubmitOrder();" value='Подтвердить заказ и перейти к оплате' style="width:350px">
 			<input type="button"  class="button25" onclick="$('#user-compare-block').hide();$('#user-order').show();" value="Редактировать данные заказа">
 		</div>
 		<div id='user-order'>
@@ -226,13 +226,19 @@
 <!--Блок информации о заказе-->
 <div style="float:right;width:40%;">
 	<h5>Мой заказ</h5>
-	<?foreach ($tpl['orderdetails']['ArrayShopcoinsInOrder'] as 	$rows ){?>
+	<?foreach ($tpl['orderdetails']['ArrayShopcoinsInOrder'] as 	$rows ){ ?>
 		<div>
 			<td class=tboard id=image<?=$rows['catalog']?>>
-				<div id=show<?=$rows['catalog']?>></div>
-				<?
-				echo contentHelper::showImage("smallimages/".$rows["image_small"],$rows["gname"]." | ".$rows["name"],array('onMouseover'=>"ShowMainCoins(\"{$rows['catalog']}\");","onMouseout"=>"NotShowMainCoina(\"{$rows['catalog']}\");"));
-				?>
+				<div id=show<?=$rows['catalog']?>></div>	
+				
+				<div class='image_block'>
+				<?if($rows['image_big']){?>
+    				<div id="image<?=$rows['catalog']?>" class='imageBig' style="display:none;position: absolute;">
+                		<img class="img_hover" src="<?=contentHelper::urlImage($rows['image_big'])?>" />
+                    </div>
+                <?}?>
+				<? echo contentHelper::showImage("smallimages/".$rows["image_small"],$rows["gname"]." | ".$rows["name"]);?>
+				</div>
 				<br><a href="<?=$cfg['site_dir']?>shopcoins?catalog=<?=$rows["catalog"]?>&page=show&materialtype=<?=$rows["materialtype"]?>" target=_blank><?=$rows["name"]?></a>
 				<br>Количество: <?=$rows["oamount"]?> шт.
 			</td>
@@ -264,18 +270,26 @@
 			<h5>На нижеприведенные монеты Вы уже делали заказы в нашем магазине ранее.</h5> 
 			Если Вы желаете еще раз приобрести эти позиции, то просто продолжите оформление заказа. <br>
 			Для корректировки заказа перейдите по ссылле:</strong> <a href='<?=$cfg['site_dir']?>shopcoins/?page=orderdetails'>Изменить содержимое заказа</a></strong>
-			<?foreach ($tpl['orderdetails']['alreadyBye'] as 	$rows ){
-			    ?>
+			<?
+			$a = array();
+			foreach ($tpl['orderdetails']['alreadyBye'] as 	$rows ){
+			   if(in_array($rows["shopcoins"],$a)) continue; ?>
 				<div>
 					<div class=tboard id=image<?=$rows["shopcoins"]?>>
 						<div id=show<?=$rows["shopcoins"]?>></div>
-						<?
-						echo contentHelper::showImage("smallimages/".$rows["image_small"],$rows["gname"]." | ".$rows["name"],array('onMouseover'=>"ShowMainCoins(\"{$rows['shopcoins']}\");","onMouseout"=>"NotShowMainCoina(\"{$rows["shopcoins"]}\");"));
-						?>
+						<div class='image_block'>
+							<?if($rows['image_big']){?>
+								<div id="image<?=$rows['catalog']?>" class='imageBig' style="display:none;position: absolute;">
+									<img class="img_hover" src="<?=contentHelper::urlImage($rows['image_big'])?>" />
+								</div>
+							<?}?>
+							<? echo contentHelper::showImage("smallimages/".$rows["image_small"],$rows["gname"]." | ".$rows["name"]);?>
+						</div>
 						<br><a href="<?=$cfg['site_dir']?>shopcoins?catalog=<?=$rows["shopcoins"]?>&page=show&materialtype=<?=$rows["materialtype"]?>" target=_blank><?=$rows["name"]?></a>
 					</div>
 				</div>
 				<?
+			$a[]=$rows["shopcoins"];
 			}?>
 		</div>
 	<?}
@@ -287,9 +301,8 @@
 <script>
 	$(document).ready(function() {
 		$("#phone").mask("+7(999) 999-9999");
-		ShowPayment(<?=$delivery?>);
-		//ShowOther(<?=$delivery?>);
-	});
+		ShowPayment(<?=$delivery?>);     
+	});	
 	<?
 	echo $arraymetrojava;
 	?>

@@ -152,7 +152,7 @@ class model_shopcoins extends Model_Base
 		if($this->user_id && $reservedForSomeGroup && !$reservedForSomeUser) {
 			$isInRerservedGroup = $this->isInRerservedGroup($id);
 		}
-		
+
 		$reserveamount = 0;
 	    $statusshopcoins = 0;
 		$reserveuser = 0;

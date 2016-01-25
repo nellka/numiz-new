@@ -21,7 +21,8 @@
 
 	<?php   
 	//вводим фильтр для стран
-	 	foreach ($filter_groups as $filter_group) {?>
+	 	foreach ($filter_groups as $filter_group) { 	    
+	 	    ?>
 	
 		<div class="filter-block" id='fb-<?=$filter_group['filter_group_id_full']?>'>
     		<div class="filter_heading">
@@ -113,9 +114,8 @@
 		</div>
 	<?php 
 		//break;
-	 	}
-	?>
-    <div class="filter-block">		
+		if($filter_group['filter_group_id']=='group'){?>
+		    <div class="filter-block">		
 			<? if($tpl['filter']['price']['max']){?>
 				<div style="float:left;"><b>Цена</b></div> 	
 				<div style="float:right;">
@@ -130,7 +130,12 @@
 				</span>			
 			<?}?>					
 			<p><div id="slider-range-price" style="margin-left:5px;margin-right:5px;"></div></p>
-	</div>	
+	       </div>	
+		<?}
+		
+	 	}
+	?>
+   
 </form>
 
 <script type="text/javascript" charset="utf-8">

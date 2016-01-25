@@ -47,12 +47,13 @@ class model_user extends Model_Base
 
 	public function getUserCouponCount($data=array()){
 		$select = $this->db->select()
-			->from('coupon',array())
+			->from('coupon',array('count(*)'))
 			->where('user =?',$this->user_id);
 		foreach($data as $key=>$value){
 			$select->where("$key=?",$value);
 		}
-		return $this->db->fetchOne($select);
+		//echo $select->__toString();
+		return (int)$this->db->fetchOne($select);
 	}
 
 	 public function getFriendCouponCode(){

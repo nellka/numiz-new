@@ -46,7 +46,13 @@ $(document).ready(function() {
         showOn(this.href,this.id);
         return false; ////cancel eventbubbeling
     });
-    
+    $('.image_block').mouseover(function() {
+       $(this).parent().find('.imageBig').show();
+    });
+    $('.image_block').mouseout(function(){
+         $(this).parent().find('.imageBig').hide();    
+    });    
+        
     $('.search-top-module #search').autocomplete({
       source: 'shopcoins/index.php?search=1',
       minLength:3,
@@ -54,8 +60,13 @@ $(document).ready(function() {
             window.location = ui.item.href;
             return ui.item.label;
         }
-    });
-
+    }).data( "autocomplete" )._renderItem = function( ul, item ) {
+        return $( "<li class='search-ayax'></li>" )
+            .data( "item.autocomplete", item )
+            .append( "<a href='"+item.href+"'>" + item.image+ " <span> " + item.label+ "</span></a>" )
+            .appendTo( ul );
+    };
+    
     $('.down').click(function () {
 		var $input = $(this).parent().find('input[type=text]');
 		var $amountall = $(this).parent().find('input[type=hidden]');

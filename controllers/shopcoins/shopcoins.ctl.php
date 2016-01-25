@@ -21,7 +21,7 @@ $sortname = request('sortname');
 $tpl['pager']['sorts'] = array('dateinsert'=>'новизне',                     
                       'price'=>'по цене',
                       'year'=>'году');
-$tpl['pager']['itemsOnpage'] = array(9=>9,16=>16,36=>36,33=>33,66=>66);
+$tpl['pager']['itemsOnpage'] = array(9=>9,18=>18,36=>36,33=>33,66=>66);
 
 //сохраняем количество элементов на странице в куке
 if(request('onpage')){

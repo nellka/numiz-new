@@ -6,8 +6,10 @@
      <div class="error">
     <p><b>Вам поставлен запрет на новые заказы. Для уточнения свяжитесь с администрацией.</b></p>
     </div>
-<?} elseif(isset($tpl['submitorder']['error_userstatus'])) {?>
-    
+<?}  elseif(isset($tpl['submitorder']["error_already_buy"])){?>
+	<div class="error"><p>Заказ <?=$shopcoinsorder?> уже оформлен Вами. Вы можете его просомтреть в "Ваши заказы"</b></p></div>
+<? } else if(isset($tpl['submitorder']['error_little'])){?>
+	<div class="error"><p>Сумма заказа менее 500.00 руб. </p> </div>
 <?} elseif(isset($tpl['submitorder']['error'])) {?>
     <div class="error">
     <p> Некорректные параметры заказа. Пройдите процедуру оформления заказа заново!
@@ -30,20 +32,22 @@
     </p>
     </div>
 <?} else {?>
-<div>
 
     <? if(isset($tpl['submitorder']['compare'])) {?>
-    <div class="error">На постоянную работу удаленно требуется нумизмат для описания монет в административном интерфейсе. </b><br>Оплата сдельная - 2 рубля за монету, оплата через вебмани либо яндекс-деньги, либо бартер на заказы монет. Обращаться к администратору. E-mail: <a href=mailto:administrator@numizmatik.ru>administrator@numizmatik.ru</a>, тел.: +7-903-006-00-44,  +7-915-00-2222-3.
+    <div class="error">На постоянную работу удаленно требуется нумизмат для описания монет в административном интерфейсе. </b><br>
+	    Оплата сдельная - 2 рубля за монету, оплата через вебмани либо яндекс-деньги, либо бартер на заказы монет.
+	    Обращаться к администратору. E-mail: <a href=mailto:administrator@numizmatik.ru>administrator@numizmatik.ru</a>, тел.: +7-903-006-00-44,  +7-915-00-2222-3.
     </div>
-    
-   <?}?>
-		<div><h5>Спасибо за покупку!</h5>
-				
+   <?}
+   //var_dump($tpl['submitorder']);
+
+   ?>
+		<h5>Спасибо за покупку!</h5>
 		Уважаемый покупатель!<br>Ваш заказ принят к рассмотрению. 
 		Вы можете связаться с менеджером по адресу <a href=mailto:administrator@numizmatik.ru>administrator@numizmatik.ru</a> в рабочие дни 
 		или по телефону 8-800-333-14-77 (бесплатный звонок по России) (<b><font color=red>+3 GMT MSK</font></b>).
 		
-		<br><br><b>Номер Вашего заказа: <b><?=$shopcoinsorder?></b><br>
+		<br><br><p>Номер Вашего заказа: <b><?=$shopcoinsorder?></b><br>
         Информация о заказе:
 		<table border=0 cellpadding=3 cellspacing=1 align=center>
 		<tr bgcolor=#ffcc66>
@@ -55,77 +59,59 @@
 		<td class=tboard><b>Кол - во</b></td></tr>
 		
 		<?
-var_dump($tpl['submitorder'],$delivery);
 		foreach ( $tpl['submitorder']['result'] as $rows){
-			
 			if ($tpl['submitorder']['result'][$i]['title_materialtype']){?>
 				<tr bgcolor=#EBE4D4 valign=top><td colspan=7 class=tboard bgcolor=#99CCFF><b><?=$MaterialTypeArray[$rows["materialtype"]]?></b></td></tr>
 			<?}?>
 
 			<tr bgcolor=#EBE4D4 valign=top>
-			<td class=tboard><a href=<?=$cfg['site_dir']?>shopcoins/show.php?catalog=<?=$rows["shopcoins"]?>&from=email target=_blank><?=$rows["name"]?></a></td>
+			<td class=tboard><div id="image<?=$rows['catalog']?>"><a href=<?=$cfg['site_dir']?>shopcoins/show.php?catalog=<?=$rows["catalog"]?>&from=email target=_blank><?=$rows["name"]?></a></td>
 			<td class=tboard><?=$rows["gname"]?></td>
 			<td class=tboard><?=$rows["year"]?></td>
 			<td class=tboard><?=$rows["number"]?></td>
 			<td class=tboard><?=round($rows['price'],2)?> руб.</td>
 			<td class=tboard align=center><?=($rows["oamount"]?$rows["oamount"]:1)?></td>
 			</tr>
-		<?}
-		
-		if ($discountcoupon) {?>
-			<tr bgcolor=#EBE4D4><td class=tboard align=right colspan=4><b>Сумма заказа:</b></td>
-			<td class=tboard><?=($sum+$discountcoupon)?> руб. </td><td>&nbsp;</td></tr>
-			$user_order_details .= "<tr bgcolor=#EBE4D4><td class=tboard align=right colspan=4><b>Скидка по купону(ам):</b></td>
-			<td class=tboard><?=$discountcoupon?> руб. </td><td>&nbsp;</td></tr>";
 		<?}?>
-		<tr bgcolor=#EBE4D4><td class=tboard align=right colspan=4><b>Итого:</b></td>
-		<td class=tboard><?=$sum?> руб. </td><td></td></tr>
-		
+		</table>
+		<?
+		if ($tpl['submitorder']['discountcoupon']) {?>
+			<p><b>Сумма заказа: </b> <?=($tpl['submitorder']['sum']+$tpl['submitorder']['discountcoupon'])?> руб. </p>
+			<p><b>Скидка по купону: </b><?=$tpl['submitorder']['discountcoupon']?> руб. </p>
+		<?}?>
+			<p><b>Итого:</b><?=$tpl['submitorder']['sum']?> руб. </p>
 		<?		
 		//показываем массу
 		if ($delivery==4 || $delivery==5 || $delivery==6 || $delivery==7){?>
-			<tr bgcolor=#EBE4D4><td class=tboard colspan=4 align=right><b>Вес (с учетом упаковки) ~</b> </font></td>
-			<td class=tboard><?=$bascetpostweight?> грамм</td><td>&nbsp;</td></tr>
+			<p><b>Вес (с учетом упаковки) ~</b> <?=$tpl['submitorder']['bascetpostweight']?> грамм</p>
         <?}
 		if ($delivery==6) {?>
-			<tr bgcolor=#EBE4D4><td class=tboard colspan=4 align=right><b>Почтовые услуги:</b> </font></td>
-			<td class=tboard><?=$tpl['submitorder']['sumEMC']?> руб.</td><td>&nbsp;</td></tr>
-			<tr bgcolor=#EBE4D4><td class=tboard colspan=4 align=right><b>Страховка 1%:</b> </font></td>
-			<td class=tboard>".(10)." руб.</td><td>&nbsp;</td></tr>
-			<tr bgcolor=#EBE4D4><td class=tboard colspan=4 align=right><b>Конверт:</b> </font></td>
-			<td class=tboard><?=$PriceLatter?> руб.</td><td>&nbsp;</td></tr>
-			<tr bgcolor=#EBE4D4><td class=tboard colspan=4 align=right><b>ИТОГО:</b> </font></td>
-			<td class=tboard><font color=red><b><?=$tpl['submitorder']['FinalSum']?> руб.</b></font></td><td>&nbsp;</td></tr>
+			<p><b>Почтовые услуги:</b> <?=$tpl['submitorder']['sumEMC']?> руб.</p>
+			<p><b>Страховка 1%:</b> 10 руб.
+			<p><b>Конверт:</b> <?=$PriceLatter?> руб.</p>
+			<p><b>ИТОГО: <?=$tpl['submitorder']['FinalSum']?> руб.</b></p>
 
 		<?}	elseif ($delivery==4 and $postindex) {	?>
-            <tr bgcolor=#EBE4D4><td class=tboard colspan=4 align=right><b>Почтовые услуги:</b> </font></td>
-			<td class=tboard><?=$PostZonePrice?> руб.</td><td>&nbsp;</td></tr>
-			<tr bgcolor=#EBE4D4><td class=tboard colspan=4 align=right><b>Страховка 4%:</b> </font></td>
-			<td class=tboard>".<?=($suminsurance>0?$suminsurance*0.04:$bascetinsurance)?> руб. <br>(В связи с участившимися случаями пропаж и вскрытия отправлений на Почте России<br> во всех почтовыех отправлениях страхование производится на полную их стоимость)</td><td>&nbsp;</td></tr>
-			<tr bgcolor=#EBE4D4><td class=tboard colspan=4 align=right><b>Конверт:</b> </font></td>
-			<td class=tboard><?=$PriceLatter?> руб.</td><td>&nbsp;</td></tr>
-			<tr bgcolor=#EBE4D4><td class=tboard colspan=4 align=right><b>ИТОГО:</b> </font></td>
-			<td class=tboard><font color=red><b><?=$tpl['submitorder']['FinalSum']?> руб.</b></font></td><td>&nbsp;</td></tr>
-			";
-		<?}		
-				
-		if (($sum <= 0.00 || !$sum || $tpl['submitorder']['FinalSum'] <=0.00 || !$tpl['submitorder']['FinalSum']) && $discountcoupon<=0){
-			echo "<p class=txt> <font color=red><b>Сумма заказа менее 500.00 руб. </b></font></p>";
-		} else {	?>
-			____VISAPAYMENT___</table><?=$sertprint?>
-			<table border=0 cellpadding=3 cellspacing=1 align=center>
-			<tr><td class=tboard>
+            <p><b>Почтовые услуги:</b> <?=$tpl['submitorder']['PostZonePrice']?> руб.</p>
+			<p><b>Страховка 4%:</b> <?=($tpl['submitorder']['suminsurance']>0?$tpl['submitorder']['suminsurance']*0.04:$bascetinsurance)?> руб.
+			 <br>(В связи с участившимися случаями пропаж и вскрытия отправлений на Почте России<br> во всех почтовыех отправлениях страхование производится на полную их
+			 стоимость)</p>
+			<p><b>Конверт:</b> <?=$PriceLatter?> руб.</p>
+			<b>ИТОГО: <?=$tpl['submitorder']['FinalSum']?> руб.</b></p>
+		<?}?>
+
 			<hr size=1 color=#000000><br>
-					<?if($payment==6){?>
-				<center><a href='http://www.numizmatik.ru/shopcoins/sbrf.php?NUMBER=".$shopcoinsorder."&FIO=".urlencode(strip_string($fio))."&ADRESS=".urlencode($adress)."&SUM=".$tpl['submitorder']['FinalSum']."' target='_blank'><img src=".$in."images/sbrfprint.gif border=1 style='border-color:black' alt='Распечатать квитанцию Сбербанка'></a><br><b>Ссылка:</b> <a href='http://www.numizmatik.ru/shopcoins/sbrf.php?NUMBER=".$shopcoinsorder."&FIO=".urlencode(strip_string($fio))."&ADRESS=".urlencode($adress)."&SUM=".$tpl['submitorder']['FinalSum']."' target='_blank'>http://www.numizmatik.ru/shopcoins/sbrf.php?NUMBER=".$shopcoinsorder."</a></center><br>"
-})<?}?>
-				<?=$SumProperties[$payment]?>
+			<?if($payment==6){?>
+			<p><a href='http://www.numizmatik.ru/shopcoins/sbrf.php?NUMBER=<?=$shopcoinsorder?>&FIO=<?=urlencode(strip_string($fio))?>&ADRESS=<?=urlencode($adress)?>&SUM=<?=$tpl['submitorder']['FinalSum']?>' target='_blank'>
+			<img src="http://www.numizmatik.ru/images/sbrfprint.gif" border=1 style='border-color:black' alt='Распечатать квитанцию Сбербанка'>
+			</a><br>
+			<b>Ссылка:</b> <a href='http://www.numizmatik.ru/shopcoins/sbrf.php?NUMBER=<?=$shopcoinsorder?>&FIO=<?=urlencode(strip_string($fio))?>&ADRESS=<?=urlencode($adress)?>&SUM=<?=$tpl['submitorder']['FinalSum']?>' target='_blank'>http://www.numizmatik.ru/shopcoins/sbrf.php?NUMBER=<?=$shopcoinsorder?></a>
+			</p>
+			<?}?>
+			<?=$SumProperties[$payment]?>
 			<hr size=1 color=#000000>
-			</td></tr>
-			</table>
-			</table>
-			<div><font color=red>Внимание!!!</font>  У нас действует акция "Приведи друга".<a href=http://www.numizmatik.ru/shopcoins/aboutfrendaction.php target=_blank>Подробнее >>></a></b><br>
-			Ваш код для участия в акции: <b><font color=red><big><?=strtoupper($codeforfrend)?></big></font></b><br>
+			<div><span class="error">Внимание!!!</span>  У нас действует акция "Приведи друга".<a href=http://www.numizmatik.ru/shopcoins/aboutfrendaction.php target=_blank>Подробнее >>></a></b><br>
+			Ваш код для участия в акции: <b><span class="error"><?=strtoupper($codeforfrend)?></span></b><br>
 			Вы также можетет использовать ссылку для этой акциии на различных веб-ресурсах. <br>
 			Текст вашей ссылки для размещения: <b>http://www.numizmatik.ru/user/registration.php?codeforfrend=<?=$codeforfrend?></b>
 			</div>
@@ -135,9 +121,7 @@ var_dump($tpl['submitorder'],$delivery);
 			<div><b>Контактный телефон:</b><?=$phone?></div>
 			<? if ($adress){?>
 				<div><b>Адрес доставки:</b><?=$adress?></div>
-			<?}
-			if ($delivery==2)	{$DeliveryName[$delivery] = "В офисе (возможность посмотреть материал до выставления)";}
-			?>
+			<?}?>
 			<div><b>Способ доставки:</b><?=$DeliveryName[$delivery]?></div>
 
 			<?if ($delivery==2){?>
@@ -148,22 +132,33 @@ var_dump($tpl['submitorder'],$delivery);
 				</div>
 			<?}?>
 
-			<div><b>Способ оплаты:</b><?=$SumName[$paymentvalue]?></div>
+			<div><b>Способ оплаты:</b><?=$SumName[$payment]?></div>
 			
 			<?if ($tpl['submitorder']['MetroName']){?>
 				<div><b>Метро:</b><?=$tpl['submitorder']['MetroName']?></div>
 			<?}
 			//дата
 			if ($meetingdate and ($delivery == 1 || $delivery == 2 || $delivery == 3 || $delivery == 7)){?>
-				<div><b>Дата:</b><?=$DaysArray[date("w",$meetingda)].":".date("d-m-Y", $meetingdate)?>"</div>
+				<div><b>Дата:</b><?=$DaysArray[date("w",$meetingdate)].":".date("d-m-Y", $meetingdate)?>"</div>
 			<?}
 			//время
 			if ($meetingfromtime and ($delivery == 1 || $delivery == 2 || $delivery == 3 || $delivery == 7)){?>
-				<div><b>Время:</b><?=date("H-i", $timenow + $meetingfromtime)." по ".date("H-i", $timenow + $meetingtotime)?></div>
-			<?}?>
-
+				<div><b>Время:</b><?=date("H-i", time() + $meetingfromtime)." по ".date("H-i", time() + $meetingtotime)?></div>
+			<?}
+			if ($payment==8) {
+				echo "<tr><td colspan=6><form action='".$urlrobokassa."/Index.aspx' method=POST>".
+   "<input type=hidden name=MrchLogin value='numizmatikru'>".
+   "<input id=OutSum".$shopcoinsorder." type=hidden name=OutSum value='".sprintf ("%01.2f",round($resultsum*$krobokassa,2))."'>".
+   "<input type=hidden name=InvId value='".$shopcoinsorder."'>".
+   "<input type=hidden name=Desc value='Оплата предметов нумизматики'>".
+   "<input id=SignatureValue".$shopcoinsorder." type=hidden name=SignatureValue value='$crcode'>".
+   "<input type=hidden name=Shp_idu value='".$tpl['user']['user_id']."'>".
+   "<input type=hidden name=IncCurrLabel value='$in_curr'>".
+   "<input type=hidden name=Culture value='$culture'>".
+   "<input type=submit value='Оплатить VISA, MasterCard'> - <div id=info".$shopcoinsorder.">".sprintf ("%01.2f",round($resultsum*$krobokassa,2))." руб.</div> (При оплате банковскими картами комиссия 4%).".
+   "</form></tr>";
+			}?>
 			<br><br>Спасибо за покупку в нашем магазине !
 			<br>Клуб Нумизмат - <a href=http://www.numizmatik.ru>www.numizmatik.ru</a><br><br>
-	<?}
-}
+<?}?>
 			

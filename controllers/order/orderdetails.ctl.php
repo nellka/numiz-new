@@ -25,7 +25,7 @@ if ($shopcoinsorder) {
 if ($pageinfo=="delete" and $shopcoinsorder) {
     
 	$rows5 = $order_class->getRowByParams(array('`order`'=>$shopcoinsorder)); 	
-	
+
 	if ($rows5['check']==0) {
 		//удаляем позицию из заказа				
 		$orderdetails_class->deletePostion($shopcoins);		
@@ -33,7 +33,10 @@ if ($pageinfo=="delete" and $shopcoinsorder) {
 		$shopcoins_class->updateRow($data,"shopcoins='$shopcoins' and reserveorder='$shopcoinsorder'");				
 		$orderdetails_class->deletePostionHelpshopcoinsorder($shopcoins);	
 		$orderdetails_class->removeOrderCache($tpl['user']['user_id']);			
-	}	
+	}	 else {
+		$order_class->clearOrder();
+		$shopcoinsorder =0;
+	}
 }
 
 if ($amount>0){
@@ -81,7 +84,8 @@ foreach ($orderdetails as 	$rows ){
     
 	$tpl['orderdetails']['ArrayShopcoinsInOrder'][$i] = $rows;
 	$tpl['orderdetails']['ArrayGroupShopcoins'][] = $rows['group'];
-    $tpl['orderdetails']['ArrayShopcoinsInOrder'][$i]['amountAll'] = $shopcoins_class->getItemAmount($tpl['user']['can_see'],$ourcoinsorder,$shopcoinsorder);
+
+    $tpl['orderdetails']['ArrayShopcoinsInOrder'][$i]['amountAll'] = $shopcoins_class->getItemAmount($rows["catalog"],$tpl['user']['can_see'],$ourcoinsorder,$shopcoinsorder);
 	
 	$sum += $rows["oamount"]*$rows["price"];
 	$tpl['orderdetails']['ArrayShopcoinsInOrder'][$i]['title_materialtype'] = '';	

@@ -333,10 +333,10 @@ and o.catalog=s.shopcoins ".($checking?"":"and s.`check`='1'")." and o.status=0;
     	$discountcoupon = 0;
     	$arraycoupcode = array();
 		$typec = 1;
-		foreach ($this->db->fetchAll($sql) as $row) {		
+		foreach ($this->db->fetchAll($sql) as $rows2) {
 			
 			if ($rows2['type']==2 && $typec==1) {
-			
+
 				$discountcoupon = floor(($bascetsum-$amountbascetsum-$vipcoinssum)*$rows2['sum']/100);
 				$typec = 2;
 				$arraycoupcode[] = "VIP";
@@ -350,7 +350,7 @@ and o.catalog=s.shopcoins ".($checking?"":"and s.`check`='1'")." and o.status=0;
 
     	if ($discountcoupon<0)
     		$discountcoupon = 0;
-		
+
     	$bascetsum = $bascetsum - $discountcoupon;
     	if ($bascetsum<0)
     		$bascetsum = 0;
@@ -405,7 +405,7 @@ and o.catalog=s.shopcoins ".($checking?"":"and s.`check`='1'")." and o.status=0;
     		$BascetName = implode(", ", $BascetNameArray);
     	}*/
 
-    	return array('bascetamount'=>$bascetamount,'bascetsum'=>$bascetsum,'bascetpostweight'=>$bascetpostweight,'PostAllPrice'=>$PostAllPrice);
+    	return array('bascetamount'=>$bascetamount,'PostZoneNumber'=>$PostZoneNumber,'PostZonePrice'=>$PostZonePrice,'PostAllPrice'=>$PostAllPrice,'suminsurance'=>$suminsurance,'amountbascetsum'=>$amountbascetsum,'bascetsum'=>$bascetsum,'bascetpostweight'=>$bascetpostweight,'PostAllPrice'=>$PostAllPrice);
 
 	 }
 	 

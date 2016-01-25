@@ -45,8 +45,15 @@ foreach ($tpl['orderdetails']['ArrayShopcoinsInOrder'] as 	$rows ){
 	<tr>
 	   <td class=tboard id=image<?=$rows['catalog']?>>
 	       <div id=show<?=$rows['catalog']?>></div>
-	       <?
-	       echo contentHelper::showImage("smallimages/".$rows["image_small"],$rows["gname"]." | ".$rows["name"],array('onMouseover'=>"ShowMainCoins(\"{$rows['catalog']}\");","onMouseout"=>"NotShowMainCoina(\"{$rows['catalog']}\");"));
+	       <div class='image_block'>
+			<?if($rows['image_big']){?>
+				<div id="image<?=$rows['catalog']?>" class='imageBig' style="display:none;position: absolute;">
+            		<img class="img_hover" src="<?=contentHelper::urlImage($rows['image_big'])?>" />
+                </div>
+            <?}?>
+			<? echo contentHelper::showImage("smallimages/".$rows["image_small"],$rows["gname"]." | ".$rows["name"]);?>
+		  </div>
+	       <?	      
 	       /*if ($rows["gname"]){?>
         <?=in_array($rows["materialtype"],array(9,3,5))?"Группа":"Страна"?>: <?=$rows["gname"]?><br>
         <?}?>
@@ -98,7 +105,8 @@ if($rows["amountAll"]>1){?>
 <span class="up">+</span>
 <?} else {?>
 	<?=$rows["oamount"]?>
-<?}?>
+<?}
+?>
 	</td>
 	<td class=tboard><?=$rows["price"]*$rows["oamount"]?> рублей</td>
 	<td class=tboard><a href=<?=$cfg['site_dir']?>shopcoins?page=orderdetails&pageinfo=delete&shopcoins=<?=$rows["catalog"]?> title='Удалить из корзины'><img src="<?=$cfg['site_dir']?>images/delete-item.png"></a></td>
@@ -114,7 +122,7 @@ if($rows["amountAll"]>1){?>
 </form>
 <div class="clearfix"> 
 <p><b>Доставка</b> осуществляется на сумму <b><font color=red>не менее 500 руб.</font></b> и <b><font color=red>не более <?=$stopsummax?> руб.</font></b> по территории РФ. </p>
-<p style="border: 1px solid #cccccc;margin: 0;  padding: 10px; width: 450px;" class="left">Заказ на сумму менее 500 руб. могут сделать авторизованые пользователи, у которых есть ранее сделанный заказ, но еще не отправленный покупателю. В таком случае новый заказ будет объединен с предыдущим не отправленным.
+<p style="border: 1px solid #cccccc;margin: 0;  padding: 10px; width: 750px;" class="left">Заказ на сумму менее 500 руб. могут сделать авторизованые пользователи, у которых есть ранее сделанный заказ, но еще не отправленный покупателю. В таком случае новый заказ будет объединен с предыдущим не отправленным.
 К стоимости Вашего заказа будет добавлена стоимость почтовых услуг по упаковке, страховке и доставке его Вам, которая зависит от пункта назначения, массы и стоимости товара.</p>
 <div class="right">Итого(без суммы доставки): <b><?=$sum?> рублей</b> 
 <!--<a class="button25 right" style="width:100px" onclick="$('#order-form').submit()">Пересчитать</a>-->

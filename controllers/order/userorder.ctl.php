@@ -54,9 +54,14 @@ if(!$postindex){
 //fio из последнего заказа
 if(!$fio&&$user_data['fio'] ){
     $fio = $user_data['fio'];
-} elseif (!$fio) {
+}
+if (!$userfio) {
     $userfio = $order_class->getUserfio();
-    $fio = $userfio;
+    if(!$userfio )  $userfio = $fio;
+}
+
+if(!$phone){
+	$phone = $user_data['phone'];
 }
 if(!$email){
 	$email = $user_data["email"];
@@ -102,6 +107,7 @@ if ($tpl['user']['user_id']<>811) {
 }
 
 $tpl['user']['fio'] = $user_data['fio'];
+$tpl['user']['phone'] = $user_data['phone'];
 $tpl['user']['phone'] = $user_data['phone'];
 $userstatus = $user_data['userstatus'];
 $sumlimit = $user_data['sumlimit'];

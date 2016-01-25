@@ -21,6 +21,8 @@ $from_ubb =  request('from_ubb');
 $deletesubscribecoins =  request('deletesubscribecoins');
 $idadmin = request('idadmin');
 
+if ($delivery==2){$DeliveryName[$delivery] = "В офисе (возможность посмотреть материал до выставления)";}
+
 $code1 = request('code1');
 $code2 = request('code2');
 $code3 = request('code3');
@@ -37,7 +39,7 @@ if(!$payment || !$userfio ||!$fio){
     $order_class = new model_order($cfg['db'],$shopcoinsorder,$tpl['user']['user_id']);
     $orderdetails_class = new model_orderdetails($cfg['db'],$shopcoinsorder);
     $catalogshopcoinsrelation_class = new model_catalogshopcoinsrelation($cfg['db']);
-   
+
 	$user_data =  $user_class->getUserData();
 					
 	$userstatus = (integer) $user_data['userstatus'];
@@ -68,7 +70,7 @@ if(!$payment || !$userfio ||!$fio){
 		
 		//делаем проверку на все товары из магазина и показ отчета 		
 		$tpl['submitorder']['result'] = $order_class->OrderSumDetails($clientdiscount);
-var_dump($tpl['submitorder']['result']);
+
 		$vipcoinssum = 0;
 		$sum = 0;	
 		$sumamountprice = 0;
@@ -123,53 +125,22 @@ var_dump($tpl['submitorder']['result']);
 		if ( $sum < $discountcoupon) {			
 			$discountcoupon = $sum;
 		}
-		
+		$tpl['submitorder']['discountcoupon'] = $discountcoupon;
 
-		
-		$sum = $sum - $discountcoupon;			
+		$sum = $sum - $discountcoupon;
+		$tpl['submitorder']['sum'] = $sum;
+		$basket_data = $orderdetails_class->PostSum($postindex,$clientdiscount);
 
-		$rows = $orderdetails_class->forBasket($clientdiscount);
-
-        $bascetsum = $rows["mysum"];
-        $amountbascetsum = $rows['mysumamount'];
-        $vipcoinssum = $rows['vipcoinssum'];
-		$bascetweight = $rows["myweight"];
-		$bascetamount = $orderdetails_class->getCounter();
-        $postcounter = $orderdetails_class->getPaking();
-        if ($postcounter)
-        	$bascetpostweight = $bascetweight + $WeightPostBox;
-        else
-        	$bascetpostweight = $bascetweight + $WeightPostLatter;
-        //вычисляем для страховок
-        $suminsurance = $order_class->getSuminsurance();
-        if ($suminsurance>0){
-        	$bascetinsurance = $suminsurance * 0.04;
-        } else {
-        	$bascetinsurance = $bascetsum * 0.04;
-        }
-		$mymaterialtype = ($bascetsum>0)?$rows["mymaterialtype"]:1;
-		
-        $PostZoneNumber = 0;
-        $rows = $orderdetails_class->getPost($postindex);
-
-		if($postindex){
-        	//тариф по зоне обслуживания
-        	//select * from Post where PostIndex='600023';
-        	$PostZoneNumber = $rows["PostZone"];
-        	$PostRegion = ($rows["Region"]?$rows["Region"]:$rows["Autonom"]);
-        	$PostCity = ($rows["City"]?$rows["City"]:$PostRegion);
-        }
-    
-        if (!$PostZoneNumber)	$PostZoneNumber = 5;
-        if ($mymaterialtype!=0){
-        	$PostZonePrice = $orderdetails_class::$PostZone[$PostZoneNumber] + $orderdetails_class::$PackageAddition[$PostZoneNumber]*($bascetpostweight<500?0:ceil(($bascetpostweight-500)/500));
-        }else {
-        	$PostZonePrice = $orderdetails_class::$PostZone1[$PostZoneNumber] + $orderdetails_class::$PackageAddition[$PostZoneNumber]*($bascetpostweight<500?0:ceil(($bascetpostweight-500)/500));
-        }
-        $PostAllPrice = $PostZonePrice + $PriceLatter + $bascetinsurance + $bascetsum;
+        $tpl['submitorder']['bascetsum'] = $bascetsum = $basket_data["bascetsum"];
+		$tpl['submitorder']['amountbascetsum'] = $amountbascetsum = $basket_data['amountbascetsum'];
+		$tpl['submitorder']['suminsurance'] = $suminsurance = $basket_data["suminsurance"];
+		$tpl['submitorder']['PostAllPrice'] = $PostAllPrice  = $basket_data["PostAllPrice"];
+		$tpl['submitorder']['PostZonePrice'] = $PostZonePrice  = $basket_data["PostZonePrice"];
+		$tpl['submitorder']['bascetpostweight'] = $bascetpostweight  = $basket_data["bascetpostweight"];
+		$tpl['submitorder']['PostZoneNumber'] = $PostZoneNumber  = $basket_data["PostZoneNumber"];
 
 		$FinalSum = $sum;
-		
+		$sumEMC = 0;
 		if ($delivery==6) {		
 			if ($bascetpostweight < 1000) 
 				$sumEMC = 650;
@@ -337,22 +308,10 @@ var_dump($tpl['submitorder']['result']);
 			//проставляем amountparent			
 			if ($tpl['user']['user_id']==811)	$needcallingorder=3;
 			
-			$CommentAdministrator = "";
-			
-			/*$sql22 = "select * from comentorder where  toorder=0 and ((`user`=".$tpl['user']['user_id']." and  `user`!=811) or (`user`=".$tpl['user']['user_id']." and fio='".strip_string($userfio)."'));";
-			$result22 = mysql_query($sql22);
-			
-			if (mysql_num_rows($result22)>0) {
-			
-				$rows22 = mysql_fetch_array($result22);
-				$CommentAdministrator = $rows22['CommentAdministratorF'];
-				$sql_up22 = "update comentorder set toorder=$shopcoinsorder where comentorder=".$rows22['comentorder'].";";
-				mysql_query($sql_up22);
-			}*/
-			
+			$CommentAdministrator = $order_class->getComentorder($userfio);
 			
 			if($bonus_comment === TRUE)
-				$CommentAdministrator = $CommentAdministrator . 'Оплата бонусными деньгами.';
+				$CommentAdministrator = $CommentAdministrator . ' Оплата бонусными деньгами.';
 				
 			$account_number = "";
 			$data_order = array( 
@@ -368,8 +327,8 @@ var_dump($tpl['submitorder']['result']);
                     		 'DateMeeting' => $meetingdate + $meetingfromtime, 
                     		 'MeetingFromTime'=>$meetingfromtime, 
                 			 'MeetingToTime'=>$meetingtotime, 
-                			 'OtherInformation'=>strip_tags($OtherInformation), 
-                			 'CommentAdministrator' => strip_tags($CommentAdministrator),
+                			 'OtherInformation'=>$OtherInformation,
+                			 'CommentAdministrator' => $CommentAdministrator,
                 			 'account_number'=>$account_number, 
                 			 'check'=>1,
                 			 'FinalSum' => $FinalSum, 
@@ -440,22 +399,10 @@ var_dump($tpl['submitorder']['result']);
 			
 			$resultsum = ($FinalSum>0?$FinalSum:$sum);
 			//рассылаем письма------------------------------------------------------------------------------------------------------
-			$crcode  = md5("numizmatikru:".sprintf ("%01.2f",round($resultsum*$krobokassa,2)).":".$shopcoinsorder.":$robokassapasword1:Shp_idu=$cookiesuser");
+			$crcode  = md5("numizmatikru:".sprintf ("%01.2f",round($resultsum*$krobokassa,2)).":".$shopcoinsorder.":$robokassapasword1:Shp_idu=".$tpl['user']['user_id']);
 			$culture = "ru";
-			$in_curr = "BANKOCEAN2R";			
-			
-			if ($paymen==8)
-				$user_order_details5 = "<tr><td colspan=6><form action='".$urlrobokassa."/Index.aspx' method=POST>".
-   "<input type=hidden name=MrchLogin value='numizmatikru'>".
-   "<input id=OutSum".$shopcoinsorder." type=hidden name=OutSum value='".sprintf ("%01.2f",round($resultsum*$krobokassa,2))."'>".
-   "<input type=hidden name=InvId value='".$shopcoinsorder."'>".
-   "<input type=hidden name=Desc value='Оплата предметов нумизматики'>".
-   "<input id=SignatureValue".$shopcoinsorder." type=hidden name=SignatureValue value='$crcode'>".
-   "<input type=hidden name=Shp_idu value='$cookiesuser'>".
-   "<input type=hidden name=IncCurrLabel value='$in_curr'>".
-   "<input type=hidden name=Culture value='$culture'>".
-   "<input type=submit value='Оплатить VISA, MasterCard'> - <div id=info".$shopcoinsorder.">".sprintf ("%01.2f",round($resultsum*$krobokassa,2))." руб.</div> (При оплате банковскими картами комиссия 4%).".
-   "</form></tr>";
+			$in_curr = "BANKOCEAN2R";
+
 			//получаем информацию о метро
 			$tpl['submitorder']['MetroName'] ='';
 			if ($metro and $delivery == 1) {
@@ -465,8 +412,10 @@ var_dump($tpl['submitorder']['result']);
 				$tpl['submitorder']['MetroName'] = $metro_data['name'];
 			}
 
-			$mail_class = new mails();						
-			$mail_class->orderLetter($user_data['email'],array());     
+			$mail_class = new mails();		
+			include $cfg['path']."/views/mails/ordermail.tpl.php";
+			$mail_class->orderLetter($user_data,$mail_text);
+			//$mail_class->orderLetter("bodka@mail.ru",array()); 
 			//изменение информации о пользователе
 			if ($tpl['user']['user_id'] != 811) {
 			    $data = array('phone'=>$phone,

@@ -7,16 +7,20 @@ class mails
     
     function __construct(){
 		$this->mail = new Zend_Mail('UTF-8');
-		$this->mail->setFrom('administrator@numizmatik.ru', 'Numizmatik.Ru');
-	    
+		$this->mail->addHeader("Content-Type:","text/html; charset=UTF-8");
+		$this->mail->setFrom('administrator@numizmatik.ru', 'Numizmatik.Ru');  
 	 	
-	}     
+	}   
+	  
 	//формирование письма о регистрации пользователя
 	public function newUserLetter($dataUser){
 		$this->mail->addTo($dataUser['email'], $dataUser['userlogin']);	
 	   // $mail->setBodyText('My Nice Test Text');	    
-	    $this->mail->setSubject("Регистрация в Клубе Нумизмат");	    
-	    $mytext = "<br><br><p><b>Ваши данные</b></p>";
+	    $this->mail->setSubject("Регистрация в Клубе Нумизмат");	
+	    
+	    $mytext ="<table border='0' cellpadding='0' cellspacing='0' width='650' style='border:1px solid #cccccc;border-collapse:collapse;margin-top:20px;'>"; 
+	    $mytext .="<tr><td style=\"border:1px solid #cccccc; background-color:#eeeeee;padding:10px;font-size:14px;font-weight:bold;\">Регистрация в Клубе Нумизмат</td></tr>";
+	 	$mytext .= "<tr><td style='padding: 10px;'><b><p>Ваши данные</b></p>";
 	    $mytext .= "<p>E-mail: ".$dataUser['email']."</p>";
 		$mytext .= "<p>Пароль: ".$dataUser['userpassword']."</p>";	
 		$mytext .= "<p>Подписка на новости: ".($dataUser['subsription']?"Да":"Нет")."</p>";	
@@ -24,50 +28,59 @@ class mails
 		    $mytext .= "<p>Подписка на новости магазина: ".($dataUser['subsription_shop']?"Да":"Нет")."</p>";	
 		}
 		
-		$mytext .= "<br /><p class=txt><b>Уважаемый коллега.</b></p>
-<p>Благодарим за регистрацию на нашем портале. Надеемся на наше долгое и взаимовыгодное сотрудничество.</p>
-<p>С уважением, администрация Клуба Нумизмат.</p>";					
+		$mytext .= "<br/><p class=txt><b>Уважаемый коллега.</b></p>";
+        $mytext .= "<p>Благодарим за регистрацию на нашем портале. Надеемся на наше долгое и взаимовыгодное сотрудничество.</p>";
+        $mytext .= "<p>С уважением, администрация Клуба Нумизмат.</p>";		
+		$mytext .= "</td></tr></table>";	
 		$html = $this->createFullHtml($mytext);
-		$this->mail->setBodyHtml($html,"Регистрация в Клубе Нумизмат");			   
+
+		$this->mail->setBodyHtml($html,'UTF-8',Zend_Mime::ENCODING_BASE64);			   
 		$this->mail->send();
 	}
-	public function orderLetter($email,$data){
+	public function orderLetter($dataUser,$mytext){
 	    //письмо о заказе
+		$this->mail->addTo($dataUser['email'], $dataUser['userlogin']);
+		// $mail->setBodyText('My Nice Test Text');
+		$this->mail->setSubject("Монетная лавка | Клуб Нумизмат");
+
+		$html = $this->createFullHtml($mytext);
+
+		$this->mail->setBodyHtml($html,'UTF-8',Zend_Mime::ENCODING_BASE64);
+		$this->mail->send();
 	}
 	
 	//формирование письма "забыли пароль"
 	public function forgetPwdLetter($dataUser){
 		$this->mail->addTo($dataUser['email'], $dataUser['userlogin']);	
 	   
-	    $this->mail->setSubject("Восстановление пароля в Клубе Нумизмат");	   
-	 	$mytext = "<br><br><p><b>Ваши данные</b></p>";
+	    $this->mail->setSubject("Восстановление пароля в Клубе Нумизмат");	 
+	    $mytext ="<table border='0' cellpadding='0' cellspacing='0' width='650' style='border:1px solid #cccccc;border-collapse:collapse;margin-top:20px;'>"; 
+	    $mytext .="<tr><td style=\"border:1px solid #cccccc; background-color:#eeeeee;padding:10px;font-size:14px;font-weight:bold;\">Восстановление пароля в Клубе Нумизмат</td></tr>";
+	 	$mytext .= "<tr><td style='padding: 10px;'><b><p>Ваши данные</b></p>";
 	    $mytext .= "<p>E-mail: ".$dataUser['email']."</p>";
 		$mytext .= "<p>Пароль: ".$dataUser['userpassword'];		
+	    $mytext .= "</td></tr></table>";
 		$html = $this->createFullHtml($mytext,"Восстановление пароля в Клубе Нумизмат");
-		$this->mail->setBodyHtml($html);	    
+		$this->mail->setBodyHtml($html,'UTF-8',Zend_Mime::ENCODING_BASE64);	    
         $this->mail->send();
 	}
 	
 	protected function createFullHtml($mytext,$subject=''){
-		$message = "<html><body><style type='text/css'><!-- body,p,td	{COLOR: #000000;font-family: arial, helvetica, sans-serif;font-size: 12px;margin-left: 4px;margin-right: 4px;margin-top: 2px;margin-bottom: 2px;}";
-			$message .="a:link{font-family:arial;font-weight:bold;color:#006699; TEXT-DECORATION:none; font-size:12px;}"; 
-			$message .="a:visited{font-family:arial;font-weight:bold;color:#006699; TEXT-DECORATION:none; font-size:12px;}"; 
-$message .="a:active{font-family:arial;font-weight:bold;color:#006699;  TEXT-DECORATION:none; font-size:12px;}";
-$message .="a:hover{font-family:arial;font-weight:bold;color:#006699; TEXT-DECORATION:none; font-size:12px;}--></style>";
-$message .="<center><table border=0 cellpadding=0 cellspacing=0 width=550><tr bgcolor=#ffcc66 valign=top><td height=30><a href=http://www.numizmatik.ru><font face=Arial size='+2' color='#006699'><b>cl</b></font></a></td>";
-$message .="<td rowspan=2 height=30><a href=http://www.numizmatik.ru><font face=Arial size='+4' color='#006699'><b>U</b></font></a></td><td height=30><a href=http://www.numizmatik.ru><font face=Arial size='+2' color='#006699'><b>b</b></font></a></td>";
-$message .="<td width='100%'>&nbsp;</td></tr><tr bgcolor=#006699 valign='top'><td height='20' align='center'><a href=http://www.numizmatik.ru>";
-$message .="<font face=Arial size='+1' color='#ffcc66'><b>n</b></font></a></td><td height=20><a href=http://www.numizmatik.ru><font face=Arial size='+1' color='#ffcc66'><b>mizmat</b></font></a></td>";
-$message .="<td width='100%'>&nbsp;</td></tr></table><br>";
-$message .="<table border=0 cellpadding=0 cellspacing=2 width=550><tr><td height=1 width=500 bgcolor='#000000' colspan=3></td></tr>"; 
-$message .= "<tr bgcolor=\"#006699\"><td rowspan=2 width=\"1\" bgcolor=\"#000000\"></td>
-			<td width=498><p><b><font color=white>$subject</font></b></td>
-			<td rowspan=2 width=\"1\" bgcolor=\"#000000\"></td></tr>
-			<tr>
-			<td width=498 bgcolor=\"#fff8e8\">$mytext<br><br>Клуб Нумизмат - <a href=http://www.numizmatik.ru>www.numizmatik.ru</a><br><br>
-			</td>
-			</tr>
-			<tr><td height='1' width='500' bgcolor='#000000' colspan=3></td></tr></table></center></body></html>";	
+		$message = "<html><head><style type='text/css'> body{font-family:arial;font-size:14px;font-weight:bold;}.maintd{font-size:14px;font-weight:bold;border:1px solid #cccccc;padding:10px;}.bordertd{border:1px solid #cccccc; background-color:#eeeeee;padding:10px;font-size:14px;font-weight:bold;}";
+		$message .="a:link{font-family:arial;font-weight:bold;color:#006699; TEXT-DECORATION:none; font-size:14px;}"; 
+		//$message .="a:visited{font-family:arial;font-weight:bold;color:#006699; TEXT-DECORATION:none; font-size:12px;}"; 
+        //$message .="a:active{font-family:arial;font-weight:bold;color:#006699;  TEXT-DECORATION:none; font-size:12px;}";
+        //$message .="a:hover{font-family:arial;font-weight:bold;color:#006699; TEXT-DECORATION:none; font-size:12px;}
+        $message .="</style></head><body>";
+        $message .="<center><table border='0' cellpadding='0' cellspacing='0' width='650'><tr>";
+        $message .="<td><img src='http://numizmatik1.ru/new/images/logo_small.jpg'></td>";
+        $message .="<td style='font-size:20px;font-weight:bold;line-height:26px;'>";
+        $message .="	8-800-333-14-77 (по России бесплатно)<br>";
+        $message .="	+7-903-006-00-44 (Москва)<br>";
+        $message .="	+7-812-925-53-22 (Санкт-Петербург) <br>";
+        $message .="</td></tr></table>";
+        $message .="$mytext";
+        $message .="<br><br>С уважением, клуб \"Нумизмат\" - <a target='_blank' href='http://www.numizmatik.ru'>www.numizmatik.ru</a></center></body></html>";	
 
 		return $message;
 	}

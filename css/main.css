@@ -67,8 +67,13 @@ a:hover{color:#006699;font-weight:bold;}
 }
 .header-mini {	
 	padding: 70px 0 0;
-    height: 55px;
+    height: 45px;
 }
+
+.header-mini .search-top-module input#search{	
+ width: 440px;
+}
+
 #header-menu {	
 	background: #4f5965 none repeat scroll 0 0;
     height: 40px;
@@ -286,8 +291,8 @@ background: url("../images/expand.jpg") no-repeat scroll left center;
 }
 .borderimage img{
 	border:1px solid #cccccc;
-	padding:3px;
-	width:180px;
+	padding: 3px 0;
+    width: 220px;
 }
 #basket .user_details p{
     margin: 0 0 5px;
@@ -603,10 +608,13 @@ leftmenu
     font-size: 16px;
     line-height: 32px;
     padding: 0;
-    width: 100%;
+    width: 280px;
 }
 .menu-heading > span {
     padding: 15px;
+}
+.menu-sidebar_static{
+  width: 260px;
 }
 .menu-sidebar a span {
     padding: 15px;
@@ -1318,4 +1326,12 @@ display:inline-block;
 /*форма логина*/
 .auth_form  {
 	width:90%;
+}
+
+.search-ayax a.ui-corner-all span {
+    display: table;
+    padding: 15px;
+}
+.search-ayax a.ui-corner-all img{
+float:left;
 }

@@ -35,6 +35,10 @@ class contentHelper{
        return "<img  src='http://numizmatik.ru/shopcoins/$url' title='$title' $on>";
        
     }
+    static function urlImage($url){
+       if(!trim($url)) return ;
+       return "http://numizmatik.ru/shopcoins/images/$url";       
+    }
     
     static function setHrefTitle($name,$material,$group){       
         $title = "";

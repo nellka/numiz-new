@@ -110,8 +110,6 @@ if ($catalog){
 	require_once($cfg['path'] . '/controllers/site_titles.ctl.php');
 }*/
 
-
-
 if($tpl["datatype"]=='json'){
    // if(!$tpl['task']){
        echo json_encode($tpl[$tpl['module']]);

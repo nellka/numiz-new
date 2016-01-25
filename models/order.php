@@ -45,7 +45,35 @@ class model_order extends Model_Base
 		return  $this->db->fetchOne($sql);
 	}
 
-	public function alreadyByeCoins(){
+    // комментарий администратора о заказе
+	public function getComentorder($userfio){
+		$select = $this->db->select()
+			->from('comentorder')
+			->where('toorder = 0')
+			->where('(user!=811 and user='.$this->user_id.') or (user='.$this->user_id.' and fio="'.$userfio.'")');
+
+		$data = $this->db->fetchRow($select);
+		$CommentAdministratorF ='';
+		if($data){
+			$CommentAdministratorF = $data['CommentAdministratorF'];
+			$data_update = array('toorder'=>$this->shopcoinsorder);
+			$this->db->update('comentorder',$data_update,"comentorder= ".$data['comentorder']);
+		}
+
+		return $CommentAdministratorF;
+	}
+
+	 public function clearOrder(){
+		 $domain = $_SERVER["HTTP_HOST"];
+		 $domain = '.'.str_replace('www.','', $domain);
+		 setcookie("shopcoinsorder", 0, time(), "/shopcoins/", $domain);
+		 setcookie("shopcoinsorder", 0, time(), "/shopcoins/");
+		 setcookie("shopcoinsorder", 0, time(), "/shopcoins/", ".shopcoins.numizmatik.ru");
+		 setcookie("shopcoinsorder", 0, time(), "/");
+		 if(isset($_SESSION['shopcoinsorder']))unset($_SESSION['shopcoinsorder']);
+	 }
+
+	 public function alreadyByeCoins(){
 		$sql = "select shopcoins1.*, group.name as gname from shopcoins,`catalogshopcoinsrelation`, `order`, orderdetails, orderdetails as orderdetails1,
 		catalogshopcoinsrelation as catalogshopcoinsrelation1,shopcoins as shopcoins1, `group`
 		where

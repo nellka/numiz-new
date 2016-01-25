@@ -883,6 +883,7 @@ function calculateOrder(on){
 	});
 }
 function SubmitOrder(){
+	console.log('SubmitOrder');
 	var error = CheckCorrectFormOrher();
 	if(!$('#postrulesview').prop("checked")){
 		error +="Вы должны согласиться с правилами<br>";
@@ -891,7 +892,9 @@ function SubmitOrder(){
 	if(error){
 		$('#error-order').text(error);
 	} else {
+		console.log($('#resultorderform'));
 		$('#resultorderform').submit();
+		console.log(10);
 	}
 }
 
@@ -1444,4 +1447,38 @@ function ShowSert() {
 		}
 		
 	}
+}
+
+function ShowMainCoins(coinsmain, image,details)
+{
+	//alert(navigator.userAgent.toLowerCase().search('firefox/3'));
+    if(!image) return;
+	var str = image;
+	//divstr = ";
+	//myDiv2 = $('#image' + coinsmain);
+	//var posX = getPosX(myDiv2);
+	//var posY = getPosY(myDiv2);
+	//myDiv = $("#imageshow");
+	//myDiv.style.position = "absolute";
+	if (coinsmain == "popular"){
+		//myDiv.style.left = posX - 450;
+	} else {
+		//myDiv.style.left = posX - 150;
+	}
+	$("#MainBascet").html(str);
+	$("#MainBascet").dialog({
+        	position: { 
+                my: 'top',
+                at: 'top',
+                of: $('#image' + coinsmain)
+            },
+     		modal:true,
+    		open: function(event, ui){
+    		   var $this = $(this); 
+    		   setTimeout(function(){$this.dialog('close');}, 2000);
+            }
+    	});    
+	//myDiv.style.top = posY -200;
+	//myDiv.html(str);
+	
 }

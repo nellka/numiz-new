@@ -133,7 +133,7 @@ $where ".$positive_amount."and shopcoins.group=group.group  $orderby limit 5;";
 $data = array();
 
 foreach ($shopcoins_class->getDataSql($sql) as $row){
-	
+
 	/*if ($row['materialtype']==1) $rehref = "Монета ";
 	if ($row['materialtype']==8) $rehref = "Монета ";
 	if ($row['materialtype']==7) $rehref = "Набор монет ";
@@ -153,7 +153,8 @@ foreach ($shopcoins_class->getDataSql($sql) as $row){
 	$rehref .= " ".contentHelper::setYearText($row['year'],$row['materialtype']);
 			
 	$currval = array();
-    $currval['label'] =   TRIM($rehref)?trim($rehref):$row['name'];
+    $currval['label'] =  TRIM($rehref)?trim($rehref):$row['name'];
+    $currval['image'] = contentHelper::showImage("smallimages/".$row["image_small"],'');
     $currval['id'] = $row['shopcoins'];
     $currval['href'] = contentHelper::getRegHref($row);
     array_push($data, $currval);
