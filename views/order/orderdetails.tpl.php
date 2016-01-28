@@ -122,9 +122,14 @@ if($rows["amountAll"]>1){?>
 </form>
 <div class="clearfix"> 
 <p><b>Доставка</b> осуществляется на сумму <b><font color=red>не менее 500 руб.</font></b> и <b><font color=red>не более <?=$stopsummax?> руб.</font></b> по территории РФ. </p>
-<p style="border: 1px solid #cccccc;margin: 0;  padding: 10px; width: 750px;" class="left">Заказ на сумму менее 500 руб. могут сделать авторизованые пользователи, у которых есть ранее сделанный заказ, но еще не отправленный покупателю. В таком случае новый заказ будет объединен с предыдущим не отправленным.
+<p style="border: 1px solid #cccccc;margin: 0;  padding: 10px; width: 630px;" class="left">Заказ на сумму менее 500 руб. могут сделать авторизованые пользователи, у которых есть ранее сделанный заказ, но еще не отправленный покупателю. В таком случае новый заказ будет объединен с предыдущим не отправленным.
 К стоимости Вашего заказа будет добавлена стоимость почтовых услуг по упаковке, страховке и доставке его Вам, которая зависит от пункта назначения, массы и стоимости товара.</p>
-<div class="right">Итого(без суммы доставки): <b><?=$sum?> рублей</b> 
+<div class="right">Итого(без суммы доставки): <b><?=$sum?> рублей</b> <br>
+<? if($tpl['user']['user_id']&&$tpl['user']['user_data']['vip_discoint']){?>
+    Ваша скидка как VIP-клиента: <b><?=$tpl['user']['user_data']['vip_discoint']?> %</b> <br>
+    Итого c учетом скидки (без суммы доставки): <b><?=($sum-floor($sum*$tpl['user']['user_data']['vip_discoint']/100))?> рублей</b> <br>
+<?}?>
+
 <!--<a class="button25 right" style="width:100px" onclick="$('#order-form').submit()">Пересчитать</a>-->
 </div>
 </div>
@@ -163,6 +168,7 @@ if($rows["amountAll"]>1){?>
 </div>
 
 <?
+
 if ($tpl['orderdetails']['related']) {?>
 
 <div class="wraper clearfix">
@@ -171,7 +177,10 @@ if ($tpl['orderdetails']['related']) {?>
 <div class="triger">	
 	<div class="wraper clearfix" style="height:350px;padding-top:15px;">
 		<div>
-			<?foreach ($tpl['orderdetails']['related'] as $rowsp){?>
+			<?foreach ($tpl['orderdetails']['related'] as $rowsp){
+			    $rowsp['metal'] = $tpl['metalls'][$rowsp['metal_id']];
+		        $rowsp['condition'] = $tpl['conditions'][$rowsp['condition_id']];
+			    ?>
 				<div class="coin_info">
 					<div id=show<?=$rowsp['shopcoins']?>></div>
 				<?	

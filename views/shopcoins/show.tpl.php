@@ -100,7 +100,10 @@ if ($tpl['shop']['related']){?>
 <?
 //сейчас показываем токо для аксессуаров
 if ($tpl['shop']['related']){?>	
-	<? foreach ($tpl['shop']['related'] as $rowsp){?>
+	<? foreach ($tpl['shop']['related'] as $rowsp){
+	    $rowsp['metal'] = $tpl['metalls'][$rowsp['metal_id']];
+		$rowsp['condition'] = $tpl['conditions'][$rowsp['condition_id']];
+	    ?>
 		<div class="coin_info">
 			<div id=show<?=$rowsp['shopcoins']?>></div>
 			<?	
@@ -124,7 +127,10 @@ if(isset($tpl['show']['resultcicle'])&&$tpl['show']['resultcicle']){?>
 <div class="triger">	
 	<div class="wraper clearfix" style="height:270px;padding-top:15px;">
 		<div>
-			<?foreach ($tpl['show']['resultcicle'] as $rowsp){?>
+			<?foreach ($tpl['show']['resultcicle'] as $rowsp){
+			      $rowsp['metal'] = $tpl['metalls'][$rowsp['metal_id']];
+		          $rowsp['condition'] = $tpl['conditions'][$rowsp['condition_id']];
+			    ?>
 				<div class="coin_info">
 					<div id=show<?=$rowsp['shopcoins']?>></div>
 				<?	
@@ -151,6 +157,8 @@ if ($tpl['shop']['resultp']) {	?>
 			<?$kn = 100;
 			$sumseecoins = 0;
 			foreach ($tpl['shop']['resultp']  as $rowsp ){
+			    $rowsp['metal'] = $tpl['metalls'][$rowsp['metal_id']];
+		        $rowsp['condition'] = $tpl['conditions'][$rowsp['condition_id']];
 				if(isset($rowsp["shopcoins"])){?>
 					<?=($kn>100?"<div style='float:left;margin-top:130px;'><font size=+2>+</font></div>":"")?>
 					
@@ -193,7 +201,10 @@ if( $tpl['shop']['result_show_relation2']) {	?>
 	<div class="triger">	
 		<div class="wraper clearfix" style="height:270px;padding-top:15px;">
 		<?
-		foreach ($tpl['shop']['result_show_relation2'] as $rows_show_relation2){?>			
+		foreach ($tpl['shop']['result_show_relation2'] as $rows_show_relation2){
+		    $rows_show_relation2['metal'] = $tpl['metalls'][$rows_show_relation2['metal_id']];
+		    $rows_show_relation2['condition'] = $tpl['conditions'][$rows_show_relation2['condition_id']];
+		    ?>			
 			<div class="coin_info">
 				<div id=show<?=$rows_show_relation2['shopcoins']?>></div>
 			<?	
@@ -218,7 +229,9 @@ if ($tpl['shop']['result_show_relation3']) {
 	<td colspan=2 class=tboard bgcolor=#99CCFF><b>Тот кто смотрел товар потом купил:</b></td></tr>";
 	$k = 0;
 	$oldmaterialtype = 0;
-	foreach ($tpl['shop']['result_show_relation3'] as $rows_show_relation2){				
+	foreach ($tpl['shop']['result_show_relation3'] as $rows_show_relation2){	
+	    $rows_show_relation2['metal'] = $tpl['metalls'][$rows_show_relation2['metal_id']];
+		$rows_show_relation2['condition'] = $tpl['conditions'][$rows_show_relation2['condition_id']];			
 		if ($k%2==0)
 			$RelationText .= "<tr bgcolor=#EBE4D4 valign=top>
 		<td class=tboard width=50%><div id=show".$rows_show_relation2['shopcoins']."></div>";

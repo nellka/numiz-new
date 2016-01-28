@@ -21,7 +21,7 @@ if($tpl['module']=='order'&&$tpl['task']=='showorders'){
     
     $tpl['current_page'] = '';
     
-} elseif($tpl['module']=='order'&&$tpl['task']=='userorder'){
+} elseif($tpl['module']=='order'&&($tpl['task']=='userorder'||$tpl['task']=='submitorder')){
      $tpl['breadcrumbs'][] = array(
     	'text' => 'Магазин',
     	'href' => $cfg['site_dir'].'shopcoins',

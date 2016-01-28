@@ -4,8 +4,13 @@
         <div id="raiting_hover"></div>
         <div id="raiting_votes"></div>       
     </div>
-    <div id="raiting_info<?=$rows['id']?>" class="raiting_info"><?=$rows['markusers']?> оценка(ок) <span id="raiting_error<?=$rows['id']?>" class="error"></span></div>
-    
+	<!-- вывод кол-ва оценок
+    <div id="raiting_info<?=$rows['id']?>" class="raiting_info">
+		<?=$rows['markusers']?> оценка(ок) 
+		<span id="raiting_error<?=$rows['id']?>" class="error">
+		</span>
+	</div>
+  -->  
 </div>
 
 <?/*if($rows['markusers']>0){?>

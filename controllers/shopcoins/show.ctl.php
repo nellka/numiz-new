@@ -82,10 +82,12 @@ $tpl['show']['error'] = false;
 if ($catalog){	
     //стартовая инфа о монете независимо от родитея
 	$rows_main = $shopcoins_class ->getItem($catalog,true);	
-	
+	$rows_main['metal'] = $tpl['metalls'][$rows_main['metal_id']];
+	$rows_main['condition'] = $tpl['conditions'][$rows_main['condition_id']];
 	$next_coins = $shopcoins_class->getNext($catalog,$materialtype);
+	$next_coins['metal'] = $tpl['metalls'][$next_coins['metal_id']];
 	$previos_coins = $shopcoins_class->getPrevios($catalog,$materialtype);
-	
+	$previos_coins['metal'] = $tpl['metalls'][$previos_coins['metal_id']];
 	$tpl['show']['next'] = ($next_coins)? contentHelper::getRegHref($next_coins,$materialtype,$parent):null;
 	$tpl['show']['previos'] = ($previos_coins)? contentHelper::getRegHref($previos_coins,$materialtype,$parent):null;	
 
@@ -248,7 +250,9 @@ if ($catalog){
 		$i = 0;
 		$oldmaterialtype = 0;
 		if ($tpl['shop']['related']){		
-			foreach ($tpl['shop']['related'] as $rows){
+			foreach ($tpl['shop']['related'] as &$rows){
+			    $rows['metal'] = $tpl['metalls'][$rows['metal_id']];
+			    $rows['condition'] = $tpl['conditions'][$rows['condition_id']];
 			    $tpl['shop']['related'][$i]['additional_title'] = '';
 				if ($oldmaterialtype != $rows["materialtype"]) {
 					$tpl['shop']['related'][$i]['additional_title'] = $MaterialTypeArray[$rows["materialtype"]];

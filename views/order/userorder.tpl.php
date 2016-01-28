@@ -33,14 +33,21 @@
 			<div id='adress-block-result' style="display:none">
 				Адрес отправления: <span id=adress-result></span>
 			</div>
+			
 			<div id='coupon-block-result' style="display:none">
-				Скидочный купон: <span id=coupon-result></span><br>
-				Скидка по купону: <span id=discountcoupon-result></span>
+			<?
+			if($user_data['vip_discoint']){?>
+			    Скидка как VIP- клиента: <?=$user_data['vip_discoint']?> %<span id=coupon-result style="display:none"></span><br>
+			    Размер скидки: <span id=discountcoupon-result></span> р.
+			<?} else {?>
+			    Скидочный купон: <span id=coupon-result></span><br>
+				Скидка по купону: <span id=discountcoupon-result></span> р.
+			<?}?>				
 			</div>
 			<div>
 				Комментарий к заказу: <span id=OtherInformation-result></span>
 			</div>
-			<div>Сумма заказа: <span id=bascetsum-result></span> р.</div>
+			<div>Сумма заказа сучетом скидок: <span id=bascetsum-result></span> р.</div>
 			<div id='post-block-result' style="display:none">
 				<h5>Отправка по почте</h5>
 				<div>Почтовая тариф зона<span id='post-zone-result'></span></div>
@@ -78,13 +85,13 @@
 
 				<h5>Заказчик</h5>
 				<div class="web-form">
-					<font color="red">*</font> <input type=text id=fio name=fio placeholder='ФИО' value="<?=$fio?>" size=50>
+					<font color="red">* </font> <input type=text id=fio name=fio placeholder='ФИО' value="<?=$fio?>" size=50>
 				</div>
 				<div class="web-form">
-					<font color="red">*</font><input id="userfio" type="text" name="userfio" value="<?=$userfio?>" size="40" placeholder='ФИО получателя'>
+					<font color="red">* </font><input id="userfio" type="text" name="userfio" value="<?=$userfio?>" size="40" placeholder='ФИО получателя'>
 				</div>
 				<div class="web-form">
-					<font color="red">*</font><input id="phone" type="text" name="phone" value="<?=$phone?>" size="40" placeholder='Телефон с указанием кода'>
+					<font color="red">* </font><input id="phone" type="text" name="phone" value="<?=$phone?>" size="40" placeholder='Телефон с указанием кода'>
 				</div>
 				<div class="web-form">
 					Данные требуются для подтверждения заказа
@@ -97,8 +104,11 @@
 					foreach ($DeliveryName as $key=>$value){?>
 						<div>
 							<input type=Radio name=delivery id=delivery <?=(isset($DeliveryNameDisabled[$key])&&$DeliveryNameDisabled[$key]==1)?"disabled":""?> value=<?=$key?> <?=checked_radio($delivery,$key)?>
-							onclick="ShowPayment(<?=$key?>);ShowOther(<?=$key?>);"><img src="<?=$cfg['site_dir']?>images/delivery<?=$key?>.jpg"><?=$value?>
-							<?if($key==6){?> <br> <font color=red>Стоимость доставки пожалуйста узнавайте на сайте <a href=http://www.emspost.ru/ target=_blank>http://www.emspost.ru/</a> в разделе Тарифы и сроки и добавляйте к сумме заказа при его оплате</font>
+							onclick="ShowPayment(<?=$key?>);ShowOther(<?=$key?>);"> <img src="<?=$cfg['site_dir']?>images/delivery<?=$key?>.jpg"> <?=$value?>
+							<?if($key==6){?> 
+							<br> <span style="font-size:11px;color:red;">Стоимость доставки пожалуйста узнавайте на сайте<br> 
+								<a href=http://www.emspost.ru/ target=_blank>http://www.emspost.ru/</a> <br>
+								в разделе Тарифы и сроки и добавляйте к сумме заказа при его оплате</span>
 							<?}
 							if($key!=2){?> [<a href=#top onclick="window.open('<?=$cfg['site_dir']?>shopcoins/deliverydescription.php?delivery=<?=$key?>','_description','width=500,height=350,scrollbars=yes,top=250,left=450');return false;"><font color=red>?</font></a>]
 							<?}?>
@@ -119,7 +129,7 @@
 					</div>
 					<b>Дата и время</b>
 					<select name=meetingdate id='meetingdate'><option value=0>Дата</select>
-					<span id="meeting-from">c</span><select name=meetingfromtime id=meetingfromtime></select>
+					<span id="meeting-from">c </span><select name=meetingfromtime id=meetingfromtime></select>
 					<span id="meeting-to">по <select name=meetingtotime id=meetingtotime></select> </span>
 
 					<div id=MetroGif><img src=<?=$cfg['site_dir']?>images/wait.gif border=0></div>
@@ -155,7 +165,10 @@
 								<img src="<?=$cfg['site_dir']?>images/payment<?=$key?>.jpg"> <input type=Radio name=payment id=payment<?=$key?> value="<?=$key?>"  <?=checked_radio($payment,$key)?> disabled><?=$value?>
 								[<a href=#top onclick="window.open('<?=$cfg['site_dir']?>shopcoins/paymentdescription.php?payment=<?=$key?>','_payment','width=500,height=350,scrollbars=yes,top=250,left=450');"><font color=red>?</font></a>]
 
-								<? if ($key==6){?>	<font color=red><b>!!! У нас новые <a href=http://www.numizmatik.ru/shopcoins/delivery.php target=_blank>реквизиты</a>!!! Банка Пушкино больше не существует!</b></font>
+								<? if ($key==6){?>	<br>
+								<span style="font-size:11px;color:red;"><b>!!! 
+								У нас новые <a href=http://www.numizmatik.ru/shopcoins/delivery.php target=_blank>реквизиты</a>!!!
+								<br>Банка Пушкино больше не существует!</b><span style="font-size:11px;color:red;">
 								<?}?>
 							</div>
 						<?}
@@ -194,10 +207,20 @@
 				<h5>Комментарий к заказу</h5>
 				<textarea name=OtherInformation id=OtherInformation cols=50 rows=5><?=$Otheinfo?></textarea>
 				<hr>
-				<div> Итоговая цена с учетом скидок и доставки: <b><span id="price-sum"><?=floor($sumallorder)?></span> руб.</b></div>
+				<div> 
+				<br>
+				Сумма заказа:<font color="red"> <b><?=$bascetsum?></b></font><br>
+				
+				<? if($tpl['user']['user_id']&&$user_data['vip_discoint']){?>
+               <br> Ваша скидка как VIP-клиента: <b><?=$user_data['vip_discoint']?> %</b> <br>
+                <br>Итого c учетом скидки (без суммы доставки): <b><?=($bascetsum-floor($user_data['vip_discoint']*$bascetsum/100))?> рублей</b> <br>
+                <?}?>
+				<br><font color="red">Итоговая цена с учетом скидок и доставки: <b><span id="price-sum"><?=($bascetsum-floor($bascetsum*$user_data['vip_discoint']/100))?></span> руб.</b></font></div>
+				<br>
 				<div>
 					<input type="checkbox" id="acsess">Нажимая кнопку "Проверить заказ" я подтверждаю свою дееспособность, даю согласие на обработку своих персональных данных.
 				</div>
+				<br>
 				<div>
 
 					<? if ($userstatus != 2) {
@@ -215,6 +238,7 @@
 						</div>
 					<?}?>
 				</div>
+				<br>
 				<div class="clearfix">
 					<a href='<?=$cfg['site_dir']?>shopcoins' class="left c-b">Продолжить покупки </a>
 				</div>
@@ -227,7 +251,7 @@
 <div style="float:right;width:40%;">
 	<h5>Мой заказ</h5>
 	<?foreach ($tpl['orderdetails']['ArrayShopcoinsInOrder'] as 	$rows ){ ?>
-		<div>
+		<div style="border:1px solid #cccccc; margin:15px;padding:10px;margin-left:0px;">
 			<td class=tboard id=image<?=$rows['catalog']?>>
 				<div id=show<?=$rows['catalog']?>></div>	
 				
@@ -249,27 +273,39 @@
 
 	
 	<div>
-		Стоимость заказа: <?=$bascetsum?> руб.
+	<br>
+		Стоимость заказа: <font color="red"><b><?=$bascetsum?></b></font> руб.
 		<input type="hidden" id="bascetsum" name="bascetsum" value="<?=$bascetsum?>">
 		<?if ($userstatus != 2 &&$mysumclient) {?>
 			<br> Для постоянных клиентов : <?=$mysumclient?> руб.<br>
 			Прим.: Постоянным клиентом считается пользователь, сделавший не менее 3-х заказов за календарный год под своим логином
 		<?}?>
 		<br>
-		Стоимость доставки: <span id="price-delivery"> 0 </span>руб.
-		</span>
+		<!--Стоимость доставки: <span id="price-delivery"> 0 </span>руб.-->
+		
 	</div>
-	<div>Итого: <b><span id="price-sum"><?=floor($sumallorder)?></span> руб.</b></div>
-	<div> <b>Быстро! Удобно! Безопасно!</b></div>
-	<div> <img src="<?=$cfg['site_dir']?>images/p1.jpg">Не сомневайтесь, все платежи проходят через защищенное 128-bit SSL соединение.</div>
+	<!--<div>Итого: <b><span id="price-sum"><?=floor($bascetsum)?></span> руб.</b></div>-->
+	<br>
+	<div> <b>Быстро! Удобно! Безопасно!</b></div><br>
+	<div style="border:1px solid #cccccc; padding:10px;"> 
+		<table>
+			<tr>
+				<td><img src="<?=$cfg['site_dir']?>images/p1.jpg"></td>
+				<td>Не сомневайтесь, все платежи проходят через защищенное 128-bit SSL соединение.</td>
+			</tr>
+		</table>
+	
+	</div>
+	<br>
 	<div> Нет желаемого способа оплаты или доставки? Возникли вопросы? <br><br>
 		Звоните бесплатно на 8-800-123-45-67 и мы поможем Вам!</div>
 		
 		<? if ($tpl['orderdetails']['alreadyBye']) {?>
 		<div>
-			<h5>На нижеприведенные монеты Вы уже делали заказы в нашем магазине ранее.</h5> 
-			Если Вы желаете еще раз приобрести эти позиции, то просто продолжите оформление заказа. <br>
-			Для корректировки заказа перейдите по ссылле:</strong> <a href='<?=$cfg['site_dir']?>shopcoins/?page=orderdetails'>Изменить содержимое заказа</a></strong>
+			<h5>На нижеприведенные монеты Вы уже делали заказы в нашем магазине ранее.</h5> <br>
+			Если Вы желаете еще раз приобрести эти позиции, то просто продолжите оформление заказа. <br><br>
+			Для корректировки заказа перейдите по ссылке:<br></strong> <a href='<?=$cfg['site_dir']?>shopcoins/?page=orderdetails'>Изменить содержимое заказа</a></strong>
+			<br><br>
 			<?
 			$a = array();
 			foreach ($tpl['orderdetails']['alreadyBye'] as 	$rows ){

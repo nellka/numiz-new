@@ -3,12 +3,18 @@ function setMini(on){
 		$('#header').hide();
 		$('#header-mini').show();
 		$('#small-logo').hide();
+		if($('#left_menu_shop')){
+		    $('#left_menu_shop').hide();
+		}
 		
 		$.cookie('mini', 1);
 	} else {
 		$('#header-mini').hide();
 		$('#header').show();
 		$('#small-logo').show();
+		if($('#left_menu_shop')){
+		    $('#left_menu_shop').show();
+		}
 		$.cookie('mini', 0);
 	}
 }

@@ -1,6 +1,6 @@
 <?
 $checked_array = $rows['checked'];
-
+var_dump($rows['filter']);
 ?>
 <div class="filter-block" id="fb-<?=$rows['filter_group_id_full']?>">
 	<div class="filter_heading">
@@ -36,6 +36,15 @@ $checked_array = $rows['checked'];
 		 </div>
 		 
 		<a href="#" class="scrollUpBtn"></a> <a href="#" class="scrollDownBtn"></a>
+		<? if($rows['filter_group_id_full']=='years'){?>   
+			    <div id='years-slider'>
+    				<div style="font-weight:bold;padding: 15px 0;">
+    					От <input type="text" id="amount-years0" name="fields_filter[amount-years0][0]" value="0" size="10" disabled/>
+    					до <input type="text" id="amount-years1" name="fields_filter[amount-years1][1]" value="2015" size="10" disabled/>
+    				</div>
+    				<div style="margin:0 5px;margin-top:5px;" id="slider-range-years"></div>	
+				</div>		 
+			<?}?>       
 		</div>
 	</ul> 
 </div>

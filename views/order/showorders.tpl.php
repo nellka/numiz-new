@@ -9,7 +9,7 @@
 <br><br>
 
 	
-<table cellpadding="0">
+<table cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
 		<tr>
 		<td class=tboard><b>№</b></td>
 		<td class=tboard><b>Заказан</b></td>

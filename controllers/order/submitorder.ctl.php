@@ -68,6 +68,16 @@ if(!$payment || !$userfio ||!$fio){
 
 		if (!$clientdiscount) $needcallingorder1 = 1;
 		
+		$basket_data = $orderdetails_class->PostSum($postindex,$clientdiscount);
+
+        $tpl['submitorder']['bascetsum'] = $bascetsum = $basket_data["bascetsum"];
+		$tpl['submitorder']['amountbascetsum'] = $amountbascetsum = $basket_data['amountbascetsum'];
+		$tpl['submitorder']['suminsurance'] = $suminsurance = $basket_data["suminsurance"];
+		$tpl['submitorder']['PostAllPrice'] = $PostAllPrice  = $basket_data["PostAllPrice"];
+		$tpl['submitorder']['PostZonePrice'] = $PostZonePrice  = $basket_data["PostZonePrice"];
+		$tpl['submitorder']['bascetpostweight'] = $bascetpostweight  = $basket_data["bascetpostweight"];
+		$tpl['submitorder']['PostZoneNumber'] = $PostZoneNumber  = $basket_data["PostZoneNumber"];
+		
 		//делаем проверку на все товары из магазина и показ отчета 		
 		$tpl['submitorder']['result'] = $order_class->OrderSumDetails($clientdiscount);
 
@@ -93,12 +103,16 @@ if(!$payment || !$userfio ||!$fio){
 		}
 		
 		if ($sum>=1000) $needcallingorder2 = 1;
-
-		if ($code1 && $code2 && $code3 && $code4 && $tpl['user']['user_id'] && $tpl['user']['user_id']<>811 && $shopcoinsorder) {
+		$tpl['submitorder']['vip_discoint'] =0;
+		
+	    if($user_data['vip_discoint']) {
+            $discountcoupon = floor(($bascetsum-$amountbascetsum-$vipcoinssum)*$user_data['vip_discoint']/100);  
+            $tpl['submitorder']['vip_discoint'] =  $user_data['vip_discoint'];  
+        } elseif ($code1 && $code2 && $code3 && $code4 && $tpl['user']['user_id'] && $tpl['user']['user_id']<>811 && $shopcoinsorder) {
 			//получаем данные о введенном купоне
 			$code = strtolower($code1."-".$code2."-".$code3."-".$code4);
 			if (!preg_match("/[^-0-9a-zA-Z]{19}/",$code)){
-				$couponData = $user_class->getUserCoupon(array('code'=>$code ));
+				$couponData = $user_class->getUserCoupon(array('code'=>$code,'type'=>1));
 				$friendCoupon = $user_class->getFriendCouponCode();
 				if($couponData&&$couponData['check'] !== 0&&$couponData['dateend']>time()) {
 					$data = array(
@@ -108,14 +122,9 @@ if(!$payment || !$userfio ||!$fio){
 						'check'=>1
 					);
 					$shopcoins_class->addNew('ordercoupon',$data);
-
-					if ($couponData['type']==2) {
-						$discountcoupon = floor(($sum-$sumamountprice-$vipcoinssum)*$couponData['sum']/100);
-					} elseif ($couponData['type']==1) {
-						$discountcoupon = $couponData['sum'];
-					}
+					$discountcoupon = $couponData['sum'];					
 					$data = array('check'=>0,'order'=>$shopcoinsorder);
-					$shopcoins_class->updateTableRow('coupon',$data,"`check`=1 and coupon='".$couponData['coupon']."'");
+					$shopcoins_class->updateTableRow('coupon',$data,"`check`=1 and type=1 and coupon='".$couponData['coupon']."'");
 				}
 			}
 		}
@@ -129,18 +138,20 @@ if(!$payment || !$userfio ||!$fio){
 
 		$sum = $sum - $discountcoupon;
 		$tpl['submitorder']['sum'] = $sum;
-		$basket_data = $orderdetails_class->PostSum($postindex,$clientdiscount);
-
-        $tpl['submitorder']['bascetsum'] = $bascetsum = $basket_data["bascetsum"];
-		$tpl['submitorder']['amountbascetsum'] = $amountbascetsum = $basket_data['amountbascetsum'];
-		$tpl['submitorder']['suminsurance'] = $suminsurance = $basket_data["suminsurance"];
-		$tpl['submitorder']['PostAllPrice'] = $PostAllPrice  = $basket_data["PostAllPrice"];
-		$tpl['submitorder']['PostZonePrice'] = $PostZonePrice  = $basket_data["PostZonePrice"];
-		$tpl['submitorder']['bascetpostweight'] = $bascetpostweight  = $basket_data["bascetpostweight"];
-		$tpl['submitorder']['PostZoneNumber'] = $PostZoneNumber  = $basket_data["PostZoneNumber"];
+		
+		
 
 		$FinalSum = $sum;
 		$sumEMC = 0;
+			
+		//вычисляем для страховок
+        $suminsurance = $order_class->getSuminsurance();
+        if ($suminsurance>0){
+        	$bascetinsurance = $suminsurance * 0.04;
+        } else {
+        	$bascetinsurance = $bascetsum * 0.04;
+        }
+
 		if ($delivery==6) {		
 			if ($bascetpostweight < 1000) 
 				$sumEMC = 650;
@@ -345,27 +356,11 @@ if(!$payment || !$userfio ||!$fio){
 						
 			if($user_data['sms']==1&&in_array($delivery,array(1,3,4,6,7))) {
 		        require_once $cfg['path'] . '/models/smssend.php';
-            	$sms_class = new model_sms($cfg['db']);
+            	$sms_class = new model_smssend($cfg['db']);
 				
-				$textsms1 = "";
-				
-				switch ($delivery) {				
-					case 1:
-						$textsms1 = $MetroName." ".date('d.m.Y',$meetingdate);
-						break;
-					case 3:
-						$textsms1 = $MetroName." ".date('d.m.Y',$meetingdate);
-						break;
-					case 4:
-						$textsms1 = $MetroName." ".$paymentsms[$paymentvalue];
-						break;
-					case 7:
-						$textsms1 = date('d.m.Y',$meetingdate);
-						break;					
-				}
-				
-				$textsms1 = str_replace("___1___",$textsms1,$arraytextsms2[$delivery]);				
-				$testingsms = $sms_class->sendsms2 (1,$phone,$shopcoinsorder,($FinalSum>0?$FinalSum:$sum),$textsms1);
+				$textsms1 = $sms_class->create_textsms($delivery,$payment,$meetingdate,$meetingdate,$MetroName);			
+							
+				$testingsms = $sms_class->sendsms2(1,$phone,$shopcoinsorder,($FinalSum>0?$FinalSum:$sum),$textsms1);
 				$sms_class->addNewSms($tpl['user']['user_id'],$testingsms[1],$testingsms[2],$shopcoinsorder);
 			}
 			
@@ -434,6 +429,8 @@ if(!$payment || !$userfio ||!$fio){
             setcookie("order", 0, time() + 2, "/shopcoins/");
             setcookie("order", 0, time() + 2, "/shopcoins/", ".shopcoins.numizmatik.ru");
             setcookie("order", 0, time() + 2, "/");            
+            
+            $tpl['submitorder']['shopcoinsorder'] = $shopcoinsorder;
             
             unset($_SESSION['shopcoinsorder']);
             unset($_SESSION['order']);            

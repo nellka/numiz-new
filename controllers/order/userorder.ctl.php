@@ -124,26 +124,18 @@ if ($tpl['myOrders']) {
 
 $tpl['orderdetails']['coupons'] = array();
 
-$iscoupon = $user_class->getUserCouponType();
-$iscoup=0;
-
-if ($iscoupon==2) {
-
-	$couponData = $user_class->getUserCoupon(array('`check`'=>1, 'type'=>2));
-
-	$tpl['orderdetails']['coupons'][2] = $couponData['code'];
-	$order_class->tempUseCoupon($couponData['coupon']);
+if (!$user_data['vip_discoint']) {
 
 	$iscoup1 = $user_class->getUserCoupon(array('`check`'=>1, 'type'=>1, '`order`'=>0));
 	if($iscoup1){
 		$iscoup = 1;
 		$tpl['orderdetails']['coupons'][1] = $iscoup1['code'];
 	}
-}
-
-$codetmp_ = $user_class->getFriendCouponCode();
-if($codetmp_){
-	$tpl['orderdetails']['coupons']['friends'] = explode("-",$codetmp_);
+	
+	$codetmp_ = $user_class->getFriendCouponCode();
+    if($codetmp_){
+    	$tpl['orderdetails']['coupons']['friends'] = explode("-",$codetmp_);
+    }
 }
 
 $rows = $order_class->OrderSum();

@@ -37,19 +37,19 @@ $vipcoinssum = $rows['vipcoinssum'];
 
 $discountcoupon = 0;
 
-//проверяем купон
-if ($code1 && $code2 && $code3 && $code4 && $tpl['user']['user_id'] && $tpl['user']['user_id']<>811 && $shopcoinsorder) {
+$user_data =  $user_class->getUserData();
+if($user_data['vip_discoint']) {
+    $discountcoupon = floor(($bascetsum-$amountbascetsum-$vipcoinssum)*$user_data['vip_discoint']/100);
+
+} else if ($code1 && $code2 && $code3 && $code4 && $tpl['user']['user_id'] && $tpl['user']['user_id']<>811 && $shopcoinsorder) {
+    //проверяем купон
 	//получаем данные о введенном купоне
 	$code = strtolower($code1."-".$code2."-".$code3."-".$code4);
 	if (!preg_match("/[^-0-9a-zA-Z]{19}/",$code)){
-		$couponData = $user_class->getUserCoupon(array('code'=>$code ));
+		$couponData = $user_class->getUserCoupon(array('code'=>$code ,'type'=>1));
 		$friendCoupon = $user_class->getFriendCouponCode();
 		if($couponData&&$couponData['check'] !== 0&&$couponData['dateend']>time()) {
-			if ($couponData['type']==2) {
-				$discountcoupon = floor(($bascetsum-$amountbascetsum-$vipcoinssum)*$couponData['sum']/100);
-			} elseif ($couponData['type']==1) {
-				$discountcoupon += $couponData['sum'];
-			}
+			$discountcoupon += $couponData['sum'];
 		}
 	}
 }

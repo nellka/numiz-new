@@ -1,17 +1,26 @@
-<div style="position:absolute;width:30px;height:14px;background-color:red;right:23px;color: #ffffff;">NEW</div>
-
+<?php
+//новинки
+if ($rows["dateinsert"]>time()-86400*180 && !$mycoins){
+?>
+	<div style="position:absolute;width:30px;height:14px;background-color:red;right:5px;color: #ffffff;">NEW</div>
+<?php 
+ }
+?>
 <? 
 if($rows["materialtype"]==3){?>
-<a href='<?=$cfg['site_dir']?>shopcoins/<?=$rows["rehref"]?>' title='<?=$cfg['site_dir']?>/shopcoins<?=$rows['namecoins']?>' >
-	<?=contentHelper::showImage('images/'.$rows["image"],$rows['namecoins'])?>
-</a>
-<a name=coin<?=$rows["shopcoins"]?> title='<?=$rows["name"]?>'></a><strong><?=$rows['namecoins']?></strong>
+	<center>	
+		<a class="borderimage"  href='<?=$cfg['site_dir']?>shopcoins/<?=$rows["rehref"]?>' title='<?=$cfg['site_dir']?>/shopcoins<?=$rows['namecoins']?>' >
+			<?=contentHelper::showImage('images/'.$rows["image"],$rows['namecoins'])?>
+		</a>
+	</center>
+	<a name=coin<?=$rows["shopcoins"]?> title='<?=$rows["name"]?>'></a><strong><?=$rows['namecoins']?></strong>
 <? } elseif ($rows["materialtype"]==5){?>
-
-<a href='<?=$rows["rehref"]?>' title='Подробнее о книге <?=$rows["name"]?>'>
-	<?=contentHelper::showImage('images/'.$rows["image"],$rows["name"])?>
-</a>
-<a name=coin<?=$rows["shopcoins"]?> title='<?=$rows["name"]?>'></a><strong><?=$rows["name"]?></strong>
+	<center>
+	<a class="borderimage" href='<?=$rows["rehref"]?>' title='Подробнее о книге <?=$rows["name"]?>'>
+		<?=contentHelper::showImage('images/'.$rows["image"],$rows["name"])?>
+	</a>
+	</center>
+	<a name=coin<?=$rows["shopcoins"]?> title='<?=$rows["name"]?>'></a><strong><?=$rows["name"]?></strong>
 <?}	else {
 
 	$title = contentHelper::setHrefTitle($rows["name"],$rows["materialtype"],$rows['gname']).' - подробная информация';?>
@@ -45,21 +54,16 @@ if($rows["materialtype"]==3){?>
 </div>
 
 <? echo contentHelper::render('shopcoins/price/prices',$rows);?>
-<div class="stars">
-	<?php
-	echo contentHelper::render('shopcoins/price/markitem',$rows['mark']);	
-	?>
-</div>
+
 <?echo contentHelper::render('shopcoins/price/buy_button',$rows);?>
+<?
+	echo contentHelper::render('shopcoins/price/reserved',$rows);
+	?>
 <?
 if(($rows['buy_status']==7||$rows['buy_status']==6)&&($minpriceoneclick<=$rows['price'])) {
 	echo contentHelper::render('shopcoins/price/oneclick',$rows);
 }?>
-<div class="reserv">
-	<?
-	echo contentHelper::render('shopcoins/price/reserved',$rows);
-	?>
-</div>
+
 
 <div id=subinfo class="subinfo">
 Название: <strong><?=$rows["name"]?></strong><br>
@@ -99,11 +103,17 @@ if (trim($rows["details"]))
 	$text = str_replace(" монетам ","<strong> монетам </strong>",$text);
 	echo "<br>Описание: ".str_replace("\n","<br>",$text)."";
 }
-
+/*
 if ($rows["dateinsert"]>time()-86400*180 && !$mycoins){
 	echo "<br>Добавлено: <strong>".($rows["dateinsert"]>time()-86400*14?"<font color=red>NEW</font> ".date("Y-m-d", $rows["dateinsert"]):date("Y-m-d", $rows["dateinsert"]))."</strong>";
-}?>
-	
+}*/
+?>
+
+<div class="stars">
+	<?php
+	echo contentHelper::render('shopcoins/price/markitem',$rows['mark']);	
+	?>
+</div>	
 </div>		
 <?
 if($rows['tmpsmallimage']){?>
@@ -113,8 +123,8 @@ if($rows['tmpsmallimage']){?>
      <? foreach ($rows['tmpsmallimage'] as $img){
      	echo $img;
      }?>
-
-    <img src='<?=$cfg['site_dir']?>images/corz13.gif' alt='Посмотреть список подобных <?=contentHelper::setWordWhat($rows["materialtype"])?> - <?=$rows["gname"]?> <?=$rows["name"]?>'></a>
+	<img src='<?=$cfg['site_dir']?>images/corz13.gif' alt='Посмотреть список подобных <?=contentHelper::setWordWhat($rows["materialtype"])?> - <?=$rows["gname"]?> <?=$rows["name"]?>'>
+	</a>
 </div>
 
 <!-- конец блок подобные-->

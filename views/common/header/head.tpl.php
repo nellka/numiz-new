@@ -57,10 +57,12 @@ $(document).ready(function() {
       source: 'shopcoins/index.php?search=1',
       minLength:3,
       select: function (event, ui) {
+          console.log(ui.item);
             window.location = ui.item.href;
             return ui.item.label;
         }
     }).data( "autocomplete" )._renderItem = function( ul, item ) {
+         console.log(item);
         return $( "<li class='search-ayax'></li>" )
             .data( "item.autocomplete", item )
             .append( "<a href='"+item.href+"'>" + item.image+ " <span> " + item.label+ "</span></a>" )

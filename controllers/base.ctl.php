@@ -84,6 +84,26 @@ $tpl['stat']['users'] = $user_class->countAll();
 $tpl['stat']['items'] = $shopcoins_class->countAll();
 $tpl['stat']['news'] =  $news_class->countAll();
 
+//кладем в кеш металлы и состояния, чтобы работать с ними по id
+if(!$tpl['metalls'] = $cache->load("metalls")) {	   
+    $_metalls = $shopcoins_class->getMetalls(true);	 
+    $tpl['metalls'][0]='';
+    foreach ($_metalls as $row){
+        $tpl['metalls'][$row['metal_id']] = $row['name'];
+    }
+    $cache->save($tpl['metalls'], "metalls");	 
+}
+
+if(!$tpl['conditions'] = $cache->load("conditions")) {	   
+    $_condition = $shopcoins_class->getConditions(true);	 
+    $tpl['conditions'][0]='';
+    foreach ($_condition as $row){
+        $tpl['conditions'][$row['condition_id']] = $row['name'];
+    }
+    $cache->save($tpl['conditions'], "conditions");	 
+}
+
+
 $dir = $cfg['path'] .  '/controllers/'.$tpl['module'].'/';
 
 if( is_dir($dir)){
@@ -95,6 +115,7 @@ if( is_dir($dir)){
 } else {
     $controller = $cfg['path'] .  '/controllers/'.$tpl['module'].'.ctl.php';   
 }
+
 //var_dump($controller);
 $static_page = true;
 if(file_exists($controller)){

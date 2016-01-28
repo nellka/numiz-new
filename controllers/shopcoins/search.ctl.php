@@ -17,7 +17,7 @@ $tpl['pager']['itemsOnpage'] = array(12=>12,24=>24,48=>48);
 if(request('onpage')){
     $tpl['onpage'] = request('onpage');
 } else {
-    $tpl['onpage'] = 12;
+    $tpl['onpage'] = 24;
 }	
 
 //setcookie('onpage', $tpl['onpage'],  time()+ 86400 * 90,'/',$cfg['domain']);
@@ -96,6 +96,11 @@ if (sizeof($SearchTemp)>0) {
 }
 
 if (sizeof($SearchTempStr)) {
+    
+    $result_temp_metal = $shopcoins_class->searchTable('metals',$SearchTempStr);
+	$result_temp_name = $shopcoins_class->searchTable('nominals',$SearchTempStr);
+	$result_temp_condition = $shopcoins_class->searchTable('conditions',$SearchTempStr);
+	
 	$result_temp = $shopcoins_class->searchGroups($SearchTempStr);
     $parents = array();
 	foreach ($result_temp as $rows_temp) {	
@@ -114,23 +119,33 @@ if (sizeof($SearchTempStr)) {
 
 				
 $CounterSQL = '';
-$CounterSQL = (sizeof($SearchTempMatch)?" MATCH(shopcoins.`name`,shopcoins.details,shopcoins.metal,shopcoins.number,shopcoins.condition) AGAINST('".implode(" ",$SearchTempMatch)." ' IN BOOLEAN MODE) as coefficientcoins, if(`group`.`name` like '%".implode("%' or `group`.`name` like '%",$SearchTempStr)."%', 3,0) as coefficientgroup":"");
+$CounterSQL = (sizeof($SearchTempMatch)?" MATCH(shopcoins.`name`,shopcoins.details,shopcoins.number) AGAINST('".implode(" ",$SearchTempMatch)." ' IN BOOLEAN MODE) as coefficientcoins, if(`group`.`name` like '%".implode("%' or `group`.`name` like '%",$SearchTempStr)."%', 3,0) as coefficientgroup":"");
 
 if (sizeof($WhereThemesearch) || sizeof($SearchTempDigit)) {
 
 	$CounterSQL .= ", if(".(sizeof($WhereThemesearch)?implode(" or ",$WhereThemesearch).", ".(sizeof($SearchTempDigit)?"if( shopcoins.year in ('".implode("','",$SearchTempDigit)."') and shopcoins.year<>0,3,2)":"2").",".(sizeof($SearchTempDigit)?" if( shopcoins.year in ('".implode("','",$SearchTempDigit)."') and shopcoins.year<>0,1.5,0)":"0"):" shopcoins.year in ('".implode("','",$SearchTempDigit)."') and shopcoins.year<>0,1.5,0").") as counterthemeyear";
 }
 
-$WhereArray[] = " ( ".(sizeof($SearchTempStr)?"((shopcoins.details like '%".implode("%' or shopcoins.details like '%",$SearchTempStr)."%') and shopcoins.details<>'')":"")."
-".(sizeof($SearchTempDigit)?"or ((shopcoins.details like '".implode("' or shopcoins.details like '",$SearchTempDigit)."') and shopcoins.details<>'')":"")."
+$WhereArray = " ( ".(sizeof($SearchTempStr)?"(shopcoins.details like '%".implode("%' or shopcoins.details like '%",$SearchTempStr)."%')":"")."
+".(sizeof($SearchTempDigit)?"or (shopcoins.details like '".implode("' or shopcoins.details like '",$SearchTempDigit)."')":"")."
 ".(sizeof($SearchTempStr)?"or shopcoins.number in ('".implode("','",$SearchTemp)."')":"")."
 ".(sizeof($SearchTempStr)?"or shopcoins.number2 in ('".implode("','",$SearchTemp)."')":"")."
-".(sizeof($SearchTempDigit)?"or (shopcoins.year in ('".implode("','",$SearchTempDigit)."') and shopcoins.year<>0)":"")."
-".(sizeof($SearchTempStr)?"or ((shopcoins.metal like '%".implode("%' or shopcoins.metal like '%",$SearchTempStr)."%') and shopcoins.metal<>'')":"")."
+".(sizeof($SearchTempDigit)?"or (shopcoins.year in ('".implode("','",$SearchTempDigit)."'))":"")."
+"./*(sizeof($SearchTempStr)?"or ((shopcoins.metal like '%".implode("%' or shopcoins.metal like '%",$SearchTempStr)."%') and shopcoins.metal<>'')":"")."
 ".(sizeof($SearchTempStr)?"or ((shopcoins.condition like '%".implode("%' or shopcoins.condition like '%",$SearchTempStr)."%') and shopcoins.condition<>'')":"")."
-".(sizeof($SearchTempStr)?"or (shopcoins.`name` like '%".implode("%' or shopcoins.`name` like '%",$SearchTempStr)."%')":"")." 
+".(sizeof($SearchTempStr)?"or (shopcoins.`name` like '%".implode("%' or shopcoins.`name` like '%",$SearchTempStr)."%')":"").*/" 
 ".(sizeof($WhereThemesearch)?" or ".implode(" or ",$WhereThemesearch):"")." ".(sizeof($WhereCountryes)>0?" or shopcoins.`group` in (".implode(",",$WhereCountryes).")":"").")";
 
+if($result_temp_metal){
+    $WhereArray .=" or (shopcoins.metal_id in (".implode(",",$result_temp_metal)."))";
+}
+if($result_temp_condition){
+    $WhereArray .=" or (shopcoins.condition_id in (".implode(",",$result_temp_condition)."))";
+}
+
+if($result_temp_name){
+    $WhereArray .=" or (shopcoins.nominal_id in (".implode(",",$result_temp_name)."))";
+}
 
 $OrderByArray = Array();
 if (isset($CounterSQL)&&$CounterSQL)
@@ -152,11 +167,12 @@ $where .= " or shopcoins.number='$search' or shopcoins.number2='$search')
 
 */
 $whereMaterialtype  = $materialtype?"shopcoins.materialtype=$materialtype or shopcoins.materialtypecross & pow(2,$materialtype)":"(shopcoins.materialtype in (2,4,7,8,3,5,9) or (shopcoins.materialtype in(1,10) and shopcoins.amountparent>0) or shopcoins.number='$search' or shopcoins.number2='$search')";
-$where = " where shopcoins.check=1 and $whereMaterialtype 
-	".(sizeof($WhereArray)?" and ".implode(" and ", $WhereArray):"");
+
+$where = " where shopcoins.check=1 and (($whereMaterialtype) ".($WhereArray?" and ($WhereArray)":"").")";
 //echo $where;
 
-$sql_all = "select count(*) from shopcoins, `group` $where ".$positive_amount."and shopcoins.group=group.group";
+$sql_all = "select count(shopcoins.shopcoins) from shopcoins, `group` $where ".$positive_amount."and shopcoins.group=group.group";
+//echo $sql_all;
 $countpubs = $shopcoins_class->countByParams($sql_all);
 
 $sql = "select shopcoins.*, group.name as gname, group.groupparent ".($CounterSQL?",".$CounterSQL:"")." from shopcoins, `group` 
@@ -182,7 +198,9 @@ $ArrayParent = Array();
 $tpl['shop']['MyShowArray'] = Array();
 $tpl['shop']['ArrayParent'] = Array();
 
-foreach ($data as $rows){
+foreach ($data as &$rows){
+    $rows['metal'] = $tpl['metalls'][$rows['metal_id']];
+    $rows['condition'] = $tpl['conditions'][$rows['condition_id']];
 	$tpl['shop']['ArrayShopcoins'][] = $rows["shopcoins"];
 	$tpl['shop']['ArrayParent'][] = $rows["parent"];
 	$tpl['shop']['MyShowArray'][] = $rows;

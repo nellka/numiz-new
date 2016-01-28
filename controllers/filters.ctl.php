@@ -16,12 +16,14 @@ $childen_data_nominals = array();
 if(in_array($materialtype,array(1,7,8,6,4))){
 	if(!$tpl['filters']['metalls'] = $cache->load("metalls_$materialtype")) {	   
 	    $tpl['filters']['metalls'] = $shopcoins_class->getMetalls();	 
-	    $cache->save($tpl['filters']['metalls'], "metalls_$materialtype"."_$search");	 
+	    $cache->save($tpl['filters']['metalls'], "metalls_$materialtype"."_$search");
+	    	 
 	} 	
+
 	foreach ($tpl['filters']['metalls'] as $value){
 	    $childen_data_metal[] = array(
-				'filter_id' => $value["metal"],
-				'name'      => $value["metal"]);   
+				'filter_id' => $value["metal_id"],
+				'name'      => $value["name"]);   
 	}
 }
 /*
@@ -39,8 +41,8 @@ if(in_array($materialtype,array(1,7,8,6,4))){
 	
 	foreach ($tpl['filters']['conditions'] as $value){
 	    $childen_data_conditions[] = array(
-				'filter_id' => $value["condition"],
-				'name'      => $value["condition"]);   
+				'filter_id' => $value["condition_id"],
+				'name'      => $value["name"]);   
 	}
 }
 
@@ -54,13 +56,25 @@ foreach ($tpl['filters']['years'] as $value){
 			'name'      => $value["year"]);   
 }*/
 
-if(!in_array($materialtype,array(5,3))&&($search != 'newcoins') ){
-	foreach ($yearsArray  as $key=>$value){
-		$childen_data_years[] = array('filter_id' => $key,'name' => $value['name']);
-	}
-							    
-	$tpl['filter']['yearstart'] = 0;
-	$tpl['filter']['yearend'] = date("Y",time());
+if($nominals&&$groups){
+    if(!$tpl['filters']['years'] = $cache->load("years_n_".implode('_',$nominals).'_g_'.implode('_',$groups))) {	   
+	    $tpl['filters']['years'] = $shopcoins_class->getYears($nominals,$groups);
+	    $cache->save($tpl['filters']['years'], "years_n_".implode('_',$nominals).'_g_'.implode('_',$groups));	 
+	} 	
+	foreach ($tpl['filters']['years'] as $value){
+	    $childen_data_years[] = array(
+				'filter_id' => $value["year"],
+				'name'      => $value["year"]);   
+	} 
+} else {
+    if(!in_array($materialtype,array(5,3))&&($search != 'newcoins') ){
+    	foreach ($yearsArray  as $key=>$value){
+    		$childen_data_years[] = array('filter_id' => $key,'name' => $value['name']);
+    	}
+    							    
+    	$tpl['filter']['yearstart'] = 1600;
+    	$tpl['filter']['yearend'] = date("Y",time());
+    }
 }
 /*
 фильтр по  тематикам
@@ -145,14 +159,14 @@ if(!in_array($materialtype,array(5))){
 }
 
 //фильтр по номиналам
-if(!$tpl['filters']['nominals'] = $cache->load("nominals_$materialtype".implode("_",$group_data)."_$search")) { 
+//if(!$tpl['filters']['nominals'] = $cache->load("nominals_$materialtype".implode("_",$group_data)."_$search")) { 
     $tpl['filters']['nominals'] = $shopcoins_class->getNominals($group_data);
     $cache->save($childen_data_nominals, "nominals_$materialtype".implode("_",$group_data)."_$search");
-}
+//}
 
 foreach ($tpl['filters']['nominals'] as $value){
     $childen_data_nominals[] = array(
-			'filter_id' => $value["name"],
+			'filter_id' => $value["nominal_id"],
 			'name'      => $value["name"]);   
 }
     

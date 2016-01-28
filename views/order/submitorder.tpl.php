@@ -47,38 +47,44 @@
 		Вы можете связаться с менеджером по адресу <a href=mailto:administrator@numizmatik.ru>administrator@numizmatik.ru</a> в рабочие дни 
 		или по телефону 8-800-333-14-77 (бесплатный звонок по России) (<b><font color=red>+3 GMT MSK</font></b>).
 		
-		<br><br><p>Номер Вашего заказа: <b><?=$shopcoinsorder?></b><br>
-        Информация о заказе:
-		<table border=0 cellpadding=3 cellspacing=1 align=center>
-		<tr bgcolor=#ffcc66>
-		<td class=tboard><b>Название</b></td>
-		<td class=tboard><b>Группа (страна)</b></td>
-		<td class=tboard><b>Год</b></td>
-		<td class=tboard><b>Номер</b></td>
-		<td class=tboard><b>Цена</b></td>
-		<td class=tboard><b>Кол - во</b></td></tr>
+		<br><br><p>Номер Вашего заказа: <b><?=$tpl['submitorder']['shopcoinsorder']?></b><br>
+        <h5>Информация о заказе:</h5>
+		<table cellspacing="0" cellpadding="0" style="border-collapse:collapse;">
+		<tr>
+		<td><b>Название</b></td>
+		<td><b>Группа (страна)</b></td>
+		<td><b>Год</b></td>
+		<td><b>Номер</b></td>
+		<td><b>Цена</b></td>
+		<td><b>Кол - во</b></td></tr>
 		
 		<?
 		foreach ( $tpl['submitorder']['result'] as $rows){
 			if ($tpl['submitorder']['result'][$i]['title_materialtype']){?>
-				<tr bgcolor=#EBE4D4 valign=top><td colspan=7 class=tboard bgcolor=#99CCFF><b><?=$MaterialTypeArray[$rows["materialtype"]]?></b></td></tr>
+				<tr><td colspan=7 class="h-cat" ><b><?=$MaterialTypeArray[$rows["materialtype"]]?></b></td></tr>
 			<?}?>
 
-			<tr bgcolor=#EBE4D4 valign=top>
-			<td class=tboard><div id="image<?=$rows['catalog']?>"><a href=<?=$cfg['site_dir']?>shopcoins/show.php?catalog=<?=$rows["catalog"]?>&from=email target=_blank><?=$rows["name"]?></a></td>
-			<td class=tboard><?=$rows["gname"]?></td>
-			<td class=tboard><?=$rows["year"]?></td>
-			<td class=tboard><?=$rows["number"]?></td>
-			<td class=tboard><?=round($rows['price'],2)?> руб.</td>
-			<td class=tboard align=center><?=($rows["oamount"]?$rows["oamount"]:1)?></td>
+			<tr valign=top>
+			    <td><div id="image<?=$rows['catalog']?>"><a href=<?=$cfg['site_dir']?>shopcoins/show.php?catalog=<?=$rows["catalog"]?>&from=email target=_blank><?=$rows["name"]?></a></td>
+    			<td><?=$rows["gname"]?></td>
+    			<td><?=$rows["year"]?></td>
+    			<td><?=$rows["number"]?></td>
+    			<td><?=round($rows['price'],2)?> руб.</td>
+    			<td align=center><?=($rows["oamount"]?$rows["oamount"]:1)?></td>
 			</tr>
 		<?}?>
 		</table>
-		<?
-		if ($tpl['submitorder']['discountcoupon']) {?>
-			<p><b>Сумма заказа: </b> <?=($tpl['submitorder']['sum']+$tpl['submitorder']['discountcoupon'])?> руб. </p>
-			<p><b>Скидка по купону: </b><?=$tpl['submitorder']['discountcoupon']?> руб. </p>
-		<?}?>
+		<?  
+		if ($tpl['submitorder']['discountcoupon']) {
+        	if($user_data['vip_discoint']) {?>
+        	    <p><b>Сумма заказа: </b> <?=($tpl['submitorder']['sum']+$tpl['submitorder']['discountcoupon'])?> руб.</p>
+        	    <p><b>Скидка как VIP-клиент: </b> <?=$tpl['submitorder']['vip_discoint']?> %</p>
+        	    <p><b>Размер скидки: </b> <?=$tpl['submitorder']['discountcoupon']?> руб.</p>
+           <?} else {?>
+               <p><b>Сумма заказа: </b> <?=($tpl['submitorder']['sum']+$tpl['submitorder']['discountcoupon'])?> руб. </p>
+			   <p><b>Скидка по купону: </b><?=$tpl['submitorder']['discountcoupon']?> руб. </p>
+          <? }			
+		}?>
 			<p><b>Итого:</b><?=$tpl['submitorder']['sum']?> руб. </p>
 		<?		
 		//показываем массу

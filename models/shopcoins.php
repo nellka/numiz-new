@@ -48,7 +48,7 @@ class model_shopcoins extends Model_Base
 	                      ->from('shopcoins',array('*',
                                     'pgroup'=>"if(shopcoins.group=".$rows99['group'].",10,0)",
                                     'pname' =>"if(shopcoins.name='".$rows99['name']."',2,0)",
-                                    'pmetal'=>"if(shopcoins.metal='".$rows99['metal']."',3,0)",
+                                    'pmetal_id'=>"if(shopcoins.metal_id='".$rows99['metal_id']."',3,0)",
                                     'pyear' =>"if(abs(shopcoins.year-".intval($rows99['year']).")<=10,4,0)",
                                     'pdetails'=>"if((shopcoins.details='".$rows99['details']."' and trim(shopcoins.details)<>''),1,0)",
                                     "ptheme"=>"if(shopcoins.theme & ".$rows99['theme'].",1,0)", 
@@ -60,7 +60,7 @@ class model_shopcoins extends Model_Base
 	                      ->where("shopcoins.price>=?",intval($rows99['price']/3))
 	                      ->where("shopcoins.price<=?",intval($rows99['price']*3))
 	                      ->group('shopcoins.parent')
-	                      ->order('(pgroup+pname+pyear++pmetal+pdetails+ptheme+pmaterialtype) desc')
+	                      ->order('(pgroup+pname+pyear++pmetal_id+pdetails+ptheme+pmaterialtype) desc')
 	                      ->limit(3);  	
 	   return $this->db->fetchAll($select);
 	}
@@ -444,12 +444,13 @@ class model_shopcoins extends Model_Base
         	$select->where("shopcoins.`price` >= ?",floatval($WhereParams['pricestart']));
         }
         if (isset($WhereParams['nominals'])) {
-        	$nominals = array();
+        	/*$nominals = array();
             foreach ($WhereParams['nominals'] as $nominal){
                 $nominal = str_replace("'","",$nominal);
                 $nominals[] = "'".$nominal."'";
-            }        	
-        	$select->where("shopcoins.name in (".implode(",",$nominals).")");
+            }  */      	
+        	$select->where("shopcoins.nominal_id in (".implode(",",$WhereParams['nominals']).")");
+        	
         }
         if (isset($WhereParams['priceend'])) {        	
         	$select->where("shopcoins.`price` <=?",floatval($WhereParams['priceend']));
@@ -486,25 +487,18 @@ class model_shopcoins extends Model_Base
         	$select->where("(".implode(" or ",$where_year).")");
         }
 
+        if (isset($WhereParams['year_p'])) {        	
+        	$select->where("shopcoins.year in (".implode(",",$WhereParams['year_p']).")");
+        }
+
         if (isset($WhereParams['group'])) {
         	$select->where("shopcoins.`group` in (".implode(",",$WhereParams['group']).")");
         }
-        if (isset($WhereParams['metal'])) {
-            $metals = array();
-            foreach ($WhereParams['metal'] as $metal){
-                $metal = str_replace("'","",$metal);
-                $metals[] = "'".$metal."'";
-            }        	
-        	$select->where("shopcoins.metal in (".implode(",",$metals).")");
-
+        if (isset($WhereParams['metal'])) {              	
+        	$select->where("shopcoins.metal_id in (".implode(",",$WhereParams['metal']).")");
         }
-        if (isset($WhereParams['condition'])) {        	
-        	$condition = array();
-            foreach ($WhereParams['condition'] as $condition){
-                $condition = str_replace("'","",$condition);
-                $conditions[] = "'".$condition."'";
-            }        	
-        	$select->where("shopcoins.condition in (".implode(",",$conditions).")");
+        if (isset($WhereParams['condition'])) {             	
+        	$select->where("shopcoins.condition_id in (".implode(",",$WhereParams['condition']).")");
         }
  
 	    $select = $this->byAdmin($select); 	          
@@ -587,12 +581,7 @@ class model_shopcoins extends Model_Base
             }        	
         }
         if (isset($WhereParams['nominals'])) {
-        	$nominals = array();
-            foreach ($WhereParams['nominals'] as $nominal){
-                $nominal = str_replace("'","",$nominal);
-                $nominals[] = "'".$nominal."'";
-            }        	
-        	$select->where("shopcoins.name in (".implode(",",$nominals).")");
+        	$select->where("shopcoins.nominal_id in (".implode(",",$WhereParams['nominals']).")");
         }
         if (isset($WhereParams['series'])){
         	$select->where("shopcoins.series = ?",intval($WhereParams['series']));
@@ -614,33 +603,26 @@ class model_shopcoins extends Model_Base
         	}
         	$select->where("(".implode(" or ",$where_year).")");
         }
+
+        if (isset($WhereParams['year_p'])) {        	
+        	$select->where("shopcoins.year in (".implode(",",$WhereParams['year_p']).")");
+        }
+
+        if (isset($WhereParams['metal'])) {              	
+        	$select->where("shopcoins.metal_id in (".implode(",",$WhereParams['metal']).")");
+        }
         
-        if (isset($WhereParams['metal'])) {
-        	$metals = array();
-            foreach ($WhereParams['metal'] as $metal){
-                $metal = str_replace("'","",$metal);
-                $metals[] = "'".$metal."'";
-            }        	
-        	$select->where("shopcoins.metal in (".implode(",",$metals).")");
+        if (isset($WhereParams['condition'])) {             	
+        	$select->where("shopcoins.condition_id in (".implode(",",$WhereParams['condition']).")");
         }
-        if (isset($WhereParams['condition'])) {
-        	$condition = array();
-            foreach ($WhereParams['condition'] as $condition){
-                $condition = str_replace("'","",$condition);
-                $conditions[] = "'".$condition."'";
-            }        	
-        	$select->where("shopcoins.condition in (".implode(",",$conditions).")");
-        }
-
-
-	   $select = $this->byAdmin($select); 
-	         
+        
+	    $select = $this->byAdmin($select);       
 	  
 	   
-	   if ($searchname) {
+	    if ($searchname) {
         	$searchname = str_replace("'","",$searchname);
         	$select->where('shopcoins.name=?',$searchname);
-       }	
+        }	
       
 	//  var_dump($orderby);
 	 if(isset($WhereParams['group'])&&!$page){
@@ -707,13 +689,16 @@ class model_shopcoins extends Model_Base
 	}
 	
 	//получаем металы для выборки
-	public function getMetalls(){
+	public function getMetalls($all=false){
 	    $select = $this->db->select()
-	                      ->from('shopcoins',array('metal'=>'distinct(metal)'))
-	                      ->where('metal<>""')             
-	                      ->order('metal desc');
-	   $select=$this->setMaterialtypeSelect($select);
-	   $select = $this->byAdmin($select); 	
+	                      ->from('shopcoins',array('distinct(metal_id)'))
+	                      ->join('metals','metals.id=metal_id',array("name"))
+	                      ->where('metal_id>0')             
+	                      ->order('name desc');
+	   if(!$all){
+    	   $select=$this->setMaterialtypeSelect($select);
+    	   $select = $this->byAdmin($select); 
+	   }	
 	   return $this->db->fetchAll($select);       
 	}
 	//группы для выборки
@@ -772,32 +757,44 @@ class model_shopcoins extends Model_Base
 	    if(!$groups) return array();
 	    
 	    $select = $this->db->select()
-	                      ->from('shopcoins',array('distinct(shopcoins.name)'))
+	                      ->from('shopcoins',array('distinct(nominal_id)'))
 	                      ->join(array('group'),'shopcoins.group=group.group',array())
+	                      ->join('nominals', 'nominal_id=nominals.id',array('name'))
 	                      ->where("group.group in (".implode(",",$groups).")")
 	                      ->where("shopcoins.check=1")
-	                      ->order('shopcoins.name desc');  
+	                      ->order('nominals.name desc');  
 	    $select=$this->setMaterialtypeSelect($select);
+	    //var_dump($this->db->fetchAll($select));
 	    return $this->db->fetchAll($select);    
 	}
 	
-	public function getConditions(){
+	public function getConditions($all=false){
 		$select = $this->db->select()
-	                      ->from('shopcoins',array('distinct(`condition`)'))
-	                      ->where('`condition`>""')
-	                      ->order('condition desc'); 
-	    $select=$this->setMaterialtypeSelect($select);   
-	   	$select = $this->byAdmin($select); 	   	
+	                      ->from('shopcoins',array('distinct(condition_id)'))
+	                      ->join('conditions', 'condition_id=conditions.id',array('name'))
+	                      ->where('condition_id>0')
+	                      ->order('conditions.name desc'); 
+	    if(!$all){
+    	    $select=$this->setMaterialtypeSelect($select);   
+    	   	$select = $this->byAdmin($select); 	   
+	    }	
 	   	return $this->db->fetchAll($select);    
 	}
 	
-	public function getYears(){
+	public function getYears($nominals=array(),$groups=array()){
 	   $select = $this->db->select()
 	                      ->from('shopcoins',array('year'=>'distinct(year)'))
 	                      ->where('year>0')
 	                      ->order('year desc');   
 	   $select=$this->setMaterialtypeSelect($select); 
 	   $select = $this->byAdmin($select); 
+	   if($nominals){	       	
+            $select->where("nominal_id in (".implode(",",$nominals).")");
+	   }
+       if($groups){
+           $select->where("`group` in (".implode(",",$groups).")");
+       }
+
 	   return $this->db->fetchAll($select);       
 	}
 	
@@ -976,9 +973,6 @@ class model_shopcoins extends Model_Base
 	
 	//для номиналов
 	public function searchGroups($SearchTempStr){
-		//var_dump($SearchTempStr);
-		//$this->db->query("SET names 'cp1251'");
-
 	    /*$sql_temp = "select distinct `group`.`name`, `group`.* from `group`, `shopcoins` 
 				where ((".($cookiesuser==811?(!$nocheck?"shopcoins.check=1 or (shopcoins.check>3 and shopcoins.check<20)":"(shopcoins.check>3 and shopcoins.check<20)"):"shopcoins.check=1").") ".($show50?"or shopcoins.check=50":"").") and shopcoins.`group`=`group`.`group`
 				and (".(sizeof($SearchTempStr)?"`group`.`name` like '%".implode("%' or `group`.`name` like '%",$SearchTempStr)."%')":"").";";
@@ -995,6 +989,19 @@ class model_shopcoins extends Model_Base
  		//echo $select->__toString();
  		//$this->db->query("SET names 'utf8'");
         return $this->db->fetchAll($select);   
+	}
+	
+	public function searchTable($table,$SearchTempStr=array()){	   
+	    $select = $this->db->select()               
+ 	 	          ->from($table);
+ 		if($SearchTempStr){
+ 			$select->where("name like '%".implode("%' or name like '%",$SearchTempStr)."%'");
+ 		} 	
+ 		$ids = array();	
+ 		foreach ($this->db->fetchAll($select) as $row){
+ 		    $ids[] = $row['id'];
+ 		}
+        return $ids;   
 	}
 	
 	public function searchParrentGroups($groups){
@@ -1020,7 +1027,7 @@ class model_shopcoins extends Model_Base
 		foreach ($orderData as $key=>$value) {	
 			switch ($value['materialtype']) {		
 				case 1:
-					$wherein[] = "(((shopcoins.materialtype in(1,10,12) and shopcoins.amountparent>0) or shopcoins.materialtype in(4,7,8,9)) and shopcoins.metal = '".$value['metal']."' and ABS(shopcoins.year-".$value['year'].") <= 10 )";
+					$wherein[] = "(((shopcoins.materialtype in(1,10,12) and shopcoins.amountparent>0) or shopcoins.materialtype in(4,7,8,9)) and shopcoins.metal_id = '".$value['metal_id']."' and ABS(shopcoins.year-".$value['year'].") <= 10 )";
 					break;
 				case 2:
 					$wherein[] = "(shopcoins.materialtype=2 and ABS(shopcoins.year-".$value['year'].") <= 10 )";
@@ -1032,25 +1039,25 @@ class model_shopcoins extends Model_Base
 					$wherein[] = "(shopcoins.materialtype=6)";
 					break;
 				case 4:
-					$wherein[] = "(((shopcoins.materialtype in(1,10,12) and shopcoins.amountparent>0) or shopcoins.materialtype in(4,7,8,9)) and shopcoins.metal = '".$value['metal']."' and ABS(shopcoins.year-".$value['year'].") <= 10 )";
+					$wherein[] = "(((shopcoins.materialtype in(1,10,12) and shopcoins.amountparent>0) or shopcoins.materialtype in(4,7,8,9)) and shopcoins.metal_id = '".$value['metal_id']."' and ABS(shopcoins.year-".$value['year'].") <= 10 )";
 					break;
 				case 5:
 					$wherein[] = "(shopcoins.materialtype=3)";
 					break;
 				case 7:
-					$wherein[] = "(((shopcoins.materialtype in(1,10,12) and shopcoins.amountparent>0) or shopcoins.materialtype in(4,7,8,9)) and shopcoins.metal = '".$value['metal']."' and ABS(shopcoins.year-".$value['year'].") <= 10 )";
+					$wherein[] = "(((shopcoins.materialtype in(1,10,12) and shopcoins.amountparent>0) or shopcoins.materialtype in(4,7,8,9)) and shopcoins.metal_id = '".$value['metal_id']."' and ABS(shopcoins.year-".$value['year'].") <= 10 )";
 					break;
 				case 8:
-					$wherein[] = "(((shopcoins.materialtype in(1,10,12) and shopcoins.amountparent>0) or shopcoins.materialtype in(4,7,8,9)) and shopcoins.metal = '".$value['metal']."' and ABS(shopcoins.year-".$value['year'].") <= 10 )";
+					$wherein[] = "(((shopcoins.materialtype in(1,10,12) and shopcoins.amountparent>0) or shopcoins.materialtype in(4,7,8,9)) and shopcoins.metal_id = '".$value['metal_id']."' and ABS(shopcoins.year-".$value['year'].") <= 10 )";
 					break;
 				case 9:
-					$wherein[] = "(((shopcoins.materialtype in(1,10,12) and shopcoins.amountparent>0) or shopcoins.materialtype in(4,7,8,9)) and shopcoins.metal = '".$value['metal']."' and ABS(shopcoins.year-".$value['year'].") <= 10 )";
+					$wherein[] = "(((shopcoins.materialtype in(1,10,12) and shopcoins.amountparent>0) or shopcoins.materialtype in(4,7,8,9)) and shopcoins.metal_id = '".$value['metal_id']."' and ABS(shopcoins.year-".$value['year'].") <= 10 )";
 					break;
 				case 10:
-					$wherein[] = "(((shopcoins.materialtype in(1,10,12) and shopcoins.amountparent>0) or shopcoins.materialtype in(4,7,8,9)) and shopcoins.metal = '".$value['metal']."' and ABS(shopcoins.year-".$value['year'].") <= 10 )";
+					$wherein[] = "(((shopcoins.materialtype in(1,10,12) and shopcoins.amountparent>0) or shopcoins.materialtype in(4,7,8,9)) and shopcoins.metal_id = '".$value['metal_id']."' and ABS(shopcoins.year-".$value['year'].") <= 10 )";
 					break;
 				case 12:
-					$wherein[] = "(((shopcoins.materialtype in(1,10,12) and shopcoins.amountparent>0) or shopcoins.materialtype in(4,7,8,9)) and shopcoins.metal = '".$value['metal']."' and ABS(shopcoins.year-".$value['year'].") <= 10 )";
+					$wherein[] = "(((shopcoins.materialtype in(1,10,12) and shopcoins.amountparent>0) or shopcoins.materialtype in(4,7,8,9)) and shopcoins.metal_id = '".$value['metal_id']."' and ABS(shopcoins.year-".$value['year'].") <= 10 )";
 					break;
 				
 			}
@@ -1071,5 +1078,66 @@ class model_shopcoins extends Model_Base
         return $this->db->fetchAll($select);  	
 	}
 	
+	public function migrateNominals(){
+	     $select = $this->db->select()
+                  ->from('shopcoins',array('distinct(name)'))
+                  ->where('name<>"" and nominal_id=0');
+         foreach ($this->db->fetchAll($select) as $row){
+             $select  = $this->db->select()
+                                ->from('nominals',array('id'))
+                                ->where('name=?',$row['name']);
+             $n_id = $this->db->fetchOne($select);
+             if(!$n_id){
+                 $data = array('name'=>$row['name']);
+                 $this->db->insert('nominals',$data);
+                 $n_id = $this->db->lastInsertId('nominals');
+             }
+             $data = array('nominal_id'=>$n_id);
+             $this->db->update('shopcoins',$data,"name='".$row['name']."'");             
+         }                 
+	}
+	
+	public function migrateMetal(){
+	    $select = $this->db->select()
+                  ->from('shopcoins',array('distinct(metal)'))
+                  ->where('metal<>"" and metal_id=0');
+         foreach ($this->db->fetchAll($select) as $row){
+             $select  = $this->db->select()
+                                ->from('metals',array('id'))
+                                ->where('name=?',$row['metal']);
+             $n_id = $this->db->fetchOne($select);
+             if(!$n_id){
+                 $data = array('name'=>$row['metal']);
+                 $this->db->insert('metals',$data);
+                 $n_id = $this->db->lastInsertId('metals');
+             }
+             $data = array('metal_id'=>$n_id);
+             $this->db->update('shopcoins',$data,"metal='".$row['metal']."'");             
+         }        
+	    
+	}
+	
+    public function migrateCondition(){
+        $select = $this->db->select()
+                  ->from('shopcoins',array('distinct(`condition`)'))
+                  ->where('`condition`<>"" and condition_id=0');
+         foreach ($this->db->fetchAll($select) as $row){
+             $select  = $this->db->select()
+                                ->from('conditions',array('id'))
+                                ->where('name=?',$row['condition']);
+             $n_id = $this->db->fetchOne($select);
+             if(!$n_id){
+                 $data = array('name'=>$row['condition']);
+                 $this->db->insert('conditions',$data);
+                 $n_id = $this->db->lastInsertId('conditions');
+             }
+             $data = array('condition_id'=>$n_id);
+             $this->db->update('shopcoins',$data,"`condition`='".$row['condition']."'");             
+         }                 
+        
+    }
+    public function migrateTheme(){
+        
+    }	
 }
 ?>

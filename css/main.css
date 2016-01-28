@@ -292,7 +292,8 @@ background: url("../images/expand.jpg") no-repeat scroll left center;
 .borderimage img{
 	border:1px solid #cccccc;
 	padding: 3px 0;
-    width: 220px;
+    max-width: 220px;
+	max-height:150px;
 }
 #basket .user_details p{
     margin: 0 0 5px;
@@ -307,7 +308,9 @@ color:#000
 h2{font-size: 28px;}
 h3{font-size: 24px;}
 h4{font-size: 21px;}
-h5{font-size: 18px;}
+h5{
+font-size: 18px;
+margin: 15px 0;}
 
 .statictic h5 {
     font-size: 18px;
@@ -478,6 +481,7 @@ width:100%;
 
 
 #registration_form  .web-form input{width: 180px;}
+.web-form {margin-bottom:10px;}
 #registration_form .inttostring{float:right}
 .web-form input {
     border: 1px solid #e5e5e5;
@@ -1014,7 +1018,7 @@ a.button24:active { background: linear-gradient(#f59500, #f5ae00) #f59500; }
     cursor: pointer;
     display: inline-block;
     float: left;
-    height: 320px;
+    height: 305px;
     margin: 2px;
     overflow: hidden;
     position: relative;
@@ -1062,6 +1066,21 @@ a.button24:active { background: linear-gradient(#f59500, #f5ae00) #f59500; }
 	border:1px solid #cccccc;
 	margin:10px;
 	padding:10px;
+	
+}
+.item_nabor_image{
+	width:300px;
+	display:inline-block;
+	vertical-align:top;
+}
+.item_nabor_image img{
+	width:250px;
+	vertical-align:top;
+	
+}
+.info_block{
+	display:inline-block;
+	width:350px;
 }
 .blockshop_spisok:hover{ border:1px solid #7f7979;}
 
@@ -1225,7 +1244,7 @@ div.fancybox-showcalllink{left: 820px !important;top: 165px !important;}*/
   border-color:transparent transparent white;
 }
 
-.raiting {position:relative; height:16px; cursor:pointer; width:83px;margin-left:140px; } /* Блок рейтинга*/
+.raiting {position:relative; height:16px; cursor:pointer; width:83px;} /* Блок рейтинга*/
 #raiting_blank, #raiting_votes, #raiting_hover {height:16px; position:absolute}
 #raiting_blank { background:url(../images/ratings.png); width:83px; } /* "Чистые" звездочки */
 #raiting_votes {background:url(../images/ratings.png) 0 -16px} /*  Закрашенные звездочки */ 
@@ -1277,10 +1296,10 @@ div.other{
 	background:#ffffff;
 }
 div.reserv{
-	height:15px;
+	height:45px;
 	color: #666666;
 	font-size:11px;
-	text-align:right;
+	text-align:left;
 }
 div.stars {
 	height:27px;
@@ -1293,7 +1312,10 @@ div.stars {
 
 /*order-page start*/
 #payment-block > div {
-    line-height: 40px;
+    line-height: 20px;
+	width:500px;
+	text-align:left;
+	margin-bottom:15px;
 }
 
 #payment-block div img {

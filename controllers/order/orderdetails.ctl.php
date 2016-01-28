@@ -4,8 +4,14 @@ require_once $cfg['path'] . '/models/orderdetails.php';
 
 require $cfg['path'] . '/configs/config_shopcoins.php';
 
-$order_class = new model_order($cfg['db']);
+$order_class = new model_order($cfg['db'],$shopcoinsorder,$tpl['user']['user_id']);
 $orderdetails_class = new model_orderdetails($cfg['db'],$shopcoinsorder);
+
+$tpl['user']['user_data'] = array();
+
+if($tpl['user']['user_id']){
+    $tpl['user']['user_data'] = $user_class->getUserData();
+}
 
 $shopcoins = intval(request("shopcoins"));
 $pageinfo = request("pageinfo");

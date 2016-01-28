@@ -29,7 +29,7 @@ if(request('onpage')){
 } elseif (isset($_COOKIE['onpage'])){
     $tpl['onpage'] =$_COOKIE['onpage'];
 }	
-if(!isset($tpl['onpage']))	$tpl['onpage'] = 9;
+if(!isset($tpl['onpage']))	$tpl['onpage'] = 18;
 setcookie('onpage', $tpl['onpage'],  time()+ 86400 * 90,'/',$cfg['domain']);
 
 //сохраняем сортировку элементов на странице в куке
@@ -53,10 +53,13 @@ $year_data = array();
 $group_data = array();
 $condition_data  = array(); 
 $years_data  = array(); 
+$years_p_data = array(); 
 
 $pricestart =request('pricestart');
 $priceend =request('priceend');
 $searchid = request('searchid');
+
+
 
 $groups = request('groups');
 $nominals = request('nominals');
@@ -81,38 +84,42 @@ $metal  = iconv("cp1251",'utf8',request('metal'));
 $metals  =request('metals');
 
 
-if($yearend==date('Y',time())){
-	$yearend='';
-}
-	//var_dump($_REQUEST);
-//var_dump($pricestart,$priceend);
 $searchname = request('searchname');
 $coinssearch = request('coinssearch');
-
 $years  = (array)request('years');
-krsort($years);
+$years_p = (array)request('years_p');
 
-$i=0;
-foreach ($years as $val){
-   if($i>0){   
-        //если совпадают концы интервалов
-        if(($years_data[$i-1][1]+1)==$yearsArray[$val]['data'][0]) {           
-             $years_data[$i-1][1]=$yearsArray[$val]['data'][1];
-        } else {
-            $years_data[] = $yearsArray[$val]['data'];
-            $i++;
-        }
-   } else {
-	   $years_data[] = $yearsArray[$val]['data'];
-	   	$i++;
-   }
+if($nominals&&$groups){
+    $years_p_data = $years_p;
+} else {
+    
+    if($yearend==date('Y',time())){
+    	$yearend='';
+    }
+    
+    krsort($years);
+    
+    $i=0;
+    foreach ($years as $val){
+       if($i>0){   
+            //если совпадают концы интервалов
+            if(($years_data[$i-1][1]+1)==$yearsArray[$val]['data'][0]) {           
+                 $years_data[$i-1][1]=$yearsArray[$val]['data'][1];
+            } else {
+                $years_data[] = $yearsArray[$val]['data'];
+                $i++;
+            }
+       } else {
+    	   $years_data[] = $yearsArray[$val]['data'];
+    	   	$i++;
+       }
+    }
+    
+    //формируем массив интервалов
+    if($yearstart||$yearend){    
+    	$years_data[] = array($yearstart,$yearend);
+    }
 }
-
-//формируем массив интервалов
-if($yearstart||$yearend){    
-	$years_data[] = array($yearstart,$yearend);
-}
-
 
 //это старые данные в виде строки
 $condition = iconv("cp1251",'utf8',request('condition'));
@@ -148,6 +155,8 @@ if($priceend>0) $WhereParams['priceend'] = $priceend;
 if($theme_data) $WhereParams['theme'] = $theme_data;
 if($metal_data) $WhereParams['metal'] = $metal_data;
 if($years_data) $WhereParams['year'] = $years_data;
+if($years_p_data) $WhereParams['year_p'] = $years_p_data;
+
 if($condition_data) $WhereParams['condition'] = $condition_data;
 if($group_data) $WhereParams['group'] = $group_data;
 if($coinssearch) $WhereParams['coinssearch'] = $coinssearch;
@@ -187,6 +196,9 @@ foreach ((array)$groups as $g){
 }
 foreach ((array)$years as $y){
     $addhref .="&years[]=$y";
+}
+foreach ((array)$years_p as $y){
+    $addhref .="&years_p[]=$y";
 }
 foreach ((array)$themes as $th){
     $addhref .="&themes[]=$th";
@@ -376,7 +388,10 @@ if (sizeof($tpl['shop']['MyShowArray'])==0){
 } else {	
 	$amountsearch = count($tpl['shop']['MyShowArray']);	
 	
-	foreach ($tpl['shop']['MyShowArray'] as $i=>$rows) {
+	foreach ($tpl['shop']['MyShowArray'] as $i=>&$rows) {
+
+	    $rows['condition'] = $tpl['conditions'][$rows['condition_id']];
+	    $rows['metal'] = $tpl['metalls'][$rows['metal_id']];
 	    
 		//формируем картинки "подобные"
 		$tpl['shop']['MyShowArray'][$i]['tmpsmallimage'] = array();

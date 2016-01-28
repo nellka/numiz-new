@@ -268,7 +268,7 @@ and o.catalog=s.shopcoins ".($checking?"":"and s.`check`='1'")." and o.status=0;
     							)
     						)
     					)
-    				)as price, g.name as gname, c.materialtype, c.year, c.metal, c.group,c.name,c.number,c.image_small,c.image_big,c.details,c.width,c.height,c.condition,c.accessoryProducer,c.accessoryColors,c.accessorySize,c.weight from `orderdetails` as o, 
+    				)as price, g.name as gname, c.materialtype, c.year, c.metal_id, c.group,c.name,c.number,c.image_small,c.image_big,c.details,c.width,c.height,c.condition_id,c.accessoryProducer,c.accessoryColors,c.accessorySize,c.weight from `orderdetails` as o, 
     shopcoins as c, `group` as g 
     where o.order='".$this->getIdentity()."' and o.catalog = c.shopcoins and (c.`check` in(1,4,5) ".($user_id==811?"or c.`check`>3":"").") and g.`group`=c.`group`  and o.status=0 and o.order>0
     order by c.materialtype;";

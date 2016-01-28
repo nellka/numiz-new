@@ -23,7 +23,7 @@ class model_user extends Model_Base
 		               'user_id'=> $this->user_id);
          $this->db->insert('user_describe_log',$data); 
 	}
-	 public function getUserCouponType(){	   
+	/*public function getUserCouponType(){	   
 	      $select = $this->db->select()
 		               ->from('coupon',array('type'))
 		               ->where('user =?',$this->user_id)
@@ -31,7 +31,7 @@ class model_user extends Model_Base
 		               ->order(array('type desc','dateinsert desc'))
 		               ->limit(1);
 		  return (integer)$this->db->fetchOne($select);
-	 }
+	 }*/
 	 //при оформлении заказа
 
 	 public function getUserCoupon($data=array()){
