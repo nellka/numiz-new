@@ -1,5 +1,5 @@
 <div class="top-menu">  
-  	<div class="wraper logo-text">Магазин монет от Клуба Нумизмат</div>            
+  	<div class="wraper logo-text" id='shop-logo' style="display:<?=$mini?'none':'block'?>">Магазин монет от Клуба Нумизмат</div>            
     <div id="header-menu">
         <?php  include $cfg['path'] . '/views/common/header/topmenu.tpl.php'; ?>
     </div> 

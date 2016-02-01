@@ -367,14 +367,27 @@ class model_shopcoins extends Model_Base
     	return $this->db->fetchOne($select);       
 	}
 	
-    public function getMaxPrice(){
+    public function getMaxPrice($groups=array()){        
          $select = $this->db->select()
 		               ->from($this->table,array('max(price)'));
 		 $select = $this->byAdmin( $select);    	
     	 $select=$this->setMaterialtypeSelect($select);
+    	 if($groups){
+    	      $select->where("`group` in (".implode(",",$groups).")");
+    	 }
 	     return $this->db->fetchOne($select);
     }
     
+    public function getMinPrice($groups=array()){
+         $select = $this->db->select()
+		               ->from($this->table,array('min(price)'));
+		 $select = $this->byAdmin( $select);    	
+    	 $select=$this->setMaterialtypeSelect($select);
+    	 if($groups){
+    	      $select->where("`group` in (".implode(",",$groups).")");
+    	 }
+	     return $this->db->fetchOne($select);
+    }
 	public function getCoinsParents($ids){
          $select = $this->db->select()
 		               ->from($this->table)
@@ -478,12 +491,15 @@ class model_shopcoins extends Model_Base
         	foreach ($WhereParams['year'] as $year_int){
         		if($year_int[0]>0&&$year_int[1]>0&&$year_int[1]<date('Y',time())){
         			$where_year[] = "(`year` >={$year_int[0]} and `year` <={$year_int[1]})";
+        		}elseif($year_int[0]==0&&$year_int[1]>0&&$year_int[1]<date('Y',time())){
+        			$where_year[] = "(`year` >0 and `year` <={$year_int[1]})";
         		} elseif ($year_int[0]>0){
         			$where_year[] = "(`year` >={$year_int[0]})";
         		} else {
         			$where_year[] = "(`year` <={$year_int[1]})";
         		}        		
         	}
+        	//var_dump($where_year);
         	$select->where("(".implode(" or ",$where_year).")");
         }
 
@@ -595,6 +611,8 @@ class model_shopcoins extends Model_Base
         	foreach ($WhereParams['year'] as $year_int){
         		if($year_int[0]>0&&$year_int[1]>0&&$year_int[1]<date('Y',time())){
         			$where_year[] = "(`year` >={$year_int[0]} and `year` <={$year_int[1]})";
+        		}elseif($year_int[0]==0&&$year_int[1]>0&&$year_int[1]<date('Y',time())){
+        			$where_year[] = "(`year` >0 and `year` <={$year_int[1]})";
         		} elseif ($year_int[0]>0){
         			$where_year[] = "(`year` >={$year_int[0]})";
         		} else {
@@ -602,6 +620,7 @@ class model_shopcoins extends Model_Base
         		}        		
         	}
         	$select->where("(".implode(" or ",$where_year).")");
+        	//echo $select->__toString();
         }
 
         if (isset($WhereParams['year_p'])) {        	

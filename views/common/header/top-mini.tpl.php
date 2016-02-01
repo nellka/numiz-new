@@ -2,7 +2,6 @@
 <div style="float:left">
    <b> 8-800-333-14-77 (по России бесплатно)<br>
     +7-903-006-00-44 (Москва)<br>
-     +7-812-925-53-22 (Санкт-Петербург)</b>
 </div>
 <div class="search-top-module" style="float:left">   
      <form action="<?=$cfg['site_dir']?>shopcoins/index.php" method=get>         
@@ -13,8 +12,10 @@
 </div>
 
 <div>
-<a href="/catalog?page=shop.cart" title="Показать корзину"><font color="Black">Корзина покупок</font></a>:<br>
-<span><a href='<?=$cfg['site_dir']?>shopcoins/index.php?page=orderdetails'>
-<span id=inorderamount><?=$tpl['user']['product_amount']?></span> товаров</a></span> / <span id=inordersum><?=$tpl['user']['summ']?></span> рублей
+    <div style="float:right">
+        <a href="<?=$cfg['site_dir']?>shopcoins/index.php?page=orderdetails" title="Показать корзину"><font color="Black">Корзина покупок</font></a>:<br>
+        <span><a href='<?=$cfg['site_dir']?>shopcoins/index.php?page=orderdetails'>
+        <span id=inorderamount><?=$tpl['user']['product_amount']?></span> товаров</a></span> / <span id=inordersum><?=$tpl['user']['summ']?></span> рублей
+    </div>
 </div>
 <div id=MainBascet></div>

@@ -6,7 +6,7 @@
      </div>	
      <div class="caption">
         <p>
-        	<a href="/catalog?page=shop.cart" title="Показать корзину"><font color="Black">Корзина покупок</font></a>
+        	<a href="<?=$cfg['site_dir']?>shopcoins/index.php?page=orderdetails" title="Показать корзину"><font color="Black">Корзина покупок</font></a>
          </p>
     	<div class="basket-label">  <p>	
     	<b>В корзине:</b> <span><a href='<?=$cfg['site_dir']?>shopcoins/index.php?page=orderdetails'>

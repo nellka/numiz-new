@@ -1,4 +1,4 @@
-<div style="width:400px;display: inline-block;vertical-align:top;margin-top:30px;">    
+<div style="width:600px;display: inline-block;vertical-align:top;margin-top:10px;">
             <?include($cfg['path'].'/views/shopcoins/item/imageBig.tpl.php');?>
     </div>
     <div style="width:200px;display: inline-block;padding-left:50px;">

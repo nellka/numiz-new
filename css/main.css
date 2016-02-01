@@ -66,7 +66,7 @@ a:hover{color:#006699;font-weight:bold;}
     height: 205px;
 }
 .header-mini {	
-	padding: 70px 0 0;
+	padding: 55px 0 0;
     height: 45px;
 }
 
@@ -566,6 +566,19 @@ padding: 10px 0 0;
 	float:left;
 	margin:0px;
 }
+.filtr-s-d,.filtr-s{
+  cursor: pointer;
+    display: block;
+    margin: 1px;
+    float:right
+}
+.filtr-s{
+    background: #eeeeee url("../images/f-low.png") no-repeat scroll center center;
+}
+.filtr-s-d{
+    background: #eeeeee url("../images/delete_16.png") no-repeat scroll center center;
+}
+
 .filter_heading{
 	background-color: #ffffff;
     /*border-bottom: 1px solid #ddd;*/
@@ -657,7 +670,7 @@ color:#ecb34e;
     background: transparent url("../images/strel-yellow.png") no-repeat scroll 250px 50%;
 }
 .main_img_big img {
-	width:300px;
+	width:600px;
 	border:1px solid #cccccc;
 	padding:10px;
 }
@@ -681,10 +694,13 @@ color:#ecb34e;
 
 .filter-block {
     border: 1px solid #ccc;
-    margin: 20px 0;
+    margin: 10px 0;
     padding: 10px;
 }
 
+.filter-block #group_name {
+  width: 200px;
+}
 .menu-sidebar_static ul {
     border: 1px solid #ccc;
     box-shadow: 6px 8px 6px 6px #ccc;  

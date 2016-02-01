@@ -1,8 +1,42 @@
+function showOn(href,id){
+   // console.log('show'+href)
+   //console.log($('#MainBascet'));
+     $('#MainBascet').dialog({
+        modal: true,
+        position: { 
+           /* my: 'top',
+            at: 'top',
+            of: $("#"+id)*/
+              my: "center center",
+        at: "center center",
+        of: window
+        },
+        close: function(event, ui){
+            //console.log(this);
+           // $(this).dialog("close");
+            $('#MainBascet').html('');
+           // $(this).remove();
+        },
+        open: function (){
+            //$('div.ui-widget-overlay').hide();
+           // $("div.ui-dialog").not(':first').remove();
+            // console.log(href);
+             $(this).load(href);
+             $('.ui-dialog-titlebar-close').addClass('ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only');
+$('.ui-dialog-titlebar-close').append('<span class="ui-button-icon-primary ui-icon ui-icon-closethick"></span><span class="ui-button-text">close</span>');
+        },
+       // height: 330, 
+        width: 400
+    });
+     return false;   
+} 
+
 function setMini(on){
 	if(on){
 		$('#header').hide();
 		$('#header-mini').show();
 		$('#small-logo').hide();
+		$('#shop-logo').hide();
 		if($('#left_menu_shop')){
 		    $('#left_menu_shop').hide();
 		}
@@ -15,8 +49,26 @@ function setMini(on){
 		if($('#left_menu_shop')){
 		    $('#left_menu_shop').show();
 		}
+		$('#shop-logo').show();
 		$.cookie('mini', 0);
 	}
+}
+function fgroup(){    
+    var query = $("#group_name").val().toLowerCase();			    
+	if(query.length>1){
+	    $('#fb-groups .checkbox').each(function(i, elem) {			    	
+	          if ($(elem).find('a').text().toLowerCase().indexOf(query) != -1) {
+	              $(elem).show();
+	          }else{
+	              $(elem).hide();
+	          }
+	          mCustomScrollbars();
+	    });
+	} else {
+		$('#fb-groups .checkbox').each(function(i, elem) {			    	
+	        $(elem).show();
+	    });
+	}     
 }
 
 function showReviewForm(){
@@ -184,15 +236,15 @@ function ShowOneClickResult(id,data) {
 	}
 }	
 	
-function sendData(name,val){   
+function sendData(name,val,p0,p1,y0,y1){  
     if(name){
         $('#'+name).val(val);
     }
-    $('#pricestart').val($('#amount-price0').val());
-    $('#priceend').val($('#amount-price1').val());
-    
-    $('#yearstart').val($('#amount-years0').val());
-    $('#yearend').val($('#amount-years1').val());
+    if($('#amount-price0').val()!=p0) $('#pricestart').val($('#amount-price0').val());
+    if($('#amount-price1').val()!=p1) $('#priceend').val($('#amount-price1').val());
+
+    if($('#amount-years0').val()!=y0) $('#yearstart').val($('#amount-years0').val());
+    if($('#amount-years1').val()!=y1) $('#yearend').val($('#amount-years1').val());
 
     $(".bg_shadow").show();
     

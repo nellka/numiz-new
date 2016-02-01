@@ -56,6 +56,9 @@ foreach ($tpl['filters']['years'] as $value){
 			'name'      => $value["year"]);   
 }*/
 
+$tpl['filter']['yearstart'] = 0;
+$tpl['filter']['yearend'] = date("Y",time());
+
 if($nominals&&$groups){
     if(!$tpl['filters']['years'] = $cache->load("years_n_".implode('_',$nominals).'_g_'.implode('_',$groups))) {	   
 	    $tpl['filters']['years'] = $shopcoins_class->getYears($nominals,$groups);
@@ -66,6 +69,7 @@ if($nominals&&$groups){
 				'filter_id' => $value["year"],
 				'name'      => $value["year"]);   
 	} 
+	
 } else {
     if(!in_array($materialtype,array(5,3))&&($search != 'newcoins') ){
     	foreach ($yearsArray  as $key=>$value){
@@ -91,13 +95,16 @@ if(in_array($materialtype,array(1,8,6,2))){
 	}
 }
 
-$tpl['filter']['price']['min'] = 0;
+
 
 if(!$tpl['filter']['price']['max'] = $cache->load("price_max_$materialtype")) {  
-	$tpl['filter']['price']['max'] = (integer)$shopcoins_class->getMaxPrice();
-	$cache->save($tpl['filter']['price']['max'], "price_max_$materialtype"."_$search");	
+	$tpl['filter']['price']['max'] = (integer)$shopcoins_class->getMaxPrice($group_data);	
+	$cache->save($tpl['filter']['price']['max'], "price_max_$materialtype"."_$search"."_g".implode("_",$group_data));	
 }
-
+if(!$tpl['filter']['price']['min'] = $cache->load("price_min_$materialtype")) {  
+	$tpl['filter']['price']['min'] = (integer)$shopcoins_class->getMinPrice($group_data);	
+	$cache->save($tpl['filter']['price']['min'], "price_min_$materialtype"."_$search".implode("_",$group_data));	
+}
 
 //($
 if(!$tpl['filters']['All_groups'] = $cache->load("all_groups_$materialtype"."_$search")) {
@@ -159,10 +166,11 @@ if(!in_array($materialtype,array(5))){
 }
 
 //фильтр по номиналам
-//if(!$tpl['filters']['nominals'] = $cache->load("nominals_$materialtype".implode("_",$group_data)."_$search")) { 
+if(!$tpl['filters']['nominals'] = $cache->load("nominals_$materialtype".implode("_",$group_data)."_$search")) { 
     $tpl['filters']['nominals'] = $shopcoins_class->getNominals($group_data);
+    
     $cache->save($childen_data_nominals, "nominals_$materialtype".implode("_",$group_data)."_$search");
-//}
+}
 
 foreach ($tpl['filters']['nominals'] as $value){
     $childen_data_nominals[] = array(

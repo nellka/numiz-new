@@ -1,6 +1,10 @@
 <?
 $checked_array = $rows['checked'];
-var_dump($rows['filter']);
+$groups = $rows['groups'];
+$ahref ='';
+foreach ((array)$groups as $group){
+	$ahref.='&groups[]='.$group;
+}
 ?>
 <div class="filter-block" id="fb-<?=$rows['filter_group_id_full']?>">
 	<div class="filter_heading">
@@ -21,10 +25,10 @@ var_dump($rows['filter']);
 							<?php            
 							 if (is_array($checked_array)&&in_array($filter['filter_id'], $checked_array)) { ?>
 									<input type="checkbox" name="<?=$rows['filter_group_id_full']?>[]" value="<?=$filter['filter_id']?>" checked="checked" />
-									   <a href="?materialtype=<?=$rows['materialtype']?>&<?=$rows['filter_group_id']?>=<?=$filter['filter_id']?>"> <?=$filter['name'];?></a>
+									   <a href="?materialtype=<?=$rows['materialtype']?>&<?=$rows['filter_group_id']?>=<?=$filter['filter_id']?><?=$ahref?>"> <?=$filter['name'];?></a>
 										<?php } else { ?>
 											<input type="checkbox" name="<?php echo $rows['filter_group_id_full']; ?>[]" value="<?=$filter['filter_id']?>" />
-									   <a href="?materialtype=<?=$rows['materialtype']?>&<?=$rows['filter_group_id']?>=<?=urlencode(iconv("utf8","cp1251",$filter['filter_id']))?>"> <?=$filter['name'];?></a>
+									   <a href="?materialtype=<?=$rows['materialtype']?>&<?=$rows['filter_group_id']?>=<?=urlencode(iconv("utf8","cp1251",$filter['filter_id']))?><?=$ahref?>"> <?=$filter['name'];?></a>
 						    <?}?>
 							</div>			
 						<?}?>  					

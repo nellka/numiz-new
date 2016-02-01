@@ -1,53 +1,54 @@
 <!--Блок выбора параметров заказа-- -->
-<div style="width:60%;float:left">
+<div style="width:60%;float:left;font-weight:400;">
 	<form name=resultform method=post id=resultorderform action="<?=$cfg['site_dir']?>shopcoins/submitorder.php">
 		<input type="hidden" id="userstatus" name="userstatus" value="<?=$userstatus?>">
-		<div id='user-compare-block' style="display:none">
+		<div id='user-compare-block' style="display:none;font-weight:400;">
 			<h3>Проверить заказ</h3>
-			<p style="color:red;"><b>Уважаемый пользователь! Проверьте внимательно данные о вашем заказе</b></p>
+			<p style="color:red;font-weight:bold;">Уважаемый пользователь! Проверьте внимательно данные о вашем заказе</p>
 			<div class="error" id='error-order'></div>
-			<div>Заказ № <?=$shopcoinsorder?></div>
-
-			<div>ФИО: <span id='fio-result'></span></div>
-			<div>ФИО Получателя: <span id='userfio-result'></span></div>
-			<div>Телефон: <span id=phone-result></span></div>
-			<div>Способ доставки:<span id=delivery-result></span></div>
+			<br>
+			<div style="font-size:14px;font-weight:bold;">Заказ № <?=$shopcoinsorder?></div>
+			<br>
+			<div>ФИО: <span id='fio-result'></span></div><br>
+			<div>ФИО получателя: <span id='userfio-result'></span></div><br>
+			<div>Телефон: <span id=phone-result></span></div><br>
+			<div>Способ доставки: <span id=delivery-result></span></div><br>
 			<div id='metro-block-result' style="display:none">
-				Метро:<span id=metro-result></span>
+				Метро: <span id=metro-result></span>
 			</div>
 			<div id='metro-price-block-result' style="display:none">
-				Цена доставки:<span id=metro-price-result></span>  р.
+				Цена доставки: <span id=metro-price-result></span>  р.<br>
 			</div>
 			<div id='meetingdate-block-result' style="display:none">
-				Дата:<span id=meetingdate-result></span>
+				Дата: <span id=meetingdate-result></span><br>
 			</div>
 
 			<div id='meetingfromtime-block-result' style="display:none">
-				Время: с <span id='meetingfromtime-result'></span> по <span id='meetingtotime-result'></span>         </div>
+				Время: с <span id='meetingfromtime-result'></span> по <span id='meetingtotime-result'></span>         </div><br>
 
-			<div>Способ оплаты: <span id='payment-result'></span></div>
+			<div>Способ оплаты: <span id='payment-result'></span></div><br>
 			<div id='postindex-block-result' style="display:none">
-				Индекс: <span id=postindex-result></span>
+				Индекс: <span id=postindex-result></span><br>
 			</div>
 
 			<div id='adress-block-result' style="display:none">
-				Адрес отправления: <span id=adress-result></span>
+				Адрес отправления: <span id=adress-result></span><br>
 			</div>
 			
 			<div id='coupon-block-result' style="display:none">
 			<?
 			if($user_data['vip_discoint']){?>
-			    Скидка как VIP- клиента: <?=$user_data['vip_discoint']?> %<span id=coupon-result style="display:none"></span><br>
-			    Размер скидки: <span id=discountcoupon-result></span> р.
+			    Скидка как VIP- клиента: <font color="red"> <?=$user_data['vip_discoint']?> %<span id=coupon-result style="display:none"></font></span><br>
+			    Размер скидки: <font color="red"><span id=discountcoupon-result></span> р.</font><br>
 			<?} else {?>
-			    Скидочный купон: <span id=coupon-result></span><br>
-				Скидка по купону: <span id=discountcoupon-result></span> р.
+			    Скидочный купон: <font color="red"> <span id=coupon-result></font></span><br>
+				Скидка по купону: <font color="red"> <span id=discountcoupon-result></span> р.</font><br>
 			<?}?>				
 			</div>
 			<div>
-				Комментарий к заказу: <span id=OtherInformation-result></span>
+				Комментарий к заказу: <span id=OtherInformation-result></span><br>
 			</div>
-			<div>Сумма заказа сучетом скидок: <span id=bascetsum-result></span> р.</div>
+			<div>Сумма заказа сучетом скидок: <font color="red"><b> <span id=bascetsum-result></span> р.</b></font></div><br>
 			<div id='post-block-result' style="display:none">
 				<h5>Отправка по почте</h5>
 				<div>Почтовая тариф зона<span id='post-zone-result'></span></div>
@@ -63,19 +64,23 @@
 				<div>Страховка 4%: <span id=bascetinsurance-result></span></div>
 				<div>Конверт или упаковка: <?=$PriceLatter; ?> р.</span></div>
 				<div><input type="checkbox" checked name=postrulesview id=postrulesview> С указанными почтовыми тарифами ознакомлен. Заказ обязуюсь выкупить.</div>
+				<br>
 			</div>
-			<div><b>Итого:</b> <span id='allprice-result'></span> руб.</span></div>
+			<div>Итого: <font color="red"><b><span id='allprice-result'></span> руб.</b></font></span></div><br>
 			<?php if($can_pay_from_balance){?>
-				<div> <input type="checkbox" checked onclick="form_user_bb();" id="from_ub" name="from_ub">Оплатить из бонус-счета(<?=$tpl['user']['balance']?> рубл.)</b></div>
+				<div> <input type="checkbox" checked onclick="form_user_bb();" id="from_ub" name="from_ub">Оплатить из бонус-счета(<?=$tpl['user']['balance']?> рубл.)</div>
 			<?} else {?>
 				<input type="hidden" id="from_ub" name="from_ub" value="0">
 			<?}?>
+			<br>
 			<div>Если Вы оставляли заявки на монеты в каталоге и они присутствуют в этом заказе, то Вы можете автоматически убрать их из рассылки(телефонного уведомления) о новых поступлениях этих монет
+				<br><br>
 				<select name=deletesubscribecoins id=deletesubscribecoins>
 					<option value=0>Оставить заявки</option>
 					<option value=1>Убрать заявки</option>
 				</select>
 			</div>
+			<br>
 			<input type="button"  class="button25" onclick="SubmitOrder();" value='Подтвердить заказ и перейти к оплате' style="width:350px">
 			<input type="button"  class="button25" onclick="$('#user-compare-block').hide();$('#user-order').show();" value="Редактировать данные заказа">
 		</div>
@@ -97,8 +102,8 @@
 					Данные требуются для подтверждения заказа
 				</div>
 
-				<div id='delivery-block'>
-					<h5>Способ доставки</b></h5>
+				<div id='delivery-block' style="font-weight:400;">
+					<h5>Способ доставки</h5>
 					<?
 
 					foreach ($DeliveryName as $key=>$value){?>
@@ -143,8 +148,8 @@
 					<textarea name=adress id=adress cols=50 rows=5><?=$adress?></textarea>
 				</div>
 
-				<div id=payment-block>
-					<h5>Способ оплаты</b></h5>
+				<div id=payment-block style="font-weight:400;">
+					<h5>Способ оплаты</h5>
 					<div class="error" id='payment4-error' style="display:none">
 						<b>Уважаемый пользователь!</b><br>
 						К сожалению, способ оплаты “наложенный платеж” для вас был заблокирован администратором.<br>
@@ -195,7 +200,7 @@
 						<? if($tpl['orderdetails']['coupons']['friends']){
 						 $codetmp = $tpl['orderdetails']['coupons']['friends'];
 						?>
-						<br><b>Вам доступен купон на скидку по акции Приведи друга:<?=$codetmp[0]?>-<?=$codetmp[1]?>-<?=$codetmp[2]?>-<?=$codetmp[3]?>
+						<br><b>Вам доступен купон на скидку по акции Приведи друга:<?=$codetmp[0]?>-<?=$codetmp[1]?>-<?=$codetmp[2]?>-<?=$codetmp[3]?></b>
 						<?}?>
 
 						<div id="CouponInfo" name="CouponInfo">
@@ -248,7 +253,7 @@
 </div>
 <!--Конец выбора параметров заказа-->
 <!--Блок информации о заказе-->
-<div style="float:right;width:40%;">
+<div style="float:right;width:40%;font-weight:400;">
 	<h5>Мой заказ</h5>
 	<?foreach ($tpl['orderdetails']['ArrayShopcoinsInOrder'] as 	$rows ){ ?>
 		<div style="border:1px solid #cccccc; margin:15px;padding:10px;margin-left:0px;">

@@ -145,7 +145,8 @@ if($tpl["datatype"]=='text_html'){
     die();
 }
 if($tpl['ajax']){
-    require_once $cfg['path'] . '/views/common/header/head.tpl.php';
+    //require_once $cfg['path'] . '/views/common/header/head.tpl.php';
+    
     require_once $cfg['path'] .  '/views/'.$tpl['module'].'.tpl.php';
     die();
 }

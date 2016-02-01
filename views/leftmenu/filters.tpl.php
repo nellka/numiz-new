@@ -1,5 +1,5 @@
 <? if(isset($filter_groups)&&$filter_groups){?>
-<form id='search-params' method="POST" action="<?=$_SERVER['REQUEST_URI']?>" style="float:left;">
+<form id='search-params' method="POST" action="<?=$cfg['site_dir']?>shopcoins?<?=$search?"search=$search":"materialtype=$materialtype"?>" style="float:left;">
 <input type="hidden" id='orderby' name='orderby' value='<?=$tpl['orderby']?>'>
 <input type="hidden" id='onpage' name='onpage' value='<?=$tpl['onpage']?>'>
 <input type="hidden" id='pagenum' name='pagenum' value='<?=$tpl['pagenum']?>'>
@@ -35,7 +35,11 @@
 <?
 		if($filter_group['filter_group_id']=='group'){?> 		
     		
-    		<input type="text" value="" id='group_name' placeholder='Название страны' name="group_name" size="30"><input type="button" value="X" onclick="clear_filter('group_name');return false;" style="float:right">
+    		<input type="text" value="" id='group_name' placeholder='Название страны' name="group_name" size="30">
+    		
+    		<input type="button" value="" class="filtr-s-d" onclick="clear_filter('group_name');return false;">          
+    		<input type="button" value="" class="filtr-s" onclick="fgroup();return false;">
+    		
 
 		<?}
 		?>
@@ -117,7 +121,7 @@
 	<?php 
 		//break;
 		if($filter_group['filter_group_id']=='group'){?>
-		    <div class="filter-block">		
+		    <div class="filter-block" id='filter-price'>		
 			<? if($tpl['filter']['price']['max']){?>
 				<div style="float:left;"><b>Цена</b></div> 	
 				<div style="float:right;">

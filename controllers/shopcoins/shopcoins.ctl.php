@@ -54,6 +54,7 @@ $group_data = array();
 $condition_data  = array(); 
 $years_data  = array(); 
 $years_p_data = array(); 
+$nominal_data = array(); 
 
 $pricestart =request('pricestart');
 $priceend =request('priceend');
@@ -63,15 +64,14 @@ $searchid = request('searchid');
 
 $groups = request('groups');
 $nominals = request('nominals');
+$nominal = request('nominal');
 $group = request('group');
 
 //на случай если парамет передали из прямой ссылки надо поддержать и такой формат
-if ($groups) $group_data =$groups;
-elseif($group) $group_data =  array($group);
 
-require($cfg['path'].'/controllers/filters.ctl.php');
+
 //если границы цены дефолтные то убираем их из выборки78
-if($priceend==$tpl['filter']['price']['max']||$priceend<=0){
+if($priceend<=0){
 	$priceend='';
 }
 
@@ -101,6 +101,7 @@ if($nominals&&$groups){
     
     $i=0;
     foreach ($years as $val){
+       
        if($i>0){   
             //если совпадают концы интервалов
             if(($years_data[$i-1][1]+1)==$yearsArray[$val]['data'][0]) {           
@@ -113,6 +114,7 @@ if($nominals&&$groups){
     	   $years_data[] = $yearsArray[$val]['data'];
     	   	$i++;
        }
+
     }
     
     //формируем массив интервалов
@@ -128,16 +130,44 @@ $conditions = (array)request('conditions');
 
 
 if ($metals) $metal_data =$metals;
-elseif($metal) $metal_data =  array($metal);
+elseif($metal) {
+	$metal_data =  array($metal);
+	$metals =  array($metal);
+}
 
-elseif($metal) $metal_data =  array($metal);
+if ($groups)  $group_data =$groups;
+elseif($group) {
+	$group_data =  array($group);
+	$groups =  array($group);
+}
+
+if($groups){
+	if ($nominals) $nominal_data =$nominals;
+	elseif($nominal) {
+		$nominal_data =  array($nominal);
+		$nominals =  array($nominal);
+	}
+}
+
 if ($conditions) $condition_data =$conditions;
-elseif($condition) $condition_data =  array($condition);
+elseif($condition) {
+	$condition_data =  array($condition);
+	$conditions =  array($condition);
+}
 
 if ($themes) $theme_data =$themes;
-elseif($theme) $theme_data =  array($theme);
+elseif($theme) {
+	$theme_data =  array($theme);
+	$themes =  array($theme);
+}
+
 if ($themes) $theme_data =$themes;
-elseif($theme) $theme_data =  array($theme);
+elseif($theme) {
+	$theme_data =  array($theme);
+	$themes =  array($theme);
+}
+
+require($cfg['path'].'/controllers/filters.ctl.php');
 
 $checkuser = 0;
 $CounterSQL = "";
@@ -160,7 +190,7 @@ if($years_p_data) $WhereParams['year_p'] = $years_p_data;
 if($condition_data) $WhereParams['condition'] = $condition_data;
 if($group_data) $WhereParams['group'] = $group_data;
 if($coinssearch) $WhereParams['coinssearch'] = $coinssearch;
-if($nominals)  $WhereParams['nominals'] = $nominals;
+if($nominal_data)  $WhereParams['nominals'] = $nominal_data;
 if($searchname) {
     //так как ссылки были вида cp1251
     $WhereParams['searchname'] = str_replace("'","",iconv("cp1251",'utf8',$searchname));

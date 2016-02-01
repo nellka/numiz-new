@@ -53,7 +53,23 @@ $(document).ready(function() {
          $(this).parent().find('.imageBig').hide();    
     });    
         
-    $('.search-top-module #search').autocomplete({
+    $('#header-mini #search').autocomplete({
+      source: 'shopcoins/index.php?search=1',
+      minLength:3,
+      select: function (event, ui) {
+          console.log(ui.item);
+            window.location = ui.item.href;
+            return ui.item.label;
+        }
+    }).data( "autocomplete" )._renderItem = function( ul, item ) {
+         console.log(item);
+        return $( "<li class='search-ayax'></li>" )
+            .data( "item.autocomplete", item )
+            .append( "<a href='"+item.href+"'>" + item.image+ " <span> " + item.label+ "</span></a>" )
+            .appendTo( ul );
+    };
+    
+    $('#header #search').autocomplete({
       source: 'shopcoins/index.php?search=1',
       minLength:3,
       select: function (event, ui) {
@@ -88,40 +104,6 @@ $(document).ready(function() {
 		return false;
 	});
 });
-
-
-function showOn(href,id){
-   // console.log('show'+href)
-   //console.log($('#MainBascet'));
-     $('#MainBascet').dialog({
-        modal: true,
-        position: { 
-           /* my: 'top',
-            at: 'top',
-            of: $("#"+id)*/
-              my: "center center",
-        at: "center center",
-        of: window
-        },
-        close: function(event, ui){
-            console.log("close");
-            $(this).dialog("close");
-            $('#MainBascet').html('');
-           // $(this).remove();
-        },
-        open: function (){
-            //$('div.ui-widget-overlay').hide();
-           // $("div.ui-dialog").not(':first').remove();
-            // console.log(href);
-             $(this).load(href);
-             $('.ui-dialog-titlebar-close').addClass('ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only');
-$('.ui-dialog-titlebar-close').append('<span class="ui-button-icon-primary ui-icon ui-icon-closethick"></span><span class="ui-button-text">close</span>');
-        },
-       // height: 330, 
-        width: 400
-    });
-     return false;   
-} 
 </script>
 
 <title><?=isset($tpl[$tpl['module']]['_Title'])?$tpl[$tpl['module']]['_Title']:$tpl['base']['_Title']?></title>

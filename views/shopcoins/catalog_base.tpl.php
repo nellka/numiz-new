@@ -1,12 +1,31 @@
 <div id='products'>
+
 <?	
 if(!$childen_data_years){?>
      <script>
         if($('#fb-years')) $('#fb-years').remove();
     	if($('#fb-years_p')) $('#fb-years_p').remove();
       </script>
-<?} elseif($groups&&$nominals){
-    $filter_years_content =  contentHelper::render('leftmenu/filter_block',array('name'=>'Год','filter_group_id'=>'year','filter_group_id_full'=>'years_p','filter'=>$childen_data_years,'materialtype'=>$materialtype,'checked'=>$years_p));   
+<?} 
+//if($groups){
+   // var_dump(var_dump($tpl['filter']['price']));
+    ?>
+      <script>
+     
+         // $slider.slider('option', 'values', [$slider.slider("option", "min"),$slider.slider("option", "max")]);
+          
+     <?if($tpl['filter']['price']['max']==$tpl['filter']['price']['min']){       
+         ?>
+         $('#filter-price').hide();
+     <?} else {?>
+      $('#filter-price').show();
+       // if($('#fb-years')) $('#fb-years').remove();
+    	//if($('#fb-years_p')) $('#fb-years_p').remove();
+     <?}?>
+      </script>
+<?//}
+if($groups&&$nominals){
+    $filter_years_content =  contentHelper::render('leftmenu/filter_block',array('name'=>'Год','filter_group_id'=>'year','filter_group_id_full'=>'years_p','filter'=>$childen_data_years,'materialtype'=>$materialtype,'checked'=>$years_p,'groups'=>$groups));   
 
     ?>
     <script>
@@ -14,22 +33,21 @@ if(!$childen_data_years){?>
     	if($('#fb-years')) $('#fb-years').remove();
     	if($('#fb-years_p')) $('#fb-years_p').remove();
     	$('<?=escapeJavaScriptText($filter_years_content)?>').insertBefore('#fb-metals');
-        //$('#search-params #fb-years input').on('change',function(){sendData();}); 
          $('#search-params input').unbind("change");
          $('#search-params input').bind("change");    
+         
         if($('#years-slider')){$('#years-slider').show();} 
            
     });   
    </script>
 <? 
 } else {
-     $filter_years_content =  contentHelper::render('leftmenu/filter_block',array('name'=>'Год','filter_group_id'=>'year','filter_group_id_full'=>'years','filter'=>$childen_data_years,'materialtype'=>$materialtype,'checked'=>$years));?>
+     $filter_years_content =  contentHelper::render('leftmenu/filter_block',array('name'=>'Год','filter_group_id'=>'year','filter_group_id_full'=>'years','filter'=>$childen_data_years,'materialtype'=>$materialtype,'checked'=>$years,'groups'=>$groups));?>
      <script>
     $(function(){    	 
     	if($('#fb-years')) $('#fb-years').remove();
     	if($('#fb-years_p')) $('#fb-years_p').remove();
     	$('<?=escapeJavaScriptText($filter_years_content)?>').insertBefore('#fb-metals');
-        //$('#search-params #fb-years input').on('change',function(){sendData();});  
         $('#search-params input').unbind("change");
          $('#search-params input').bind("change");    
          if($('#years-slider')){$('#years-slider').show();} 
@@ -38,14 +56,22 @@ if(!$childen_data_years){?>
    </script>
      
 <?}
-if( $childen_data_nominals&&$tpl['datatype']=='text_html') {
-	$filter_nominal_content =  contentHelper::render('leftmenu/filter_block',array('name'=>'Номинал','filter_group_id'=>'nominal','filter_group_id_full'=>'nominals','filter'=>$childen_data_nominals,'materialtype'=>$materialtype,'checked'=>$nominals));
+if( $childen_data_nominals) {
+	$filter_nominal_content =  contentHelper::render('leftmenu/filter_block',array('name'=>'Номинал','filter_group_id'=>'nominal','filter_group_id_full'=>'nominals','filter'=>$childen_data_nominals,'materialtype'=>$materialtype,'checked'=>$nominals,'groups'=>$groups));
+	//var_dump(count($childen_data_nominals)>10,count($childen_data_nominals));
+	
 	?>   
    <script>
     $(function(){    	 
     	$('#fb-nominals').remove();
     	$('<?=escapeJavaScriptText($filter_nominal_content)?>').insertAfter('#fb-groups');
         $('#search-params #fb-nominals input').on('change',function(){sendData();});   
+        <?// if(count($childen_data_nominals)>10){?>
+         if($("#filter-groupnominal_container")) {
+         	$("#filter-groupnominal_container").mCustomScrollbar("vertical",0,"easeOutCirc",1.05,"auto","yes","yes",10);
+         }
+        <?//}?>
+	
     });   
    </script>
 <?} elseif (!$childen_data_nominals){?>
@@ -85,8 +111,8 @@ if($tpl['shop']['errors']){?>
 
 <script type="text/javascript" charset="utf-8">
  jQuery(document).ready(function() {     	
-     jQuery( "#slider-range-price" ).slider(
-         {
+     $("#slider-range-price").slider("destroy");
+     $( "#slider-range-price" ).slider({
            range: true,
            min: <?=$tpl['filter']['price']['min']?>,                            
            max: <?=$tpl['filter']['price']['max']?>,
@@ -96,27 +122,27 @@ if($tpl['shop']['errors']){?>
                 $( "#amount-price1" ).val(ui.values[ 1 ]);
              },
              stop: function(event, ui) {
-               sendData();
+               sendData(null,null,'<?=$tpl['filter']['price']['min']?>','<?=$tpl['filter']['price']['max']?>','<?=$tpl['filter']['yearstart']?>','<?=date("Y",time())?>');
 	         }
          });
-     jQuery( "#amount-price0" ).val($( "#slider-range-price" ).slider( "values", 0 ));
-     jQuery( "#amount-price1" ).val($( "#slider-range-price" ).slider( "values", 1 ));
+     $( "#amount-price0" ).val($( "#slider-range-price" ).slider( "values", 0 ));
+     $( "#amount-price1" ).val($( "#slider-range-price" ).slider( "values", 1 ));
     <? if(isset($tpl['filter']['yearend'])){?>
-  		jQuery( "#slider-range-years" ).slider({
+  		$( "#slider-range-years" ).slider({
            range: true,
            min: <?=$tpl['filter']['yearstart']?>,                            
-           max: 2015,
+           max: <?=date("Y",time())?>,
            values: [ <?=(integer)$yearstart?>,  <?=$yearend?$yearend:$tpl['filter']['yearend']?>], 
            slide: function( event, ui ) {
                 $( "#amount-years0" ).val(ui.values[0]);
                 $( "#amount-years1" ).val(ui.values[1 ]);
            },
            stop: function(event, ui) {
-               sendData();
+               sendData(null,null,'<?=$tpl['filter']['price']['min']?>','<?=$tpl['filter']['price']['max']?>','<?=$tpl['filter']['yearstart']?>','<?=date("Y",time())?>');
            }
          });
-         jQuery( "#amount-years0" ).val($( "#slider-range-years" ).slider( "values", 0 ));
-     	 jQuery( "#amount-years1" ).val($( "#slider-range-years" ).slider( "values", 1 ));
+         $( "#amount-years0" ).val($( "#slider-range-years" ).slider( "values", 0 ));
+     	 $( "#amount-years1" ).val($( "#slider-range-years" ).slider( "values", 1 ));
      	 <?}?>
   		 //jQuery("#filter-groupgroup").mCustomScrollbar("vertical",400,"easeOutCirc",1.05,"auto","yes","yes",10);
   		 mCustomScrollbars()
@@ -155,7 +181,7 @@ function resetSliderYear() {
            $( "#amount-"+filter+"0" ).val($slider.slider("option", "min"));
            $( "#amount-"+filter+"1" ).val($slider.slider("option", "max"));
      }
-     sendData();
+     sendData(null,null,'<?=$tpl['filter']['price']['min']?>','<?=$tpl['filter']['price']['max']?>','<?=$tpl['filter']['yearstart']?>','<?=date("Y",time())?>');
      return false;
  }
 
@@ -172,6 +198,7 @@ function mCustomScrollbars(){
 	8) Скорость прокрутки (значение: 1-20, 1 соответствует самой медленной скорости)
 	*/
 	if(jQuery("#filter-groupgroup_container")) jQuery("#filter-groupgroup_container").mCustomScrollbar("vertical",0,"easeOutCirc",1.05,"auto","yes","yes",10);
+	
 	//console.log(jQuery("#filter-grouptheme_container"));
 	if(jQuery("#filter-grouptheme_container")) jQuery("#filter-grouptheme_container").mCustomScrollbar("vertical",0,"easeOutCirc",1.05,"auto","yes","yes",10);
 	/*$("#mcs2_container").mCustomScrollbar(); 
@@ -195,41 +222,14 @@ function LoadNewContent(id,file){
 		mCustomScrollbars();
 	});
 }*/
+
+    $(function(){
+    	
+     $('#search-params input').bind('change',function(){               	
+     	if($(this).attr('id')!='group_name'){
+     	    $('#search-params input').unbind("change");
+     		sendData(null,null,'<?=$tpl['filter']['price']['min']?>','<?=$tpl['filter']['price']['max']?>','<?=$tpl['filter']['yearstart']?>','<?=date("Y",time())?>');
+     	}
+     });     
+    });
 </script>
-
-
-   <script type="text/javascript">  
-        $(function(){
-        	
-         $('#search-params input').bind('change',function(){  
-            console.log(10);
-             	
-         	if($(this).attr('id')!='group_name'){
-         	    $('#search-params input').unbind("change");
-         		sendData();
-         	}
-         });
-
-         if($('#group_name')){
-        	$('#group_name').on('keyup', function() {
-    		    var query = this.value.toLowerCase();		    
-    			if(query.length>1){
-    			    $('#fb-groups .checkbox').each(function(i, elem) {			    	
-    			          if ($(elem).find('a').text().toLowerCase().indexOf(query) != -1) {
-    			              $(elem).show();
-    			          }else{
-    			              $(elem).hide();
-    			          }
-    			          mCustomScrollbars();
-    			    });
-    			} else {
-    				$('#fb-groups .checkbox').each(function(i, elem) {			    	
-    			        $(elem).show();
-    			    });
-    			}
-    		});
-        }        
-        });
-        
-
-    </script>
