@@ -4,6 +4,8 @@ require $cfg['path'] . '/configs/config_shopcoins.php';
 
 $search = request('search');
 $group = request('group');
+$catalognewstr = request('catalognewstr');
+
 $materialtype = request('materialtype')?request('materialtype'):1;
 if ($search == 'newcoins') {
     $shopcoins_class->setCategoryType(model_shopcoins::NEWCOINS);
@@ -55,6 +57,7 @@ $condition_data  = array();
 $years_data  = array(); 
 $years_p_data = array(); 
 $nominal_data = array(); 
+$series_data = array(); 
 
 $pricestart =request('pricestart');
 $priceend =request('priceend');
@@ -66,6 +69,7 @@ $groups = request('groups');
 $nominals = request('nominals');
 $nominal = request('nominal');
 $group = request('group');
+$series = request('series');
 
 //на случай если парамет передали из прямой ссылки надо поддержать и такой формат
 
@@ -155,6 +159,8 @@ elseif($condition) {
 	$conditions =  array($condition);
 }
 
+if ($series) $series_data = $series;
+
 if ($themes) $theme_data =$themes;
 elseif($theme) {
 	$theme_data =  array($theme);
@@ -191,6 +197,9 @@ if($condition_data) $WhereParams['condition'] = $condition_data;
 if($group_data) $WhereParams['group'] = $group_data;
 if($coinssearch) $WhereParams['coinssearch'] = $coinssearch;
 if($nominal_data)  $WhereParams['nominals'] = $nominal_data;
+if($series_data)  $WhereParams['series'] = $series_data;
+if($catalognewstr) $WhereParams['catalognewstr'] = $catalognewstr;
+
 if($searchname) {
     //так как ссылки были вида cp1251
     $WhereParams['searchname'] = str_replace("'","",iconv("cp1251",'utf8',$searchname));
@@ -202,6 +211,7 @@ $dateinsert_orderby = "dateinsert";
 
 //end - потом не забыть подключить
 $addhref = ($yearstart?"&yearstart=".$yearstart:"").
+($catalognewstr?"&catalognewstr=$catalognewstr":"").
 ($yearend?"&yearend=".$yearend:"").
 ($metal?"&metal=".urlencode($metal):"").
 ($search?"&search=".urlencode($search):"").
@@ -385,10 +395,12 @@ else*/if ($checkuser && $tpl['user']['user_id'] && ($num > 3) ) {
 $ArrayParent = Array();
 $tpl['shop']['MyShowArray'] = Array();
 $tpl['shop']['ArrayParent'] = Array();
-foreach ($data as $rows){
-	$tpl['shop']['ArrayShopcoins'][] = $rows["shopcoins"];
-	$tpl['shop']['ArrayParent'][] = $rows["parent"];
-	$tpl['shop']['MyShowArray'][] = $rows;
+if($data){
+	foreach ($data as $rows){
+		$tpl['shop']['ArrayShopcoins'][] = $rows["shopcoins"];
+		$tpl['shop']['ArrayParent'][] = $rows["parent"];
+		$tpl['shop']['MyShowArray'][] = $rows;
+	}
 }
 
 if (sizeof($tpl['shop']['ArrayParent'])) {
@@ -509,22 +521,99 @@ if (sizeof($tpl['shop']['MyShowArray'])==0){
 	
 }
 
+$tpl['seo_data'] = $shopcoins_class->getSeo($materialtype,$group_data,$nominal_data);
 //записываем статистике по тому, что искали
 if ($search && $search != 'revaluation' && $search != 'newcoins'){		
     //$shopcoins_class->addSearchStatistic();	
 }		
-
-
+$tmp = explode("#", $LastCatalog10);
+$k = 0;
+$ids = array();
+for ($i=0; $i<sizeof($tmp); $i++)
+{
+	$tmp1 = explode("|", $tmp[$i]);
+	if($tmp1[0]){
+	   $ids[] = $tmp1[0];
+	}
+	
+}	//var_dump($ids);
+$tpl['catalog']['lastViews'] = array();		
+if($ids){
+    $last_products = $shopcoins_class->getLastProducts($ids);
+    $d = array();
+    foreach ($last_products as &$row){
+        $row['condition'] = $tpl['conditions'][$row['condition_id']];
+	    $row['metal'] = $tpl['metalls'][$row['metal_id']];
+        $d[$row['shopcoins']] =  array_merge($row, contentHelper::getRegHref($row));
+        
+    }
+    $d_order = array();
+    
+    foreach ($ids as $id){
+        if(isset($d[$id])) $d_order[] = $d[$id];
+    }
+  
+    $tpl['catalog']['lastViews'] = $d_order;
+    //foreach ()
+   // var_dump($last_products);
+}
 
 /*
-if ($GroupDescription)
-			echo "<br>".$GroupDescription."<br>";
-
-if ($materialtype==1 && !$mycoins)
-{
-	echo $AdvertiseText;
-}*/
-
-//if ($group)	include_once "othermaterialid.php";
-
+$tmp = explode("#", $LastCatalog10);
+		$k = 0;
+		for ($i=0; $i<sizeof($tmp); $i++)
+		{
+			$tmp1 = explode("|", $tmp[$i]);
+			if ($tmp1[0])
+			{
+				if ($catalog != $tmp1[0])
+				{
+					
+					$mtype = $tmp1[3];
+			
+					if ($mtype==1)
+						$rehref = "Монета ";
+					elseif ($mtype==8)
+						$rehref = "Монета ";
+					elseif ($mtype==7)
+						$rehref = "Набор монет ";
+					elseif ($mtype==2)
+						$rehref = "Банкнота ";
+					elseif ($mtype==4)
+						$rehref = "Набор монет ";
+					elseif ($mtype==5)
+						$rehref = "Книга ";
+					else 
+						$rehref = "";
+						
+					if ($tmp1[1])
+						$rehref .= $tmp1[1]." ";
+					$rehref .= $rows['name'];
+					if ($tmp1[4])
+						$rehref .= " ".$tmp1[4]; 
+					if ($tmp1[5])
+						$rehref .= " ".$tmp1[5];
+					if ($tmp1[6])
+						$rehref .= " ".$tmp1[6];
+						
+					$rehref = strtolower_ru($rehref)."_c".$tmp1[0]."_m".$tmp1[3].".html";
+					
+					echo ($k!=0?"<tr><td colspan=4><hr class=divider size=1>":"<form action=# method=post>")."
+					
+					<tr>
+					<td id=imagel$k><div id=lastcatalogis".$tmp1[0]."> ".($arraystatuslast[$tmp1[0]]==1?"<input type=checkbox id=shopcoinslast$k name=shopcoinslast$k checked=checked value=".$tmp1[0].">":"<input type=checkbox disabled=disabled id=shopcoinslast$k name=shopcoinslast$k value=0>")."</div></td>
+					<td valign=top><div id=showl$k></div><img src=smallimages/".$tmp1[6]." width=80 border=1 style='border-color:black' alt='Монета ".$tmp1[1]." ".$tmp1[4]." стоимость ".intval($tmp1[5])." р.' onMouseOver=\"ShowMainCoins('l$k','<img src=images/".$tmp1[7]." border=1>','".htmlspecialchars($arraydetails[$tmp1[0]])."');\" onMouseOut=\"NotShowMainCoina('l$k');\"></td>
+					<td width=2></td>
+					<td valign=top><a href=index.php?page=show&group=".$tmp1[2]."&materialtype=".$tmp1[3]."&catalog=".$tmp1[0]." class=star title='Монета ".$tmp1[1]." ".$tmp1[4]." цена ".intval($tmp1[5])." р. найти'>".$tmp1[1]."<br>".$tmp1[4]."<br><font color=red>".intval($tmp1[5])." р.</font></a></td>
+					</tr>
+					";
+					$k++;
+				}
+			}
+		}
+		
+		echo "<tr bgcolor=#dddddd height=20><td colspan=4 align=center><img src=../images/corz1.gif border=0 style=\"cursor:pointer\" onclick=\"javascript:AddBascetLast();\" title=\"Положить все отмеченные монеты из списка в корзину\"></td></tr></table></form></td>
+		</tr>
+		</table>";
+	}*/
 ?>

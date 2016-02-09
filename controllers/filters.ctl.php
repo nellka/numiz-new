@@ -5,6 +5,7 @@ $childen_data_years = array();
 $childen_data_thems = array();
 $childen_data_conditions = array();
 $childen_data_nominals = array();
+$childen_data_series = array();
 /*
 монеты
 наборы монет
@@ -72,7 +73,9 @@ if($nominals&&$groups){
 	
 } else {
     if(!in_array($materialtype,array(5,3))&&($search != 'newcoins') ){
+     
     	foreach ($yearsArray  as $key=>$value){
+    	      // var_dump($yearsArray);
     		$childen_data_years[] = array('filter_id' => $key,'name' => $value['name']);
     	}
     							    
@@ -169,21 +172,36 @@ if(!in_array($materialtype,array(5))){
 if(!$tpl['filters']['nominals'] = $cache->load("nominals_$materialtype".implode("_",$group_data)."_$search")) { 
     $tpl['filters']['nominals'] = $shopcoins_class->getNominals($group_data);
     
-    $cache->save($childen_data_nominals, "nominals_$materialtype".implode("_",$group_data)."_$search");
+    $cache->save($tpl['filters']['nominals'], "nominals_$materialtype".implode("_",$group_data)."_$search");
 }
-
 foreach ($tpl['filters']['nominals'] as $value){
     $childen_data_nominals[] = array(
 			'filter_id' => $value["nominal_id"],
 			'name'      => $value["name"]);   
 }
     
-//}
+
+//фильтр по сериям
+
+if(!$tpl['filters']['series'] = $cache->load("series_$materialtype".implode("_",$group_data))) { 
+    $tpl['filters']['series'] = $shopcoins_class->getFilterSeries($group_data);
+    
+    $cache->save($tpl['filters']['series'], "series_$materialtype".implode("_",$group_data));
+}
+
+foreach ((array)$tpl['filters']['series'] as $value){  
+    $childen_data_series[] = array(
+			'filter_id' => $value["series"],
+			'name'      => $value["name"]);   
+}
+
 
 
 if( $childen_data_nominals) $filter_groups[] = array('name'=>'Номинал','filter_group_id'=>'nominal','filter_group_id_full'=>'nominals','filter'=>$childen_data_nominals,'materialtype'=>$materialtype);
 
-if($childen_data_years) $filter_groups[] = array('name'=>'Год','filter_group_id'=>'year','filter_group_id_full'=>'years','filter'=>$childen_data_years);
+if( $childen_data_series) $filter_groups[] = array('name'=>'Серии','filter_group_id'=>'series','filter_group_id_full'=>'series','filter'=>$childen_data_series,'materialtype'=>$materialtype);
+
+if($childen_data_years) $filter_groups[] = array('name'=>'Год','filter_group_id'=>'years','filter_group_id_full'=>'years','filter'=>$childen_data_years);
 if($childen_data_metal) $filter_groups[] = array('name'=>'Металл','filter_group_id'=>'metal','filter_group_id_full'=>'metals','filter'=>$childen_data_metal);
 if($childen_data_conditions) $filter_groups[] = array('name'=>'Состояние','filter_group_id'=>'condition','filter_group_id_full'=>'conditions','filter'=>$childen_data_conditions);
 if($childen_data_thems) $filter_groups[] = array('name'=>'Тематика','filter_group_id'=>'theme','filter_group_id_full'=>'themes','filter'=>$childen_data_thems);

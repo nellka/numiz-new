@@ -1,3 +1,6 @@
+27.11.2015
+alter table user modify `userlogin` varchar(100) NOT NULL DEFAULT '';
+
 CREATE TABLE `nominals` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
  `name` varchar(100) DEFAULT NULL,
@@ -39,3 +42,17 @@ alter table `user` add column vip_discoint int(11) NOT NULL default 0;
 update user set vip_discoint = (SELECT sum FROM `coupon` where type=2 and user.user = coupon.user order by dateend desc limit 1)
 # протестировать на дубли
 SELECT count( user ) AS u, coupon . * FROM `coupon` WHERE TYPE =2 AND sum >0 GROUP BY user HAVING u >1 LIMIT 0 , 30
+
+CREATE TABLE `shopcoinsseotext` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `materialtype`  int(11) NOT NULL,
+ `group_id`  int(11) NOT NULL default 0,
+ `nominal_id`  int(11) NOT NULL default 0,
+ `title` varchar(255),
+ `text` text,
+ `dateinsert`  int(11) NOT NULL default 0,
+ `active` tinyint(4),
+PRIMARY KEY (`id`),
+KEY  `group_id` (`group_id`),
+KEY `nominal_id` (`nominal_id`)
+)

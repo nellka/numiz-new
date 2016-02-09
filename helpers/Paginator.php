@@ -168,7 +168,7 @@ class Paginator
                 $refs[] = "<a class='normal_ref_color' href='{$this->getBaseUrl()}page=" . 
                       ($pages[count($pages) - 1] + 1) . "'>&gt;</a>";
             }
-            print '<p>Страницы: ' . implode('<span style="padding-right:3px;padding-left:3px;"></span>', $refs) . '</p>';
+            print '<p style="margin-top:0px;">Страницы: ' . implode('<span style="padding-right:3px;padding-left:3px;"></span>', $refs) . '</p>';
         }
     }
     

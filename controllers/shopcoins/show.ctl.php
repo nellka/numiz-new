@@ -79,6 +79,7 @@ else {
 
 $tpl['show']['error'] = false;
 //показываем количество страниц
+
 if ($catalog){	
     //стартовая инфа о монете независимо от родитея
 	$rows_main = $shopcoins_class ->getItem($catalog,true);	
@@ -91,79 +92,48 @@ if ($catalog){
 	$tpl['show']['next'] = ($next_coins)? contentHelper::getRegHref($next_coins,$materialtype,$parent):null;
 	$tpl['show']['previos'] = ($previos_coins)? contentHelper::getRegHref($previos_coins,$materialtype,$parent):null;	
 
-	if ($rows_main&&$rows_main['check']==0) {	
-   		// die('check=0');
-    /*
-	
-		
-		$sql_r = "select s.*, g.name as gname, g.groupparent as ggroup from shopcoins as s, `group` as g where 
-		s.parent='".$rows_main['parent']."' and (".($cookiesuser==811?(!$nocheck?"s.check=1 or s.check>3":"s.check>3"):"s.check=1").") and g.`group` = s.`group` limit 1;";
-		$result_r = mysql_query($sql_r);
-		if (mysql_num_rows($result_r)==1) {
-			
-			$rows_main = mysql_fetch_array($result_r);
-			$result_info1 = $sql_r;
-			$tpl['show']['parentinfo'] = 0;
-		}
-		else {
-			
-			$sql_c = "select catalog from catalogshopcoinsrelation where shopcoins='$catalog';";
-			$result_c = mysql_query($sql_c);
-			if (mysql_num_rows($result_c)>0) {
-			
-				$rows_c = mysql_fetch_array($result_c);
-				
-				$sql_s = "select s.*, g.name as gname, g.groupparent as ggroup from shopcoins as s, `group` as g, catalogshopcoinsrelation as c where 
-				c.catalog='".$rows_c[0]."' and c.shopcoins=s.shopcoins and (".($cookiesuser==811?(!$nocheck?"s.check=1 or s.check>3":"s.check>3"):"s.check=1").") and g.`group` = s.`group` limit 1;";
-				$result_s = mysql_query($sql_s);
-				if (mysql_num_rows($result_s)==1) {
-				
-					$rows_main = mysql_fetch_array($result_s);
-					$result_info1 = $sql_s;
-					$tpl['show']['parentinfo'] = 0;
-				}
-			}
-		}*/
-		}
-		
-		$tpl['show']['rowscicle'] = $shopcoins_class->getCoinsrecicle($catalog);
-		$tpl['show']['resultcicle'] = $shopcoins_class->getPopular(4,array('materialtype' => $materialtype, 'shopcoins.group' => $rows_main["group"]));
-	//var_dump($tpl['show']['resultcicle']);
-		$tmp = Array();
-		$LastCatalog10_tmp = "";
-		if ($LastCatalog10)	{
-			$tmp = explode("#", $LastCatalog10);
-			$LastCatalog10_tmp ='';
-			for ($i=0; $i < (sizeof($tmp)<10?sizeof($tmp):10); $i++)
+
+	$tpl['show']['rowscicle'] = $shopcoins_class->getCoinsrecicle($catalog);
+	$tpl['show']['resultcicle'] = $shopcoins_class->getPopular(4,array('materialtype' => $materialtype, 'shopcoins.group' => $rows_main["group"]));
+
+	$tmp = Array();
+	$LastCatalog10_tmp = "";
+	if ($LastCatalog10)	{
+		$tmp = explode("#", $LastCatalog10);
+		$LastCatalog10_tmp ='';
+		for ($i=0; $i < (sizeof($tmp)<10?sizeof($tmp):10); $i++)
+		{
+			unset ($tmp1);
+			$tmp1 = explode("|", $tmp[$i]);
+			if ($tmp1[0] != $catalog)
 			{
-				unset ($tmp1);
-				$tmp1 = explode("|", $tmp[$i]);
-				if ($tmp1[0] != $catalog)
-				{
-					$LastCatalog10_tmp .= $tmp[$i]."#";
-				}
+				$LastCatalog10_tmp .= $tmp[$i]."#";
 			}
 		}
-		
-		if ($rows_main["shopcoins"]) {
-			$LastCatalog10 = $rows_main["shopcoins"]."|".$rows_main["gname"]."|".$rows_main["group"]."|".$rows_main["materialtype"]."|".$rows_main["name"]."|".$rows_main["price"]."|".$rows_main["image_small"]."|".$rows_main["image_big"]."#".$LastCatalog10_tmp;
-		} else {
-			$LastCatalog10 = $LastCatalog10_tmp;
+	}
+
+	if ($rows_main["shopcoins"]) {
+		$LastCatalog10 = $rows_main["shopcoins"]."|".$rows_main["gname"]."|".$rows_main["group"]."|".$rows_main["materialtype"]."|".$rows_main["name"]."|".$rows_main["price"]."|".$rows_main["image_small"]."|".$rows_main["image_big"]."#".$LastCatalog10_tmp;
+	} else {
+		$LastCatalog10 = $LastCatalog10_tmp;			
+	}
 	
-			setcookie("LastCatalog10", $LastCatalog10, time() + 86400*30, "/shopcoins/", $domain);
-			setcookie("LastCatalog10", $LastCatalog10, time() + 86400*30, "/shopcoins/");
-			setcookie("LastCatalog10", $LastCatalog10, time() + 86400*30, "/shopcoins/", ".shopcoins.numizmatik.ru");
-			setcookie("LastCatalog10", $LastCatalog10, time() + 86400*30, "/");	
-		}
-		//подключаем ключевые слова для страницы товаров
-	    include($cfg['path'].'/configs/show_keywords.php');	
-		/*if ($parent){		
-			if (!$pagenumparent) $pagenumparent = 1;				
-		    $rows_main = $shopcoins_class->coinsWithParentDetails($catalog,$materialtype,$pagenumparent, $tpl['onpage']);		
-		} else {
-		    $details = $shopcoins_class->getItem($catalog,true);
-		    $rows_main =array($details);
-		}*/
+	setcookie("LastCatalog10", $LastCatalog10, time() + 86400*30, "/", $domain);
+	setcookie("LastCatalog10", $LastCatalog10, time() + 86400*30, "/shopcoins/");
+		
+	//setcookie("LastCatalog10", $LastCatalog10, time() + 86400*30, "/", ".shopcoins.numizmatik.ru");
+	//setcookie("LastCatalog10", $LastCatalog10, time() + 86400*30, "/");	
+//var_dump($catalog);
+//die('jjj');
+	//подключаем ключевые слова для страницы товаров
+    include($cfg['path'].'/configs/show_keywords.php');	
+	/*if ($parent){		
+		if (!$pagenumparent) $pagenumparent = 1;				
+	    $rows_main = $shopcoins_class->coinsWithParentDetails($catalog,$materialtype,$pagenumparent, $tpl['onpage']);		
+	} else {
+	    $details = $shopcoins_class->getItem($catalog,true);
+	    $rows_main =array($details);
+	}*/
 		
 	$tpl['show']['described'] = false;
 	$groupselect_v2 = array();

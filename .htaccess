@@ -3,10 +3,14 @@ RewriteBase     /new
 RewriteRule ^index\.php$ - [L]
 RewriteRule (css|images|js)/(.*)  $1/$2 [L,QSA]
 
+
+RewriteRule  new/wadmin/index.php/(.*)          new/wadmin/index.php/$1 [L]
+RewriteRule  wadmin/(.*)          wadmin/$1 [L]
+
 RewriteCond %{QUERY_STRING} page=order$ [NC]
 RewriteRule .* index.php?module=order [L,QSA]
 
-RewriteCond %{QUERY_STRING} page=orderdetails$ [NC]
+RewriteCond %{QUERY_STRING} page=orderdetails(.*)$ [NC]
 RewriteRule .* index.php?module=order&task=orderdetails [L,QSA]
 
 RewriteCond %{QUERY_STRING} page=order&page2=1$ [NC]

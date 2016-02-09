@@ -1,4 +1,4 @@
-<div id='products'>
+<div id='products' class="products-cls">
 
 <?	
 if(!$childen_data_years){?>
@@ -25,7 +25,7 @@ if(!$childen_data_years){?>
       </script>
 <?//}
 if($groups&&$nominals){
-    $filter_years_content =  contentHelper::render('leftmenu/filter_block',array('name'=>'Год','filter_group_id'=>'year','filter_group_id_full'=>'years_p','filter'=>$childen_data_years,'materialtype'=>$materialtype,'checked'=>$years_p,'groups'=>$groups));   
+    $filter_years_content =  contentHelper::render('leftmenu/filter_block',array('name'=>'Год','filter_group_id'=>'years_p','filter_group_id_full'=>'years_p','filter'=>$childen_data_years,'materialtype'=>$materialtype,'checked'=>$years_p,'groups'=>$groups,'nominals'=>$nominals));   
 
     ?>
     <script>
@@ -42,7 +42,7 @@ if($groups&&$nominals){
    </script>
 <? 
 } else {
-     $filter_years_content =  contentHelper::render('leftmenu/filter_block',array('name'=>'Год','filter_group_id'=>'year','filter_group_id_full'=>'years','filter'=>$childen_data_years,'materialtype'=>$materialtype,'checked'=>$years,'groups'=>$groups));?>
+     $filter_years_content =  contentHelper::render('leftmenu/filter_block',array('name'=>'Год','filter_group_id'=>'years','filter_group_id_full'=>'years','filter'=>$childen_data_years,'materialtype'=>$materialtype,'checked'=>$years,'groups'=>$groups,'nominals'=>$nominals));?>
      <script>
     $(function(){    	 
     	if($('#fb-years')) $('#fb-years').remove();
@@ -56,8 +56,23 @@ if($groups&&$nominals){
    </script>
      
 <?}
+if( $childen_data_series) {
+	$filter_series_content =  contentHelper::render('leftmenu/filter_block',array('name'=>'Серии','filter_group_id'=>'series','filter_group_id_full'=>'series','filter'=>$childen_data_series,'materialtype'=>$materialtype,'checked'=>$series,'groups'=>$groups,'years_p'=>$years_p,'years'=>$years));	
+	?>   
+   <script>
+    $(function(){    	 
+    	$('#fb-series').remove();
+    	$('<?=escapeJavaScriptText($filter_series_content)?>').insertAfter('#fb-groups');
+        $('#search-params #fb-series input').on('change',function(){sendData();});         
+    });   
+   </script>
+<?} else {?>
+ <script>$('#fb-series').remove(); </script>
+<?}
+
+
 if( $childen_data_nominals) {
-	$filter_nominal_content =  contentHelper::render('leftmenu/filter_block',array('name'=>'Номинал','filter_group_id'=>'nominal','filter_group_id_full'=>'nominals','filter'=>$childen_data_nominals,'materialtype'=>$materialtype,'checked'=>$nominals,'groups'=>$groups));
+	$filter_nominal_content =  contentHelper::render('leftmenu/filter_block',array('name'=>'Номинал','filter_group_id'=>'nominal','filter_group_id_full'=>'nominals','filter'=>$childen_data_nominals,'materialtype'=>$materialtype,'checked'=>$nominals,'groups'=>$groups,'years_p'=>$years_p,'years'=>$years));
 	//var_dump(count($childen_data_nominals)>10,count($childen_data_nominals));
 	
 	?>   
@@ -81,8 +96,8 @@ if( $childen_data_nominals) {
 <?}
 
 
-
-include('pager.tpl.php');
+include('onpage.tpl.php');
+include('nav_catalog.tpl.php');
 
 if($tpl['shop']['errors']){?>
 	<font color="red"><?=implode("<br>",$tpl['shop']['errors'])?></font>
@@ -107,10 +122,56 @@ if($tpl['shop']['errors']){?>
     	$i++;	
     }?>
 </div>
-<?}?>
 
+<?}?>
+<div style="width: 100%; display: table;">
+<?include('pager.tpl.php');?>
+</div>
+
+<?if ($tpl['catalog']['lastViews']) {	?>
+	<div class="wraper clearfix">
+	<h5>10 последних просматриваемых товаров</h5>
+	</div>
+	<div class="triger-carusel">	
+		  <div class="d-carousel">
+          <ul class="carousel">
+          
+		<?
+		foreach ($tpl['catalog']['lastViews'] as $rows_show_relation2){
+		    $rows_show_relation2['metal'] = $tpl['metalls'][$rows_show_relation2['metal_id']];
+		    $rows_show_relation2['condition'] = $tpl['conditions'][$rows_show_relation2['condition_id']];
+		    ?>			
+			<li>
+			<div class="coin_info">
+				<div id=show<?=$rows_show_relation2['shopcoins']?>></div>
+			<?	
+			$statuses = $shopcoins_class->getBuyStatus($rows_show_relation2["shopcoins"],$tpl['user']['can_see'],$ourcoinsorder,$shopcoinsorder);
+			$rows_show_relation2['buy_status'] = $statuses['buy_status'];
+			$rows_show_relation2['reserved_status'] = $statuses['reserved_status'];	
+			$rows_show_relation2['mark'] = $shopcoins_class->getMarks($rows_show_relation2["shopcoins"]);
+			echo contentHelper::render('shopcoins/item/itemmini-carusel',$rows_show_relation2);
+            ?>				
+			</div>
+			</li>
+		<?}?>
+		</ul>
+	</div>
+</div>	
+<?}?>
+<br class="clear:both">
+<?if($tpl['seo_data']){?>
+<div class="seo" class="clearfix">
+<h5><?=$tpl['seo_data']['title']?></h5>
+<?=$tpl['seo_data']['text']?>
+</div>
+<?}?>
+<script type="text/javascript" src="style/js/jquery.jcarousel.js"></script>
 <script type="text/javascript" charset="utf-8">
- jQuery(document).ready(function() {     	
+
+ jQuery(document).ready(function() {    
+     $('.d-carousel .carousel').jcarousel({
+        scroll: 1
+     }); 	
      $("#slider-range-price").slider("destroy");
      $( "#slider-range-price" ).slider({
            range: true,

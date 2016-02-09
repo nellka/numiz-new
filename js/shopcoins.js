@@ -349,8 +349,12 @@ function ShowSmallBascet (id,data) {
 		var bascetinsurance = data.bascetinsurance;
 		var textbascet2 = data.textbascet2;		
 		
-		$("#inorderamount").html(bascetamount);		
-		$("#inordersum").html(bascetsum);		
+		$("#header-mini #inorderamount").html(bascetamount);	
+		$("#header #inorderamount").html(bascetamount);	
+	
+		$("#header-mini #inordersum").html(bascetsum);	
+		$("#header #inordersum").html(bascetsum);	
+			
     	var str = '';
     		str = '<h1 class="yell_b">Корзина</h1>';
     		str += '<p><b>Заказ №</b> ' + shopcoinsorder + '</p>';

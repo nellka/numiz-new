@@ -1,10 +1,23 @@
 <?
 $checked_array = $rows['checked'];
 $groups = $rows['groups'];
+$years_p = isset($rows['years_p'])?$rows['years_p']:array();
+$years = isset($rows['years'])?$rows['years']:array();
+$nominals = isset($rows['nominals'])?$rows['nominals']:array();
 $ahref ='';
 foreach ((array)$groups as $group){
 	$ahref.='&groups[]='.$group;
 }
+foreach ((array)$years_p as $year_p){
+	$ahref.='&years_p[]='.$year_p;
+}
+foreach ((array)$years as $year){
+	$ahref.='&years[]='.$year;
+}
+foreach ((array)$nominals as $nominal){
+	$ahref.='&nominals[]='.$nominal;
+}
+
 ?>
 <div class="filter-block" id="fb-<?=$rows['filter_group_id_full']?>">
 	<div class="filter_heading">

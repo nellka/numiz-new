@@ -51,6 +51,7 @@
 							<?php 
 							foreach ($filter_group['filter'] as $filter) {
 								if($filter_group['filter_group_id_full']=='years'){
+								    var_dump($filter_group['filter_group_id_full']);
 									//подключаем отдельный вид фильтра  ?>	
 									<div class="checkbox">
 										<?php  if (is_array($$filter_group['filter_group_id_full'])&&in_array($filter['filter_id'], $$filter_group['filter_group_id_full'])) { ?>

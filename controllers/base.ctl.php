@@ -44,8 +44,13 @@ if ($tpl['user']['is_logined']){
 	$user_base_data = $user_class->getUserBaseData();
 	
 	$tpl['user'] = array_merge($tpl['user'],$user_base_data);
-} else $tpl['user']['user_id'] = 0;
-
+	$shopcoins_class = new model_shopcoins($cfg['db'],$tpl['user']['user_id'],$nocheck);
+	$tpl['user']['catalogamount'] = count($shopcoins_class->myCoinsRequest());
+} else {
+	$tpl['user']['user_id'] = 0;
+	$shopcoins_class = new model_shopcoins($cfg['db'],$tpl['user']['user_id'],$nocheck);
+}
+	
 //var_dump($tpl);
 //если пользователь залогинен и запрещено делать заказы, то проверяем те заказы, которые были
 $tpl['user']['orderusernow'] = 0;  
@@ -54,7 +59,7 @@ if ($blockend < time()&& $tpl['user']['user_id']) {
 	$tpl['user']['orderusernow'] = $user_class->setOrderusernow();   
 }
 
-$shopcoins_class = new model_shopcoins($cfg['db'],$tpl['user']['user_id'],$nocheck);
+
   
 include_once($cfg['path'] ."/configs/keywordsAdmin.php");
 //include $_SERVER["DOCUMENT_ROOT"]."/keywords.php";

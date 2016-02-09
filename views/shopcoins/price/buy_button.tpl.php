@@ -35,7 +35,7 @@ if($rows['buy_status']==2){?>
     	<span class="down">-</span>
     	<input type=text name=amount<?=$rows["shopcoins"]?> id=amount<?=$rows["shopcoins"]?> size=1 value='1'> 
 		<span class="up">+</span>
-		<div style="display:inline-block;width:150px;text-align:right;">
+		<div class="buy-div">
 			<a class="button25" href='#coin<?=$rows["shopcoins"]?>' onclick='javascript:AddAccessory(<?=$rows["shopcoins"]?>)' title='Положить в корзину <?=contentHelper::setWordOn($rows["materialtype"])?> <?=$rows["name"]?>'>Купить</a>
 		</div>
 	</div>	

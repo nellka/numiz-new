@@ -62,7 +62,7 @@ $(document).ready(function() {
             return ui.item.label;
         }
     }).data( "autocomplete" )._renderItem = function( ul, item ) {
-         console.log(item);
+
         return $( "<li class='search-ayax'></li>" )
             .data( "item.autocomplete", item )
             .append( "<a href='"+item.href+"'>" + item.image+ " <span> " + item.label+ "</span></a>" )

@@ -194,6 +194,7 @@ class model_user extends Model_Base
 	 	$data['orderusernow'] = 0;
 		$data['username'] = $this->getUsername();
     	$data['balance'] = $this->getUserBalance();
+    	
     	return $data;
 	 }
 	 
@@ -238,6 +239,7 @@ class model_user extends Model_Base
         		$_SESSION['cookiesuser'] = $userData['user'];
         		$this->user_id = $userData['user'];
         		$this->username = $userData['userlogin'];
+        		
                 return true;
         	} else {
         		return false;

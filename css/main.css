@@ -36,7 +36,9 @@ float:right;
     clear: both;
 }
 
-
+ul.ui-autocomplete{
+border:1px solid #ccc;
+}
 .clearfix:before,
 .clearfix:after {
   content: '.';
@@ -473,7 +475,7 @@ a#showcalllink{margin: 10px 0 0 70px;}
         
 }
 .basket-mini{
-padding: 0 0 5px 50px;
+padding: 0 0 5px 35px;
 }
 .submit{
 width:100%;
@@ -1197,6 +1199,11 @@ div.fancybox-showcalllink{left: 820px !important;top: 165px !important;}*/
 .tabs li.passive{
 	 
 }
+.buy-div{
+    display:inline-block;
+    width:150px;
+    text-align:right;
+}
 
 /* активная вкладка */
 .tabs li {
@@ -1372,4 +1379,155 @@ display:inline-block;
 }
 .search-ayax a.ui-corner-all img{
 float:left;
+}
+
+.pages{
+min-height:40px;
+}
+.products-cls {
+    margin: -30px 0;
+    text-align: left;
+}
+
+#wrapper .d-carousel ul li {
+	background: none;
+	background-color: #1f1f1f;
+	-webkit-box-shadow: 0px 1px 2px 0px #101010;
+	-moz-box-shadow: 0px 1px 2px 0px #101010;
+	box-shadow: 0px 1px 2px 0px #101010; 
+	padding: 15px;
+	width: 175px;
+}
+
+.jcarousel-direction-rtl {
+	direction: rtl;
+}
+
+.d-carousel h4 {
+	margin: 5px 0 5px 0;
+}
+
+.d-carousel .jcarousel-container {
+	display: block;
+	overflow: hidden;
+	margin-bottom: 20px;
+}
+.d-carousel .coin_info{
+width:150px;
+}
+.d-carousel .coin_info .amount span, .d-carousel .coin_info .amount input{
+display:none;
+}
+.d-carousel .coin_info .amount{
+width: 140px;
+}
+.d-carousel .coin_info .amount .buy-div{
+ text-align: center;
+ width:140px;
+}
+
+
+.d-carousel .jcarousel-item {
+	width: 190px;
+	height: 220px;
+}
+
+.d-carousel .jcarousel-container-horizontal {
+	height: 270px;
+    padding: 10px 30px;
+    width: 730px;
+}
+
+.d-carousel .jcarousel-item-horizontal {
+	margin-left: 3px;
+	margin-bottom: 3px;
+	margin-top: 3px;
+	margin-right: 11px;
+}
+
+
+#wrapper .d-carousel ul li {
+	background: none;
+	background-color: #FFF;
+	-webkit-box-shadow: 0px 1px 2px 0px #b7b7b7;
+	-moz-box-shadow: 0px 1px 2px 0px #b7b7b7;
+	box-shadow: 0px 1px 2px 0px #b7b7b7; 
+	padding: 15px;
+	width: 175px;
+}
+
+.jcarousel-direction-rtl {
+	direction: rtl;
+}
+
+.d-carousel h4 {
+	margin: 5px 0 5px 0;
+}
+
+.d-carousel .jcarousel-container {
+	display: block;
+	overflow: hidden;
+	margin-bottom: 20px;
+}
+
+.d-carousel .jcarousel-container-horizontal {
+	width: 750px;
+	height: 300px;
+	padding: 0 30px;
+}
+
+.d-carousel .jcarousel-item-horizontal {
+	margin-left: 3px;
+	margin-bottom: 3px;
+	margin-top: 3px;
+	margin-right: 11px;
+}
+
+.d-carousel .jcarousel-next-horizontal {
+	position: absolute;
+	top: 129px;
+	right: 0;
+	margin-right: 3px;
+	width: 15px;
+	height: 28px;
+	cursor: pointer;
+	background: transparent url(../images/blog-arrows.jpg) no-repeat top right;
+}
+
+.d-carousel .jcarousel-direction-rtl .jcarousel-next-horizontal {
+	left: 5px;
+	right: auto;
+	background-image: url(../images/blog-arrows.jpg);
+}
+
+.d-carousel .jcarousel-next-horizontal:hover {
+	background-position: bottom right;
+}
+
+.d-carousel .jcarousel-prev-horizontal {
+	position: absolute;
+	top: 129px;
+	left: 0;
+	margin-left: 3px;
+	width: 15px;
+	height: 28px;
+	cursor: pointer;
+	background: transparent url(../images/blog-arrows.jpg) no-repeat top left;
+}
+
+.d-carousel .jcarousel-direction-rtl .jcarousel-prev-horizontal {
+	left: auto;
+	right: 5px;
+	background-image: url(../images/blog-arrows.jpg);
+}
+
+.d-carousel .jcarousel-prev-horizontal:hover {
+	background-position: bottom left;
+}
+
+.triger-carusel {
+    background: #eeeeee none repeat scroll 0 0;
+    height: 270px;
+    margin: 0 -55px;
+    padding: 10px;
 }

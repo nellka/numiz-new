@@ -36,4 +36,10 @@ if($tpl['shop']['errors']){?>
     }?>
 </div>
 <?}?>
+
+<div id='pages' class="pages">
+    	<div class="pages">
+    		 <?php echo $tpl['paginator']->printPager(); ?>
+    	</div>	
+	</div>
 </div>
