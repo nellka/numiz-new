@@ -69,8 +69,9 @@ $groups = request('groups');
 $nominals = request('nominals');
 $nominal = request('nominal');
 $group = request('group');
-$series = request('series');
+$seriess = request('seriess');
 
+$series = request('series');
 //на случай если парамет передали из прямой ссылки надо поддержать и такой формат
 
 
@@ -159,7 +160,12 @@ elseif($condition) {
 	$conditions =  array($condition);
 }
 
-if ($series) $series_data = $series;
+if ($seriess)  $series_data = $seriess;
+elseif($series) {
+	$series_data =  array($series);
+	$seriess =  array($series);
+}
+
 
 if ($themes) $theme_data =$themes;
 elseif($theme) {
@@ -167,14 +173,10 @@ elseif($theme) {
 	$themes =  array($theme);
 }
 
-if ($themes) $theme_data =$themes;
-elseif($theme) {
-	$theme_data =  array($theme);
-	$themes =  array($theme);
-}
 
 require($cfg['path'].'/controllers/filters.ctl.php');
 
+$tpl['shopcoins']['filter_groups'] = $filter_groups;
 $checkuser = 0;
 $CounterSQL = "";
 
@@ -253,7 +255,6 @@ if ($searchid)
 	<br>����� ��������� ����������� ����� - ������� <a href=$script>�����</a>.</p>";
 
 
-
 $countpubs = $shopcoins_class->countallByParams($WhereParams);
 
 if($addhref) $addhref = substr($addhref,1);  
@@ -276,14 +277,6 @@ $OrderByArray = Array();
 /*if ($coinssearch)
 	$OrderByArray[] = " shopcoins.shopcoins=".intval($coinssearch)." desc ";*/
 
-if (isset($CounterSQL)&&$CounterSQL)
-	if (sizeof($WhereThemesearch) || sizeof($SearchTempDigit))
-		$OrderByArray[] = " (coefficientcoins+counterthemeyear+coefficientgroup) desc, counterthemeyear desc, (coefficientcoins+coefficientgroup) desc, coefficientgroup desc, coefficientcoins desc  ";
-	else
-		$OrderByArray[] = " (coefficientcoins+coefficientgroup) desc, coefficientgroup desc, coefficientcoins desc ";
-
-
-
 
 //if ($group)	$OrderByArray[] = " ABS(shopcoins.group-".$group.") ";
 
@@ -291,7 +284,8 @@ if (($materialtype==3||$materialtype==5) and $group) $OrderByArray[] = " shopcoi
 
 if ($materialtype==5) $OrderByArray[] = " shopcoins.name desc";
 
-	
+$OrderByArray[] ="novelty desc";
+
 if ($tpl['orderby']=="dateinsertdesc"){
 	$OrderByArray[] = " if (shopcoins.dateupdate > shopcoins.dateinsert, shopcoins.dateupdate, shopcoins.dateinsert) desc";
 	$OrderByArray[] = "shopcoins.dateinsert desc";
@@ -386,6 +380,8 @@ else*/if ($checkuser && $tpl['user']['user_id'] && ($num > 3) ) {
 	".($group>0&&!$page?($sortname?" order by ".($coinssearch?"shopcoins.shopcoins=".intval($coinssearch)." desc,":"")." groupparent asc,param2,param1,".$dateinsert_orderby." desc":" order by ".($coinssearch?"shopcoins.shopcoins=".intval($coinssearch)." desc,":"")." groupparent asc,".$dateinsert_orderby." desc,price desc, param2,param1"):$orderby)." 
 	$limit;";
 	echo $sql;*/
+	
+
 	$data = $shopcoins_class->getItemsByParams($WhereParams,$tpl['pagenum'],$tpl['onpage'],$orderby);
 	
 }
@@ -616,4 +612,6 @@ $tmp = explode("#", $LastCatalog10);
 		</tr>
 		</table>";
 	}*/
+
+var_dump(count($filter_groups));
 ?>

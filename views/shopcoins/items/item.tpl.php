@@ -1,8 +1,11 @@
 <?php
 //новинки
-if ($rows["dateinsert"]>time()-86400*180 && !$mycoins){
+
+if ($rows["novelty"]){?>
+    <div class="new">Новинка</div>
+<?} elseif ($rows["dateinsert"]>time()-86400*180 && !$mycoins){
 ?>
-	<div style="position:absolute;width:30px;height:14px;background-color:red;right:5px;color: #ffffff;">NEW</div>
+	<div class="new_red">NEW</div>
 <?php 
  }
 ?>

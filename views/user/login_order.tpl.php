@@ -18,15 +18,15 @@
     <input type=password name=password id=password size="40" value='<?=$tpl['user']['password']?>' placeholder="Введите пароль">
     
 </div>
-<div class="auth_form  left">
+<div class="auth_form  left" id='warn'>
     <p><img src="<?=$cfg['site_dir']?>images/warn.png"> &nbsp;Мы не рассылаем спам и не предлагаем Ваши контакты третьим лицам</p>
 </div>
-<div class="auth_form">
+<div class="auth_form" >
     <input type="button" name=newUser id='newUser' value='Я новый покупатель' onclick="Login()" class="button27 left" style="font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp;
     <input type="button" name=existUser id=existUser value='Я уже заказывал ранее' onclick="Login(1)" class="button26" style="font-weight:bold;">
 </div>
 
-<div class="auth_form">    
+<div class="auth_form" id='subscr-order'>    
     <div>
          <input type="checkbox" name=subscr <?=checked_box($tpl['user']['subscr'])?> value='<?=$tpl['user']['subscr']?>' id='subscr'> <label for="subscr"><b>Подписаться на новости нумизматики</b></label><br>
           <input type="checkbox" name=subscr_shop <?=checked_box($tpl['user']['subscr_shop'])?> value='<?=$tpl['user']['subscr_shop']?>' id='subscr_shop'> <label for="subscr_shop"><b>Подписаться на новости магазина</b></label>
@@ -51,6 +51,8 @@ function Login(on) {
     if(on){
         $('form#orderForm #password-block').show();
         $('form#orderForm #remind-block').show();
+        $('form#orderForm #subscr-order').hide();
+        $('form#orderForm #warn').hide();        
         $('form#orderForm #user_exist').val(1);
         $('form#orderForm #newUser').removeClass('button27');
         $('form#orderForm #newUser').addClass('button26');
@@ -59,6 +61,8 @@ function Login(on) {
     } else {
         $('form#orderForm #password-block').hide();
         $('form#orderForm #remind-block').hide();
+        $('form#orderForm #subscr-order').show();
+        $('form#orderForm #warn').show();   
         $('form#orderForm #user_exist').val(0);
         $('form#orderForm #newUser').removeClass('button26');
         $('form#orderForm #newUser').addClass('button27');

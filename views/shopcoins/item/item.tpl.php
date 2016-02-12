@@ -87,8 +87,8 @@ if ($materialtype==1||$materialtype==12||$materialtype==10 || $materialtype==11 
     }
 }
 
-echo contentHelper::render('shopcoins/price/buy_button',$rows_main);
-echo contentHelper::render('shopcoins/price/prices',$rows_main);
+
+
 if(($rows_main['buy_status']==7||$rows_main['buy_status']==6)&&($minpriceoneclick<=$rows_main['price'])) {
 	echo contentHelper::render('shopcoins/price/oneclick',$rows_main);
 }?>
@@ -102,6 +102,14 @@ if(($rows_main['buy_status']==7||$rows_main['buy_status']==6)&&($minpriceoneclic
 <?
 //оценки
 echo contentHelper::render('shopcoins/price/markitem',$rows_main['mark']);
+?>
+<div class="amount_padding">
+	<?php
+	echo contentHelper::render('shopcoins/price/buy_button',$rows_main);
+	?>
+</div>
+<?php
+echo contentHelper::render('shopcoins/price/prices',$rows_main);
 ?>
 
 <br>

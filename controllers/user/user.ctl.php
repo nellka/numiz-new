@@ -10,6 +10,7 @@ $tpl['user']['errors'] = array();
 $tpl['user']['send_status'] = false;
 
 $validator = new Zend_Validate_EmailAddress(); 
+
 $mail_class = new mails();
 switch ($tpl['task']){    
     case 'registration':{
@@ -67,16 +68,16 @@ switch ($tpl['task']){
         $subsriptionMail = request('subsription-mail');        
             
         if($_SERVER['REQUEST_METHOD'] == 'POST'){  
-         
+         //var_dump($subsriptionMail,$_SERVER['REQUEST_METHOD']);
             if (!$validator->isValid($subsriptionMail)) {
-                $tpl['subsription']['errors'] = "Неверный Email";
+                $tpl['user']['errors'][] = "Неверный Email";
             }  else {
                  $data = array('email'=>$subsriptionMail,
                                'userpassword' => $password,
                                'userlogin'=>$subsriptionMail);                                                
                  //регистрируем
                  $userId = $user_class->addNewUser($data,1);      
-                 $tpl['subsription']['errors'] = "Спасибо за подписку на наш ресурс!";                 
+                 $tpl['user']['errors'][] = "Спасибо за подписку на наш ресурс!";                 
                   //отправляется письмо о регистрации     
                  $data['subsription'] = 1;         
                  $mail_class->newUserLetter($data);                     

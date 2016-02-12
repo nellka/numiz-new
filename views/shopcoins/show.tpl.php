@@ -132,14 +132,17 @@ if(isset($tpl['show']['resultcicle'])&&$tpl['show']['resultcicle']){?>
 		          $rowsp['condition'] = $tpl['conditions'][$rowsp['condition_id']];
 			    ?>
 				<div class="coin_info">
-					<div id=show<?=$rowsp['shopcoins']?>></div>
-				<?	
-				$statuses = $shopcoins_class->getBuyStatus($rowsp["shopcoins"],$tpl['user']['can_see'],$ourcoinsorder,$shopcoinsorder);
-				$rowsp['buy_status'] = $statuses['buy_status'];
-				$rowsp['reserved_status'] = $statuses['reserved_status'];	
-				$rowsp['mark'] = $shopcoins_class->getMarks($rowsp["shopcoins"]);
-				echo contentHelper::render('shopcoins/item/itemmini',$rowsp);
-	            ?>				
+					<div class="coin_info_small_img">
+						<div id=show<?=$rowsp['shopcoins']?>></div>
+					
+							<?	
+							$statuses = $shopcoins_class->getBuyStatus($rowsp["shopcoins"],$tpl['user']['can_see'],$ourcoinsorder,$shopcoinsorder);
+							$rowsp['buy_status'] = $statuses['buy_status'];
+							$rowsp['reserved_status'] = $statuses['reserved_status'];	
+							$rowsp['mark'] = $shopcoins_class->getMarks($rowsp["shopcoins"]);
+							echo contentHelper::render('shopcoins/item/itemmini',$rowsp);
+							?>		
+					</div>				
 				</div>
 			<?}?>
 		</div>
@@ -167,13 +170,14 @@ if ($tpl['shop']['resultp']) {	?>
 							<input type=checkbox id=shopcoinslast<?=$kn?> name=shopcoinslast<?=$kn?> checked=checked
 							value=<?=$rowsp["shopcoins"]?> onclick="ChangeSumSeeCoins('<?=$rowsp['price']?>',<?=$kn?>)">
 						</div>
+						<div class="coin_info_small_img">
 						<div id=showm<?=$kn?>  style="float:left;"></div>
 						<?$statuses = $shopcoins_class->getBuyStatus($rowsp["shopcoins"],$tpl['user']['can_see'],$ourcoinsorder,$shopcoinsorder);
 						//$rowsp['buy_status'] = $statuses['buy_status'];
 						//$rowsp['reserved_status'] = $statuses['reserved_status'];	
 						$rowsp['mark'] = $shopcoins_class->getMarks($rowsp["shopcoins"]);
 						echo contentHelper::render('shopcoins/item/itemmini',$rowsp);?>
-
+						</div>
 					</div>
 						<?
 						$kn++;
@@ -200,20 +204,22 @@ if( $tpl['shop']['result_show_relation2']) {	?>
 	</div>
 	<div class="triger">	
 		<div class="wraper clearfix" style="height:270px;padding-top:15px;">
-		<?
-		foreach ($tpl['shop']['result_show_relation2'] as $rows_show_relation2){
-		    $rows_show_relation2['metal'] = $tpl['metalls'][$rows_show_relation2['metal_id']];
-		    $rows_show_relation2['condition'] = $tpl['conditions'][$rows_show_relation2['condition_id']];
-		    ?>			
-			<div class="coin_info">
-				<div id=show<?=$rows_show_relation2['shopcoins']?>></div>
-			<?	
-			$statuses = $shopcoins_class->getBuyStatus($rows_show_relation2["shopcoins"],$tpl['user']['can_see'],$ourcoinsorder,$shopcoinsorder);
-			$rows_show_relation2['buy_status'] = $statuses['buy_status'];
-			$rows_show_relation2['reserved_status'] = $statuses['reserved_status'];	
-			$rows_show_relation2['mark'] = $shopcoins_class->getMarks($rows_show_relation2["shopcoins"]);
-			echo contentHelper::render('shopcoins/item/itemmini',$rows_show_relation2);
-            ?>				
+			<div class="coin_info_small_img">
+			<?
+			foreach ($tpl['shop']['result_show_relation2'] as $rows_show_relation2){
+				$rows_show_relation2['metal'] = $tpl['metalls'][$rows_show_relation2['metal_id']];
+				$rows_show_relation2['condition'] = $tpl['conditions'][$rows_show_relation2['condition_id']];
+				?>			
+				<div class="coin_info">
+					<div id=show<?=$rows_show_relation2['shopcoins']?>></div>
+				<?	
+				$statuses = $shopcoins_class->getBuyStatus($rows_show_relation2["shopcoins"],$tpl['user']['can_see'],$ourcoinsorder,$shopcoinsorder);
+				$rows_show_relation2['buy_status'] = $statuses['buy_status'];
+				$rows_show_relation2['reserved_status'] = $statuses['reserved_status'];	
+				$rows_show_relation2['mark'] = $shopcoins_class->getMarks($rows_show_relation2["shopcoins"]);
+				echo contentHelper::render('shopcoins/item/itemmini',$rows_show_relation2);
+				?>	
+				</div>	
 			</div>
 		<?}?>
 	</div>

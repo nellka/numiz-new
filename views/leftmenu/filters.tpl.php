@@ -1,4 +1,46 @@
-<? if(isset($filter_groups)&&$filter_groups){?>
+<? 
+include(START_PATH."/config.php");
+$filter_groups = isset($rows['filter_groups'])?$rows['filter_groups']:$tpl['filter_groups'];
+
+if(isset($filter_groups)&&$filter_groups){
+    //var_dump($groups,$nominals);
+    $groups = isset($rows['groups'])?$rows['groups']:array();;
+    $years_p = isset($rows['years_p'])?$rows['years_p']:array();
+    $years = isset($rows['years'])?$rows['years']:array();
+    $nominals = isset($rows['nominals'])?$rows['nominals']:array();
+    $tpl = isset($rows['tpl'])?$rows['tpl']:array();
+    $metals = isset($rows['metals'])?$rows['metals']:array();
+    $conditions = isset($rows['conditions'])?$rows['conditions']:array();
+    $themes = isset($rows['themes'])?$rows['themes']:array();
+    $materialtype = isset($rows['materialtype'])?$rows['materialtype']:'';
+    $pricestart = isset($rows['pricestart'])?$rows['pricestart']:'';
+    $priceend = isset($rows['priceend'])?$rows['priceend']:'';
+    $yearstart = isset($rows['yearstart'])?$rows['yearstart']:'';
+    $yearend = isset($rows['yearend'])?$rows['yearend']:'';
+    $seriess = isset($rows['seriess'])?$rows['seriess']:array();
+    $search = isset($rows['search'])?$rows['search']:'';
+   // var_dump($priceend,$pricestart);
+    
+    $ahref = "";
+    $ahref_groups ='';
+    $ahref_years_p ='';
+    $ahref_years ='';
+    $ahref_nominals ='';
+    
+    foreach ((array)$groups as $group){
+    	$ahref_groups ='&groups[]='.$group;
+    }
+    foreach ((array)$years_p as $year_p){
+    	$ahref_years_p ='&years_p[]='.$year_p;
+    }
+    foreach ((array)$years as $year){
+    	$ahref_years ='&years[]='.$year;
+    }
+    foreach ((array)$nominals as $nominal){
+    	$ahref_nominals ='&nominals[]='.$nominal;
+    }
+        //var_dump($ahref);
+    ?>
 <form id='search-params' method="POST" action="<?=$cfg['site_dir']?>shopcoins?<?=$search?"search=$search":"materialtype=$materialtype"?>" style="float:left;">
 <input type="hidden" id='orderby' name='orderby' value='<?=$tpl['orderby']?>'>
 <input type="hidden" id='onpage' name='onpage' value='<?=$tpl['onpage']?>'>
@@ -21,7 +63,12 @@
 
 	<?php   
 	//вводим фильтр для стран
-	 	foreach ($filter_groups as $filter_group) { 	    
+	 	foreach ($filter_groups as $filter_group) { 
+	 		if(in_array($filter_group['filter_group_id_full'],array('nominals','years','years_p'))){
+	 			$ahref = $ahref_groups;
+	 		}
+	 			
+	 		//var_dump();    
 	 	    ?>
 	
 		<div class="filter-block" id='fb-<?=$filter_group['filter_group_id_full']?>'>
@@ -33,6 +80,7 @@
     			</div>
     		</div>
 <?
+
 		if($filter_group['filter_group_id']=='group'){?> 		
     		
     		<input type="text" value="" id='group_name' placeholder='Название страны' name="group_name" size="30">
@@ -44,22 +92,23 @@
 		<?}
 		?>
 		<ul class="filter_heading_ul">
-			<div id="filter-group<?=$filter_group['filter_group_id']?>_container">
+			<div id="filter-group<?=$filter_group['filter_group_id']?>_container" class="filter-group<?=$filter_group['filter_group_id']?>_container_<?=(count($filter_group['filter'])>13)?1:0?>">
+			<?if(count($filter_group['filter'])>13){?>
 				<div class="customScrollBox">
 					<div class="container">
 						<div class="content">
+						<?}?>
 							<?php 
 							foreach ($filter_group['filter'] as $filter) {
 								if($filter_group['filter_group_id_full']=='years'){
-								    var_dump($filter_group['filter_group_id_full']);
 									//подключаем отдельный вид фильтра  ?>	
 									<div class="checkbox">
 										<?php  if (is_array($$filter_group['filter_group_id_full'])&&in_array($filter['filter_id'], $$filter_group['filter_group_id_full'])) { ?>
 											<input type="checkbox" name="<?=$filter_group['filter_group_id_full']?>[]" value="<?=$filter['filter_id']?>" checked="checked" />
-											<a href="?materialtype=<?=$materialtype?>&yearsrart=&yearend"> <?=$filter['name'];?></a>
+											<a href="?materialtype=<?=$materialtype?><?=$ahref?>&yearsrart=&yearend"> <?=$filter['name'];?></a>
 										<?php } else { ?>
 											<input type="checkbox" name="<?php echo $filter_group['filter_group_id_full']; ?>[]" value="<?=$filter['filter_id']?>" />
-											<a href="?materialtype=<?=$materialtype?>&yearsrart=&yearend"> <?=$filter['name'];?></a>
+											<a href="?materialtype=<?=$materialtype?><?=$ahref?>&yearsrart=&yearend"> <?=$filter['name'];?></a>
 										  <?}?>
 									</div>
 									
@@ -68,10 +117,10 @@
 										<?php            
 										 if (is_array($$filter_group['filter_group_id_full'])&&in_array($filter['filter_id'], $$filter_group['filter_group_id_full'])) { ?>
 											<input type="checkbox" name="<?=$filter_group['filter_group_id_full']?>[]" value="<?=$filter['filter_id']?>" checked="checked" />
-									   <a href="?materialtype=<?=$materialtype?>&<?=$filter_group['filter_group_id']?>=<?=$filter['filter_id']?>"> <?=$filter['name'];?></a>
+									   <a href="?materialtype=<?=$materialtype?><?=$ahref?>&<?=$filter_group['filter_group_id']?>=<?=$filter['filter_id']?>"> <?=$filter['name'];?></a>
 										<?php } else { ?>
 											<input type="checkbox" name="<?php echo $filter_group['filter_group_id_full']; ?>[]" value="<?=$filter['filter_id']?>" />
-									   <a href="?materialtype=<?=$materialtype?>&<?=$filter_group['filter_group_id']?>=<?=urlencode(iconv("utf8","cp1251",$filter['filter_id']))?>"> <?=$filter['name'];?></a>
+									   <a href="?materialtype=<?=$materialtype?><?=$ahref?>&<?=$filter_group['filter_group_id']?>=<?=urlencode(iconv("utf8","cp1251",$filter['filter_id']))?>"> <?=$filter['name'];?></a>
 										  <?}?>
 									</div>
 								<?php
@@ -82,10 +131,10 @@
 												<?php             
 												 if (is_array($$filter_group['filter_group_id_full'])&&in_array($filter_child['filter_id'], $$filter_group['filter_group_id_full'])) { ?>
 												<input type="checkbox" name="<?=$filter_group['filter_group_id_full']?>[]" value="<?=$filter_child['filter_id']?>" checked="checked" />
-												<a href="?materialtype=<?=$materialtype?>&<?=$filter_group['filter_group_id']?>=<?=urlencode(iconv("utf8","cp1251",$filter_child['filter_id']))?>"> <?=$filter_child['name'];?></a>
+												<a href="?materialtype=<?=$materialtype?><?=$ahref?>&<?=$filter_group['filter_group_id']?>=<?=urlencode(iconv("utf8","cp1251",$filter_child['filter_id']))?>"> <?=$filter_child['name'];?></a>
 												<?php } else { ?>
 												<input type="checkbox" name="<?php echo $filter_group['filter_group_id_full']; ?>[]" value="<?php echo $filter_child['filter_id']; ?>" />
-												  <a href="?materialtype=<?=$materialtype?>&<?=$filter_group['filter_group_id']?>=<?=urlencode(iconv("utf8","cp1251",$filter_child['filter_id']))?>"> <?=$filter_child['name'];?></a>
+												  <a href="?materialtype=<?=$materialtype?><?=$ahref?>&<?=$filter_group['filter_group_id']?>=<?=urlencode(iconv("utf8","cp1251",$filter_child['filter_id']))?>"> <?=$filter_child['name'];?></a>
 
 												<?php } ?>
 											</div>
@@ -97,15 +146,16 @@
 								}
 							}?>  
 							
-						</div>
+						<?if(count($filter_group['filter'])>13){?></div>
 					</div>
 					<div class="dragger_container">
     					<div class="dragger"></div>
     				</div>
 			 </div>
 			 
+			 
 			<a href="#" class="scrollUpBtn"></a> <a href="#" class="scrollDownBtn"></a>						
-
+<?}?>
 			<? if($filter_group['filter_group_id_full']=='years'){
 			    $i=0;?>   
 			    <div id='years-slider'>
@@ -121,7 +171,8 @@
 		</div>
 	<?php 
 		//break;
-		if($filter_group['filter_group_id']=='group'){?>
+		
+		if($filter_group['filter_group_id']=='years'){?>
 		    <div class="filter-block" id='filter-price'>		
 			<? if($tpl['filter']['price']['max']){?>
 				<div style="float:left;"><b>Цена</b></div> 	

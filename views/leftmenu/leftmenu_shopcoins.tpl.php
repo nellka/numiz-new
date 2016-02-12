@@ -21,7 +21,7 @@
    
    <?  
    //подключаем фильтры для магазина
-   if($tpl['task']=='catalog_base')  include('filters.tpl.php');
+   //if($tpl['task']=='catalog_base')  include('filters.tpl.php');
 ?>
    <script> function showMainLeftMenu(){
         if(!jQuery('#left_menu_shop').is(':visible')){

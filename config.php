@@ -1,9 +1,9 @@
 <?php
 ini_set('display_errors', '1');
 error_reporting(E_ALL);	
-define('PATH_LIBS', dirname(__FILE__) .'/php_lib');
-define('DIR_TEMPLATE', dirname(__FILE__) .'/views/');
-
+if(!defined('PATH_LIBS')) define('PATH_LIBS', dirname(__FILE__) .'/php_lib');
+if(!defined('DIR_TEMPLATE')) define('DIR_TEMPLATE', dirname(__FILE__) .'/views/');
+if(!defined('START_PATH')) define('START_PATH', dirname(__FILE__) );
 
 ini_set('include_path', ini_get('include_path') . 	PATH_SEPARATOR . PATH_LIBS );
 

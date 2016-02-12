@@ -1,6 +1,16 @@
 <div id='products' class="products-cls">
 
 <?	
+$filter_layaut =  contentHelper::render('leftmenu/filters',array('filter_groups'=>$filter_groups,'search'=>$search,'groups'=>$groups,'nominals'=>$nominals,'tpl'=>$tpl,'years'=>$years,'years_p'=>$years_p,'metals'=>$metals,'conditions'=>$conditions,'themes'=>$themes,'materialtype'=>$materialtype,'pricestart'=>$pricestart,'priceend'=>$priceend,'yearstart'=>$yearstart,'yearend'=>$yearend,'seriess'=>$seriess));   
+ 
+ if($filter_layaut){?>
+     <script>
+        if($('#search-params')) $('#search-params').remove();
+    	$('<?=escapeJavaScriptText($filter_layaut)?>').insertAfter('#left_menu_shop');
+      </script>
+     
+ <?}
+ /*var_dump($filter_layaut);
 if(!$childen_data_years){?>
      <script>
         if($('#fb-years')) $('#fb-years').remove();
@@ -32,7 +42,7 @@ if($groups&&$nominals){
     $(function(){    	 
     	if($('#fb-years')) $('#fb-years').remove();
     	if($('#fb-years_p')) $('#fb-years_p').remove();
-    	$('<?=escapeJavaScriptText($filter_years_content)?>').insertBefore('#fb-metals');
+    	$('<?=escapeJavaScriptText($filter_years_content)?>').insertBefore('#filter-price');
          $('#search-params input').unbind("change");
          $('#search-params input').bind("change");    
          
@@ -95,7 +105,8 @@ if( $childen_data_nominals) {
 	 </script>
 <?}
 
-
+*/
+ 
 include('onpage.tpl.php');
 include('nav_catalog.tpl.php');
 
@@ -106,7 +117,7 @@ if($tpl['shop']['errors']){?>
 <div class="product-grid">
 <?
     $i=1;
-    foreach ($tpl['shop']['MyShowArray'] as $key=>$rows){		
+    foreach ($tpl['shop']['MyShowArray'] as $key=>$rows){	
     	if(in_array($materialtype,array(7,4))){
     		echo "<div class='blockshop_spisok'>";
     		include('items/item_nabor.tpl.php');
@@ -165,7 +176,7 @@ if($tpl['shop']['errors']){?>
 <?=$tpl['seo_data']['text']?>
 </div>
 <?}?>
-<script type="text/javascript" src="style/js/jquery.jcarousel.js"></script>
+
 <script type="text/javascript" charset="utf-8">
 
  jQuery(document).ready(function() {    
@@ -258,10 +269,12 @@ function mCustomScrollbars(){
 	7) Прокрутка с помощью клавиш (значения: "yes" или "no")
 	8) Скорость прокрутки (значение: 1-20, 1 соответствует самой медленной скорости)
 	*/
-	if(jQuery("#filter-groupgroup_container")) jQuery("#filter-groupgroup_container").mCustomScrollbar("vertical",0,"easeOutCirc",1.05,"auto","yes","yes",10);
+	if($("#filter-groupgroup_container")) $("#filter-groupgroup_container").mCustomScrollbar("vertical",0,"easeOutCirc",1.05,"auto","yes","yes",10);
 	
 	//console.log(jQuery("#filter-grouptheme_container"));
-	if(jQuery("#filter-grouptheme_container")) jQuery("#filter-grouptheme_container").mCustomScrollbar("vertical",0,"easeOutCirc",1.05,"auto","yes","yes",10);
+	if($("#filter-grouptheme_container")) $("#filter-grouptheme_container").mCustomScrollbar("vertical",0,"easeOutCirc",1.05,"auto","yes","yes",10);
+	if($(".filter-groupnominal_container_1")) $(".filter-groupnominal_container_1").mCustomScrollbar("vertical",0,"easeOutCirc",1.05,"auto","yes","yes",10);
+	//console.log(jQuery(".filter-groupnominal_container_1"));
 	/*$("#mcs2_container").mCustomScrollbar(); 
 	$("#mcs3_container").mCustomScrollbar("vertical",900,"easeOutCirc",1.05,"auto","no","no",0); 
 	$("#mcs4_container").mCustomScrollbar("vertical",200,"easeOutCirc",1.25,"fixed","yes","no",0); 

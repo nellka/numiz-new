@@ -182,24 +182,23 @@ foreach ($tpl['filters']['nominals'] as $value){
     
 
 //фильтр по сериям
-
-if(!$tpl['filters']['series'] = $cache->load("series_$materialtype".implode("_",$group_data))) { 
-    $tpl['filters']['series'] = $shopcoins_class->getFilterSeries($group_data);
-    
-    $cache->save($tpl['filters']['series'], "series_$materialtype".implode("_",$group_data));
+if($materialtype&&$group_data){
+	if(!$tpl['filters']['series'] = $cache->load("series_$materialtype".implode("_",$group_data))) { 
+	    $tpl['filters']['series'] = $shopcoins_class->getFilterSeries($group_data);
+	    
+	    $cache->save($tpl['filters']['series'], "series_$materialtype".implode("_",$group_data));	
+	}
+	foreach ((array)$tpl['filters']['series'] as $value){  
+	    $childen_data_series[] = array(
+				'filter_id' => $value["series"],
+				'name'      => $value["name"]);   
+	}
 }
-
-foreach ((array)$tpl['filters']['series'] as $value){  
-    $childen_data_series[] = array(
-			'filter_id' => $value["series"],
-			'name'      => $value["name"]);   
-}
-
 
 
 if( $childen_data_nominals) $filter_groups[] = array('name'=>'Номинал','filter_group_id'=>'nominal','filter_group_id_full'=>'nominals','filter'=>$childen_data_nominals,'materialtype'=>$materialtype);
 
-if( $childen_data_series) $filter_groups[] = array('name'=>'Серии','filter_group_id'=>'series','filter_group_id_full'=>'series','filter'=>$childen_data_series,'materialtype'=>$materialtype);
+if( $childen_data_series) $filter_groups[] = array('name'=>'Серии','filter_group_id'=>'series','filter_group_id_full'=>'seriess','filter'=>$childen_data_series,'materialtype'=>$materialtype);
 
 if($childen_data_years) $filter_groups[] = array('name'=>'Год','filter_group_id'=>'years','filter_group_id_full'=>'years','filter'=>$childen_data_years);
 if($childen_data_metal) $filter_groups[] = array('name'=>'Металл','filter_group_id'=>'metal','filter_group_id_full'=>'metals','filter'=>$childen_data_metal);

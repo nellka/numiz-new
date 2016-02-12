@@ -2,13 +2,18 @@
 class contentHelper{    
 
 	static  function render($template,$rows) {
+		//var_dump(START_PATH);
+		
 		if (file_exists(DIR_TEMPLATE . $template.'.tpl.php')) {
+
 			extract($rows);
 
 			ob_start();
 			require(DIR_TEMPLATE . $template.'.tpl.php');
 			$output = ob_get_contents();
+			
 			ob_end_clean();
+			//var_dump($output);
 			return $output;
 		} else {
 			die('Error: Could not load template ' . DIR_TEMPLATE . $template . '!');

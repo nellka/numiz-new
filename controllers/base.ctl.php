@@ -155,6 +155,7 @@ if($tpl['ajax']){
     require_once $cfg['path'] .  '/views/'.$tpl['module'].'.tpl.php';
     die();
 }
+
 require_once  $cfg['path'] .  '/controllers/breadcrumbs.ctl.php';
 require_once  $cfg['path'] .  '/views/template.php';
 die();

@@ -297,6 +297,9 @@ background: url("../images/expand.jpg") no-repeat scroll left center;
     max-width: 220px;
 	max-height:150px;
 }
+.coin_info_small_img img{
+	width:200px;
+}
 #basket .user_details p{
     margin: 0 0 5px;
 }
@@ -1280,6 +1283,9 @@ div.fancybox-showcalllink{left: 820px !important;top: 165px !important;}*/
 	width:225px;
 	text-align:right;
 }
+.amount_padding div{
+width:100px !important;
+}
 .amount span {
 	display:inline-block;
 	width:20px;
@@ -1531,3 +1537,21 @@ width: 140px;
     margin: 0 -55px;
     padding: 10px;
 }
+
+.new,.new_red {
+    background-color: green;
+    color: #ffffff;
+    height: 10px;
+    line-height: 10px;
+    padding: 5px;
+    position: absolute;
+    right: 0;
+    top: 2px;
+    width: 50px;
+}
+
+.new_red {
+    background-color: red;
+    width: 25px;
+}
+

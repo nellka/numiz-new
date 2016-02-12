@@ -49,10 +49,14 @@ CREATE TABLE `shopcoinsseotext` (
  `group_id`  int(11) NOT NULL default 0,
  `nominal_id`  int(11) NOT NULL default 0,
  `title` varchar(255),
- `text` text,
+` text` text,
  `dateinsert`  int(11) NOT NULL default 0,
  `active` tinyint(4),
 PRIMARY KEY (`id`),
 KEY  `group_id` (`group_id`),
 KEY `nominal_id` (`nominal_id`)
-)
+);
+
+alter table shopcoins add column novelty int(11)  default 0;
+alter table shopcoins  add key `novelty`(`novelty`);
+

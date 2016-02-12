@@ -153,7 +153,7 @@ $digits =  array();
 $strings =  array();
 
 $reg_n="/([A-Za-z0-9-]*)/isu";
-$reg_y="/^19[0-9]{2}$|^20[0-9]{2}$/";
+$reg_y="/^19[0-9]{2}$|^20[0-9]{2}|^18[0-9]{2}|^17[0-9]{2}|^16[0-9]{2}|^15[0-9]{2}$/";
 $reg_d="/^[0-9]*$/";
 
 $i=0;
@@ -377,7 +377,7 @@ if(sizeof($words)){
     $CounterSQL = "0 as coefficientcoins";
 }
 if($WhereCountryes){
-    $CounterSQL .= ", if(shopcoins.group in (".implode(",",$WhereCountryes)."), 1,0) as coefficientgroup";
+    $CounterSQL .= ", if(shopcoins.group in (".implode(",",$WhereCountryes)."), 5,0) as coefficientgroup";
 } else {
      $CounterSQL .= ", 0 as coefficientgroup";
 }
@@ -390,7 +390,7 @@ if ($result_temp_name) {
 }
 
 if ($result_temp_metal) {
-	$CounterSQL .= ", if(shopcoins.metal_id in (".implode(",",array_keys($result_temp_metal))."), 1,0) as coefficientmetal";
+	$CounterSQL .= ", if(shopcoins.metal_id in (".implode(",",array_keys($result_temp_metal))."), 2,0) as coefficientmetal";
 } else {
     $CounterSQL .= ", 0 as coefficientmetal";
 }
@@ -402,9 +402,9 @@ if ($result_temp_condition) {
 }
 
 if ($years) {
-	$CounterSQL .= ", if($whereYear and shopcoins.year<>0,1.5,0) as counterthemeyear";
+	$CounterSQL .= ", if($whereYear and shopcoins.year<>0,3,0) as coefficientyear";
 } else {
-    $CounterSQL .= ", 0 as counterthemeyear";
+    $CounterSQL .= ", 0 as coefficientyear";
 }
 /*
 if (sizeof($WhereThemesearch) || sizeof($years)) {
@@ -448,7 +448,7 @@ if (sizeof($WhereThemesearch) || sizeof($SearchTempDigit))
 else
 	$OrderByArray[] = " (coefficientcoins+coefficientgroup) desc, coefficientgroup desc, coefficientcoins desc ";*/
 
-$OrderByArray[] = "(coefficientcoins+coefficientgroup+coefficientnominal+counterthemeyear+coefficientmetal+coefficientcondition) desc, coefficientgroup desc, coefficientcoins desc ";
+$OrderByArray[] = "(coefficientcoins+coefficientgroup+coefficientnominal+coefficientyear+coefficientmetal+coefficientcondition) desc, coefficientgroup desc, coefficientcoins desc ";
 
 if (sizeof($OrderByArray))
 	$orderby = "order by shopcoins.`check` asc,".implode(",",$OrderByArray);
