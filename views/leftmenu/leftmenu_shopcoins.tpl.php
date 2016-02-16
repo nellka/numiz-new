@@ -1,8 +1,8 @@
-<div class="menu-heading" onclick="showMainLeftMenu();">
+<div class="menu-heading" onclick="showMainLeftMenu();" id='hidden-shopcoins-menu'>
 	<a style="color:#ffffff;text-decoration:none;" href="#s" onclick="return false">
 		<span style="padding-left:17px;">Разделы магазина</span>
 	</a>
-</div>
+
 <ul id='left_menu_shop' class="menu-sidebar_static" style="display:<?=$mini?'none':'block'?>" >
    <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=1' title='Монеты стоимость(цены) весь мир' class="topmenu <?=(isset($materialtype)&&!$search&&$materialtype==1)?'active':''?>">Монеты</a></li>
    <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=8' title='Дешевые монеты стоимость(цены) весь мир' class="topmenu <?=(isset($materialtype)&&$materialtype==8)?'active':''?>">Мелочь </a></li>
@@ -18,16 +18,28 @@
    <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?search=revaluation' title='Распродажа монет' class="topmenu <?=(isset($search)&&$search=='revaluation')?'active':''?>">Распродажа монет</a></li>        
    <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=11' title='Барахолка' class="topmenu <?=(isset($materialtype)&&!$search&&$materialtype==11)?'active':''?>">Барахолка</a></li>   
                </ul>   
-   
+  </div> 
    <?  
    //подключаем фильтры для магазина
    //if($tpl['task']=='catalog_base')  include('filters.tpl.php');
 ?>
    <script> function showMainLeftMenu(){
-        if(!jQuery('#left_menu_shop').is(':visible')){
-            jQuery('#left_menu_shop').show();
+        if(!$('#left_menu_shop').is(':visible')){
+            $('#left_menu_shop').show();
         } else {
-            jQuery('#left_menu_shop').hide();
+            $('#left_menu_shop').hide();
         }
         return false;
-   }</script>
+   }
+    $('#hidden-shopcoins-menu').hover(
+		function(){		 
+		  $('#left_menu_shop').show();
+		},
+		function(){
+		  $('#left_menu_shop').hide();
+		}
+	);
+	
+	
+	
+    </script>

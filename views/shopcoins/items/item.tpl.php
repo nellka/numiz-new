@@ -46,7 +46,7 @@ if($rows["materialtype"]==3){?>
 	
 	if ($rows["gname"]){?>
 	<?=in_array($rows["materialtype"],array(9,3,5))?"Группа":"Страна"?>: 
-	<a href=<?=$cfg['site_dir']?>shopcoins?group=<?=$rows['group']?>&materialtype=<?=$rows["materialtype"]?> title='Посмотреть <?=contentHelper::setWordThat($rows["materialtype"])?> <?=$rows["gname"]?>'>
+	<a class="group_href" href=<?=$cfg['site_dir']?>shopcoins?group=<?=$rows['group']?>&materialtype=<?=$rows["materialtype"]?> title='Посмотреть <?=contentHelper::setWordThat($rows["materialtype"])?> <?=$rows["gname"]?>'>
 	<strong><font color=blue><?=$rows["gname"]?></font></strong>
 	</a><br>
 	<?}?>

@@ -333,21 +333,21 @@ $where = " where shopcoins.check=1 $whereMaterialtype ".($WhereArray?" and ($Whe
 $sql_all = "select count(shopcoins.shopcoins) from shopcoins, `group` $where ".$positive_amount."and shopcoins.group=group.group";
 
 
-echo $sql_all;
+//echo $sql_all;
 $countpubs = $shopcoins_class->countByParams($sql_all);
-var_dump($countpubs );
-echo "<br><br>";
+//var_dump($countpubs );
+//echo "<br><br>";
 $sql = "select shopcoins.*, group.name as gname, group.groupparent ".($CounterSQL?",".$CounterSQL:"")." from shopcoins, `group` 
 $where ".$positive_amount."and shopcoins.group=group.group  $orderby limit ".($tpl['pagenum']-1)*$tpl['onpage'].",".$tpl['onpage'];
 
 		
 $addhref = ($materialtype?"&materialtype=$materialtype":"")."&search=".$search."&pagenum=".$tpl['pagenum'];
-echo $sql;
-echo "<br><br>";
+//echo $sql;
+//echo "<br><br>";
 $data = $shopcoins_class->getDataSql($sql);
 //var_dump($data );
 //die();
-echo "<br><br>";
+//echo "<br><br>";
 if($addhref) $addhref = substr($addhref,1);  
 $tpl['paginator'] = new Paginator(array(
         'url'        => $cfg['site_dir']."shopcoins/index.php?".$addhref,

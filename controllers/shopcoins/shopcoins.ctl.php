@@ -2,9 +2,14 @@
 require($cfg['path'].'/helpers/Paginator.php');
 require $cfg['path'] . '/configs/config_shopcoins.php';
 
+
 $search = request('search');
 $group = request('group');
 $catalognewstr = request('catalognewstr');
+
+$GroupNameMain = '';
+$GroupName = ''; 
+$metalTitle = '';
 
 $materialtype = request('materialtype')?request('materialtype'):1;
 if ($search == 'newcoins') {
@@ -84,7 +89,7 @@ $yearstart  =request('yearstart');
 $yearend  =request('yearend');
 
 $theme  =request('theme');
-$themes  =request('theme');
+$themes  =request('themes');
 $metal  = iconv("cp1251",'utf8',request('metal'));
 $metals  =request('metals');
 
@@ -146,6 +151,22 @@ elseif($group) {
 	$groups =  array($group);
 }
 
+if(count($group_data)==1){
+    
+    $groupData = $shopcoins_class->getGroupItem($group_data[0]);
+	
+	$GroupName = $groupData["name"];
+	//$grouphref = strtolower_ru($GroupName)."_gn".$groupData['group'];
+	
+	if ($groupData["groupparent"] != 0 && $groupData["groupparent"] != $groupData["group"]) {	
+	    $groupParentData = $shopcoins_class->getGroupItem($groupData["groupparent"]); 		
+		$GroupNameMain = $groupParentData['name'];
+	}	
+}
+if(count($metal_data)==1){
+    $metalTitle = $tpl['metalls'][$metal_data[0]];
+}
+
 if($groups){
 	if ($nominals) $nominal_data =$nominals;
 	elseif($nominal) {
@@ -165,7 +186,6 @@ elseif($series) {
 	$series_data =  array($series);
 	$seriess =  array($series);
 }
-
 
 if ($themes) $theme_data =$themes;
 elseif($theme) {
@@ -613,5 +633,5 @@ $tmp = explode("#", $LastCatalog10);
 		</table>";
 	}*/
 
-var_dump(count($filter_groups));
+require $cfg['path'] . '/configs/shopcoins_keywords.php';
 ?>

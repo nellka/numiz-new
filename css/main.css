@@ -83,10 +83,8 @@ a:hover{color:#006699;font-weight:bold;}
     width: 1200px;
     z-index:10
 }
-#cssmenu {
-    background: url("../images/home.png") no-repeat scroll left center;
-    height:40px;    
-    color:white;
+ #cssmenu { color: white;
+ height: 40px;
 }
 .breadcrumb > a {
     text-decoration: none;
@@ -115,7 +113,7 @@ a:hover{color:#006699;font-weight:bold;}
 #cssmenu ul#ddmenu{ 
     margin: 0 auto;
     width: 1024px;
-    padding: 0 0 0 22px;
+    padding: 0px;
 }
 
 #auth_form {
@@ -143,6 +141,20 @@ a:hover{color:#006699;font-weight:bold;}
 .rss_lenta {
     float: right;
 }
+
+ .home a {
+background: rgba(0, 0, 0, 0) url("../images/home.png") no-repeat scroll center center;
+display: block;
+height: 40px;
+padding: 0;
+width: 10px;
+}
+
+
+#cssmenu ul li.home a:hover  {
+  background:  #ffcc66 url("../images/home.png") no-repeat scroll center center;
+}
+
 
 #cssmenu ul li a:hover ,#cssmenu ul li a.active {
   background: #ffcc66  
@@ -195,35 +207,35 @@ color: black;
   border-color: rgba(255, 204, 102, 0.3) transparent;
 }
 
-#ddmenu div#menu3 {left: -25px;}
-#ddmenu div#menu3:before {left: 50px;}
-#ddmenu div#menu4 {left: -95px;}
+#ddmenu div#menu3 {left: -35px;}
+#ddmenu div#menu3:before {left: 80px;}
+#ddmenu div#menu4 {left: -140px;}
 #ddmenu div#menu4:before {left: 140px;}
 #menu4  ul{ padding: 0  0 0 95px;}
-#ddmenu div#menu5 {left: -200px;}
-#ddmenu div#menu5:before {left: 250px;}
-#menu5  ul{ padding:0  0 0 200px}
-#ddmenu div#menu6 {left: -305px;}
-#ddmenu div#menu6:before {left: 330px;}
+#ddmenu div#menu5 {left: -240px;}
+#ddmenu div#menu5:before {left: 285px;}
+#menu5  ul{ padding:0  0 0 240px}
+#ddmenu div#menu6 {left: -350px;}
+#ddmenu div#menu6:before {left: 370px;}
 #menu6  ul{ padding:0  0 0 310px}
-#ddmenu div#menu7 {left: -375px;}
-#ddmenu div#menu7:before {left: 400px;}
+#ddmenu div#menu7 {left: -415px;}
+#ddmenu div#menu7:before {left: 435px;}
 #menu7  ul{ padding:0  0 0 380px}
 
-#ddmenu div#menu8 {left: -445px;}
-#ddmenu div#menu8:before {left: 470px;}
+#ddmenu div#menu8 {left: -485px;}
+#ddmenu div#menu8:before {left: 510px;}
 #menu8  ul{ padding:0  0 0 450px}
 
-#ddmenu div#menu9 {left: -520px}
-#ddmenu div#menu9:before {left: 580px;}
-#menu9  ul{ padding:0 0 0 530px}
+#ddmenu div#menu9 {left: -555px}
+#ddmenu div#menu9:before {left: 615px;}
+#menu9  ul{ padding:0 0 0 560px}
 
-#ddmenu div#menu10 {left: -660px}
-#ddmenu div#menu10:before {left: 685px;}
-#menu10  ul{ padding:0 0 0 665px}
-#ddmenu div#menu11 {left: -745px}
-#ddmenu div#menu11:before {left: 770px;}
-#menu11  ul{ padding:0 0 0 750px}
+#ddmenu div#menu10 {left: -695px}
+#ddmenu div#menu10:before {left: 725px;}
+#menu10  ul{ padding:0 0 0 695px}
+#ddmenu div#menu11 {left: -775px}
+#ddmenu div#menu11:before {left: 800px;}
+#menu11  ul{ padding:0 0 0 775px}
 
 #ddmenu ul li { 
   display: block; 
@@ -295,7 +307,7 @@ background: url("../images/expand.jpg") no-repeat scroll left center;
 	border:1px solid #cccccc;
 	padding: 3px 0;
     max-width: 220px;
-	max-height:150px;
+	max-height:125px;
 }
 .coin_info_small_img img{
 	width:200px;
@@ -361,7 +373,8 @@ padding:20px  0 0;
     background: #eeeeee none repeat scroll 0 0;
 }
 
-.search-top-module input#search {    
+.search-top-module input#search {   
+	vertical-align: top; 
     border: 1px solid #eeeeee;
     border-radius: 3px;
     color: #7da2aa;
@@ -507,7 +520,7 @@ width:100%;
     /* width: 290px;*/
 }
 #registration_form .frame-form form div.right{
-    width: 310px;
+    width: 250px;
 }
 
 #registration_form .frame-form form{
@@ -1330,6 +1343,9 @@ div.reserv{
 	font-size:11px;
 	text-align:left;
 }
+.product-grid div.reserv{
+text-align:right;
+}
 div.stars {
 	height:27px;
 	margin-bottom:12px;
@@ -1394,7 +1410,7 @@ min-height:40px;
     margin: -30px 0;
     text-align: left;
 }
-
+/*
 #wrapper .d-carousel ul li {
 	background: none;
 	background-color: #1f1f1f;
@@ -1403,55 +1419,73 @@ min-height:40px;
 	box-shadow: 0px 1px 2px 0px #101010; 
 	padding: 15px;
 	width: 175px;
-}
+}*/
 
 .jcarousel-direction-rtl {
 	direction: rtl;
 }
 
-.d-carousel h4 {
+.d-carousel h4,.d-carousel-show h4{
 	margin: 5px 0 5px 0;
 }
 
-.d-carousel .jcarousel-container {
+.d-carousel .jcarousel-container,.d-carousel-show .jcarousel-container {
 	display: block;
 	overflow: hidden;
 	margin-bottom: 20px;
+	
 }
-.d-carousel .coin_info{
-width:150px;
+.d-carousel .coin_info,.d-carousel-show .coin_info{
+    width:150px;
+    padding: 10px;
+    margin:0;
 }
-.d-carousel .coin_info .amount span, .d-carousel .coin_info .amount input{
+.d-carousel .coin_info .borderimage img,
+.d-carousel-show .coin_info .borderimage img{
+width: 145px;
+}
+
+.d-carousel .coin_info .amount span, .d-carousel .coin_info .amount input,
+.d-carousel-show .coin_info .amount span, .d-carousel-show .coin_info .amount input{
 display:none;
 }
-.d-carousel .coin_info .amount{
+.d-carousel .coin_info .amount,
+.d-carousel-show .coin_info .amount{
 width: 140px;
+text-align: center;
 }
-.d-carousel .coin_info .amount .buy-div{
+
+
+.d-carousel .coin_info .amount .buy-div,
+.d-carousel-show .coin_info .amount .buy-div{
  text-align: center;
  width:140px;
 }
 
-
+.d-carousel .coin_info,
+.d-carousel-show .coin_info{
+    height: 260px;
+}
 .d-carousel .jcarousel-item {
-	width: 190px;
-	height: 220px;
-}
-
-.d-carousel .jcarousel-container-horizontal {
+	width: 180px;
 	height: 270px;
-    padding: 10px 30px;
-    width: 730px;
 }
 
-.d-carousel .jcarousel-item-horizontal {
-	margin-left: 3px;
-	margin-bottom: 3px;
-	margin-top: 3px;
-	margin-right: 11px;
+.d-carousel-show .jcarousel-item {
+	width: 190px;
+	height: 280px;
+}
+.d-carousel .jcarousel-container-horizontal,
+.d-carousel-show .jcarousel-container-horizontal {
+	height: 275px;
+    padding: 10px 20px;
+    width: 665px;
 }
 
-
+.d-carousel-show .jcarousel-container-horizontal {
+    width: 1080px;
+}
+/*
 #wrapper .d-carousel ul li {
 	background: none;
 	background-color: #FFF;
@@ -1460,82 +1494,69 @@ width: 140px;
 	box-shadow: 0px 1px 2px 0px #b7b7b7; 
 	padding: 15px;
 	width: 175px;
-}
+}*/
 
-.jcarousel-direction-rtl {
-	direction: rtl;
-}
-
-.d-carousel h4 {
-	margin: 5px 0 5px 0;
-}
-
-.d-carousel .jcarousel-container {
-	display: block;
-	overflow: hidden;
-	margin-bottom: 20px;
-}
-
-.d-carousel .jcarousel-container-horizontal {
-	width: 750px;
-	height: 300px;
-	padding: 0 30px;
-}
 
 .d-carousel .jcarousel-item-horizontal {
 	margin-left: 3px;
 	margin-bottom: 3px;
 	margin-top: 3px;
-	margin-right: 11px;
+	margin-right: 0px;
 }
 
-.d-carousel .jcarousel-next-horizontal {
+.d-carousel .jcarousel-next-horizontal,
+.d-carousel-show .jcarousel-next-horizontal {
 	position: absolute;
-	top: 129px;
+	top: 105px;
 	right: 0;
-	margin-right: 3px;
+	margin-right: 0px;
 	width: 15px;
 	height: 28px;
 	cursor: pointer;
 	background: transparent url(../images/blog-arrows.jpg) no-repeat top right;
 }
 
-.d-carousel .jcarousel-direction-rtl .jcarousel-next-horizontal {
+.d-carousel .jcarousel-direction-rtl .jcarousel-next-horizontal,
+.d-carousel-show .jcarousel-direction-rtl .jcarousel-next-horizontal {
 	left: 5px;
 	right: auto;
 	background-image: url(../images/blog-arrows.jpg);
 }
 
-.d-carousel .jcarousel-next-horizontal:hover {
+.d-carousel .jcarousel-next-horizontal:hover,
+.d-carousel-show .jcarousel-next-horizontal:hover  {
 	background-position: bottom right;
 }
 
-.d-carousel .jcarousel-prev-horizontal {
+.d-carousel .jcarousel-prev-horizontal,
+.d-carousel-show .jcarousel-prev-horizontal {
 	position: absolute;
-	top: 129px;
+	top: 105px;
 	left: 0;
-	margin-left: 3px;
+	/*margin-left: 3px;*/
 	width: 15px;
 	height: 28px;
 	cursor: pointer;
 	background: transparent url(../images/blog-arrows.jpg) no-repeat top left;
 }
 
-.d-carousel .jcarousel-direction-rtl .jcarousel-prev-horizontal {
+.d-carousel .jcarousel-direction-rtl .jcarousel-prev-horizontal,
+.d-carousel-show .jcarousel-direction-rtl .jcarousel-prev-horizontal  {
 	left: auto;
 	right: 5px;
 	background-image: url(../images/blog-arrows.jpg);
 }
 
-.d-carousel .jcarousel-prev-horizontal:hover {
+.d-carousel .jcarousel-prev-horizontal:hover,
+.d-carousel-show .jcarousel-prev-horizontal:hover, {
 	background-position: bottom left;
 }
 
 .triger-carusel {
     background: #eeeeee none repeat scroll 0 0;
-    height: 270px;
-    margin: 0 -55px;
-    padding: 10px;
+    height: 300px;
+    /*margin: 0 -55px;*/
+    padding: 0 10px;
 }
 
 .new,.new_red {
@@ -1554,4 +1575,34 @@ width: 140px;
     background-color: red;
     width: 25px;
 }
+#subsription-error {
+    font-size: 12px;
+    line-height: 15px;
+    margin: 0;
+    padding: 0;
+}
 
+.n-price {
+    color: red;
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 25px;
+}
+/*style="font-size:16px;font-weight:bold;margin-left:5px;margin-right:5px;"*/
+.group_href {
+    display: block;
+    float: right;
+    height: 15px;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 170px;
+}
+.filtr-g-d {
+    border-bottom: 1px dashed gray;
+    color: gray;
+    display: block;
+    float: left;
+    font-size: 10px;
+    margin: 0 10px 10px 0;
+    text-decoration: none;
+}

@@ -2,6 +2,9 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+<title><?=isset($tpl[$tpl['module']]['_Title'])?$tpl[$tpl['module']]['_Title']:$tpl['base']['_Title']?></title>
+<meta name="Keywords" content="<?=isset($tpl[$tpl['module']]['_Keywords'])?$tpl[$tpl['module']]['_Keywords']:$tpl['base']['_Keywords']?>" >
+<meta name="Description" content="<?=isset( $tpl[$tpl['module']]['_Description'])?$tpl[$tpl['module']]['_Description']:$tpl['base']['_Description']?>">
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link rel=stylesheet type=text/css href='<?=$cfg['site_dir']?>css/main.css'>
@@ -107,9 +110,7 @@ $(document).ready(function() {
 });
 </script>
 
-<title><?=isset($tpl[$tpl['module']]['_Title'])?$tpl[$tpl['module']]['_Title']:$tpl['base']['_Title']?></title>
-<meta name="Keywords" content="<?=isset($tpl[$tpl['module']]['_Keywords'])?$tpl[$tpl['module']]['_Keywords']:$tpl['base']['_Keywords']?>" >
-<meta name="Description" content="<?=isset( $tpl[$tpl['module']]['_Description'])?$tpl[$tpl['module']]['_Description']:$tpl['base']['_Description']?>">
+
 </head>
 <!--onLoad="initMenu();"-->
 <body>   

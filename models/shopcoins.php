@@ -124,7 +124,18 @@ class model_shopcoins extends Model_Base
         }
         return $this->db->fetchRow($select);
 	}
-	
+	public function getGroupItem($id){	
+		if(!$dataGroup = $this->cache->load("group_".$id)){       	
+		    $select = $this->db->select()
+	                  ->from('group')
+	                  ->where('group.group=?',$id)
+	                  ->limit(1);  
+	        $dataGroup =  $this->db->fetchRow($select);
+	        $this->cache->save($dataGroup, "group_".$id);
+		}
+		
+		return $dataGroup;
+	}
 	// check if user is in allowed group to buy coin
 	public function isInRerservedGroup($id) {
 		if($this->user_id){
@@ -519,6 +530,7 @@ class model_shopcoins extends Model_Base
         if (isset($WhereParams['priceend'])) {        	
         	$select->where("shopcoins.`price` <=?",floatval($WhereParams['priceend']));
         }
+
         if (isset($WhereParams['theme'])) {
         	 $whereTheme = array();
             foreach ($WhereParams['theme'] as $theme){

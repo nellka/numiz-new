@@ -124,13 +124,14 @@ if(isset($tpl['show']['resultcicle'])&&$tpl['show']['resultcicle']){?>
 <div class="wraper clearfix">
 	<h5>Похожие позиции в магазине:</h5>
 </div>
-<div class="triger">	
-	<div class="wraper clearfix" style="height:270px;padding-top:15px;">
-		<div>
+<div class="triger-carusel" style="padding: 0 50px;">	
+		  <div class="d-carousel-show">
+          <ul class="carousel">
+
 			<?foreach ($tpl['show']['resultcicle'] as $rowsp){
 			      $rowsp['metal'] = $tpl['metalls'][$rowsp['metal_id']];
 		          $rowsp['condition'] = $tpl['conditions'][$rowsp['condition_id']];
-			    ?>
+			   /* ?>
 				<div class="coin_info">
 					<div class="coin_info_small_img">
 						<div id=show<?=$rowsp['shopcoins']?>></div>
@@ -144,10 +145,33 @@ if(isset($tpl['show']['resultcicle'])&&$tpl['show']['resultcicle']){?>
 							?>		
 					</div>				
 				</div>
-			<?}?>
-		</div>
+			<?*/?>
+			
+    			<li>
+    			<div class="coin_info">
+    				<div id=show<?=$rowsp['shopcoins']?>></div>
+    			<?	
+    			$rowsp = array_merge($rowsp, contentHelper::getRegHref($rowsp));
+    			$statuses = $shopcoins_class->getBuyStatus($rowsp["shopcoins"],$tpl['user']['can_see'],$ourcoinsorder,$shopcoinsorder);
+    			$rowsp['buy_status'] = $statuses['buy_status'];
+    			$rowsp['reserved_status'] = $statuses['reserved_status'];	
+    			//$rowsp['mark'] = $shopcoins_class->getMarks($rowsp["shopcoins"]);
+    			echo contentHelper::render('shopcoins/item/itemmini-carusel',$rowsp);?>
+    			</div>
+              	</li>
+    			<?}?> 
+
+	   </ul>
 	</div>
 </div>
+<script>
+ $(document).ready(function() {    
+     $('.d-carousel-show .carousel').jcarousel({
+        scroll: 1,
+        itemFallbackDimension: 75
+     }); 
+  }); 
+</script>
 <?}
 		
 if ($tpl['shop']['resultp']) {	?>
@@ -202,26 +226,28 @@ if( $tpl['shop']['result_show_relation2']) {	?>
 <div class="wraper clearfix">
 	<h5>Подобные позиции в магазине:</h5>
 	</div>
-	<div class="triger">	
-		<div class="wraper clearfix" style="height:270px;padding-top:15px;">
-			<div class="coin_info_small_img">
+	<div class="triger-carusel" style="padding: 0 50px;">	
+		  <div class="d-carousel-show">
+          <ul class="carousel">
 			<?
 			foreach ($tpl['shop']['result_show_relation2'] as $rows_show_relation2){
 				$rows_show_relation2['metal'] = $tpl['metalls'][$rows_show_relation2['metal_id']];
 				$rows_show_relation2['condition'] = $tpl['conditions'][$rows_show_relation2['condition_id']];
 				?>			
-				<div class="coin_info">
+				<li>
+    			 <div class="coin_info">
 					<div id=show<?=$rows_show_relation2['shopcoins']?>></div>
 				<?	
 				$statuses = $shopcoins_class->getBuyStatus($rows_show_relation2["shopcoins"],$tpl['user']['can_see'],$ourcoinsorder,$shopcoinsorder);
 				$rows_show_relation2['buy_status'] = $statuses['buy_status'];
 				$rows_show_relation2['reserved_status'] = $statuses['reserved_status'];	
 				$rows_show_relation2['mark'] = $shopcoins_class->getMarks($rows_show_relation2["shopcoins"]);
-				echo contentHelper::render('shopcoins/item/itemmini',$rows_show_relation2);
+				echo contentHelper::render('shopcoins/item/itemmini-carusel',$rows_show_relation2);
 				?>	
-				</div>	
-			</div>
+			 </div>
+			</li>
 		<?}?>
+		</ul>
 	</div>
 </div>	
 <?}

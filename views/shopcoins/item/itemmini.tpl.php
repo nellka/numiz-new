@@ -1,4 +1,4 @@
-  <center><?=contentHelper::showImage("smallimages/".$rows["image_small"],$rows["gname"]." | ".$rows["name"]);?></center><br>
+  <center><?=contentHelper::showImage("images/".$rows["image"],$rows["gname"]." | ".$rows["name"]);?></center><br>
   <a href=index.php?catalog=<?=$rows["shopcoins"]?>&page=show&materialtype=<?=$rows["materialtype"]?>><?=$rows['name']?></a><br>
   <b>Страна:</b> <?=$rows['gname']?><br>
   <b>Год:</b> <?=$rows['year']?><br>

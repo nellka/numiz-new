@@ -29,6 +29,8 @@ RewriteCond %{QUERY_STRING} search=revaluation [NC]
 RewriteRule .* index.php?module=shopcoins&task=shopcoins [L,QSA]
 RewriteCond %{QUERY_STRING} search=newcoins [NC]
 RewriteRule .* index.php?module=shopcoins&task=shopcoins [L,QSA]
+RewriteCond %{QUERY_STRING} savesearch=1 [NC]
+RewriteRule .* index.php?module=shopcoins&task=shopcoins [L,QSA]
 
 
 RewriteCond %{QUERY_STRING} search=(.*)$ [NC]

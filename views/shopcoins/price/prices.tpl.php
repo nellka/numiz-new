@@ -13,14 +13,14 @@
 		$diff_price = round($rows["oldprice"],2) - $rows["price"];
 		if($diff_price>0){
 		?>
-			<span style="font-size:16px;font-weight:bold;margin-left:5px;margin-right:5px;">
-				<font color=red><?=($rows["price"]==0?"бесплатно":round($rows["price"],2)." руб.")?></font>
+			<span class="n-price">
+				<?=($rows["price"]==0?"бесплатно":round($rows["price"],2)." руб.")?>
 			</span>
 		<?php
 		}else{
 		?>
-			<span style="font-size:12px;font-weight:bold;margin-left:5px;margin-right:5px;">
-				<font color=red><?=($rows["price"]==0?"бесплатно":round($rows["price"],2)." руб.")?></font>
+			<span class="n-price">
+				<?=($rows["price"]==0?"бесплатно":round($rows["price"],2)." руб.")?>
 			</span>
 		<?php
 		}

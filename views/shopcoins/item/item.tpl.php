@@ -4,8 +4,8 @@
     <div style="width:200px;display: inline-block;padding-left:50px;">
         <h1><?=$rows_main["name"]?></h1>       
   
-    <div id='review-block'>
-	  <?php	if ($tpl['user']['user_id']) {   ?> 
+	<div id='review-block'>
+	  <?php	if ($tpl['user']['user_id']) { /*  ?> 
 			<a name=addreview href="#" onclick="showReviewForm();return false;">Написать отзыв</a> 
     			<div id='reviewcoin' style="display:none">
     			    <form name='reviewcoin'>        			
@@ -18,13 +18,13 @@
         			</form>
     			</div>
 			
-		<?} else {?>
+		<? */} else { /*?>
 		   
 		    <div id='reviewcoin' style="display:none">
 		     <h1 class="yell_b">Написать отзыв</h1>
         	<div id='error-review' class="error">Отзывы могут оставлять только зарегистрированные пользователи!</div>
         	</div>
-		<?}?>
+		<? */}?>
 		</div>
      <?
 	if ($rows_main["gname"]){?>
@@ -99,19 +99,24 @@ if(($rows_main['buy_status']==7||$rows_main['buy_status']==6)&&($minpriceoneclic
 
 </div>
   <div style="width:160px;display: inline-block;margin-top:30px;vertical-align:top;text-align:right;">
-<?
-//оценки
-echo contentHelper::render('shopcoins/price/markitem',$rows_main['mark']);
-?>
-<div class="amount_padding">
+	<div style="margin-left:15px;margin-bottom:10px;">
+		<?
+		//оценки
+		echo contentHelper::render('shopcoins/price/markitem',$rows_main['mark']);
+		?>
+	</div>
+	<div class="amount_padding">
+		<?php
+		echo contentHelper::render('shopcoins/price/buy_button',$rows_main);
+		?>
+	</div>
+	<div style="font-size:18px !important;font-weight:bold;margin-right:40px;margin-top:15px;">
 	<?php
-	echo contentHelper::render('shopcoins/price/buy_button',$rows_main);
+	echo contentHelper::render('shopcoins/price/prices',$rows_main);
 	?>
-</div>
-<?php
-echo contentHelper::render('shopcoins/price/prices',$rows_main);
-?>
-
-<br>
-<a  name=addreview href="#" onclick="showReviewForm();return false;">Написать отзыв</a>
+	</div>
+	<br>
+	<div style="margin-right:58px;">
+		<a  name=addreview href="#" onclick="showReviewForm();return false;">Написать отзыв</a>
+	</div>
 </div>

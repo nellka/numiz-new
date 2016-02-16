@@ -205,4 +205,12 @@ if($childen_data_metal) $filter_groups[] = array('name'=>'Металл','filter_
 if($childen_data_conditions) $filter_groups[] = array('name'=>'Состояние','filter_group_id'=>'condition','filter_group_id_full'=>'conditions','filter'=>$childen_data_conditions);
 if($childen_data_thems) $filter_groups[] = array('name'=>'Тематика','filter_group_id'=>'theme','filter_group_id_full'=>'themes','filter'=>$childen_data_thems);
 
+$filter_groups['group_details'] = array();
+
+foreach ((array)$groups as $group){
+	$groupData = $shopcoins_class->getGroupItem($group);
+	$filter_groups['group_details'][$group] = $groupData["name"];
+	
+}
+
 ?>

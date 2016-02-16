@@ -63,7 +63,9 @@ if(isset($filter_groups)&&$filter_groups){
 
 	<?php   
 	//вводим фильтр для стран
-	 	foreach ($filter_groups as $filter_group) { 
+	 	foreach ($filter_groups as $k=>$filter_group) { 
+	 		if(!isset($filter_group['filter_group_id_full'])) continue;
+
 	 		if(in_array($filter_group['filter_group_id_full'],array('nominals','years','years_p'))){
 	 			$ahref = $ahref_groups;
 	 		}
@@ -82,6 +84,10 @@ if(isset($filter_groups)&&$filter_groups){
 <?
 
 		if($filter_group['filter_group_id']=='group'){?> 		
+    		<?
+    		foreach ($filter_groups['group_details'] as $group_id=>$group_name){?>
+    			<a href="#" class="filtr-g-d" onclick="clear_filter_group('<?=$group_id?>');return false;"><?=$group_name?> - X</a>     
+    		<?}?>
     		
     		<input type="text" value="" id='group_name' placeholder='Название страны' name="group_name" size="30">
     		

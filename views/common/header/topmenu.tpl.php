@@ -1,5 +1,6 @@
 <div id="cssmenu" class="wraper">
-    <ul id="ddmenu">        
+    <ul id="ddmenu">  
+       <li class="home"><a href="<?=$cfg['site_dir']?>"></a>
        <li class="top"><a href="http://www.numizmatik.ru" class="<?=('/'==$tpl['current_page'])?'active':''?>" >Магазин монет</a>
        <div id="menu3"  class="submenu">   
             <ul>

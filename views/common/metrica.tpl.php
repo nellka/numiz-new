@@ -1,4 +1,5 @@
 <center>
+<noindex>
 <!--LiveInternet counter--><script type="text/javascript"><!--
 document.write("<a href='http://www.liveinternet.ru/click' "+
 "target=_blank><img src='http://counter.yadro.ru/hit?t14.6;r"+
@@ -63,6 +64,6 @@ if(js>11)d.write('--'+'>')//--></script><!--TopList COUNTER-->
 <a href="http://www.yandex.ru/cy?base=0&host=www.numizmatik.ru">
 <img src="http://www.yandex.ru/cycounter?www.numizmatik.ru" width=88 height=31 alt="Яндекс цитирования" border=0></a>
 
-
+</noindex>
 
 </center>

@@ -10,103 +10,7 @@ $filter_layaut =  contentHelper::render('leftmenu/filters',array('filter_groups'
       </script>
      
  <?}
- /*var_dump($filter_layaut);
-if(!$childen_data_years){?>
-     <script>
-        if($('#fb-years')) $('#fb-years').remove();
-    	if($('#fb-years_p')) $('#fb-years_p').remove();
-      </script>
-<?} 
-//if($groups){
-   // var_dump(var_dump($tpl['filter']['price']));
-    ?>
-      <script>
-     
-         // $slider.slider('option', 'values', [$slider.slider("option", "min"),$slider.slider("option", "max")]);
-          
-     <?if($tpl['filter']['price']['max']==$tpl['filter']['price']['min']){       
-         ?>
-         $('#filter-price').hide();
-     <?} else {?>
-      $('#filter-price').show();
-       // if($('#fb-years')) $('#fb-years').remove();
-    	//if($('#fb-years_p')) $('#fb-years_p').remove();
-     <?}?>
-      </script>
-<?//}
-if($groups&&$nominals){
-    $filter_years_content =  contentHelper::render('leftmenu/filter_block',array('name'=>'Год','filter_group_id'=>'years_p','filter_group_id_full'=>'years_p','filter'=>$childen_data_years,'materialtype'=>$materialtype,'checked'=>$years_p,'groups'=>$groups,'nominals'=>$nominals));   
-
-    ?>
-    <script>
-    $(function(){    	 
-    	if($('#fb-years')) $('#fb-years').remove();
-    	if($('#fb-years_p')) $('#fb-years_p').remove();
-    	$('<?=escapeJavaScriptText($filter_years_content)?>').insertBefore('#filter-price');
-         $('#search-params input').unbind("change");
-         $('#search-params input').bind("change");    
-         
-        if($('#years-slider')){$('#years-slider').show();} 
-           
-    });   
-   </script>
-<? 
-} else {
-     $filter_years_content =  contentHelper::render('leftmenu/filter_block',array('name'=>'Год','filter_group_id'=>'years','filter_group_id_full'=>'years','filter'=>$childen_data_years,'materialtype'=>$materialtype,'checked'=>$years,'groups'=>$groups,'nominals'=>$nominals));?>
-     <script>
-    $(function(){    	 
-    	if($('#fb-years')) $('#fb-years').remove();
-    	if($('#fb-years_p')) $('#fb-years_p').remove();
-    	$('<?=escapeJavaScriptText($filter_years_content)?>').insertBefore('#fb-metals');
-        $('#search-params input').unbind("change");
-         $('#search-params input').bind("change");    
-         if($('#years-slider')){$('#years-slider').show();} 
-           
-    });   
-   </script>
-     
-<?}
-if( $childen_data_series) {
-	$filter_series_content =  contentHelper::render('leftmenu/filter_block',array('name'=>'Серии','filter_group_id'=>'series','filter_group_id_full'=>'series','filter'=>$childen_data_series,'materialtype'=>$materialtype,'checked'=>$series,'groups'=>$groups,'years_p'=>$years_p,'years'=>$years));	
-	?>   
-   <script>
-    $(function(){    	 
-    	$('#fb-series').remove();
-    	$('<?=escapeJavaScriptText($filter_series_content)?>').insertAfter('#fb-groups');
-        $('#search-params #fb-series input').on('change',function(){sendData();});         
-    });   
-   </script>
-<?} else {?>
- <script>$('#fb-series').remove(); </script>
-<?}
-
-
-if( $childen_data_nominals) {
-	$filter_nominal_content =  contentHelper::render('leftmenu/filter_block',array('name'=>'Номинал','filter_group_id'=>'nominal','filter_group_id_full'=>'nominals','filter'=>$childen_data_nominals,'materialtype'=>$materialtype,'checked'=>$nominals,'groups'=>$groups,'years_p'=>$years_p,'years'=>$years));
-	//var_dump(count($childen_data_nominals)>10,count($childen_data_nominals));
-	
-	?>   
-   <script>
-    $(function(){    	 
-    	$('#fb-nominals').remove();
-    	$('<?=escapeJavaScriptText($filter_nominal_content)?>').insertAfter('#fb-groups');
-        $('#search-params #fb-nominals input').on('change',function(){sendData();});   
-        <?// if(count($childen_data_nominals)>10){?>
-         if($("#filter-groupnominal_container")) {
-         	$("#filter-groupnominal_container").mCustomScrollbar("vertical",0,"easeOutCirc",1.05,"auto","yes","yes",10);
-         }
-        <?//}?>
-	
-    });   
-   </script>
-<?} elseif (!$childen_data_nominals){?>
- <script>
-	$('#fb-nominals').remove();
-	 </script>
-<?}
-
-*/
- 
+  
 include('onpage.tpl.php');
 include('nav_catalog.tpl.php');
 
@@ -140,7 +44,7 @@ if($tpl['shop']['errors']){?>
 </div>
 
 <?if ($tpl['catalog']['lastViews']) {	?>
-	<div class="wraper clearfix">
+	<div class="wraper">
 	<h5>10 последних просматриваемых товаров</h5>
 	</div>
 	<div class="triger-carusel">	
@@ -181,7 +85,8 @@ if($tpl['shop']['errors']){?>
 
  jQuery(document).ready(function() {    
      $('.d-carousel .carousel').jcarousel({
-        scroll: 1
+        scroll: 1,
+        itemFallbackDimension: 75
      }); 	
      $("#slider-range-price").slider("destroy");
      $( "#slider-range-price" ).slider({
@@ -227,7 +132,15 @@ if($tpl['shop']['errors']){?>
  	is_visible?jQuery('#'+filter).hide():jQuery('#'+filter).show();
  	jQuery('#'+filter+'-href').html(is_visible?"Показать":"Скрыть");
  }
- 
+ function clear_filter_group(id){
+ 	if($("#fb-groups :checkbox[value="+id+"]").prop("checked")){
+ 		$("#fb-groups :checkbox[value="+id+"]").prop("checked",false);
+ 		sendData(null,null,'<?=$tpl['filter']['price']['min']?>','<?=$tpl['filter']['price']['max']?>','<?=$tpl['filter']['yearstart']?>','<?=date("Y",time())?>');
+ 	}
+ 	//var is_visible = jQuery('#'+filter).is(':visible')?true:false;
+ 	//is_visible?jQuery('#'+filter).hide():jQuery('#'+filter).show();
+ 	//jQuery('#'+filter+'-href').html(is_visible?"Показать":"Скрыть");
+ }
 function resetSliderYear() {
  
 }
