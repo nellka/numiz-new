@@ -68,7 +68,7 @@ if($nominals&&$groups){
 	foreach ($tpl['filters']['years'] as $value){
 	    $childen_data_years[] = array(
 				'filter_id' => $value["year"],
-				'name'      => $value["year"]);   
+				'name'      => ($value["year"])?$value["year"]:"Без указания года");   
 	} 
 	
 } else {
@@ -83,6 +83,7 @@ if($nominals&&$groups){
     	$tpl['filter']['yearend'] = date("Y",time());
     }
 }
+
 /*
 фильтр по  тематикам
 Монеты
@@ -200,12 +201,17 @@ if( $childen_data_nominals) $filter_groups[] = array('name'=>'Номинал','f
 
 if( $childen_data_series) $filter_groups[] = array('name'=>'Серии','filter_group_id'=>'series','filter_group_id_full'=>'seriess','filter'=>$childen_data_series,'materialtype'=>$materialtype);
 
-if($childen_data_years) $filter_groups[] = array('name'=>'Год','filter_group_id'=>'years','filter_group_id_full'=>'years','filter'=>$childen_data_years);
+if($nominals&&$groups){
+    if($childen_data_years) $filter_groups[] = array('name'=>'Год','filter_group_id'=>'years_p','filter_group_id_full'=>'years_p','filter'=>$childen_data_years);
+} else {
+    if($childen_data_years) $filter_groups[] = array('name'=>'Год','filter_group_id'=>'years','filter_group_id_full'=>'years','filter'=>$childen_data_years);
+}
 if($childen_data_metal) $filter_groups[] = array('name'=>'Металл','filter_group_id'=>'metal','filter_group_id_full'=>'metals','filter'=>$childen_data_metal);
 if($childen_data_conditions) $filter_groups[] = array('name'=>'Состояние','filter_group_id'=>'condition','filter_group_id_full'=>'conditions','filter'=>$childen_data_conditions);
 if($childen_data_thems) $filter_groups[] = array('name'=>'Тематика','filter_group_id'=>'theme','filter_group_id_full'=>'themes','filter'=>$childen_data_thems);
 
 $filter_groups['group_details'] = array();
+
 
 foreach ((array)$groups as $group){
 	$groupData = $shopcoins_class->getGroupItem($group);

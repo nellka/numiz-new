@@ -4,7 +4,7 @@
 <?php include $cfg['path'] . '/views/common/breadcrumb.tpl.php'; ?> 
 </div>	
 <br style="clear: both;">
-<div>
+<!--<div>
   <h5 style="margin: 10px 0;">Поиск - <?=$search?></h5>
   <b>Критерии поиска:</b>
   <div class="content">
@@ -23,14 +23,11 @@
                 <option value="3" <?=selected($materialtype,3)?>>Аксессуары для монет</option>
                 <option value="4" <?=selected($materialtype,4)?>>Подарочные наборы</option>
                 <option value="5" <?=selected($materialtype,5)?>>Книги о монетах</option>               
-                <!--
-                <option value="5" <?=selected($materialtype,5)?>>Книги о монетах</option>
-                <option value="5" <?=selected($materialtype,5)?>>Книги о монетах</option>
--->  
+               
             </select>  
             <input type="submit" value="Поиск" id="button-search" class="button" />  
       </form> 
     </p>
   </div>
-</div>
+</div>-->
 <br style="clear: both;">

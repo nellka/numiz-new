@@ -601,7 +601,7 @@ class model_shopcoins extends Model_Base
     	        $select->where("(shopcoins.materialtype=? or shopcoins.materialtypecross & pow(2,?))",$materialtype); 
     	   }*/
 	   } 
-//echo $select->__toString();
+
        return $this->db->fetchOne($select);       
 	}
 	public function getPopular($limit=4,$params = array()){ 
@@ -879,7 +879,7 @@ class model_shopcoins extends Model_Base
 	public function getYears($nominals=array(),$groups=array()){
 	   $select = $this->db->select()
 	                      ->from('shopcoins',array('year'=>'distinct(year)'))
-	                      ->where('year>0')
+	                     // ->where('year>0')
 	                      ->order('year desc');   
 	   $select=$this->setMaterialtypeSelect($select); 
 	   $select = $this->byAdmin($select); 

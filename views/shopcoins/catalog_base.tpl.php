@@ -1,4 +1,4 @@
-<div id='products' class="products-cls">
+<div id='products' class="products-cls m-<?=$materialtype?>">
 
 <?	
 $filter_layaut =  contentHelper::render('leftmenu/filters',array('filter_groups'=>$filter_groups,'search'=>$search,'groups'=>$groups,'nominals'=>$nominals,'tpl'=>$tpl,'years'=>$years,'years_p'=>$years_p,'metals'=>$metals,'conditions'=>$conditions,'themes'=>$themes,'materialtype'=>$materialtype,'pricestart'=>$pricestart,'priceend'=>$priceend,'yearstart'=>$yearstart,'yearend'=>$yearend,'seriess'=>$seriess));   
@@ -6,7 +6,7 @@ $filter_layaut =  contentHelper::render('leftmenu/filters',array('filter_groups'
  if($filter_layaut){?>
      <script>
         if($('#search-params')) $('#search-params').remove();
-    	$('<?=escapeJavaScriptText($filter_layaut)?>').insertAfter('#left_menu_shop');
+    	$('<?=escapeJavaScriptText($filter_layaut)?>').insertAfter('#hidden-shopcoins-menu');
       </script>
      
  <?}
@@ -182,11 +182,13 @@ function mCustomScrollbars(){
 	7) Прокрутка с помощью клавиш (значения: "yes" или "no")
 	8) Скорость прокрутки (значение: 1-20, 1 соответствует самой медленной скорости)
 	*/
-	if($("#filter-groupgroup_container")) $("#filter-groupgroup_container").mCustomScrollbar("vertical",0,"easeOutCirc",1.05,"auto","yes","yes",10);
+	//if($("#filter-groupgroup_container")) $("#filter-groupgroup_container").mCustomScrollbar({theme:"dark-thick"});
+	//"vertical",0,"easeOutCirc",1.05,"auto","yes","yes",10);
+	if($(".filter-groupgroup_container_1")) $(".filter-groupgroup_container_1").mCustomScrollbar({theme:"dark-thick"});
 	
 	//console.log(jQuery("#filter-grouptheme_container"));
-	if($("#filter-grouptheme_container")) $("#filter-grouptheme_container").mCustomScrollbar("vertical",0,"easeOutCirc",1.05,"auto","yes","yes",10);
-	if($(".filter-groupnominal_container_1")) $(".filter-groupnominal_container_1").mCustomScrollbar("vertical",0,"easeOutCirc",1.05,"auto","yes","yes",10);
+	if($("#filter-grouptheme_container")) $("#filter-grouptheme_container").mCustomScrollbar({theme:"dark-thick"});
+	if($(".filter-groupnominal_container_1")) $(".filter-groupnominal_container_1").mCustomScrollbar({theme:"dark-thick"});
 	//console.log(jQuery(".filter-groupnominal_container_1"));
 	/*$("#mcs2_container").mCustomScrollbar(); 
 	$("#mcs3_container").mCustomScrollbar("vertical",900,"easeOutCirc",1.05,"auto","no","no",0); 
@@ -194,14 +196,14 @@ function mCustomScrollbars(){
 	$("#mcs5_container").mCustomScrollbar("horizontal",500,"easeOutCirc",1,"fixed","yes","yes",20); */
 }
 
-/* Функция для обхода ошибки с 10000 px для jquery.animate */
+/* Функция для обхода ошибки с 10000 px для jquery.animate 
 $.fx.prototype.cur = function(){
     if ( this.elem[this.prop] != null && (!this.elem.style || this.elem.style[this.prop] == null) ) {
       return this.elem[ this.prop ];
     }
     var r = parseFloat( jQuery.css( this.elem, this.prop ) );
     return typeof r == 'undefined' ? 0 : r;
-}
+}*/
 
 /* Функция для динамической загрузки содержания 
 function LoadNewContent(id,file){
@@ -210,6 +212,49 @@ function LoadNewContent(id,file){
 	});
 }*/
 
+
+function full_filter(name,auto,hide) {
+    console.log($.cookie(name+'-full-show'));
+	var cookiefull = 0;	
+	if($.cookie(name+'-full-show')){
+		var cookiefull = $.cookie(name+'-full-show');
+	}
+
+	if(auto){
+	    
+	    if(!$(".filter-groupgroup_container_1").length) {
+	        $('#group-full-show').remove();
+	        return;
+	    }
+		if(cookiefull>0){
+		    $(".filter-groupgroup_container_1").height("auto");
+		    $('#group-full-show').attr("onClick","full_filter('"+name+"',false,1);return false;");
+		    $('#group-full-show').text("Свернуть");		   
+		} else {			
+		    $(".filter-groupgroup_container_1").height("290px");
+		    $('#group-full-show').attr("onClick","full_filter('"+name+"',false,0);return false;");
+		    $('#group-full-show').text("Развернуть");	    
+		}   
+	} else {			
+		if(!hide){
+		    $(".filter-groupgroup_container_1").height("auto");
+		    $.cookie(name+'-full-show', 1);
+		    $('#group-full-show').attr("onClick","full_filter('"+name+"',false,1);return false;");
+		    $('#group-full-show').text("Свернуть");		   
+		} else {			
+		    $(".filter-groupgroup_container_1").height("290px");
+		    $.cookie(name+'-full-show', 0);
+		    $('#group-full-show').attr("onClick","full_filter('"+name+"',false,0);return false;");
+		    $('#group-full-show').text("Развернуть");	
+		    $('html, body').animate({
+                scrollTop: $("#search-params").offset().top
+            }, 1000);	    
+		}        
+	}
+	$(".filter-groupnominal_container").mCustomScrollbar("update");
+  
+}
+ 
     $(function(){
     	
      $('#search-params input').bind('change',function(){               	
@@ -217,6 +262,7 @@ function LoadNewContent(id,file){
      	    $('#search-params input').unbind("change");
      		sendData(null,null,'<?=$tpl['filter']['price']['min']?>','<?=$tpl['filter']['price']['max']?>','<?=$tpl['filter']['yearstart']?>','<?=date("Y",time())?>');
      	}
-     });     
+     }); 
+     full_filter('groups',true)    
     });
 </script>

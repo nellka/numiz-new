@@ -247,6 +247,7 @@ $addhref = ($yearstart?"&yearstart=".$yearstart:"").
 ($nocheck?"&nocheck=".$nocheck:"")
 .($searchname?"&searchname=".urlencode($searchname):"");
 
+
 foreach ((array)$conditions as $c){
     $addhref .="&conditions[]=".urlencode($c);
 }
@@ -278,6 +279,8 @@ if ($searchid)
 $countpubs = $shopcoins_class->countallByParams($WhereParams);
 
 if($addhref) $addhref = substr($addhref,1);  
+setcookie("lhref", $cfg['site_dir']."shopcoins/index.php?".$addhref, time() + 3600, "/");
+
 $tpl['paginator'] = new Paginator(array(
         'url'        => $cfg['site_dir']."shopcoins/index.php?".$addhref,
         'count'      => $countpubs,
@@ -445,21 +448,22 @@ if (sizeof($tpl['shop']['MyShowArray'])==0){
 	$tpl['shop']['errors'][] = "<br><p class=txt><strong><font color=red>Извините, нет результатов, удовлетворяющих поиску. Попробуйте другие варианты.</font></strong><br><br>";
 } else {	
 	$amountsearch = count($tpl['shop']['MyShowArray']);	
-	
-	foreach ($tpl['shop']['MyShowArray'] as $i=>&$rows) {
 
-	    $rows['condition'] = $tpl['conditions'][$rows['condition_id']];
-	    $rows['metal'] = $tpl['metalls'][$rows['metal_id']];
-	    
+	foreach ($tpl['shop']['MyShowArray'] as $i=>$rows) {
+
+	    $tpl['shop']['MyShowArray'][$i]['condition'] = $tpl['conditions'][$rows['condition_id']];
+	    $tpl['shop']['MyShowArray'][$i]['metal'] = $tpl['metalls'][$rows['metal_id']];
+	   
 		//формируем картинки "подобные"
 		$tpl['shop']['MyShowArray'][$i]['tmpsmallimage'] = array();
-		if (isset($tpl['shop']['ImageParent'][$rows["parent"]])&&$tpl['shop']['ImageParent'][$rows["parent"]]>0 && !$mycoins) {	
+		
+		if (($rows["materialtype"] ==1)&&isset($tpl['shop']['ImageParent'][$rows["parent"]])&&$tpl['shop']['ImageParent'][$rows["parent"]]>0 && !$mycoins) {	
 			$tpl['shop']['MyShowArray'][$i]['tmpsmallimage'][] =contentHelper::showImage("smallimages/".$rows["image_small"],"Монета ".$rows["gname"]." | ".$rows["name"]);
 			$tpl['shop']['MyShowArray'][$i]['tmpsmallimage'][] =contentHelper::showImage("smallimages/".$tpl['shop']['ImageParent'][$rows["parent"]][0],"Монета ".$rows["gname"]." | ".$rows["name"]);
 		}
 
 
-		$tpl['shop']['MyShowArray'][$i] = array_merge($tpl['shop']['MyShowArray'][$i], contentHelper::getRegHref($rows,$materialtype,$parent));
+		$tpl['shop']['MyShowArray'][$i] = array_merge($tpl['shop']['MyShowArray'][$i], contentHelper::getRegHref($tpl['shop']['MyShowArray'][$i],$materialtype,$parent));
 		
 		 if ($materialtype==5||$materialtype==3){			
 			$tpl['shop']['MyShowArray'][$i]['amountall'] = ( !$rows["amount"])?1:$rows["amount"];		
@@ -474,36 +478,9 @@ if (sizeof($tpl['shop']['MyShowArray'])==0){
 			}			
 			$tpl['shop']['MyShowArray'][$i]['amountall'] = $amountall;				
 		}
-		/*$tpl['shop']['MyShowArray'][$i]['namecoins'] = $namecoins;
-		$tpl['shop']['MyShowArray'][$i]['rehrefdubdle'] = $rehrefdubdle ;
-		$tpl['shop']['MyShowArray'][$i]['rehref'] = $rehref ;	*/
-		//формируем рейтинги
-	    $tpl['shop']['MyShowArray'][$i]['mark'] = $shopcoins_class->getMarks($rows["shopcoins"]);
-
 		
-		$coefficient = 0;
-		$sumcoefficient = 0 ;
-		$maxcoefficient = 0 ;
-		if(!isset($rows['coefficientcoins'])) $rows['coefficientcoins'] = 0;
-		if(!isset($rows['coefficientgroup'])) $rows['coefficientgroup'] = 0;
-		if(!isset($rows['counterthemeyear'])) $rows['counterthemeyear'] = 0;
-		if ($rows['coefficientcoins']) 
-			$coefficient = $coefficient+$rows['coefficientcoins'];
-		if ($rows['coefficientgroup']) 
-			$coefficient = $coefficient+$rows['coefficientgroup']*2;
-		if ($rows['counterthemeyear']) 
-			$coefficient = $coefficient+$rows['counterthemeyear'];
-			
-		if ($coefficient>0) {		
-			if ($coefficient>$maxcoefficient)
-				$maxcoefficient = $coefficient;			
-			$sumcoefficient = $sumcoefficient+$coefficient;
-		}
-				
-			
-		$tpl['shop']['MyShowArray'][$i]['coefficient'] = $coefficient;
-		$tpl['shop']['MyShowArray'][$i]['sumcoefficient'] = $sumcoefficient ;
-		$tpl['shop']['MyShowArray'][$i]['maxcoefficient'] = $maxcoefficient ;	
+		
+	    $tpl['shop']['MyShowArray'][$i]['mark'] = $shopcoins_class->getMarks($rows["shopcoins"]);		
 		
 		$tpl['shop']['MyShowArray'][$i]['buy_status'] = 0 ;		
 		$textoneclick='';	
@@ -513,7 +490,7 @@ if (sizeof($tpl['shop']['MyShowArray'])==0){
 			$tpl['shop']['MyShowArray'][$i]['buy_status'] = $statuses['buy_status'];
 			$tpl['shop']['MyShowArray'][$i]['reserved_status'] = $statuses['reserved_status'];	
 		}						
-						
+				
 		$shopcoinstheme = array();
 		$strtheme = decbin($rows["theme"]);
 		$strthemelen = strlen($strtheme);
@@ -532,11 +509,12 @@ if (sizeof($tpl['shop']['MyShowArray'])==0){
 			$ShopcoinsGroupArray[] = $rows["group"];
 		
 		$tpl['shop']['MyShowArray'][$i]['shopcoinstheme'] = $shopcoinstheme;	
+			
 		$i++;	
 	}
 	
 }
-
+	
 $tpl['seo_data'] = $shopcoins_class->getSeo($materialtype,$group_data,$nominal_data);
 //записываем статистике по тому, что искали
 if ($search && $search != 'revaluation' && $search != 'newcoins'){		

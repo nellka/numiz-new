@@ -76,9 +76,8 @@ if(isset($filter_groups)&&$filter_groups){
 		<div class="filter-block" id='fb-<?=$filter_group['filter_group_id_full']?>'>
     		<div class="filter_heading">
     			<div style="float:left;"><?=$filter_group['name']?></div>
-    			<div style="float:right;">
-    				<a style="color:#247bbd;font-size:12px;line-height:12px;text-decoration:underline;"
-    				href="#" onclick="clear_filter('<?=$filter_group['filter_group_id_full']?>');return false;">Сбросить</a>
+    			<div style="float:right;">    			  
+    				<a class="fc" href="#" onclick="clear_filter('<?=$filter_group['filter_group_id_full']?>');return false;">Сбросить</a>
     			</div>
     		</div>
 <?
@@ -99,11 +98,11 @@ if(isset($filter_groups)&&$filter_groups){
 		?>
 		<ul class="filter_heading_ul">
 			<div id="filter-group<?=$filter_group['filter_group_id']?>_container" class="filter-group<?=$filter_group['filter_group_id']?>_container_<?=(count($filter_group['filter'])>13)?1:0?>">
-			<?if(count($filter_group['filter'])>13){?>
+			<?if(count($filter_group['filter'])>13){/*?>
 				<div class="customScrollBox">
 					<div class="container">
 						<div class="content">
-						<?}?>
+						<?*/}?>
 							<?php 
 							foreach ($filter_group['filter'] as $filter) {
 								if($filter_group['filter_group_id_full']=='years'){
@@ -152,7 +151,7 @@ if(isset($filter_groups)&&$filter_groups){
 								}
 							}?>  
 							
-						<?if(count($filter_group['filter'])>13){?></div>
+						<?if(count($filter_group['filter'])>13){/*?></div>
 					</div>
 					<div class="dragger_container">
     					<div class="dragger"></div>
@@ -161,8 +160,11 @@ if(isset($filter_groups)&&$filter_groups){
 			 
 			 
 			<a href="#" class="scrollUpBtn"></a> <a href="#" class="scrollDownBtn"></a>						
-<?}?>
-			<? if($filter_group['filter_group_id_full']=='years'){
+				<?*/}?>
+							
+				
+				
+				<? if($filter_group['filter_group_id_full']=='years'){
 			    $i=0;?>   
 			    <div id='years-slider'>
     				<div style="font-weight:bold;padding: 15px 0;">
@@ -174,6 +176,10 @@ if(isset($filter_groups)&&$filter_groups){
 			<?}?>       
 			</div>
 		</ul> 
+		  <?if($filter_group['filter_group_id']=='group'){?> 
+		      <div style="text-align:center;padding: 10px 0 0;">    	
+    			    <a class="fc" id='group-full-show' href="#" onclick="full_filter('<?=$filter_group['filter_group_id_full']?>');return false;"></a></div>    		
+    			    <?}?>
 		</div>
 	<?php 
 		//break;

@@ -6,7 +6,7 @@
 <div class="search-top-module" style="float:left">   
      <form action="<?=$cfg['site_dir']?>shopcoins/index.php" method=get>         
 			<input type="hidden"  value="4">    
-          	<input type="text" class="search rounded" name=search id=search>
+          	<input type="text" class="search rounded" name=search id=search value="<?=$search?>">
 			<input type="submit" id=globalsearch-submit name="submit" value="">             
     </form>    
 </div>

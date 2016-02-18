@@ -309,6 +309,25 @@ background: url("../images/expand.jpg") no-repeat scroll left center;
     max-width: 220px;
 	max-height:125px;
 }
+
+.m-2 .borderimage img{
+    max-height:180px;
+}
+.ctitle{
+    /*max-height: 30px;*/
+    margin: 0;
+    /*overflow: hidden;*/
+}
+.m-3 .info_ext{
+    height:20px;
+}
+.m-3 .borderimage img{
+    height:150px;
+}
+
+.m-2 .blockshop{
+    height: 360px;
+}
 .coin_info_small_img img{
 	width:200px;
 }
@@ -607,6 +626,9 @@ padding: 10px 0 0;
     /*width: 261px;*/
 	/*padding:0 10px;*/
 	font-weight:bold;	
+}
+.filter_heading a.fc{
+    color:#247bbd;font-size:12px;line-height:12px;text-decoration:underline;
 }
 
 .filter_heading_ul{
@@ -1095,6 +1117,7 @@ a.button24:active { background: linear-gradient(#f59500, #f5ae00) #f59500; }
 	padding:5px;
 	cursor:pointer; 
 	margin-top:10px;
+	display: inline-block;
 }
 .blockshop_spisok img {
 	border:1px solid #cccccc;
@@ -1103,18 +1126,20 @@ a.button24:active { background: linear-gradient(#f59500, #f5ae00) #f59500; }
 	
 }
 .item_nabor_image{
-	width:300px;
-	display:inline-block;
+    position: relative;
+	width:100%;
+	/*display:inline-block;*/
 	vertical-align:top;
 }
 .item_nabor_image img{
-	width:250px;
+	/*width:250px;*/
 	vertical-align:top;
 	
 }
 .info_block{
 	display:inline-block;
 	width:350px;
+	float:left;
 }
 .blockshop_spisok:hover{ border:1px solid #7f7979;}
 
@@ -1605,4 +1630,16 @@ text-align: center;
     font-size: 10px;
     margin: 0 10px 10px 0;
     text-decoration: none;
+}
+
+.search-div .blockshop {
+    margin: 0 15px 10px 0;
+}
+
+#fb-groups{
+overflow: hidden;
+}
+.seo {
+    padding: 0 0 40px;
+    font-weight: normal;
 }

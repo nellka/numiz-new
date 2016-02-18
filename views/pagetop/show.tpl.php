@@ -1,7 +1,7 @@
 <? include('shortmenu.tpl.php')?>
 
 <div style='float:left; margin-left:30px;line-height:23px;'>
-<a style="text-decoration:none;" href="<?=$_SERVER['HTTP_REFERER']?>">Вернуться к подбору товара</a>
+<a style="text-decoration:none;" href="<?=$tpl['show']['lhreg']?>">Вернуться к подбору товара</a>
 </div>
 
 <div style='float:left; margin-left:30px;'>

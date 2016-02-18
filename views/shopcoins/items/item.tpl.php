@@ -16,7 +16,8 @@ if($rows["materialtype"]==3){?>
 			<?=contentHelper::showImage('images/'.$rows["image"],$rows['namecoins'])?>
 		</a>
 	</center>
-	<a name=coin<?=$rows["shopcoins"]?> title='<?=$rows["name"]?>'></a><strong><?=$rows['namecoins']?></strong>
+	<a name=coin<?=$rows["shopcoins"]?> title='<?=$rows["name"]?>'></a>
+	<p class="ctitle"><?=$rows['namecoins']?></p>
 <? } elseif ($rows["materialtype"]==5){?>
 	<center>
 	<a class="borderimage" href='<?=$rows["rehref"]?>' title='Подробнее о книге <?=$rows["name"]?>'>
@@ -50,7 +51,7 @@ if($rows["materialtype"]==3){?>
 	<strong><font color=blue><?=$rows["gname"]?></font></strong>
 	</a><br>
 	<?}?>
-	<?= ($rows["year"]?"Год: <strong>".$rows["year"]."</strong><br>":"")?>
+	<?= ($rows["year"]?"Год:&nbsp;<strong>".$rows["year"]."</strong><br>":"")?>
 	<?= (trim($rows["metal"])?"Металл: <strong>".$rows["metal"]."</strong><br>":"")?>
 	<?=(trim($rows["condition"])?"Состояние: <strong><font color=blue>".$rows["condition"]."</font></strong>":"")?>
 

@@ -39,7 +39,7 @@ foreach ($words as $word){
         $years[] = $word;
         continue;
     } 
-       var_dump($word);
+
     preg_match($reg_d,$word,$d);
 
     if($d&&$d[0]){
@@ -404,7 +404,7 @@ if (sizeof($tpl['shop']['MyShowArray'])==0){
 	    
 		//формируем картинки "подобные"
 		$tpl['shop']['MyShowArray'][$i]['tmpsmallimage'] = array();
-		if (isset($tpl['shop']['ImageParent'][$rows["parent"]])&&$tpl['shop']['ImageParent'][$rows["parent"]]>0 && !$mycoins) {	
+		if (($rows["materialtype"] ==1)&&isset($tpl['shop']['ImageParent'][$rows["parent"]])&&$tpl['shop']['ImageParent'][$rows["parent"]]>0 && !$mycoins) {	
 			$tpl['shop']['MyShowArray'][$i]['tmpsmallimage'][] =contentHelper::showImage("smallimages/".$rows["image_small"],"Монета ".$rows["gname"]." | ".$rows["name"]);
 			$tpl['shop']['MyShowArray'][$i]['tmpsmallimage'][] =contentHelper::showImage("smallimages/".$tpl['shop']['ImageParent'][$rows["parent"]][0],"Монета ".$rows["gname"]." | ".$rows["name"]);
 		}

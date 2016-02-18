@@ -25,7 +25,7 @@
     <div class="search-top-module">   
          <form action="<?=$cfg['site_dir']?>shopcoins/index.php" method=get id='globalsearch-form'>          
 				<input type="hidden"  value="4">    
-	          	<input type="text" class="search rounded" placeholder='Поиск' name=search id=search>
+	          	<input type="text" class="search rounded" placeholder='Поиск' name=search id=search value="<?=$search?>">
 			<input type="submit" id=globalsearch-submit name="submit" value="">                
         </form>    
     </div>

@@ -3,9 +3,10 @@ require($cfg['path'].'/helpers/Paginator.php');
 require($cfg['path'].'/models/catalogshopcoinsrelation.php');
 require $cfg['path'] . '/configs/config_shopcoins.php';
 $catalogshopcoinsrelation_class = new model_catalogshopcoinsrelation($cfg['db']);
+//var_dump($_SERVER);
 
 $page = 'show';
-
+$tpl['show']['lhreg'] = isset($_COOKIE['lhref'])?trim($_COOKIE['lhref']):$_SERVER['HTTP_REFERER'];
 $arraynewcoins = Array(1=>date('Y')-2,2=>date('Y')-1,3=>date('Y'));
 $show50 = 0;
 

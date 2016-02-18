@@ -30,9 +30,9 @@
                 <li><a href='<?=$cfg['site_dir']?>shopcoins/how.php' title='Как сделать заказ в магазине' class=topmenu>Как заказать</a></li>
                 <li><a href='<?=$cfg['site_dir']?>shopcoins/shopcoinsrules.php' title='Правила монетной лавки' class=topmenu>Правила магазина</a> </li>
                 <li><a href='<?=$cfg['site_dir']?>shopcoins/shopcoinshelp.php' title='Помощник по магазину' class=topmenu>ЧаВо по магазину</a> </li>
-                 <li><a href='http://www.numizmatik.ru/garantii-podlinosti-monet' title='Гарантии подлинности монет и банкнот от Клуба Нумизмат' class=topmenu>Гарантии подлиности монет</a></li> 
+                 <li><a href='<?=$cfg['site_dir']?>garantii-podlinosti-monet' title='Гарантии подлинности монет и банкнот от Клуба Нумизмат' class=topmenu>Гарантии подлиности монет</a></li> 
                 <li><a href='<?=$cfg['site_dir']?>shopcoins/order.php' title='Ваши заказы монет, банкнот, аксессуаров для коллекционеров в интернет-магазине монет' class=topmenu>Ваши заказы</a></li>
-                <li><a href='shopinfo.php' title='Салон продаж' class=topmenu>Контакты</a></li>
+                <li><a href='<?=$cfg['site_dir']?>shopinfo.php' title='Салон продаж' class=topmenu>Контакты</a></li>
                 </ul>
            </div> 
        </li>            
@@ -42,7 +42,7 @@
                 <li><a href='<?=$cfg['site_dir']?>ocenka-stoimost-monet' title='Оценка стоимости(цены) монет(ы)' class=topmenu>Оценка стоимости монет</a></li>
                 <li><a href='<?=$cfg['site_dir']?>gde-prodat-monety' title='Покупка-скупка монет, коллекций монет. ' class=topmenu>Покупка/скупка монет</a></li>
                 <li><a href='http://www.numizmatik.ru/change/obmen-monet.php' title='Обмен монет' class=topmenu>Обмен монетами</a></li>
-                <li><a href='http://www.numizmatik.ru/shopinfo.php' title='Салон продаж' class=topmenu>Контакты</a></li>
+                <li><a href='<?=$cfg['site_dir']?>shopinfo.php' title='Салон продаж' class=topmenu>Контакты</a></li>
                </ul> 
            </div>      
       </li>

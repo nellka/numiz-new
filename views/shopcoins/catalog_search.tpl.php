@@ -25,13 +25,15 @@ if($tpl['shop']['errors']){?>
 <?} else {
 ?>
 <br style="clear: both;">
-<div class="product-grid">
+<div class="product-grid search-div">
 <?
     $i=1;
     foreach ($tpl['shop']['MyShowArray'] as $key=>$rows){		
-    		echo "<div class='blockshop'>";
+    		echo "<div class='blockshop'>
+    		<div class='blockshop-full'>";
     		include('items/item.tpl.php');
-    		echo "</div>";
+    		echo "</div>
+    		</div>";
     	$i++;	
     }?>
 </div>
