@@ -20,7 +20,7 @@ if(isset($filter_groups)&&$filter_groups){
     $seriess = isset($rows['seriess'])?$rows['seriess']:array();
     $search = isset($rows['search'])?$rows['search']:'';
    // var_dump($priceend,$pricestart);
-    
+
     $ahref = "";
     $ahref_groups ='';
     $ahref_years_p ='';
@@ -183,10 +183,11 @@ if(isset($filter_groups)&&$filter_groups){
 		</div>
 	<?php 
 		//break;
-		
+
 		if($filter_group['filter_group_id']=='years'){?>
+		  <? if($tpl['filter']['price']['max']){?>
 		    <div class="filter-block" id='filter-price'>		
-			<? if($tpl['filter']['price']['max']){?>
+			
 				<div style="float:left;"><b>Цена</b></div> 	
 				<div style="float:right;">
 				<a style="color:#247bbd;font-size:12px;line-height:12px;text-decoration:underline;" href="">
@@ -198,9 +199,10 @@ if(isset($filter_groups)&&$filter_groups){
 				От <input type="text" id="amount-price0" name="fields_filter[amount-price0][0]" value="0" size="10" disabled/>
 				до <input type="text" id="amount-price1" name="fields_filter[amount-price1][1]" value="1000" size="10" disabled/> руб.
 				</span>			
-			<?}?>					
+								
 			<p><div id="slider-range-price" style="margin-left:5px;margin-right:5px;"></div></p>
 	       </div>	
+	       <?}?>
 		<?}
 		
 	 	}

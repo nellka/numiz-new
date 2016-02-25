@@ -10,17 +10,17 @@ if ($rows["novelty"]){
     <?=$is_new?>
 <? if($rows["materialtype"]==3){?>
 
-	<a href='<?=$cfg['site_dir']?>/shopcoins<?=$rows["rehref"]?>' title='<?=$rows['namecoins']?>'>
+	<a href='<?=$cfg['site_dir']?>/shopcoins<?=$rows["rehref"]?>' title='<?=$rows['namecoins']?>'  class="primage" >
 		<img src='<?=$cfg['site_dir']?>images/<?=$rows["image"]?>' alt='<?=$rows['namecoins']?>'>
 	</a>	
    
 <? } elseif ($rows["materialtype"]==5){?>
-	<a href='<?=$rows["rehref"]?>' title='Подробнее о книге <?=$rows["name"]?>'>
+	<a href='<?=$rows["rehref"]?>' title='Подробнее о книге <?=$rows["name"]?>' class="primage">
 		<img src='<?=$cfg['site_dir']?>images/<?=$rows["image"]?>' alt='<?=$rows["name"]?>' >
 	</a>   
 <?}	else {
 	   $title = contentHelper::setHrefTitle($rows["name"],$rows["materialtype"],$rows['gname']).' - подробная информация';?>
-       <a href='<?=$rows['rehref']?>' title='<?=$title?>'>		
+       <a href='<?=$rows['rehref']?>' title='<?=$title?>' class="primage">		
 			<?=contentHelper::showImage('images/'.$rows["image"],'Подробная информация о '.contentHelper::setWordAbout($rows["materialtype"])." ".$rows["gname"]." ".$rows["name"])?>			
 		</a>		
 <?}?>

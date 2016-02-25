@@ -32,8 +32,8 @@ if($tpl['orderdetails']['ArrayShopcoinsInOrder']){?>
     <td class="tboardtop" >Номер</td>
     <td class="tboardtop" >Цена</td>
     <td class="tboardtop" >Количество</td>
-    <td style="border-bottom: 1px solid #cccccc;padding-left:10px;"><b>Сумма</b></td>
-	<td  style="border-bottom: 1px solid #cccccc;padding-left:10px;"></td>
+    <td class="tboardtop" ><b>Сумма</b></td>
+	<td class="tboardtop" ></td>
 </tr>
 </thead>
 <?

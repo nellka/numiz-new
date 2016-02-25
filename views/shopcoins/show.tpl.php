@@ -104,7 +104,7 @@ if ($tpl['shop']['related']){?>
 	    $rowsp['metal'] = $tpl['metalls'][$rowsp['metal_id']];
 		$rowsp['condition'] = $tpl['conditions'][$rowsp['condition_id']];
 	    ?>
-		<div class="coin_info">
+		<div class="coin_info" id='item<?=$rowsp['shopcoins']?>'>
 			<div id=show<?=$rowsp['shopcoins']?>></div>
 			<?	
 			$statuses = $shopcoins_class->getBuyStatus($rowsp["shopcoins"],$tpl['user']['can_see'],$ourcoinsorder,$shopcoinsorder);
@@ -131,24 +131,10 @@ if(isset($tpl['show']['resultcicle'])&&$tpl['show']['resultcicle']){?>
 			<?foreach ($tpl['show']['resultcicle'] as $rowsp){
 			      $rowsp['metal'] = $tpl['metalls'][$rowsp['metal_id']];
 		          $rowsp['condition'] = $tpl['conditions'][$rowsp['condition_id']];
-			   /* ?>
-				<div class="coin_info">
-					<div class="coin_info_small_img">
-						<div id=show<?=$rowsp['shopcoins']?>></div>
-					
-							<?	
-							$statuses = $shopcoins_class->getBuyStatus($rowsp["shopcoins"],$tpl['user']['can_see'],$ourcoinsorder,$shopcoinsorder);
-							$rowsp['buy_status'] = $statuses['buy_status'];
-							$rowsp['reserved_status'] = $statuses['reserved_status'];	
-							$rowsp['mark'] = $shopcoins_class->getMarks($rowsp["shopcoins"]);
-							echo contentHelper::render('shopcoins/item/itemmini',$rowsp);
-							?>		
-					</div>				
-				</div>
-			<?*/?>
+			  ?>
 			
     			<li>
-    			<div class="coin_info">
+    			<div class="coin_info" id='item<?=$rowsp['shopcoins']?>'>
     				<div id=show<?=$rowsp['shopcoins']?>></div>
     			<?	
     			$rowsp = array_merge($rowsp, contentHelper::getRegHref($rowsp));
@@ -235,9 +221,10 @@ if( $tpl['shop']['result_show_relation2']) {	?>
 				$rows_show_relation2['condition'] = $tpl['conditions'][$rows_show_relation2['condition_id']];
 				?>			
 				<li>
-    			 <div class="coin_info">
+    			 <div class="coin_info" id='item<?=$rows_show_relation2['shopcoins']?>'>
 					<div id=show<?=$rows_show_relation2['shopcoins']?>></div>
 				<?	
+				$rows_show_relation2 = array_merge($rows_show_relation2, contentHelper::getRegHref($rows_show_relation2));
 				$statuses = $shopcoins_class->getBuyStatus($rows_show_relation2["shopcoins"],$tpl['user']['can_see'],$ourcoinsorder,$shopcoinsorder);
 				$rows_show_relation2['buy_status'] = $statuses['buy_status'];
 				$rows_show_relation2['reserved_status'] = $statuses['reserved_status'];	

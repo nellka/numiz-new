@@ -71,6 +71,7 @@ class model_shopcoins extends Model_Base
 	    return   $this->db->fetchOne($select)?1:0;              
 	  
     }
+    
 	//��������� ������� � ���������
     public function setCoinDescription($data,$id){
     	$this->updateRow($data,"shopcoins = $id");
@@ -329,6 +330,9 @@ class model_shopcoins extends Model_Base
        return $this->db->fetchAll($select);      
 	}
 	
+	
+
+	
 	//получаем все монеты по родителю - для клика на "подобные"
 	public function coinsWithParentDetails($id,$materialtype,$page, $items_for_page){	
 	     $select = $this->db->select()                  
@@ -490,7 +494,8 @@ class model_shopcoins extends Model_Base
     	
 		return $myCoins;
     }
-
+    
+	
     //число товаров для вывода на страницах каталога магазина
 	public function countAllByParams($WhereParams=array(),$searchid='',$yearsearch=''){	
 		//var_dump($WhereParams['catalognewstr']);
@@ -626,6 +631,29 @@ class model_shopcoins extends Model_Base
                       ->limit($limit);
        return $this->db->fetchAll($select);
 	}  
+	public function getNoveltyCoins(){
+		  $select = $this->db->select()     
+		 		  ->from('shopcoins')
+	              ->join(array('group'),'shopcoins.group=group.group',array('gname'=>'group.name'))
+                   ->where('novelty>0')
+                  ->order('novelty desc')                 
+                  ->limit(3); 
+          $select = $this->setMaterialtypeSelect($select);
+          return   $this->db->fetchAll($select);
+	}
+	
+	public function getFirstCoins($orderby=array(),$limit=1){
+		  $select = $this->db->select()     
+		 		 ->from('shopcoins')
+	             ->join(array('group'),'shopcoins.group=group.group',array('gname'=>'group.name'))
+                 ->where('novelty=0')
+                  ->order('novelty desc')                 
+                  ->limit($limit); 
+          $select = $this->setMaterialtypeSelect($select);
+          $select->order($orderby);
+          $select->where("shopcoins.check=1 or (shopcoins.check>3 and shopcoins.check<20)");
+          return   $this->db->fetchAll($select);
+	}
 	
 	public function getItemsByParams($WhereParams=array(),$page=1, $items_for_page=30,$orderby='',$searchid=''){
 	  //  var_dump($orderby);

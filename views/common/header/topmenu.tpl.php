@@ -1,29 +1,41 @@
 <div id="cssmenu" class="wraper">
     <ul id="ddmenu">  
        <li class="home"><a href="<?=$cfg['site_dir']?>"></a>
-       <li class="top"><a href="http://www.numizmatik.ru" class="<?=('/'==$tpl['current_page'])?'active':''?>" >Магазин монет</a>
+       <li class="top"><a href="http://www.numizmatik.ru" onmouseover="showMenuDescription(0);" class="<?=('/'==$tpl['current_page'])?'active':''?>" >Магазин монет</a>
        <div id="menu3"  class="submenu">   
             <ul>
-            <li><a href='<?=$cfg['site_dir']?>shopcoins/' title='Монеты стоимость(цены) весь мир' class=topmenu>Монеты</a></li>
-            <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=8' title='Дешевые монеты стоимость(цены) весь мир' class=topmenu>Мелочь </a></li>
-            <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=10' title='Нотгельды стоимость(цены) весь мир' class=topmenu>Нотгельды </a></li>
-            <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=7' title='Наборы монет стоимость(цены) весь мир' class=topmenu>Наборы монет</a></li>
-             <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=9' title='Лоты монет для начинающих нумизматов' class=topmenu>Лоты монет для начинающих нумизматов</a></li>
-            <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?search=newcoins' title='Новинки 2013-2015' class=topmenu>Новинки 2015-2015</a></li>
-            <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=2' title='Банкноты стоимость(цены) весь мир' class=topmenu>Боны</a></li>
-            <li><a href='<?=$cfg['site_dir']?>shopcoins/?materialtype=3' title='Аксессуары для коллекционеров цены' class=topmenu>Аксессуары для монет</a></li>
-            <li><a href='<?=$cfg['site_dir']?>shopcoins/?materialtype=4' title='Подарочные наборы монет  стоимость(цены) весь мир' class=topmenu>Подарочные наборы</a></li>
-            <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=5' title='Книги о нумизматике бонистике цены' class=topmenu>Книги о монетах</a>
-            <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?search=revaluation' title='Распродажа монет' class=topmenu>Распродажа монет</a></li>    
+            <li><a href='<?=$cfg['site_dir']?>shopcoins/' onmouseover="showMenuDescription(1);" title='Монеты стоимость(цены) весь мир' class=topmenu>Монеты</a></li>
+            <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=8'  onmouseover="showMenuDescription(8);" title='Дешевые монеты стоимость(цены) весь мир' class=topmenu>Мелочь </a></li>
+            <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=10' onmouseover="showMenuDescription(10);" title='Нотгельды стоимость(цены) весь мир' class=topmenu>Нотгельды </a></li>
+            <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=7' onmouseover="showMenuDescription(7);" title='Наборы монет стоимость(цены) весь мир' class=topmenu>Наборы монет</a></li>
+             <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=9' onmouseover="showMenuDescription(9);" title='Лоты монет для начинающих нумизматов' class=topmenu>Лоты монет для начинающих нумизматов</a></li>
+            <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?search=newcoins' onmouseover="showMenuDescription('newcoins');" title='Новинки 2013-2015' class=topmenu>Новинки 2015-2015</a></li>
+            <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=2' onmouseover="showMenuDescription(2);" title='Банкноты стоимость(цены) весь мир' class=topmenu>Боны</a></li>
+            <li><a href='<?=$cfg['site_dir']?>shopcoins/?materialtype=3' onmouseover="showMenuDescription(3);" title='Аксессуары для коллекционеров цены' class=topmenu>Аксессуары для монет</a></li>
+            <li><a href='<?=$cfg['site_dir']?>shopcoins/?materialtype=4' onmouseover="showMenuDescription(4);" title='Подарочные наборы монет  стоимость(цены) весь мир' class=topmenu>Подарочные наборы</a></li>
+            <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=5' onmouseover="showMenuDescription(5);" title='Книги о нумизматике бонистике цены' class=topmenu>Книги о монетах</a>
+            <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?search=revaluation' onmouseover="showMenuDescription('revaluation');" title='Распродажа монет' class=topmenu>Распродажа монет</a></li>    
+            <li><a href='<?=$cfg['site_dir']?>shopcoins/?materialtype=11' onmouseover="showMenuDescription('11');" title='Барахолка' class=topmenu>Барахолка</a></li>    
             </ul>          
-             <div class="discription">
-           <img src="<?=$cfg['site_dir']?>images/moneta1.jpg">
+           <div class="menuDescription" id='menudiscription-m0'>          
            <p>
             Клуб "Нумизмат" специализируется на продаже, покупке и оценке монет, в том числе из драгоценных металлов.В наших салонах продаж всегда в наличии большое количество разнообразных монет разных стран и городов. Так же мы предоставляем такую услугу как оценка и покупка ваших монет. Наши специалисты имеют огромный навык в направлении "нумизматика", что помогает в короткое время оценить стоимость монет, благодаря чему вы с лёгкостью сможете продать ненужные вам монеты.  </p>
            </div>
-            </div>
+           <?foreach ($tpl['topmenu'] as $mid=>$menuItems){?>
+           <div class="menuDescription" id='menudiscription-<?=$mid?>' style="display:none">          
+           <? 
+          
+          foreach ($menuItems as $titem){
+           		echo "<div class='itemmenu'>";           		
+           		echo contentHelper::render('shopcoins/items/itemMenu',$titem);
+           		echo "</div>";
+           		
+           }?>
+           </div>
+           <?}?>           
+       </div>
        </li>       	
-       <li class="top"><a href="http://www.numizmatik.ru/shopcoinshelp.php" >Покупателям</a>
+       <li class="top"><a href="http://www.numizmatik.ru/shopcoinshelp.php" class="<?=in_array($tpl['current_page'],array('garantii-podlinosti-monet','delivery','how','shopcoinsrules','shopcoinshelp','order','shopinfo'))?'active':''?>">Покупателям</a>
           <div id="menu4"  class="submenu">          
             <ul>                
                 <li><a href='<?=$cfg['site_dir']?>shopcoins/delivery.php' title='Способы оплаты и доставки монет, банкнот, аксессуаров, книг по нумизматике'>Оплата и доставка</a> </li>
@@ -31,7 +43,8 @@
                 <li><a href='<?=$cfg['site_dir']?>shopcoins/shopcoinsrules.php' title='Правила монетной лавки' class=topmenu>Правила магазина</a> </li>
                 <li><a href='<?=$cfg['site_dir']?>shopcoins/shopcoinshelp.php' title='Помощник по магазину' class=topmenu>ЧаВо по магазину</a> </li>
                  <li><a href='<?=$cfg['site_dir']?>garantii-podlinosti-monet' title='Гарантии подлинности монет и банкнот от Клуба Нумизмат' class=topmenu>Гарантии подлиности монет</a></li> 
-                <li><a href='<?=$cfg['site_dir']?>shopcoins/order.php' title='Ваши заказы монет, банкнот, аксессуаров для коллекционеров в интернет-магазине монет' class=topmenu>Ваши заказы</a></li>
+                <? if($tpl['user']['user_id']){?><li><a href='<?=$cfg['site_dir']?>shopcoins/order.php' title='Ваши заказы монет, банкнот, аксессуаров для коллекционеров в интернет-магазине монет' class=topmenu>Ваши заказы</a></li>
+                <?}?>
                 <li><a href='<?=$cfg['site_dir']?>shopinfo.php' title='Салон продаж' class=topmenu>Контакты</a></li>
                 </ul>
            </div> 

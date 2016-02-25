@@ -29,7 +29,7 @@ if($tpl['shop']['errors']){?>
 <?
     $i=1;
     foreach ($tpl['shop']['MyShowArray'] as $key=>$rows){		
-    		echo "<div class='blockshop'>
+    		echo "<div class='blockshop' id='item".$rows['shopcoins']."'>
     		<div class='blockshop-full'>";
     		include('items/item.tpl.php');
     		echo "</div>

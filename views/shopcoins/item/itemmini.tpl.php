@@ -1,12 +1,18 @@
+<?
+if ($rows["novelty"]){?>
+    <div class="new">Новинка</div>
+<?} elseif ($rows["dateinsert"]>time()-86400*180){?>
+	<div class="new_red">NEW</div>
+<?}?>
   <center><?=contentHelper::showImage("images/".$rows["image"],$rows["gname"]." | ".$rows["name"]);?></center><br>
   <a href=index.php?catalog=<?=$rows["shopcoins"]?>&page=show&materialtype=<?=$rows["materialtype"]?>><?=$rows['name']?></a><br>
   <b>Страна:</b> <?=$rows['gname']?><br>
-  <b>Год:</b> <?=$rows['year']?><br>
+  <b>Год:</b> <?=$rows['year']?$rows['year']:"Без указания года"?><br>
   <b>Металл:</b> <?=$rows['metal']?><br>
-  <b>Состояние:</b> <?=$rows['condition']?><br><br>
-  <? if ($rows["dateinsert"]>time()-86400*180){
-	echo "<br>Добавлено: <strong>".($rows["dateinsert"]>time()-86400*14?"<font color=red>NEW</font> ".date("Y-m-d", $rows["dateinsert"]):date("Y-m-d", $rows["dateinsert"]))."</strong>";
-}?> 
+  <?if($rows['condition']){?>
+  <b>Состояние:</b> <?=$rows['condition']?><br>
+  <?}?> 
+ 
 <?
 
 if(isset($row['buy_status'])) echo contentHelper::render('shopcoins/price/prices',$rows);

@@ -32,7 +32,7 @@
 			</div>
 
 			<div id='adress-block-result' style="display:none">
-				Адрес отправления: <span id=adress-result></span><br>
+				Адрес доставки: <span id=adress-result></span><br>
 			</div>
 			
 			<div id='coupon-block-result' style="display:none">

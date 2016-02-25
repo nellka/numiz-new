@@ -100,6 +100,7 @@ if(!$payment || !$userfio ||!$fio){
 			$sumamountprice += ($rows["oamount"]?$rows["oamount"]:1)*round($rows['priceamount'],2);
 			if ($rows['materialtype']==12)
 				$vipcoinssum += $rows['oamount']*round($rows['price'],2);
+		   $i++;
 		}
 		
 		if ($sum>=1000) $needcallingorder2 = 1;

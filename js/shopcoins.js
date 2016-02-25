@@ -30,6 +30,12 @@ $('.ui-dialog-titlebar-close').append('<span class="ui-button-icon-primary ui-ic
     });
      return false;   
 } 
+function showMenuDescription(id){      
+    if($('#menudiscription-m'+id)){
+        $('.menuDescription').hide();
+        $('#menudiscription-m'+id).show();
+    }
+}
 
 function setMini(on){
 	if(on){
@@ -268,7 +274,7 @@ function sendData(name,val,p0,p1,y0,y1){
     //$('form#search-params').submit();
 }
 
-function AddAccessory(id,materialtype){	
+function AddAccessory(id,materialtype){		
 	var str;
 	var amount = $('#amount'+id).val();
 	if(amount <=0) amount = 1;
@@ -278,12 +284,13 @@ function AddAccessory(id,materialtype){
 	    data:{'shopcoinsorder':"<?=$shopcoinsorder?>",'shopcoins':id,'amount':amount,'materialtype':materialtype,'datatype':'json'},         
 	    dataType : "json",                   
 	    success: function (data, textStatus) { 	    	
-	        ShowSmallBascet(id,data);
+	        ShowSmallBascet(id,data);	        
 	    }
 	});
 	
 	return false;		
 }
+
 var klicklast = 0;
 var klicklastn = 0;
 
@@ -349,13 +356,35 @@ function ShowSmallBascet (id,data) {
 		var bascetinsurance = data.bascetinsurance;
 		var textbascet2 = data.textbascet2;		
 		
+		button = $('#bascetshopcoins'+id);
+    	
+        var o1 = button.offset();
+    
+    	var o2 = $('#inorderamount').offset();
+    	var dx = o1.left - o2.left;
+    	var dy = o1.top - o2.top;
+    	var distance = Math.sqrt(dx * dx + dy * dy);
+
+    	if($('#header-mini').is( ":visible" )){
+    	   $('#item'+id).find('.primage img').effect("transfer", { to: $("#header-mini #inorderamount"), className: "transfer_class" }, 1000);	
+    	} else {
+    	     $('#item'+id).find('.primage img').effect("transfer", { to: $("#header #inorderamount"), className: "transfer_class" }, 1000);	
+    	}
+    
+    	$('.transfer_class').css({'z-index':'6000'});
+    	$('.transfer_class').html($('#item'+id).find('.primage').html());
+    	$('.transfer_class').html($('#item'+id).find('.primage').html());
+    	$('.transfer_class').find('img').css('height', '100%');
+	
+	
 		$("#header-mini #inorderamount").html(bascetamount);	
 		$("#header #inorderamount").html(bascetamount);	
 	
 		$("#header-mini #inordersum").html(bascetsum);	
 		$("#header #inordersum").html(bascetsum);	
-			
-    	var str = '';
+		$("#bascetshopcoins" + bascetshopcoins).html('<img src="'+site_dir+'images/corz7.gif" title="Уже в корзине" alt="Уже в корзине">');	
+		return false;
+    	/*var str = '';
     		str = '<h1 class="yell_b">Корзина</h1>';
     		str += '<p><b>Заказ №</b> ' + shopcoinsorder + '</p>';
     		str += '<p><strong>Товаров:</strong> ' + bascetamount + ' <br><b>На сумму:</b> ' + bascetsum + ' р.';
@@ -366,8 +395,8 @@ function ShowSmallBascet (id,data) {
     		str += '<br><br><b>Почта России</b><br><b>Сбор по весу:</b> от ' + bascetpostweightmin + ' до ' + bascetpostweightmax + ' р.';
     		str += '<br><b>Страховка 4%:</b> ' + bascetinsurance + ' р. <br><b>Упаковка:</b> 10 р. за конверт / ящик.</<p>';
     		
-    		$("#MainBascet").html(str);				
-    		$("#bascetshopcoins" + bascetshopcoins).html('<img src="'+site_dir+'images/corz7.gif" title="Уже в корзине" alt="Уже в корзине">');		
+    		$("#MainBascet").html(str);		*/		
+    			
     	} else if (data.error == 'reserved'){
     		$("#MainBascet").html('<h1 class="yell_b">Корзина</h1><p class=center>Товар зарезервирован одновременно с другим пользователем</p>');	
     		$("#bascetshopcoins" + bascetshopcoins).html('<img src="'+site_dir+'images/corz6.gif" title="Уже в корзине" alt="Уже в корзине">');
@@ -861,7 +890,7 @@ function calculateOrder(on){
 		dataType: "json",
 		success: function (data, textStatus) {
 			FinalSum = data.FinalSum;
-
+            
 			if(!on){
 				$('#price-sum').text(FinalSum);
 				return;
@@ -907,7 +936,7 @@ function calculateOrder(on){
 				$('#postindex-block-result').show();
 				$('#postindex-result').text(data.postindex);
 			}
-			if ($('#adress').val()) {
+			if ((delivery==4||delivery==3||delivery==6)&&$('#adress').val()) {
 				$('#adress-block-result').show();
 				$('#adress-result').text($('#adress').val());
 			}

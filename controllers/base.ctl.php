@@ -4,6 +4,8 @@
 
 require $cfg['path'] . '/controllers/start_params.ctl.php';
 
+
+
 $tmp['addcall']['errors'] = array();
 if(request('logout')){
 
@@ -60,8 +62,10 @@ if ($blockend < time()&& $tpl['user']['user_id']) {
 }
 
 
-  
+
+
 include_once($cfg['path'] ."/configs/keywordsAdmin.php");
+
 //include $_SERVER["DOCUMENT_ROOT"]."/keywords.php";
 
 if (in_array($_SERVER["HTTP_USER_AGENT"],$black_user_agent_list[0])
@@ -108,6 +112,7 @@ if(!$tpl['conditions'] = $cache->load("conditions")) {
     $cache->save($tpl['conditions'], "conditions");	 
 }
 
+require $cfg['path'] . '/controllers/topmenu.ctl.php';
 
 $dir = $cfg['path'] .  '/controllers/'.$tpl['module'].'/';
 
@@ -146,13 +151,18 @@ if($tpl["datatype"]=='json'){
 }
 
 if($tpl["datatype"]=='text_html'){
-    require_once $cfg['path'] .  '/views/'.$tpl['module'].'.tpl.php';
+	 if($static_page){
+    	require_once $cfg['path'] .  '/views/static_pages/'.$tpl['module'].'.tpl.php';
+    } else {
+    	require_once $cfg['path'] .  '/views/'.$tpl['module'].'.tpl.php';
+    }
     die();
 }
 if($tpl['ajax']){
     //require_once $cfg['path'] . '/views/common/header/head.tpl.php';
-    
+   
     require_once $cfg['path'] .  '/views/'.$tpl['module'].'.tpl.php';
+  
     die();
 }
 

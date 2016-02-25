@@ -21,13 +21,13 @@ if($tpl['shop']['errors']){?>
 <div class="product-grid">
 <?
     $i=1;
-    foreach ($tpl['shop']['MyShowArray'] as $key=>$rows){	
+    foreach ($tpl['shop']['MyShowArray'] as $key=>$rows){	      
     	if(in_array($materialtype,array(7,4))){
-    		echo "<div class='blockshop_spisok'>";
+    		echo "<div class='blockshop_spisok' id='item".$rows['shopcoins']."'>";
     		include('items/item_nabor.tpl.php');
     		echo "</div>";
     	} else {
-    		echo "<div class='blockshop'>
+    		echo "<div class='blockshop' id='item".$rows['shopcoins']."'>
     		<div class='blockshop-full'>
     		";
     		include('items/item.tpl.php');
@@ -57,7 +57,7 @@ if($tpl['shop']['errors']){?>
 		    $rows_show_relation2['condition'] = $tpl['conditions'][$rows_show_relation2['condition_id']];
 		    ?>			
 			<li>
-			<div class="coin_info">
+			<div class="coin_info" id='item<?=$rows_show_relation2['shopcoins']?>'>
 				<div id=show<?=$rows_show_relation2['shopcoins']?>></div>
 			<?	
 			$statuses = $shopcoins_class->getBuyStatus($rows_show_relation2["shopcoins"],$tpl['user']['can_see'],$ourcoinsorder,$shopcoinsorder);

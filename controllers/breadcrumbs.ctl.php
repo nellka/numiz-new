@@ -110,15 +110,90 @@ if($_SERVER['REQUEST_URI']=='/new/ocenka-stoimost-monet'){
     $tpl['current_page'] = 'ocenka-stoimost-monet';
 }
 
+if($_SERVER['REQUEST_URI']=='/new/shopcoins/delivery.php'){
+	$tpl['breadcrumbs'][] = array(
+    	'text' => 'Магазин',
+    	'href' => $cfg['site_dir'].'shopcoins',
+    	'base_href' =>'shopcoins'
+    );
+    $tpl['breadcrumbs'][] = array(
+    	'text' => 'Оплата и доставка',
+    	'href' => $cfg['site_dir'].'shopcoins/delivery.php',
+    	'base_href' =>'delivery'
+    );
+    $tpl['current_page'] = 'delivery';
+}
 
-if($_SERVER['REQUEST_URI']=='/new/gde-prodat-monety'){
+if($_SERVER['REQUEST_URI']=='/new/shopcoins/how.php'){
+	$tpl['breadcrumbs'][] = array(
+    	'text' => 'Магазин',
+    	'href' => $cfg['site_dir'].'shopcoins',
+    	'base_href' =>'shopcoins'
+    );
+    $tpl['breadcrumbs'][] = array(
+    	'text' => 'Как сделать заказ',
+    	'href' => $cfg['site_dir'].'shopcoins/how.php',
+    	'base_href' =>'how'
+    );
+    $tpl['current_page'] = 'how';
+}
+
+if($_SERVER['REQUEST_URI']=='/new/shopcoins/shopcoinsrules.php'){
+	$tpl['breadcrumbs'][] = array(
+    	'text' => 'Магазин',
+    	'href' => $cfg['site_dir'].'shopcoins',
+    	'base_href' =>'shopcoins'
+    );
+    $tpl['breadcrumbs'][] = array(
+    	'text' => 'Правила магазина',
+    	'href' => $cfg['site_dir'].'shopcoins/shopcoinsrules.php',
+    	'base_href' =>'shopcoinsrules'
+    );
+    $tpl['current_page'] = 'shopcoinsrules';
+}
+
+if($_SERVER['REQUEST_URI']=='/new/shopcoins/shopcoinshelp.php'){
+	$tpl['breadcrumbs'][] = array(
+    	'text' => 'Магазин',
+    	'href' => $cfg['site_dir'].'shopcoins',
+    	'base_href' =>'shopcoins'
+    );
+    $tpl['breadcrumbs'][] = array(
+    	'text' => 'ЧаВо по магазину',
+    	'href' => $cfg['site_dir'].'shopcoins/shopcoinshelp.php',
+    	'base_href' =>'shopcoinshelp'
+    );
+    $tpl['current_page'] = 'shopcoinshelp';
+}
+
+
+if($_SERVER['REQUEST_URI']=='/new/shopinfo.php'){
+	$tpl['breadcrumbs'][] = array(
+    	'text' => 'Магазин',
+    	'href' => $cfg['site_dir'].'shopcoins',
+    	'base_href' =>'shopcoins'
+    );
+    $tpl['breadcrumbs'][] = array(
+    	'text' => 'Контакты',
+    	'href' => $cfg['site_dir'].'shopinfo.php',
+    	'base_href' =>'shopinfo'
+    );
+    $tpl['current_page'] = 'shopinfo';
+}
+
+if($_SERVER['REQUEST_URI']=='/new/garantii-podlinosti-monet'){
+	$tpl['breadcrumbs'][] = array(
+    	'text' => 'Магазин',
+    	'href' => $cfg['site_dir'].'shopcoins',
+    	'base_href' =>'shopcoins'
+    );
    
     $tpl['breadcrumbs'][] = array(
-    	'text' => 'Покупка/скупка монет',
-    	'href' => $cfg['site_dir'].'gde-prodat-monety',
-    	'base_href' =>'gde-prodat-monety'
+    	'text' => 'Гарантии подлинности монет',
+    	'href' => $cfg['site_dir'].'garantii-podlinosti-monet',
+    	'base_href' =>'garantii-podlinosti-monet'
     );
-    $tpl['current_page'] = 'gde-prodat-monety';
+    $tpl['current_page'] = 'garantii-podlinosti-monet';
     
 }
 

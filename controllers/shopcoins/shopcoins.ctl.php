@@ -18,6 +18,7 @@ if ($search == 'newcoins') {
 	$shopcoins_class->setCategoryType(model_shopcoins::REVALUATION);
 } else {
     $shopcoins_class->setMaterialtype($materialtype);
+    $shopcoins_class->setCategoryType(0);
 }
 
 
@@ -279,7 +280,8 @@ if ($searchid)
 $countpubs = $shopcoins_class->countallByParams($WhereParams);
 
 if($addhref) $addhref = substr($addhref,1);  
-setcookie("lhref", $cfg['site_dir']."shopcoins/index.php?".$addhref, time() + 3600, "/");
+
+setcookie("lhref", $cfg['site_dir']."shopcoins/index.php?".$addhref.(($tpl['pagenum']>1)?'&pagenum='.$tpl['pagenum']:''), time() + 3600, "/");
 
 $tpl['paginator'] = new Paginator(array(
         'url'        => $cfg['site_dir']."shopcoins/index.php?".$addhref,

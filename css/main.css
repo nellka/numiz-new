@@ -13,6 +13,9 @@ text-align: left;
 .right{
 float:right;
 }
+.main_context > ul {
+    padding: 0 30px;
+}
 .bg_shadow {
     background: none repeat scroll 0 0 #000000;
     display: none;
@@ -105,6 +108,7 @@ a:hover{color:#006699;font-weight:bold;}
 .rss_lenta a {
     color: white;
     line-height: 40px;
+    font-size:10px;
     text-decoration: none;
      background: url("../images/rss.png") no-repeat scroll left center;
      padding: 0 0 0 15px;
@@ -115,7 +119,12 @@ a:hover{color:#006699;font-weight:bold;}
     width: 1024px;
     padding: 0px;
 }
-
+#cssmenu ul li .itemmenu a {
+    color: #247abd;
+    line-height: 17px;
+    padding: 0;
+    text-decoration: underline
+}
 #auth_form {
     padding: 30px 20px;
 }
@@ -140,6 +149,7 @@ a:hover{color:#006699;font-weight:bold;}
 }
 .rss_lenta {
     float: right;
+    width: 120px;
 }
 
  .home a {
@@ -189,8 +199,8 @@ width: 10px;
 
 #menu3 ul{
     float: left;
-    width: 300px;
-    padding: 0 40px;
+    width: 280px;
+    padding: 0 0 0 40px;
 }
 .submenu div.discription{
 color: black;
@@ -206,12 +216,14 @@ color: black;
   border-style: solid;
   border-color: rgba(255, 204, 102, 0.3) transparent;
 }
-
-#ddmenu div#menu3 {left: -35px;}
+#cssmenu .menuDescription {
+    color: black;
+}
+#ddmenu div#menu3 {left: -32px;}
 #ddmenu div#menu3:before {left: 80px;}
-#ddmenu div#menu4 {left: -140px;}
-#ddmenu div#menu4:before {left: 140px;}
-#menu4  ul{ padding: 0  0 0 95px;}
+#ddmenu div#menu4 {left: -142px;}
+#ddmenu div#menu4:before {left: 180px;}
+#menu4  ul{ padding: 0  0 0 145px;}
 #ddmenu div#menu5 {left: -240px;}
 #ddmenu div#menu5:before {left: 285px;}
 #menu5  ul{ padding:0  0 0 240px}
@@ -310,6 +322,20 @@ background: url("../images/expand.jpg") no-repeat scroll left center;
 	max-height:125px;
 }
 
+#cssmenu ul li .itemmenu a.borderimage img{
+ 	margin: 5px 0 0;
+    max-height: 100px;
+    max-width: 180px;
+}
+#cssmenu ul li #menudiscription-m7 .itemmenu a.borderimage img{
+ max-width: 210px;
+}
+#cssmenu ul li #menudiscription-m2 .itemmenu a.borderimage img{
+	margin: 2px 0 0;
+    max-height: 120px;
+    max-width: 180px;
+}
+
 .m-2 .borderimage img{
     max-height:180px;
 }
@@ -329,13 +355,14 @@ background: url("../images/expand.jpg") no-repeat scroll left center;
     height: 360px;
 }
 .coin_info_small_img img{
-	width:200px;
+	max-height: 120px;
+    max-width: 200px;
 }
 #basket .user_details p{
     margin: 0 0 5px;
 }
 #contact-top-module p,#basket p {
-    margin: 0 0 12px;
+    margin: 0 0 7px;
 }
 h1{
 font-size: 32px;
@@ -492,7 +519,7 @@ input[type=text]{
 
 #headergrid{
 float:left;
-width:590px;
+width:580px;
 padding: 10px 0 0 35px;
 }
 #headergrid div {
@@ -576,7 +603,7 @@ width:100%;
 }
 
 #basket{
-width:240px;
+width:250px;
 float:right;
 text-align:left;
 padding: 10px 0 0;
@@ -710,7 +737,7 @@ color:#ecb34e;
     background: transparent url("../images/strel-yellow.png") no-repeat scroll 250px 50%;
 }
 .main_img_big img {
-	width:600px;
+	max-width:600px;
 	border:1px solid #cccccc;
 	padding:10px;
 }
@@ -1074,14 +1101,46 @@ a.button24:active { background: linear-gradient(#f59500, #f5ae00) #f59500; }
     cursor: pointer;
     display: inline-block;
     float: left;
-    height: 305px;
+    height: 312px;
     margin: 2px;
     overflow: hidden;
     position: relative;
     width: 235px;
     z-index:1;
 }
+.submenu .itemmenu {
+	 cursor: pointer;
+    display: inline-block;
+    float: left;
+    font-size: 13px;
+    height: 265px;
+    margin: 0 0 0 15px;
+    overflow: hidden;
+    padding: 0;
+    position: relative;
+    width: 215px;
+    z-index: 1;
+}
 
+.submenu .itemmenu #info{
+	padding: 5px 0;
+}
+.submenu .itemmenu .new, .submenu .itemmenu .new_red{
+	left: 0;
+    line-height: 10px;
+    margin: 0;
+    padding: 3px;
+    position: relative;
+    text-align: center;
+    top: 0;
+    width: 60px;
+}
+.borderimage img {
+    border: 1px solid #cccccc;
+    margin: 8px 0;
+    max-height: 125px;
+    max-width: 220px;
+}
 .blockshop-full:hover{
    box-shadow: 0px 0px 7px -1px #000000;
   border:1px solid #7f7979;  
@@ -1467,7 +1526,8 @@ min-height:40px;
 }
 .d-carousel .coin_info .borderimage img,
 .d-carousel-show .coin_info .borderimage img{
-width: 145px;
+	max-height: 80px;
+    max-width: 145px;
 }
 
 .d-carousel .coin_info .amount span, .d-carousel .coin_info .amount input,

@@ -33,40 +33,34 @@
         <?
 		}
 		if($rows["clientprice"]>0){?>
-          <br>
-		  <a href=# onclick='javascript:alert("Цена со скидкой только для постоянных клиентов - сделавших не менее 3-х заказов
-		  за год под своим логином!")' title='Цена со скидкой только для постоянных клиентов - 
-		  сделавших не менее 3-х заказов за год под своим логином!' >
-             <?=$price_text?> <b><sup>
-			 <font color=blue>для постоянных клиентов</font></sup></b>: <strong><font color=red>
-			 <?=round($rows["clientprice"],2)?> руб.</font></strong></a>
+           <?=$price_text?> <span style="font-size:11px;font-weight:bold;background-color:#fffee7;color:#666666;padding: 5px; " title="Цена со скидкой только для постоянных клиентов - сделавших не менее 3-х заказов за год под своим логином!"><?=round($rows["clientprice"],2)?> руб.</span>
         <?}
 
 if ($rows['price1'] && $rows['amount1']) {
 
 	$tmpbody1 = "<br><table bgcolor=#000000 cellpadding=2 cellspacing=1 width=100%>
-	<tr bgcolor=#fff8e8><td rowspan=2 class=tboard width=25%>Оптовая цена:
-	<td class=tboard>Кол-во<td class=tboard>".$rows['amount1']; "</tr>";
-	$tmpbody2 = "<tr bgcolor=#fff8e8><td class=tboard>Цена<td class=tboard>".$rows['price1'];
+	<tr bgcolor=#fff8e8><td rowspan=2 width=25%>Оптовая цена:
+	<td>Кол-во<td>".$rows['amount1']; "</tr>";
+	$tmpbody2 = "<tr bgcolor=#fff8e8><td>Цена<td>".$rows['price1'];
 	if ($rows['price2'] && $rows['amount2']) {
 	
-		$tmpbody1 .= "<td class=tboard>".$rows['amount2'];
-		$tmpbody2 .= "<td class=tboard>".$rows['price2'];
+		$tmpbody1 .= "<td>".$rows['amount2'];
+		$tmpbody2 .= "<td>".$rows['price2'];
 	}
 	if ($rows['price3'] && $rows['amount3']) {
 	
-		$tmpbody1 .= "<td class=tboard>".$rows['amount3'];
-		$tmpbody2 .= "<td class=tboard>".$rows['price3'];
+		$tmpbody1 .= "<td>".$rows['amount3'];
+		$tmpbody2 .= "<td>".$rows['price3'];
 	}
 	if ($rows['price4'] && $rows['amount4']) {
 	
-		$tmpbody1 .= "<td class=tboard>".$rows['amount4'];
-		$tmpbody2 .= "<td class=tboard>".$rows['price4'];
+		$tmpbody1 .= "<td>".$rows['amount4'];
+		$tmpbody2 .= "<td>".$rows['price4'];
 	}
 	if ($rows['price5'] && $rows['amount5']) {
 	
-		$tmpbody1 .= "<td class=tboard>".$rows['amount5'];
-		$tmpbody2 .= "<td class=tboard>".$rows['price5'];
+		$tmpbody1 .= "<td>".$rows['amount5'];
+		$tmpbody2 .= "<td>".$rows['price5'];
 	}
 	echo $tmpbody1."</tr>".$tmpbody2."</tr></table>"; 
 }?>
