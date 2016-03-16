@@ -49,6 +49,14 @@ if($tpl['module']=='order'&&$tpl['task']=='showorders'){
     	'href' => $cfg['site_dir']."shopcoins/index.php?materialtype=$materialtype",
     	'base_href' =>"shopcoins/index.php?materialtype=$materialtype"
     );
+    
+    if($rows_main["gname"]&&$rows_main["group"]){
+         $tpl['breadcrumbs'][] = array(
+        	'text' => $rows_main["gname"],
+        	'href' => $cfg['site_dir']."shopcoins/index.php?materialtype=$materialtype&group=".$rows_main["group"],
+        	'base_href' =>"shopcoins/index.php?materialtype=$materialtype&group=".$rows_main["group"]
+        );
+    }
     $tpl['breadcrumbs'][] = array(
     	'text' => $rows_main["name"],
     	'href' => '',
@@ -63,13 +71,22 @@ if($tpl['module']=='order'&&$tpl['task']=='showorders'){
     	'href' => $cfg['site_dir'].'shopcoins',
     	'base_href' =>'shopcoins'
     );
-    
-    $tpl['breadcrumbs'][] = array(
-    	'text' => contentHelper::$menu[$materialtype],
-    	'href' => "",
-    	'base_href' =>""    );
-
-    
+    if($search=='newcoins'){
+       $tpl['breadcrumbs'][] = array(
+        	'text' => "Новинки",
+        	'href' => "",
+        	'base_href' =>""    );
+    } elseif($search=='revaluation'){
+        $tpl['breadcrumbs'][] = array(
+        	'text' => "revaluation",
+        	'href' => "",
+        	'base_href' =>""    );
+    } else {
+        $tpl['breadcrumbs'][] = array(
+        	'text' => contentHelper::$menu[$materialtype],
+        	'href' => "",
+        	'base_href' =>""    );
+    }
     $tpl['current_page'] = '';
 } elseif ($tpl['module']=='order'&&$tpl['task']=='orderdetails'){
       $tpl['breadcrumbs'][] = array(
@@ -164,6 +181,20 @@ if($_SERVER['REQUEST_URI']=='/new/shopcoins/shopcoinshelp.php'){
     	'base_href' =>'shopcoinshelp'
     );
     $tpl['current_page'] = 'shopcoinshelp';
+}
+
+if($_SERVER['REQUEST_URI']=='/new/about.php'){
+	$tpl['breadcrumbs'][] = array(
+    	'text' => 'Магазин',
+    	'href' => $cfg['site_dir'].'shopcoins',
+    	'base_href' =>'shopcoins'
+    );
+    $tpl['breadcrumbs'][] = array(
+    	'text' => 'О нас',
+    	'href' => $cfg['site_dir'].'about.php',
+    	'base_href' =>'about'
+    );
+    $tpl['current_page'] = 'about';
 }
 
 

@@ -325,8 +325,8 @@ if (sizeof($OrderByArray))
 $positive_amount = '';
 
 
-$whereMaterialtype  = $materialtype?"and  shopcoins.materialtype=$materialtype or shopcoins.materialtypecross & pow(2,$materialtype)":'';
-
+/*$whereMaterialtype  = $materialtype?"and  shopcoins.materialtype=$materialtype or shopcoins.materialtypecross & pow(2,$materialtype)":'';*/
+$whereMaterialtype  ='';
 $where = " where shopcoins.check=1 $whereMaterialtype ".($WhereArray?" and ($WhereArray)":"");
 //echo $where;
 

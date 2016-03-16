@@ -99,10 +99,12 @@ foreach ($tpl['orderdetails']['ArrayShopcoinsInOrder'] as 	$rows ){
 <? 
 
 if($rows["amountAll"]>1){?>
+<div class="amount">
 <input id="amountall<?=$rows["catalog"]?>" type="hidden" value="<?=$rows["amountAll"]?>">
 <span class="down">-</span>
 <input id="amount<?=$rows["catalog"]?>" type="text" value="<?=$rows["oamount"]?>" size="1" name="amount_<?=$i?>">
 <span class="up">+</span>
+</div>
 <?} else {?>
 	<?=$rows["oamount"]?>
 <?}
@@ -175,7 +177,7 @@ if ($tpl['orderdetails']['related']) {?>
 	<h5>Рекомендуем приобрести:</h5>
 </div>
 <div class="triger">	
-	<div class="wraper clearfix" style="height:350px;padding-top:15px;">
+	<div class="wraper clearfix recomended">
 		<div>
 			<?foreach ($tpl['orderdetails']['related'] as $rowsp){
 			    $rowsp['metal'] = $tpl['metalls'][$rowsp['metal_id']];
@@ -187,7 +189,7 @@ if ($tpl['orderdetails']['related']) {?>
 				$statuses = $shopcoins_class->getBuyStatus($rowsp["shopcoins"],$tpl['user']['can_see'],array(),array());
 				$rowsp['buy_status'] = $statuses['buy_status'];
 				$rowsp['reserved_status'] = $statuses['reserved_status'];	
-				$rowsp['mark'] = $shopcoins_class->getMarks($rowsp["shopcoins"]);
+				//$rowsp['mark'] = $shopcoins_class->getMarks($rowsp["shopcoins"]);
 				echo contentHelper::render('shopcoins/item/itemmini',$rowsp);
 	            ?>				
 				</div>

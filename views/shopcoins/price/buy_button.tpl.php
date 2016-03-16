@@ -1,3 +1,14 @@
+<?
+include(START_PATH."/config.php");
+
+$amountall = $rows['amount'];
+if (in_array($rows["materialtype"],array(8,6,7,2,4))) {		
+	$amountall = ( !$rows["amount"])?1:$rows["amount"];				
+}		
+	
+$rows['amountall'] = $amountall;			
+			
+?>
 <div class="amount">
 
 <?

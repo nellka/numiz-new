@@ -1,31 +1,19 @@
-<div style="width:600px;display: inline-block;vertical-align:top;margin-top:10px;">
-            <?include($cfg['path'].'/views/shopcoins/item/imageBig.tpl.php');?>
-    </div>
-    <div style="width:200px;display: inline-block;padding-left:50px;">
+<?
+  if ($rows_main["novelty"]){?>
+    <div class="new">Новинка</div>
+<?} elseif ($rows_main["dateinsert"]>time()-86400*180){
+?>
+	<div class="new_red">NEW</div>
+<?php 
+ }
+?>
+
+<div class="mainItemPhoto">
+        <?include($cfg['path'].'/views/shopcoins/item/imageBig.tpl.php');?>
+</div>
+<div  class="detailsItem">
+   <div style="width:200px;display: inline-block;">
         <h1><?=$rows_main["name"]?></h1>       
-  
-	<div id='review-block'>
-	  <?php	if ($tpl['user']['user_id']) { /*  ?> 
-			<a name=addreview href="#" onclick="showReviewForm();return false;">Написать отзыв</a> 
-    			<div id='reviewcoin' style="display:none">
-    			    <form name='reviewcoin'>        			
-        			<h1 class="yell_b">Написать отзыв</h1>
-        			<div id='error-review' class="error"></div>
-        			<div><b>Пользователь: <br><input type=text name=fio value='<?=$tpl['user']['username']?>' size=40 maxlength=150 disabled></b></div>
-        			<div><b>Отзыв:</b><br>
-        			<textarea name=reviewcointext id=reviewcointext cols=40 rows=10 ></textarea></div>
-        			<div class="web-form"><input type=button class="yell_b" value='Оставить отзыв' onclick="AddReview('<?=$catalog?>');"></div>
-        			</form>
-    			</div>
-			
-		<? */} else { /*?>
-		   
-		    <div id='reviewcoin' style="display:none">
-		     <h1 class="yell_b">Написать отзыв</h1>
-        	<div id='error-review' class="error">Отзывы могут оставлять только зарегистрированные пользователи!</div>
-        	</div>
-		<? */}?>
-		</div>
      <?
 	if ($rows_main["gname"]){?>
 	<?=in_array($rows_main["materialtype"],array(9,3,5))?"Группа":"Страна"?>: 
@@ -57,25 +45,9 @@ if($materialtype==5){
 	if($rows_main["accessorySize"]) echo "<br>Размеры:<strong> ".$rows_main["accessorySize"]."</strong>";
 }
 		
-if (sizeof($tpl['show']['shopcoinstheme']))	$details .= "<br>Тематика: <strong>".implode(", ", $tpl['show']['shopcoinstheme'])."</strong>";
+if (sizeof($tpl['show']['shopcoinstheme']))	echo "<br>Тематика: <strong>".implode(", ", $tpl['show']['shopcoinstheme'])."</strong>";
 
-if (trim($rows_main["details"]))
-{
-	$text = substr($rows_main["details"], 0, 250);
-	$text = strip_tags($text);
-	$text = substr($text, 0, strlen($text) - strpos(strrev($text), '.'));
-	$text = str_replace($rows_main['name'],"<strong>".$rows_main['name']."</strong>",$text);
-	$text = str_replace($rows_main['gname'],"<strong>".$rows_main['gname']."</strong>",$text);
-	$text = str_replace(" монет ","<strong> монет </strong>",$text);
-	$text = str_replace(" монета ","<strong> монета </strong>",$text);
-	$text = str_replace(" монеты ","<strong> монеты </strong>",$text);
-	$text = str_replace(" монетам ","<strong> монетам </strong>",$text);
-	echo "<br>Описание: ".str_replace("\n","<br>",$text)."";
-}
-
-if ($rows_main["dateinsert"]>time()-86400*180){
-	echo "<br>Добавлено: <strong>".($rows_main["dateinsert"]>time()-86400*14?"<font color=red>NEW</font> ".date("Y-m-d", $rows_main["dateinsert"]):date("Y-m-d", $rows_main["dateinsert"]))."</strong>";
-}?>
+?>
 </div>	
 
 <?        
@@ -98,7 +70,7 @@ if(($rows_main['buy_status']==7||$rows_main['buy_status']==6)&&($minpriceoneclic
 -->
 
 </div>
-  <div style="width:160px;display: inline-block;margin-top:30px;vertical-align:top;text-align:right;">
+  <div style="width:130px;margin-top:30px;vertical-align:top;text-align:right; float: right;">
 	<div style="margin-left:15px;margin-bottom:10px;">
 		<?
 		//оценки
@@ -116,7 +88,27 @@ if(($rows_main['buy_status']==7||$rows_main['buy_status']==6)&&($minpriceoneclic
 	?>
 	</div>
 	<br>
+	<? if(isset($rows_main['notSRB'])&&!$rows_main['notSRB']){?>
 	<div style="margin-right:58px;">
 		<a  name=addreview href="#" onclick="showReviewForm();return false;">Написать отзыв</a>
 	</div>
+	<?}?>
+</div>
+<div>
+<?
+
+if (trim($rows_main["details"]))
+{
+	$text = $rows_main["details"];
+	$text = strip_tags($text);
+	$text = substr($text, 0, strlen($text) - strpos(strrev($text), '.'));
+	$text = str_replace($rows_main['name'],"<strong>".$rows_main['name']."</strong>",$text);
+	$text = str_replace($rows_main['gname'],"<strong>".$rows_main['gname']."</strong>",$text);
+	$text = str_replace(" монет ","<strong> монет </strong>",$text);
+	$text = str_replace(" монета ","<strong> монета </strong>",$text);
+	$text = str_replace(" монеты ","<strong> монеты </strong>",$text);
+	$text = str_replace(" монетам ","<strong> монетам </strong>",$text);
+	echo "<br>Описание: ".str_replace("\n","<br>",$text)."";
+}?>
+</div>
 </div>

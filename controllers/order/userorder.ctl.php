@@ -54,6 +54,9 @@ if(!$postindex){
 //fio из последнего заказа
 if(!$fio&&$user_data['fio'] ){
     $fio = $user_data['fio'];
+    if($fio=='??????????'){
+        $fio='';
+    }
 }
 if (!$userfio) {
     $userfio = $order_class->getUserfio();
@@ -89,6 +92,15 @@ if (!$adress&&trim($user_data["adress"])){
 	$adress = str_replace("\r", " ", $adress);
 	$adress = str_replace("  ", " ", $adress);
 }
+
+$tpl['orderdetails']['admins'] = array();
+
+if($tpl['user']['my_ip']||$tpl['user']['user_id']==811){	
+	$sqlt = "select * from TimeTableUser where 	`check`=1 order by Fio;";
+	$tpl['orderdetails']['admins'] = $shopcoins_class->getDataSql($sqlt);	
+}
+
+$tpl['orderdetails']['alreadyBye'] = array();
 
 if ($tpl['user']['user_id']<>811) {
     

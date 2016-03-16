@@ -36,6 +36,7 @@ for ($i=1; $i<=$timelimit; $i++)
 }
 
 $n=0;
+$timenow = mktime(0, 0, 0, date("m", $timenow), date("d", $timenow), date("Y", $timenow));
 for ($i = 32400; $i <= 64800; $i = $i+900){
     $TimesArray[$n]['val'] = $i;
 	$TimesArray[$n]['text'] = date("H-i", $timenow+$i);

@@ -17,6 +17,7 @@ if (!$timelimit || $timelimit>30)
 
 $DaysData = array();
 $n = 0;
+
 for ($i=1; $i<=$timelimit; $i++) {
 	$time = $timenow+$i*86400;
 	if (date("w", $time) != 0){	
@@ -30,10 +31,13 @@ $data_result['DaysArray'] = $DaysData;
 
 $TimesArray = array();
 $n = 0;
+
+$timenow = mktime(0, 0, 0, date("m", $timenow), date("d", $timenow), date("Y", $timenow));
+
 for ($i = 36000; $i <= 64800; $i = $i+900){
 
 	$TimesArray[$n]['val'] = $i;
-	$TimesArray[$n]['text'] = date("H-i", time()+$i);
+	$TimesArray[$n]['text'] = date("H-i", $timenow+$i);
 	$n++;
 }
 

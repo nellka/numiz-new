@@ -1,4 +1,4 @@
-<div class="wraper clearfix" style="border:1px solid #cccccc;padding:10px;margin-top:20px;">  
+<div class="wraper clearfix showitem" >  
 <?
 if($tpl['show']['error']['no_coins']){?>
     <div class="error">К сожалению, указанного товара не существует</div>

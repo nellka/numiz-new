@@ -11,7 +11,15 @@
 <div>Чтобы оформить заказ, укажите только свое имя и номер телефона.<br> Все остальные данные Вы можете сообщить менеджеру. <br>Форма "Быстрый заказ" предназначена для заказа одного вида товаров. <br> Если вы хотите продолжать выбор товаров, то используйте обычную функцию заказа - "В корзину"<br>&nbsp;</div>
 <div class="error" id="oneshopcoins<?=$rows["shopcoins"]?>-error"></div>
 <p>
-    Вы заказываете: <b><?=$rows["name"]?></b>
+    Вы заказываете: <b><?
+    
+    if($rows["materialtype"]==3){	
+		echo $rows['namecoins'].''.contentHelper::showImage('images/'.$rows["image"],$rows['namecoins']);
+	} elseif ($rows["materialtype"]==5){
+		echo $rows["name"].' '.contentHelper::showImage('images/'.$rows["image"],$rows["name"]);	
+    } else {
+        echo $rows['namecoins'].' '.contentHelper::showImage('images/'.$rows["image"],'');		
+    }?></b>
 </p>
 <div class="web-form">
     <div class="left">
@@ -30,7 +38,7 @@
     </div>
 </div>
 <div class="web-form">
-<input type=button value='Оформить заказ' onclick="AddOneClick(<?=$rows["shopcoins"]?>)" class="yell_b">
+<center><a class="button24 oneclickorder" onclick="AddOneClick(<?=$rows["shopcoins"]?>);return false;" >Оформить заказ</a></center>
 </div>
 </div>
 	  

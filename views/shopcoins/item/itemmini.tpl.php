@@ -4,7 +4,10 @@ if ($rows["novelty"]){?>
 <?} elseif ($rows["dateinsert"]>time()-86400*180){?>
 	<div class="new_red">NEW</div>
 <?}?>
-  <center><?=contentHelper::showImage("images/".$rows["image"],$rows["gname"]." | ".$rows["name"]);?></center><br>
+  <center>
+  <a href=index.php?catalog=<?=$rows["shopcoins"]?>&page=show&materialtype=<?=$rows["materialtype"]?>>
+  <?=contentHelper::showImage("images/".$rows["image"],$rows["gname"]." | ".$rows["name"]);?></center><br>
+  </a>
   <a href=index.php?catalog=<?=$rows["shopcoins"]?>&page=show&materialtype=<?=$rows["materialtype"]?>><?=$rows['name']?></a><br>
   <b>Страна:</b> <?=$rows['gname']?><br>
   <b>Год:</b> <?=$rows['year']?$rows['year']:"Без указания года"?><br>
@@ -15,10 +18,11 @@ if ($rows["novelty"]){?>
  
 <?
 
-if(isset($row['buy_status'])) echo contentHelper::render('shopcoins/price/prices',$rows);
+if(isset($rows['buy_status'])) echo contentHelper::render('shopcoins/price/prices',$rows);
 if(isset($rows['reserved_status'])) echo contentHelper::render('shopcoins/price/buy_button',$rows);
-
-echo contentHelper::render('shopcoins/price/markitem',$rows['mark']);
+if(isset($rows['mark'])){
+    echo contentHelper::render('shopcoins/price/markitem',$rows['mark']);
+}
 
 
 ?>

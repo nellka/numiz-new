@@ -1,7 +1,7 @@
 <div id='products'>
 <div id='pager' class="pager_s">
 	<div id='order' class="orderby" style="padding-left:5px;">
-		<div style="float:left;">
+		<div style="float:left;line-height:40px">
 		Товаров на странице:
 		 <?foreach ($tpl['pager']['itemsOnpage'] as $k=>$v){
 			if($k==$tpl['onpage']){?>
@@ -12,10 +12,8 @@
 		 }?>   
 		</div>
     </div>
-	<div id='pages' class="pages">
-    	<div class="pages">
+	<div id='pages' class="pages_search right">
     		 <?php echo $tpl['paginator']->printPager(); ?>
-    	</div>	
 	</div>
 </div>
 <?
@@ -45,3 +43,16 @@ if($tpl['shop']['errors']){?>
     	</div>	
 	</div>
 </div>
+
+<script type="text/javascript" charset="utf-8">
+
+ jQuery(document).ready(function() {    
+ 	$(".blockshop").on("hover", function(e) {
+	    if (e.type == "mouseenter") {
+	    	if($(this).find(".qwk")) $(this).find(".qwk").show();
+	    } else { // mouseleave
+	        if($(this).find(".qwk")) $(this).find(".qwk").hide();
+	    }
+	});
+});
+</script>

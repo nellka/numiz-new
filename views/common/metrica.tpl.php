@@ -65,5 +65,8 @@ if(js>11)d.write('--'+'>')//--></script><!--TopList COUNTER-->
 <img src="http://www.yandex.ru/cycounter?www.numizmatik.ru" width=88 height=31 alt="Яндекс цитирования" border=0></a>
 
 </noindex>
-
+<?
+$time_script_end = microtime(true) - $time_script_start;
+echo $time_script_end;
+?>
 </center>

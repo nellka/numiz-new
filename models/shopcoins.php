@@ -390,6 +390,9 @@ class model_shopcoins extends Model_Base
     	 if($groups){
     	      $select->where("`group` in (".implode(",",$groups).")");
     	 }
+    	 if($this->user_id==352480){
+        	echo $select->__toString();
+        }
 	     return $this->db->fetchOne($select);
     }
     
@@ -401,6 +404,9 @@ class model_shopcoins extends Model_Base
     	 if($groups){
     	      $select->where("`group` in (".implode(",",$groups).")");
     	 }
+    	 if($this->user_id==352480){
+        	echo $select->__toString();
+        }
 	     return $this->db->fetchOne($select);
     }
 	public function getCoinsParents($ids){
@@ -456,15 +462,15 @@ class model_shopcoins extends Model_Base
 			if($this->materialtype == 2){
     	       $select->where('shopcoins.amount > 0');     	       
     	   } 
-    	   if ($this->materialtype==1 || $this->materialtype==10){
-    	      //if(!$yearsearch&&!$searchname){
-    	            $select->where("(shopcoins.materialtype='".$this->materialtype."' and shopcoins.amountparent > 0) or shopcoins.materialtypecross & pow(2,".$this->materialtype.")".(isset($WhereParams['group'])?" or shopcoins.materialtype='8' or shopcoins.materialtypecross & pow(2,8)":"")); 		
-    	       /*} else {
-    	           $select->where("shopcoins.materialtype='".$this->materialtype."' or shopcoins.materialtypecross & pow(2,".$this->materialtype.")".($group?" or shopcoins.materialtype='8' or shopcoins.materialtypecross & pow(2,8)":"")); 
-    	      // }*/
-	            
+    	   if ($this->materialtype==10){
+    	   		$select->where("(shopcoins.materialtype='".$this->materialtype."' and shopcoins.amountparent > 0) ".(isset($WhereParams['group'])?" or shopcoins.materialtype='8'":"")); 		
+
+    	   } elseif ($this->materialtype==1){
+    	     	$select->where("(shopcoins.materialtype='".$this->materialtype."' and shopcoins.amountparent > 0) or shopcoins.materialtypecross =16 ".(isset($WhereParams['group'])?" or shopcoins.materialtype='8' ":"")); 		
+    	   }  elseif ($this->materialtype==7){
+    	     	$select->where("shopcoins.materialtype='".$this->materialtype."' or shopcoins.materialtypecross =16 "); 		
     	   } else {
-    	        $select->where("(shopcoins.materialtype=? or shopcoins.materialtypecross & pow(2,?))",$this->materialtype); 
+    	        $select->where("shopcoins.materialtype=? ",$this->materialtype); 
     	   }
 		}
 		return $select;
@@ -589,24 +595,12 @@ class model_shopcoins extends Model_Base
 	   	   
 	   if ($searchid) {	
 	       
-       } /*elseif($search){
-	       //$where = " where ( ".($show50?"or shopcoins.check=50":"").") and ((shopcoins.materialtype in (2,4,7,8,3,5,9)) or (shopcoins.materialtype in(1,10) and shopcoins.amountparent>0) or shopcoins.number='$search' or shopcoins.number2='$search')";
-	   } */else {/*
-	       if($materialtype == 2){
-    	       $select->where('shopcoins.amount > 0');     	       
-    	   } 
-    	   if ($materialtype==1 || $materialtype==10){
-    	       if(!$yearsearch&&!$searchname){
-    	            $select->where("(shopcoins.materialtype='".$materialtype."' and shopcoins.amountparent > 0) or shopcoins.materialtypecross & pow(2,".$materialtype.")".(isset($WhereParams['group'])?" or shopcoins.materialtype='8' or shopcoins.materialtypecross & pow(2,8)":"")); 		
-    	       } else {
-    	           $select->where("shopcoins.materialtype='".$materialtype."' or shopcoins.materialtypecross & pow(2,".$materialtype.")".($group?" or shopcoins.materialtype='8' or shopcoins.materialtypecross & pow(2,8)":"")); 
-    	       }
-	            
-    	   } else {
-    	        $select->where("(shopcoins.materialtype=? or shopcoins.materialtypecross & pow(2,?))",$materialtype); 
-    	   }*/
+       } else {
+	       
 	   } 
-
+    if($this->user_id==352480){
+        	echo $select->__toString();
+        }
        return $this->db->fetchOne($select);       
 	}
 	public function getPopular($limit=4,$params = array()){ 
@@ -770,7 +764,9 @@ class model_shopcoins extends Model_Base
 	   if($items_for_page!='all'){
 	        $select->limitPage($page, $items_for_page);
 	   }  
-	  
+	  if($this->user_id==352480){
+        	echo $select->__toString();
+        }
 	  // echo $select->__toString();
        return $this->db->fetchAll($select);
 	} 
@@ -821,7 +817,10 @@ class model_shopcoins extends Model_Base
 	   if(!$all){
     	   $select=$this->setMaterialtypeSelect($select);
     	   $select = $this->byAdmin($select); 
-	   }	
+	   }
+	   if($this->user_id==352480){
+        	echo $select->__toString();
+        }	
 	   return $this->db->fetchAll($select);       
 	}
 	//группы для выборки
@@ -838,7 +837,10 @@ class model_shopcoins extends Model_Base
 	    
        if ($this->getCategoryType()==self::BASE ){       
            $select->order('group desc');
-       }      
+       } 
+       if($this->user_id==352480){
+        	echo $select->__toString();
+        }     
        return $this->db->fetchAll($select);       
 	}
 	//получаем данные о группах
@@ -887,7 +889,9 @@ class model_shopcoins extends Model_Base
 	                      ->where("shopcoins.check=1")
 	                      ->order('nominals.name asc');  
 	    $select=$this->setMaterialtypeSelect($select);
-	    //var_dump($this->db->fetchAll($select));
+	    if($this->user_id==352480){
+        	echo $select->__toString();
+        }
 	    return $this->db->fetchAll($select);    
 	}
 	
@@ -901,6 +905,9 @@ class model_shopcoins extends Model_Base
     	    $select=$this->setMaterialtypeSelect($select);   
     	   	$select = $this->byAdmin($select); 	   
 	    }	
+	    if($this->user_id==352480){
+        	echo $select->__toString();
+        }
 	   	return $this->db->fetchAll($select);    
 	}
 	
@@ -917,7 +924,9 @@ class model_shopcoins extends Model_Base
        if($groups){
            $select->where("`group` in (".implode(",",$groups).")");
        }
-
+        if($this->user_id==352480){
+        	echo $select->__toString();
+        }
 	   return $this->db->fetchAll($select);       
 	}
 	//серии
@@ -931,6 +940,9 @@ class model_shopcoins extends Model_Base
         }
         $select=$this->setMaterialtypeSelect($select); 
 	    $select = $this->byAdmin($select); 
+	    if($this->user_id==352480){
+        	echo $select->__toString();
+        }
         return $this->db->fetchAll($select);    
 	
 	}
@@ -1072,11 +1084,16 @@ class model_shopcoins extends Model_Base
 	       $select->where('shopcoins.amount > 0');	       
 	   	}      
 	
-	   	if ($materialtype==1 || $materialtype==10){
-	       $select->where("(shopcoins.materialtype='".$materialtype."' and shopcoins.amountparent > 0) or shopcoins.materialtypecross & pow(2,".$materialtype.")"); 		            
+	   if ($materialtype==1 ){
+	       $select->where("(shopcoins.materialtype=1 and shopcoins.amountparent > 0) or shopcoins.materialtypecross =4"); 		            
+	   } elseif ($materialtype==10){
+	       $select->where("(shopcoins.materialtype=10 and shopcoins.amountparent > 0)"); 		            
+	   } elseif ($materialtype==7){
+	       $select->where("(shopcoins.materialtype=7  or shopcoins.materialtypecross=4)"); 		            
 	   } else {
-	        $select->where("(shopcoins.materialtype=? or shopcoins.materialtypecross & pow(2,?))",$materialtype); 
+	        $select->where("shopcoins.materialtype=?",$materialtype); 
 	   }
+	  
        return $this->db->fetchRow($select);  	
 	}
 	//предыдущая монета
@@ -1091,10 +1108,14 @@ class model_shopcoins extends Model_Base
 	       $select->where('shopcoins.amount > 0');	       
 	   	}      
 	
-	   	if ($materialtype==1 || $materialtype==10){
-	       $select->where("(shopcoins.materialtype='".$materialtype."' and shopcoins.amountparent > 0) or shopcoins.materialtypecross & pow(2,".$materialtype.")"); 		            
+	   if ($materialtype==1 ){
+	       $select->where("(shopcoins.materialtype=1 and shopcoins.amountparent > 0) or shopcoins.materialtypecross =4"); 		            
+	   } elseif ($materialtype==10){
+	       $select->where("(shopcoins.materialtype=10 and shopcoins.amountparent > 0)"); 		            
+	   } elseif ($materialtype==7){
+	       $select->where("(shopcoins.materialtype=7  or shopcoins.materialtypecross=4)"); 		            
 	   } else {
-	        $select->where("(shopcoins.materialtype=? or shopcoins.materialtypecross & pow(2,?))",$materialtype); 
+	        $select->where("shopcoins.materialtype=?",$materialtype); 
 	   }
        return $this->db->fetchRow($select);  	
 	}
@@ -1105,7 +1126,7 @@ class model_shopcoins extends Model_Base
               ->from('catalognew',array('distinct(name)'))
               ->where('`group`=?',$id)
               ->order('name DESC');    
- 
+
         return $this->db->fetchAll($select);  	     
 	}
 	
@@ -1233,7 +1254,8 @@ class model_shopcoins extends Model_Base
 	public function migrateNominals(){
 	     $select = $this->db->select()
                   ->from('shopcoins',array('distinct(name)'))
-                  ->where('name<>"" and nominal_id=0');
+                  ->where('name<>"" and nominal_id=0')
+                  ->limit(5);
          foreach ($this->db->fetchAll($select) as $row){
              $select  = $this->db->select()
                                 ->from('nominals',array('id'))

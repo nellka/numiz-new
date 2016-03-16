@@ -173,8 +173,10 @@ if (!$tpl['user']['user_id']){
 			$oldmaterialtype = 0;		
 				
 			foreach ($tpl['order_results'] as $rows){		
-			    $tpl['order_results'][$k]['title'] = ''	;
-			   
+			   $tpl['order_results'][$k]['title'] = ''	;
+			   $tpl['order_results'][$k]['condition'] = $tpl['conditions'][$rows['condition_id']];
+	           $tpl['order_results'][$k]['metal'] = $tpl['metalls'][$rows['metal_id']];
+	    
 				if ($oldmaterialtype != $rows["materialtype"]) {				
 					$tpl['order_results'][$k]['title'] = $MaterialTypeArray[$rows["materialtype"]];					
 				}

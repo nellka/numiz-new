@@ -2,7 +2,7 @@
 require $cfg['path'] . '/configs/config_shopcoins.php';
 
 $timenow = time();
-
+$timenow = mktime(0, 0, 0, date("m", $timenow), date("d", $timenow), date("Y", $timenow));
 $metroid = (integer) request('metroid');
 $timelimit = request('timelimit');
 

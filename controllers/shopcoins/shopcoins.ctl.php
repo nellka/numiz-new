@@ -1,7 +1,9 @@
 <?
 require($cfg['path'].'/helpers/Paginator.php');
 require $cfg['path'] . '/configs/config_shopcoins.php';
-
+if($tpl['user']['user_id']==352480){
+	echo time()." 1<br>";
+}
 
 $search = request('search');
 $group = request('group');
@@ -29,7 +31,7 @@ $sortname = request('sortname');
 $tpl['pager']['sorts'] = array('dateinsert'=>'новизне',                     
                       'price'=>'по цене',
                       'year'=>'году');
-$tpl['pager']['itemsOnpage'] = array(9=>9,18=>18,36=>36,33=>33,66=>66);
+$tpl['pager']['itemsOnpage'] = array(9=>9,18=>18,36=>36,48=>48,72=>72);
 
 //сохраняем количество элементов на странице в куке
 if(request('onpage')){
@@ -72,7 +74,7 @@ $searchid = request('searchid');
 
 
 $groups = request('groups');
-$nominals = request('nominals');
+$nominals = (array)request('nominals');
 $nominal = request('nominal');
 $group = request('group');
 $seriess = request('seriess');
@@ -100,7 +102,7 @@ $coinssearch = request('coinssearch');
 $years  = (array)request('years');
 $years_p = (array)request('years_p');
 
-if($nominals&&$groups){
+if(($nominals&&$groups)||($groups&&$materialtype==4)){
     $years_p_data = $years_p;
 } else {
     
@@ -152,6 +154,7 @@ elseif($group) {
 	$groups =  array($group);
 }
 
+
 if(count($group_data)==1){
     
     $groupData = $shopcoins_class->getGroupItem($group_data[0]);
@@ -193,9 +196,16 @@ elseif($theme) {
 	$theme_data =  array($theme);
 	$themes =  array($theme);
 }
+if($tpl['user']['user_id']==352480){
+	echo time()." 3<br>";
+}
 
 
 require($cfg['path'].'/controllers/filters.ctl.php');
+
+if($tpl['user']['user_id']==352480){
+	echo time()." 4<br>";
+}
 
 $tpl['shopcoins']['filter_groups'] = $filter_groups;
 $checkuser = 0;
@@ -276,8 +286,14 @@ if ($searchid)
 	$MainText .= "<p class=txt><b><font color=red>��������� ������������. �������� ������� ������������ ������.</font></b>
 	<br>����� ��������� ����������� ����� - ������� <a href=$script>�����</a>.</p>";
 
+if($tpl['user']['user_id']==352480){
+	echo time()." 5<br>";
+}
 
 $countpubs = $shopcoins_class->countallByParams($WhereParams);
+if($tpl['user']['user_id']==352480){
+	echo time()." 6<br>";
+}
 
 if($addhref) $addhref = substr($addhref,1);  
 
@@ -312,7 +328,7 @@ if ($materialtype==5) $OrderByArray[] = " shopcoins.name desc";
 $OrderByArray[] ="novelty desc";
 
 if ($tpl['orderby']=="dateinsertdesc"){
-	$OrderByArray[] = " if (shopcoins.dateupdate > shopcoins.dateinsert, shopcoins.dateupdate, shopcoins.dateinsert) desc";
+	//$OrderByArray[] = " if (shopcoins.dateupdate > shopcoins.dateinsert, shopcoins.dateupdate, shopcoins.dateinsert) desc";
 	$OrderByArray[] = "shopcoins.dateinsert desc";
 	$OrderByArray[] = "shopcoins.price desc";
 } elseif ($tpl['orderby']=="dateinsertasc"){
@@ -410,6 +426,9 @@ else*/if ($checkuser && $tpl['user']['user_id'] && ($num > 3) ) {
 	$data = $shopcoins_class->getItemsByParams($WhereParams,$tpl['pagenum'],$tpl['onpage'],$orderby);
 	
 }
+if($tpl['user']['user_id']==352480){
+	echo time()." 7<br>";
+}
 
 
 //$result_search = mysql_query($sql);
@@ -423,12 +442,18 @@ if($data){
 		$tpl['shop']['MyShowArray'][] = $rows;
 	}
 }
+if($tpl['user']['user_id']==352480){
+	echo time()." 8<br>";
+}
 
 if (sizeof($tpl['shop']['ArrayParent'])) {
     $result_search = $shopcoins_class->getCoinsParents($tpl['shop']['ArrayParent']);
 	foreach ($result_search as $rows_search ){		
 		$tpl['shop']['ImageParent'][$rows_search["parent"]][] = $rows_search["image_small"];
 	}	
+}
+if($tpl['user']['user_id']==352480){
+	echo time()." 9<br>";
 }
 
 if ($materialtype==3 || $materialtype==5) {
@@ -439,6 +464,9 @@ if ($materialtype==3 || $materialtype==5) {
 			$ourcoinsorderamount[$rows_ourorder["catalog"]] = $rows_ourorder["amount"];
 		}
 	}
+}
+if($tpl['user']['user_id']==352480){
+	echo time()." 10<br>";
 }
 
 $ShopcoinsThemeArray = Array();
@@ -479,11 +507,11 @@ if (sizeof($tpl['shop']['MyShowArray'])==0){
 				$amountall = ( !$rows["amount"])?1:$rows["amount"];				
 			}			
 			$tpl['shop']['MyShowArray'][$i]['amountall'] = $amountall;				
-		}
-		
+		}		
 		
 	    $tpl['shop']['MyShowArray'][$i]['mark'] = $shopcoins_class->getMarks($rows["shopcoins"]);		
 		
+
 		$tpl['shop']['MyShowArray'][$i]['buy_status'] = 0 ;		
 		$textoneclick='';	
 		
@@ -492,7 +520,7 @@ if (sizeof($tpl['shop']['MyShowArray'])==0){
 			$tpl['shop']['MyShowArray'][$i]['buy_status'] = $statuses['buy_status'];
 			$tpl['shop']['MyShowArray'][$i]['reserved_status'] = $statuses['reserved_status'];	
 		}						
-				
+			
 		$shopcoinstheme = array();
 		$strtheme = decbin($rows["theme"]);
 		$strthemelen = strlen($strtheme);
@@ -516,7 +544,11 @@ if (sizeof($tpl['shop']['MyShowArray'])==0){
 	}
 	
 }
-	
+
+if($tpl['user']['user_id']==352480){
+	echo time()." 8<br>";
+}
+
 $tpl['seo_data'] = $shopcoins_class->getSeo($materialtype,$group_data,$nominal_data);
 //записываем статистике по тому, что искали
 if ($search && $search != 'revaluation' && $search != 'newcoins'){		
@@ -612,6 +644,9 @@ $tmp = explode("#", $LastCatalog10);
 		</tr>
 		</table>";
 	}*/
+if($tpl['user']['user_id']==352480){
+	echo time()." 9<br>";
+}
 
 require $cfg['path'] . '/configs/shopcoins_keywords.php';
 ?>

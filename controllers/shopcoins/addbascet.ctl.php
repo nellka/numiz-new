@@ -57,7 +57,7 @@ if(!$rows){
 		}
 	}
 	//($ShopcoinsMaterialtype==3 || $ShopcoinsMaterialtype==5) and
-	if ( $rows["amount"] < $amount)	{
+	if (($ShopcoinsMaterialtype==3 || $ShopcoinsMaterialtype==5) and $rows["amount"] < $amount)	{
 		$data_result['error'] ="amount";
 		$erroramount = $rows["amount"];
 	}

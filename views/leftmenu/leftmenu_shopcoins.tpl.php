@@ -1,5 +1,5 @@
-<div class="menu-heading" onclick="showMainLeftMenu();" id='hidden-shopcoins-menu'>
-	<a style="color:#ffffff;text-decoration:none;" href="#s" onclick="return false">
+<div class="menu-heading"  id='hidden-shopcoins-menu'>
+	<a style="color:#ffffff;text-decoration:none;" href="#s" onclick="showMainLeftMenu();return false">
 		<span style="padding-left:17px;">Разделы магазина</span>
 	</a>
 
@@ -24,6 +24,7 @@
    //if($tpl['task']=='catalog_base')  include('filters.tpl.php');
 ?>
    <script> function showMainLeftMenu(){
+       
         if(!$('#left_menu_shop').is(':visible')){
             $('#left_menu_shop').show();
         } else {
@@ -32,12 +33,12 @@
         return false;
    }
    
-    $('#hidden-shopcoins-menu').hover(
+   /* $('#hidden-shopcoins-menu').hover(
 		function(){	 
 		  $('#left_menu_shop').show();
 		},
 		function(){
 		   $('#left_menu_shop').hide();
 		}
-	);	
+	);	*/
     </script>

@@ -1,8 +1,9 @@
-<div id='closeTop' class="close-top" onclick="setMini(1)"></div>
+<!--<div id='closeTop' class="close-top" onclick="setMini(1)"></div>-->
 <div id="logo">
     <a class="logo-img" href="http://www.numizmatik.ru"><img src="<?=$cfg['site_dir']?>images/logo_small.jpg" border=0></a>
     <a href="<?=$cfg['site_dir']?>ocenka-stoimost-monet">Оценка монет</a>
     <a href="http://www.numizmatik.ru/gde-prodat-monety">Скупка монет</a>
+    <a href="http://www.numizmatik.ru/shopcoins">Продажа монет</a>
     <div>В Москве и Санкт-Петербурге</div>
 </div>
 <div id="headergrid">
@@ -10,7 +11,7 @@
         <p>магазин <b>Клуб Нумизмат</b></p>    
         <p><b>Москва</b>, ул. Тверская 12 стр. 8<br>
         <b>Санкт-Петербург</b>, ул. Турку 31</p>
-        <p><b>Режим работы магазина</b>:<br>
+        <p style='margin:0'><b>Режим работы магазина</b>:<br>
         Рабочие: 9-00 до 19-30<br>
         Суббота: 10-00 до 18-00<br>
         Вс: выходной </p>     

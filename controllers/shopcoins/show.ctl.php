@@ -6,7 +6,7 @@ $catalogshopcoinsrelation_class = new model_catalogshopcoinsrelation($cfg['db'])
 //var_dump($_SERVER);
 
 $page = 'show';
-$tpl['show']['lhreg'] = isset($_COOKIE['lhref'])?trim($_COOKIE['lhref']):$_SERVER['HTTP_REFERER'];
+$tpl['show']['lhreg'] = isset($_COOKIE['lhref'])?trim($_COOKIE['lhref']):(isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:'/new/shopcoins');
 $arraynewcoins = Array(1=>date('Y')-2,2=>date('Y')-1,3=>date('Y'));
 $show50 = 0;
 
@@ -87,9 +87,13 @@ if ($catalog){
 	$rows_main['metal'] = $tpl['metalls'][$rows_main['metal_id']];
 	$rows_main['condition'] = $tpl['conditions'][$rows_main['condition_id']];
 	$next_coins = $shopcoins_class->getNext($catalog,$materialtype);
-	$next_coins['metal'] = $tpl['metalls'][$next_coins['metal_id']];
-	$previos_coins = $shopcoins_class->getPrevios($catalog,$materialtype);
-	$previos_coins['metal'] = $tpl['metalls'][$previos_coins['metal_id']];
+	//var_dump($next_coins);
+	if($next_coins){
+		$next_coins['metal'] = $tpl['metalls'][$next_coins['metal_id']];
+	}
+	$previos_coins = $shopcoins_class->getPrevios($catalog,$materialtype);	
+
+	if($previos_coins) $previos_coins['metal'] = $tpl['metalls'][$previos_coins['metal_id']];
 	$tpl['show']['next'] = ($next_coins)? contentHelper::getRegHref($next_coins,$materialtype,$parent):null;
 	$tpl['show']['previos'] = ($previos_coins)? contentHelper::getRegHref($previos_coins,$materialtype,$parent):null;	
 
@@ -284,7 +288,5 @@ if ($catalog){
 } else {
 	$tpl['show']['error']['no_coins'] = true;
 }
-
-
 
 ?>

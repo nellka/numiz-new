@@ -1,6 +1,4 @@
 function showOn(href,id){
-   // console.log('show'+href)
-   //console.log($('#MainBascet'));
      $('#MainBascet').dialog({
         modal: true,
         position: { 
@@ -22,8 +20,8 @@ function showOn(href,id){
            // $("div.ui-dialog").not(':first').remove();
             // console.log(href);
              $(this).load(href);
-             $('.ui-dialog-titlebar-close').addClass('ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only');
-$('.ui-dialog-titlebar-close').append('<span class="ui-button-icon-primary ui-icon ui-icon-closethick"></span><span class="ui-button-text">close</span>');
+             //$('.ui-dialog-titlebar-close').addClass('ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only');
+//$('.ui-dialog-titlebar-close').append('<span class="ui-button-icon-primary ui-icon ui-icon-closethick"></span><span class="ui-button-text">close</span>');
         },
        // height: 330, 
         width: 400
@@ -39,25 +37,25 @@ function showMenuDescription(id){
 
 function setMini(on){
 	if(on){
+		//console.log('setmini');
 		$('#header').hide();
 		$('#header-mini').show();
 		$('#small-logo').hide();
-		$('#shop-logo').hide();
-		if($('#left_menu_shop')){
-		    $('#left_menu_shop').hide();
-		}
-		
-		$.cookie('mini', 1);
+		//$('#shop-logo').css("height",'0');	
+		//$('#shop-logo').hide();
+		///$.cookie('mini', 1);
 	} else {
+		//console.log('setful');
 		$('#header-mini').hide();
 		$('#header').show();
 		$('#small-logo').show();
-		if($('#left_menu_shop')){
-		    $('#left_menu_shop').show();
-		}
-		$('#shop-logo').show();
-		$.cookie('mini', 0);
+		//$('#shop-logo').css("height",'20px');
+		//$('#shop-logo').show();
+		//$.cookie('mini', 0);
 	}
+	//console.log(('shop-logo'));
+	//console.log($('#shop-logo').height());
+	//console.log('end');
 }
 function fgroup(){    
     var query = $("#group_name").val().toLowerCase();			    
@@ -94,7 +92,9 @@ function showReviewForm(){
     	});
 }
 function showWin(href,width){
-    //console.log(href);
+    $(".ui-icon.ui-icon-closethick").trigger("click");
+   //console.log(href);
+   //$('#MainBascet').dialog('close');
 	if(!width) width = 400;
 	//console.log($('#MainBascet'));
      $('#MainBascet').dialog({
@@ -105,18 +105,17 @@ function showWin(href,width){
         of: window
         },
         close: function(event, ui){
-            console.log("close");
-            $(this).dialog("close");
+            //$(this).dialog("close");
             //$('#MainBascet').html('');
             //$(this).remove();
         },
-        open: function (){           
+        open: function (){   
              $(this).load(href);
-             $('.ui-dialog-titlebar-close').addClass('ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only');
-			 $('.ui-dialog-titlebar-close').append('<span class="ui-button-icon-primary ui-icon ui-icon-closethick"></span><span class="ui-button-text">close</span>');
+             //$('.ui-dialog-titlebar-close').addClass('ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only');
+			 //$('.ui-dialog-titlebar-close').append('<span class="ui-button-icon-primary ui-icon ui-icon-closethick"></span><span class="ui-button-text">close</span>');
         },
        // height: 330, 
-        width: 400
+        width: width
     });
      return false;   
 } 
@@ -163,8 +162,10 @@ function initRaiting(id,total_reiting){
     });
 }
 	
-function ShowOneClick(id) {	
+function ShowOneClick(id) {	    
 	$('#MainBascet').html($('#oneshopcoins'+id+' .messages').html());
+	$("#MainBascet input[name='onephone']").mask("+7(999) 999-9999");
+	
 	$("#MainBascet").dialog({
         	position: { 
                 my: 'top',
@@ -175,7 +176,10 @@ function ShowOneClick(id) {
      		width:400,
     		open: function(event, ui){
             }
-     });  	
+     });  
+
+	
+	
 }
 
 function HideOneClick(id) {
@@ -193,19 +197,21 @@ function ValidPhone(phone) {
 }  
 
 function AddOneClick(id) {
-   var onefio = $('#oneshopcoins'+id+' .messages').find("input[name='onefio']").val();
-   var onephone = $('#oneshopcoins'+id+' .messages').find("input[name='onephone']").val();
-   
+ 
+   var onefio = $("#MainBascet  input[name='onefio']").val();
+   var onephone = $("#MainBascet input[name='onephone']").val();     
+
    if (!onefio || onefio.length <3){
-		$('#oneshopcoins'+id+'-error').text('Вы не указали имя');
+		$('#MainBascet #oneshopcoins'+id+'-error').text('Вы не указали имя');
 		return;
    }
+
+   if (!onephone){
+		$('#MainBascet #oneshopcoins'+id+'-error').text('Укажите номер телефона в полном формате!');
+		return;
+   }
+  
    
-   if (!ValidPhone(onephone)){
-		$('#oneshopcoins'+id+'-error').text('Укажите номер телефона в полном формате!');
-		return;
-   }
-    
    $.ajax({
 	    url: site_dir+'shopcoins/addoneklick.php', 
 	    type: "POST",
@@ -221,25 +227,44 @@ function AddOneClick(id) {
 function ShowOneClickResult(id,data) {		
 	errorvalue = data.error;
 	var bascetshopcoins = data.bascetshopcoins;	
-	
+	var str = '';
 	if (!errorvalue){
 		var shopcoinsorder = data.shopcoinsorder;	
 		var bascetsum = data.bascetsum;			
-		var str = '';
-		str += '<h4>Ваш заказ №</strong> ' + shopcoinsorder + ' </h4>';
+		
+		str += '<h1 class="yell_b">Ваш заказ №</strong> ' + shopcoinsorder + ' </h1>';
 		str += '<p><strong>Товаров:</strong> 1 <br><strong>На сумму:</strong> ' + bascetsum + ' р.';
 		str += '<br>Заказ сделан, Для уточнения деталей платежа и доставки с Вами свяжется наш менеджер.<br><br></p>';
-		$('#oneclick_form'+id).html(str);
+		//$('#oneclick_form'+id).html(str);
 	} else if (errorvalue == 'reserved') {
-		$('#oneshopcoins'+id+'-error').text('Товар зарезервирован одновременно с другим пользователем');		
+		//$('#oneshopcoins'+id+'-error').text('Товар зарезервирован одновременно с другим пользователем');	
+		str = 'Товар зарезервирован одновременно с другим пользователем';
 	} else if (errorvalue == 'notavailable') {		
-		$('#oneshopcoins'+id+'-error').text('Товар уже продан');	
+	    str = 'Товар уже продан';
+		//$('#oneshopcoins'+id+'-error').text('Товар уже продан');	
 	} else if (errorvalue == 'stopsummax') {
-		$('#oneshopcoins'+id+'-error').text('Минимальная сумма заказа <? echo $minpriceoneclick;?> руб.');		
+		//$('#oneshopcoins'+id+'-error').text('Минимальная сумма заказа <? echo $minpriceoneclick;?> руб.');
+		str = 'Минимальная сумма заказа <? echo $minpriceoneclick;?> руб.';		
 	}	else if (errorvalue == 'amount') {
 		erroramountvalue = data.erroramount;		
-		$('#oneshopcoins'+id+'-error').text('На складе всего лишь ' + erroramountvalue + ' штук');		
+		//$('#oneshopcoins'+id+'-error').text('На складе всего лишь ' + erroramountvalue + ' штук');
+		str = 	'На складе всего лишь ' + erroramountvalue + ' штук';	
 	}
+	$('#oneshopcoins'+id+' .messages').hide();
+	$(".ui-dialog-content").dialog().dialog("close");
+	$("#MainBascet").html(str);	
+	$("#MainBascet").dialog({
+        	position: { 
+                my: 'top',
+                at: 'top',
+                of: $("#bascetshopcoins"+id)
+            },
+     		modal:true,
+    		open: function(event, ui){
+    		   var $this = $(this); 
+    		   setTimeout(function(){$this.dialog('close');}, 4000);
+            }
+    	});    
 }	
 	
 function sendData(name,val,p0,p1,y0,y1){  
@@ -279,7 +304,7 @@ function AddAccessory(id,materialtype){
 	var amount = $('#amount'+id).val();
 	if(amount <=0) amount = 1;
     $.ajax({	
-	    url: site_dir+'shopcoins/addbascet.php?', 
+	    url: site_dir+'shopcoins/addbascet.php', 
 	    type: "POST",
 	    data:{'shopcoinsorder':"<?=$shopcoinsorder?>",'shopcoins':id,'amount':amount,'materialtype':materialtype,'datatype':'json'},         
 	    dataType : "json",                   
@@ -356,6 +381,11 @@ function ShowSmallBascet (id,data) {
 		var bascetinsurance = data.bascetinsurance;
 		var textbascet2 = data.textbascet2;		
 		
+		if(!$("#basket-info-ne").is(':visible')){
+			$("#basket-info-ne").show();
+			$("#basket-info").hide();
+		}
+		
 		button = $('#bascetshopcoins'+id);
     	
         var o1 = button.offset();
@@ -364,11 +394,10 @@ function ShowSmallBascet (id,data) {
     	var dx = o1.left - o2.left;
     	var dy = o1.top - o2.top;
     	var distance = Math.sqrt(dx * dx + dy * dy);
-
-    	if($('#header-mini').is( ":visible" )){
+    	if($('#header-mini').is( ":visible" )){    	    
     	   $('#item'+id).find('.primage img').effect("transfer", { to: $("#header-mini #inorderamount"), className: "transfer_class" }, 1000);	
     	} else {
-    	     $('#item'+id).find('.primage img').effect("transfer", { to: $("#header #inorderamount"), className: "transfer_class" }, 1000);	
+    	    $('#item'+id).find('.primage img').effect("transfer", { to: $("#header #inorderamount"), className: "transfer_class" }, 1000);	
     	}
     
     	$('.transfer_class').css({'z-index':'6000'});
@@ -382,6 +411,8 @@ function ShowSmallBascet (id,data) {
 	
 		$("#header-mini #inordersum").html(bascetsum);	
 		$("#header #inordersum").html(bascetsum);	
+		
+	
 		$("#bascetshopcoins" + bascetshopcoins).html('<img src="'+site_dir+'images/corz7.gif" title="Уже в корзине" alt="Уже в корзине">');	
 		return false;
     	/*var str = '';
@@ -524,7 +555,6 @@ function AddNominal(){
 	    data:{'id':$('#id_group2').val()},         
 	    dataType : "json",                   
 	    success: function (data, textStatus) { 
-	    	console.log(data.arrayresult);
             $('#name2').autocomplete({
               source: data.arrayresult
             });
@@ -637,50 +667,53 @@ function ShowMetro(delivery){
 	if (delivery == 2 || delivery == 7)	url = 'shopcoins/showinoffice.php';
 
 	$.ajax({
-			url: url,
-			type: "GET",
-			data:{timelimit: timelimit, delivery: delivery,metroid:metroid},
-	dataType : "json",
-
+		url: url,
+		type: "GET",
+		data:{timelimit: timelimit, delivery: delivery,metroid:metroid},
+		dataType : "json",
 		success: function (data, textStatus) {
-
-		var meetingfromtime = $('#meetingfromtime');
-		var meetingtotime = $('#meetingtotime');
-		meetingfromtime.empty();
-		meetingtotime.empty();
-		for (var i = 0; i < data.TimesArray.length; i++) {
-			meetingfromtime.append($("<option>").attr('value',data.TimesArray[i].val).text(data.TimesArray[i].text));
-			meetingtotime.append($("<option>").attr('value',data.TimesArray[i].val).text(data.TimesArray[i].text));
-		}
-		if (delivery==2) {
-			// ShowInOffice();
-			var sel = $('#meetingdate');
-			for (var i = 0; i < data.DaysArray.length; i++) {
-				sel.append($("<option>").attr('value',data.DaysArray[i].val).text(data.DaysArray[i].text));
+			var meetingfromtime = $('#meetingfromtime');
+			var meetingtotime = $('#meetingtotime');			
+			meetingfromtime.empty();
+			meetingtotime.empty();			
+			
+			for (var i = 0; i < data.TimesArray.length; i++) {
+				meetingfromtime.append($("<option>").attr('value',data.TimesArray[i].val).text(data.TimesArray[i].text));
+				meetingtotime.append($("<option>").attr('value',data.TimesArray[i].val).text(data.TimesArray[i].text));
 			}
-		} else if(delivery==7){
-			ShowInOfficeMetro();
-		} else if(delivery==1||delivery==3){
-			if (metroid<1 || metroid>12) {
-				var sel = $('#metro');
-
-				for (var i = 0; i < data.MetroArray.length; i++) {
-					sel.append($("<option>").attr('value',data.MetroArray[i].val).text(data.MetroArray[i].text));
-				}
+			if (delivery==2) {
+				// ShowInOffice();
 				var sel = $('#meetingdate');
 				for (var i = 0; i < data.DaysArray.length; i++) {
 					sel.append($("<option>").attr('value',data.DaysArray[i].val).text(data.DaysArray[i].text));
 				}
+			} else if(delivery==7){
+				ShowInOfficeMetro();
+			} else if(delivery==1||delivery==3){
+				$("#pricemetro").html('');
+				if (metroid<1 || metroid>12) {
+					$('#metro').empty();
+					$('#meetingdate').empty();
+					var sel = $('#metro');
+					sel.append($("<option>").attr('value',0).text("Выбор метро"));
+					for (var i = 0; i < data.MetroArray.length; i++) {
+						sel.append($("<option>").attr('value',data.MetroArray[i].val).text(data.MetroArray[i].text));
+					}
+					var sel = $('#meetingdate');
+					sel.append($("<option>").attr('value',0).text("Дата"));
+					for (var i = 0; i < data.DaysArray.length; i++) {
+						sel.append($("<option>").attr('value',data.DaysArray[i].val).text(data.DaysArray[i].text));
+					}
+				}
+			}
+	
+			if ('<?=$timelimit?>'> 0 && '<?=$timelimit?>' < 60) {
+				$("#MetroGif").html('<br><br><table width=100% cellpadding=2 cellspacing=1 border=0 align=center><tr><td class=txt bgcolor=#EBE4D4 valign=top><font color=red><b>Внимание!</b></font> Вам введен лимит по времени выкупа заказов. Для выяснения обстоятельств свяжитесь с администрацией по тел. +7-903-006-00-44 или  +7-915-002-22-23. С 10-00 до 18-00 МСК (по рабочим дням).</td></table>');
+			} else {
+				$("#MetroGif").html('');
 			}
 		}
-
-		if ('<?=$timelimit?>'> 0 && '<?=$timelimit?>' < 60) {
-			$("#MetroGif").html('<br><br><table width=100% cellpadding=2 cellspacing=1 border=0 align=center><tr><td class=txt bgcolor=#EBE4D4 valign=top><font color=red><b>Внимание!</b></font> Вам введен лимит по времени выкупа заказов. Для выяснения обстоятельств свяжитесь с администрацией по тел. +7-903-006-00-44 или  +7-915-002-22-23. С 10-00 до 18-00 МСК (по рабочим дням).</td></table>');
-		} else {
-			$("#MetroGif").html('');
-		}
-	}
-});
+	});
 
 }
 
@@ -846,7 +879,7 @@ function CheckCorrectFormOrher(){
 	return error;
 }
 
-function CheckFormOrher(){
+function CheckFormOrher(){     
 	var error = CheckCorrectFormOrher();
 	var delivery = $('[name=delivery]:checked').val();
 	if(error){
@@ -956,7 +989,6 @@ function calculateOrder(on){
 				//$('#allprice-result').text(eval(parseInt(sum)+parseInt(data.metroprice)));
 			}
 
-            console.log(data);
 			if(!data.error){
 				$('#post-block-result').show();
 				$('#post-zone-result').text(data.PostZoneNumber+(data.PostRegion?'('+data.PostRegion+')':''));
@@ -973,19 +1005,17 @@ function calculateOrder(on){
 		}
 	});
 }
-function SubmitOrder(){
-	console.log('SubmitOrder');
+function SubmitOrder(){	
 	var error = CheckCorrectFormOrher();
 	if(!$('#postrulesview').prop("checked")){
 		error +="Вы должны согласиться с правилами<br>";
 	}
-
+	console.log(error);
 	if(error){
 		$('#error-order').text(error);
 	} else {
-		console.log($('#resultorderform'));
-		$('#resultorderform').submit();
-		console.log(10);
+		$('#resultform').submit();
+		submit();
 	}
 }
 

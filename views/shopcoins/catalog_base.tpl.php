@@ -84,6 +84,14 @@ if($tpl['shop']['errors']){?>
 <script type="text/javascript" charset="utf-8">
 
  jQuery(document).ready(function() {    
+ 	$(".blockshop").on("hover", function(e) {
+	    if (e.type == "mouseenter") {
+	    	if($(this).find(".qwk")) $(this).find(".qwk").show();
+	    } else { // mouseleave
+	        if($(this).find(".qwk")) $(this).find(".qwk").hide();
+	    }
+	});
+
      $('.d-carousel .carousel').jcarousel({
         scroll: 1,
         itemFallbackDimension: 75
@@ -229,23 +237,36 @@ function full_filter(name,auto,hide) {
 		if(cookiefull>0){
 		    $(".filter-groupgroup_container_1").height("auto");
 		    $('#group-full-show').attr("onClick","full_filter('"+name+"',false,1);return false;");
-		    $('#group-full-show').text("Свернуть");		   
+		    $('#group-full-show').text("Свернуть");	
+		    
+		    $('#group-full-show-top').attr("onClick","full_filter('"+name+"',false,1);return false;");
+		    $('#group-full-show-top').text("Свернуть");	
+		    	   
 		} else {			
 		    $(".filter-groupgroup_container_1").height("290px");
 		    $('#group-full-show').attr("onClick","full_filter('"+name+"',false,0);return false;");
 		    $('#group-full-show').text("Развернуть");	    
+		    
+		    $('#group-full-show-top').attr("onClick","full_filter('"+name+"',false,0);return false;");
+		    $('#group-full-show-top').text("Развернуть");	    
 		}   
 	} else {			
 		if(!hide){
 		    $(".filter-groupgroup_container_1").height("auto");
 		    $.cookie(name+'-full-show', 1);
 		    $('#group-full-show').attr("onClick","full_filter('"+name+"',false,1);return false;");
-		    $('#group-full-show').text("Свернуть");		   
+		    $('#group-full-show').text("Свернуть");	
+		    
+		    $('#group-full-show-top').attr("onClick","full_filter('"+name+"',false,1);return false;");
+		    $('#group-full-show-top').text("Свернуть");		   
 		} else {			
 		    $(".filter-groupgroup_container_1").height("290px");
 		    $.cookie(name+'-full-show', 0);
 		    $('#group-full-show').attr("onClick","full_filter('"+name+"',false,0);return false;");
-		    $('#group-full-show').text("Развернуть");	
+		    $('#group-full-show').text("");	
+		    
+		    $('#group-full-show-top').attr("onClick","full_filter('"+name+"',false,0);return false;");
+		    $('#group-full-show-top').text("Развернуть");	
 		    $('html, body').animate({
                 scrollTop: $("#search-params").offset().top
             }, 1000);	    

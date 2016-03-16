@@ -1,4 +1,9 @@
 <?
+$bigsumcoupon = 15000;
+$bigsumcoupondis = 5;
+$smallsumcoupon = 2000;
+$smallsumcoupondis = 3;
+
 //обязательно добавить в config на сервере
 $MetroArray = Array (
 				1 => "Новослободская", 

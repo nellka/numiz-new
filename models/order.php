@@ -248,8 +248,8 @@ class model_order extends Model_Base
 						)
 					)
 				)
-			) as price, c.image, c.metal, c.year, 
-			c.condition, c.number, c.shopcoins, g.name as gname, c.materialtype, c.details
+			) as price, c.image, c.metal_id, c.year, 
+			c.condition_id, c.number, c.shopcoins, g.name as gname, c.materialtype, c.details
 			 from `orderdetails` as o left join shopcoins as c 
 			on o.catalog = c.shopcoins 
 			left join `group` as g on c.group=g.group 

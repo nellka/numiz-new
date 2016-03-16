@@ -3,7 +3,6 @@
 
 require $cfg['path'] . '/configs/config_shopcoins.php';
 
-
 $search = request('term');
 
 /*
@@ -440,6 +439,7 @@ if($result_temp_name){
     $WhereArray .=" or (shopcoins.nominal_id in (".implode(",",array_keys($result_temp_name))."))";
 }
 
+
 $OrderByArray = Array();
 
 /*
@@ -456,8 +456,8 @@ if (sizeof($OrderByArray))
 $positive_amount = '';
 
 
-$whereMaterialtype  = $materialtype?"and  shopcoins.materialtype=$materialtype or shopcoins.materialtypecross & pow(2,$materialtype)":'';
-
+/*$whereMaterialtype  = $materialtype?"and  shopcoins.materialtype=$materialtype or shopcoins.materialtypecross & pow(2,$materialtype)":'';*/
+$whereMaterialtype  ='';
 $where = " where shopcoins.check=1 $whereMaterialtype ".($WhereArray?" and ($WhereArray)":"");
 //echo $where;
 

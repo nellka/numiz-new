@@ -76,6 +76,11 @@ if(isset($filter_groups)&&$filter_groups){
 		<div class="filter-block" id='fb-<?=$filter_group['filter_group_id_full']?>'>
     		<div class="filter_heading">
     			<div style="float:left;"><?=$filter_group['name']?></div>
+    			<?if($filter_group['filter_group_id']=='group'){?> 
+			      <div style="float:left;padding: 0 40px;">    	
+	    		   <a class="fc" id='group-full-show-top' href="#" onclick="full_filter('<?=$filter_group['filter_group_id_full']?>');return false;"></a>
+	    		  </div>    		
+	    	   <?}?>
     			<div style="float:right;">    			  
     				<a class="fc" href="#" onclick="clear_filter('<?=$filter_group['filter_group_id_full']?>');return false;">Сбросить</a>
     			</div>
@@ -179,7 +184,7 @@ if(isset($filter_groups)&&$filter_groups){
 		  <?if($filter_group['filter_group_id']=='group'){?> 
 		      <div style="text-align:center;padding: 10px 0 0;">    	
     			    <a class="fc" id='group-full-show' href="#" onclick="full_filter('<?=$filter_group['filter_group_id_full']?>');return false;"></a></div>    		
-    			    <?}?>
+    	   <?}?>
 		</div>
 	<?php 
 		//break;

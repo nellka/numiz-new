@@ -8,34 +8,32 @@
 </script>	
 <?} else {?>
 
-<center><h5>Введите E-mail, чтобы оформить заказ</h5></center>
+<h5>Введите E-mail, чтобы оформить заказ</h5>
 
 <div class="error" id='orderForm-errors'><?=implode("<br>",$tpl['user']['errors'])?></div>
-<div class="auth_form left">
+<div>
     <input class="auth_form left" type=text name=email value='<?=$tpl['user']['email']?>' id='email' size="40" placeholder="Введите e-mail">
 </div>
-<div class="auth_form left" id=password-block style="display:<?=$tpl['user']['user_exist']?'block':'none'?>">
+<div id=password-block style="display:<?=$tpl['user']['user_exist']?'block':'none'?>">
     <input type=password name=password id=password size="40" value='<?=$tpl['user']['password']?>' placeholder="Введите пароль">
     
 </div>
-<div class="auth_form  left" id='warn'>
+<div id='warn'>
     <p><img src="<?=$cfg['site_dir']?>images/warn.png"> &nbsp;Мы не рассылаем спам и не предлагаем Ваши контакты третьим лицам</p>
 </div>
-<div class="auth_form" >
+<div >
     <input type="button" name=newUser id='newUser' value='Я новый покупатель' onclick="Login()" class="button27 left" style="font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp;
     <input type="button" name=existUser id=existUser value='Я уже заказывал ранее' onclick="Login(1)" class="button26" style="font-weight:bold;">
 </div>
 
-<div class="auth_form" id='subscr-order'>    
+<div id='subscr-order'>    
     <div>
          <input type="checkbox" name=subscr <?=checked_box($tpl['user']['subscr'])?> value='<?=$tpl['user']['subscr']?>' id='subscr'> <label for="subscr"><b>Подписаться на новости нумизматики</b></label><br>
           <input type="checkbox" name=subscr_shop <?=checked_box($tpl['user']['subscr_shop'])?> value='<?=$tpl['user']['subscr_shop']?>' id='subscr_shop'> <label for="subscr_shop"><b>Подписаться на новости магазина</b></label>
     </div>
 </div>
-<br>
-<div class="auth_form">
+<div>
 <input type="button" class="button25" value="Перейти к оформлению заказа" onclick="Order()">
-
 </div>
 <div class="auth_form" id='remind-block' style="display:<?=$tpl['user']['user_exist']?'block':'none'?>">
 <a href="#" onclick="showOn('<?=$cfg['site_dir']?>user/remind.php?ajax=1')" title='Восстановить пароль'><b>Забыли пароль?</b></a>
@@ -95,6 +93,12 @@ $.ajax({
             for(i=0;i<data.errors.length;i++){
                 error+=data.errors[i];
             }
+            console.log(error);
+            if(error=='Пользователь с таким Email уже существует в системе'){
+                error ='Введите пароль';
+                Login(1);
+            }
+            
             $('form#orderForm #orderForm-errors').html(error);
         } else if(data.send_status){
         	console.log(parent);

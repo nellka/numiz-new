@@ -1,6 +1,9 @@
+<script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
 <!--Блок выбора параметров заказа-- -->
+<form name=resultform id=resultform method=post action="<?=$cfg['site_dir']?>shopcoins/submitorder.php">
+
 <div style="width:60%;float:left;font-weight:400;">
-	<form name=resultform method=post id=resultorderform action="<?=$cfg['site_dir']?>shopcoins/submitorder.php">
+	
 		<input type="hidden" id="userstatus" name="userstatus" value="<?=$userstatus?>">
 		<div id='user-compare-block' style="display:none;font-weight:400;">
 			<h3>Проверить заказ</h3>
@@ -81,13 +84,23 @@
 				</select>
 			</div>
 			<br>
-			<input type="button"  class="button25" onclick="SubmitOrder();" value='Подтвердить заказ и перейти к оплате' style="width:350px">
+			<?
+		if($tpl['orderdetails']['admins']){	?>
+			<select name=idadmin id=idadmin >
+			<option value=0> Принял заказ</option>
+			<?
+			foreach ($tpl['orderdetails']['admins'] as $rowst) {?>			
+				<option value="<?=$rowst['TimeTableUser']?>"><?=$rowst['Fio']?></option>
+			<?}?>
+			</select>	<br><br>		
+		<?}	else echo "<input type=hidden name=idadmin value=0>";		
+		?>
+			
+			<input type="submit"  class="button25" value='Подтвердить заказ и перейти к оплате' style="width:350px">
 			<input type="button"  class="button25" onclick="$('#user-compare-block').hide();$('#user-order').show();" value="Редактировать данные заказа">
 		</div>
 		<div id='user-order'>
 			<div id='user-order-block'>
-				<input type=hidden name=idadmin value=0>
-
 				<h5>Заказчик</h5>
 				<div class="web-form">
 					<font color="red">* </font> <input type=text id=fio name=fio placeholder='ФИО' value="<?=$fio?>" size=50>
@@ -127,6 +140,8 @@
 					<?}?>
 				</div>
 				<div id='metro-block' style="display:none">
+				    <br>			
+				    <div id=metro-error></div>	
 					<div id=delivery-m>
 						<b>Выбор метро</b>
 						<select name=metro id='metro'><option value=0>Выбор метро</select>
@@ -223,15 +238,15 @@
 				<br><font color="red">Итоговая цена с учетом скидок и доставки: <b><span id="price-sum"><?=($bascetsum-floor($bascetsum*$user_data['vip_discoint']/100))?></span> руб.</b></font></div>
 				<br>
 				<div>
-					<input type="checkbox" id="acsess">Нажимая кнопку "Проверить заказ" я подтверждаю свою дееспособность, даю согласие на обработку своих персональных данных.
+					<input type="checkbox" id="acsess" name=acsess><label for="acsess">Нажимая кнопку "Проверить заказ" я подтверждаю свою дееспособность, даю согласие на обработку своих персональных данных.</label>
+					<div id=acsess-error name=acsess-error></div>
 				</div>
 				<br>
 				<div>
 
 					<? if ($userstatus != 2) {
 						if ($sumlimit>=$sumallorder|| $sumlimit== 0) {?>
-
-							<input type="button"  class="button25" onclick="CheckFormOrher();" value='Проверить заказ' style="width:150px" id="CheckFormOrder">
+							<input type="submit"  class="button25" value='Проверить заказ' style="width:150px" id="CheckFormOrder">
 						<?} else {?>
 							<div class="error"><b>Внимание!</b> Вы привысили лимит своих невыкупленных заказов по общей сумме.<br>
 								Для выяснения обстоятельств свяжитесь с администрацией по тел. +7-903-006-00-44 или  +7-915-002-22-23. С 10-00 до 18-00 МСК (по рабочим дням).
@@ -248,9 +263,9 @@
 					<a href='<?=$cfg['site_dir']?>shopcoins' class="left c-b">Продолжить покупки </a>
 				</div>
 			</div>
-		</div>
-	</form>
+		</div>	
 </div>
+</form>
 <!--Конец выбора параметров заказа-->
 <!--Блок информации о заказе-->
 <div style="float:right;width:40%;font-weight:400;">
@@ -342,7 +357,79 @@
 <script>
 	$(document).ready(function() {
 		$("#phone").mask("+7(999) 999-9999");
-		ShowPayment(<?=$delivery?>);     
+		ShowPayment(<?=$delivery?>);   
+
+		$("#resultform").validate({
+         // Specify the validation rules
+        rules: {
+            fio: "required",
+            userfio: "required",          
+            phone: "required", 
+            acsess: "required",
+            postindex:{
+                required: function(element) {                   
+                    var d = $('[name=delivery]:checked').val();
+                    if (d == 4 || d == 5 || d == 6) return true; 
+                    return false;            
+		        }
+		    },
+		    adress:{
+                required: function(element) {                   
+                    var d = $('[name=delivery]:checked').val();
+                    if (d == 3 || d == 4 || d == 5 || d == 6) return true; 
+                    return false;            
+		        }
+		    },
+            meetingdate:{
+                required: function(element) {                   
+                    var d = $('[name=delivery]:checked').val();
+                    if (d == 1 || d == 2 || d == 3) return true; 
+                    return false;            
+		        },
+		        min:{
+		            param: 1
+		        }
+            },
+            metro: {
+                required: function(element) {
+                    var d = $('[name=delivery]:checked').val();
+                    if (d== 1 || d == 3) return true;                     
+                    return false;            
+		        }
+            }
+        },
+        errorPlacement: function(error, element) {
+            if (element.attr("name") == "acsess" ){
+                error.insertAfter("#acsess-error");
+            } else if (element.attr("name") == "meetingdate" ){
+                error.insertBefore("#metro-error");
+            } else
+                error.insertAfter(element);
+            /*else if  (element.attr("name") == "phone" )
+                error.insertAfter(".some-other-class");
+            */
+        },
+        // Specify the validation error messages
+        messages: {
+            fio: " Введите ФИО",
+            userfio: "Введите ФИО получателя",
+            phone: " Укажите телефон",            
+            acsess: " Вы должны согласится с правилами",
+            meetingdate:" Выберите дату встречи",
+            metro:" Укажите метро",
+            adress: " Укажите адрес",
+            postindex: " Укажите корректный индекс",
+        },        
+      submitHandler: function(form) {
+      	  if($('#user-compare-block').is(':visible')){
+      	  	 SubmitOrder();
+      	  } else {
+          	CheckFormOrher();         
+      	  }
+          return false;
+          //form.submit();
+      }
+     }); 
 	});	
 	<?
 	echo $arraymetrojava;

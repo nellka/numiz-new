@@ -165,10 +165,10 @@ class Paginator
     
             if ( $pages[ count($pages) - 1 ] != $this->getLastPage() ) {
     
-                $refs[] = "<a class='normal_ref_color' href='{$this->getBaseUrl()}page=" . 
+                $refs[] = "<a class='normal_ref_color' href='{$this->getBaseUrl()}&pagenum=" . 
                       ($pages[count($pages) - 1] + 1) . "'>&gt;</a>";
             }
-            print '<p style="margin-top:0px;">Страницы: ' . implode('<span style="padding-right:3px;padding-left:3px;"></span>', $refs) . '</p>';
+            print '<p style="margin: 0px; padding: 0px; line-height: 40px;">Страницы: ' . implode('<span style="padding-right:3px;padding-left:3px;"></span>', $refs) . '</p>';
         }
     }
     

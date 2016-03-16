@@ -26,6 +26,7 @@ if ($rows["novelty"]){
 <?}?>
 
 </div>
+<a onclick="showWin('<?=$cfg['site_dir']?>shopcoins/?module=shopcoins&task=showsmall&catalog=<?=$rows["shopcoins"]?>&ajax=1',1100);return false;" href='#' class="qwk">Быстрый просмотр</a>
 
 <div class="info_block">
     <? if($rows["materialtype"]==3){?>
@@ -40,7 +41,7 @@ if ($rows["novelty"]){
 		<?		
 		if ($rows["gname"]){?>
 		Страна: <a href=<?=$cfg['site_dir']?>/shopcoins?group=<?=$rows['group']?>&materialtype=<?=$rows["materialtype"]?> title='Посмотреть <?=contentHelper::setWordThat($rows["materialtype"])?> <?=$rows["gname"]?>'>
-		<strong><font color=blue><?=$rows["gname"]?></font></strong>
+		<?=$rows["gname"]?>
 		</a><br>
 		<?}?>
 		<?= ($rows["year"]?"Год: <strong>".$rows["year"]."</strong><br>":"")?>
@@ -95,7 +96,7 @@ if ($rows["novelty"]){
 	<?
 	if(($rows['buy_status']==7||$rows['buy_status']==6)&&($minpriceoneclick<=$rows['price'])) {
 	?>
-		<div style="width:230px;margin-bottom:10px;">
+		<div class="div_onecl">
 	<?php
 		echo contentHelper::render('shopcoins/price/oneclick',$rows);
 	?>

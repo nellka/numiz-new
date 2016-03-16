@@ -9,6 +9,7 @@ require_once($cfg['path'] . '/helpers/constants.php');
 $tpl['user']['errors'] = array();
 $tpl['user']['send_status'] = false;
 $tpl['user']['email'] =request('email');
+
 $tpl['user']['subscr'] = isset($_REQUEST['subscr'])?1:0; 
 $tpl['user']['subscr_shop'] = isset($_REQUEST['subscr_shop'])?1:0; 
 $tpl['user']['user_exist'] = request('user_exist'); 
@@ -20,7 +21,8 @@ IF($datatype=='json'){
     
     if (!$tpl['user']['user_exist']){    
         //генерирум рандомный пароль для регистрации
-        $password = generateString(8);     
+        $password = generateString(8); 
+        
         if (!$validator->isValid($tpl['user']['email'])) {
             $tpl['user']['errors'] = "Неверный Email";
         }  else if($userData = $user_class->getRowByParams(array('email'=>$tpl['user']['email']))){

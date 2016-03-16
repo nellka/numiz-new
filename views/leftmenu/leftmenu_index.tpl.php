@@ -3,7 +3,7 @@
    <li> <a href="<?=$cfg['site_dir']?>shopcoins/" class="<?=('/'==$tpl['current_page'])?'active':''?>"><span>Магазин монет</span></a>
    
         <ul>
-            <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=8' title='Монеты стоимость(цены) весь мир' class=topmenu>Монеты</a></li>
+            <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=1' title='Монеты стоимость(цены) весь мир' class=topmenu>Монеты</a></li>
             <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=8' title='Дешевые монеты стоимость(цены) весь мир' class=topmenu>Мелочь </a></li>
             <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=6' title='Цветные монеты' class="topmenu">Цветные монеты </a></li>
             <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=10' title='Нотгельды стоимость(цены) весь мир' class=topmenu>Нотгельды </a></li>

@@ -36,7 +36,7 @@
 </form>
 </div>
 <div class="web-form">
-<a href="<?=$cfg['site_dir']?>user/remind.php?ajax=1" class="iframe remember_pwd" title='Восстановить пароль'><b>Напомнить пароль</b></a>
+<a href="#" onclick="showWin('<?=$cfg['site_dir']?>user/remind.php?ajax=1',300);return false;" class="remember_pwd" title='Восстановить пароль'><b>Напомнить пароль</b></a>
 </div>
 
 <script>

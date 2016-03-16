@@ -54,7 +54,7 @@ function AddMakeCall() {
         $.ajax({	
     	    url: '<?=$cfg['site_dir']?>addcall.php?ajax=1', 
     	    type: "POST",
-    	    data:{callfio: callfio, callphone: 'callphone',datatype:"text_html"},         
+    	    data:{callfio: callfio, callphone: callphone,datatype:"text_html"},         
     	    dataType : "html",                   
     	    success: function (data, textStatus) {     	        
     	        $('#addcall').html(data);    	      

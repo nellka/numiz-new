@@ -14,6 +14,9 @@ $childen_data_series = array();
 подарочные наборы
 барахолка - что это
 */
+if($tpl['user']['user_id']==352480){
+	echo time()." f st $i<br>";
+}
 if(in_array($materialtype,array(1,7,8,6,4))){
 	if(!$tpl['filters']['metalls'] = $cache->load("metalls_$materialtype")) {	   
 	    $tpl['filters']['metalls'] = $shopcoins_class->getMetalls();	 
@@ -26,6 +29,9 @@ if(in_array($materialtype,array(1,7,8,6,4))){
 				'filter_id' => $value["metal_id"],
 				'name'      => $value["name"]);   
 	}
+}
+if($tpl['user']['user_id']==352480){
+	echo time()." f metal $i<br>";
 }
 /*
 монеты
@@ -46,7 +52,9 @@ if(in_array($materialtype,array(1,7,8,6,4))){
 				'name'      => $value["name"]);   
 	}
 }
-
+if($tpl['user']['user_id']==352480){
+	echo time()." f condition $i<br>";
+}
 /*
 фильтры по годам делаем пока статическими
 $tpl['filters']['years'] = $shopcoins_class->getYears($materialtype);
@@ -60,7 +68,7 @@ foreach ($tpl['filters']['years'] as $value){
 $tpl['filter']['yearstart'] = 0;
 $tpl['filter']['yearend'] = date("Y",time());
 
-if($nominals&&$groups){
+if(($nominals&&$groups)||($groups&&$materialtype==4)){
     if(!$tpl['filters']['years'] = $cache->load("years_n_".implode('_',$nominals).'_g_'.implode('_',$groups))) {	   
 	    $tpl['filters']['years'] = $shopcoins_class->getYears($nominals,$groups);
 	    $cache->save($tpl['filters']['years'], "years_n_".implode('_',$nominals).'_g_'.implode('_',$groups));	 
@@ -83,7 +91,9 @@ if($nominals&&$groups){
     	$tpl['filter']['yearend'] = date("Y",time());
     }
 }
-
+if($tpl['user']['user_id']==352480){
+	echo time()." f year $i<br>";
+}
 /*
 фильтр по  тематикам
 Монеты
@@ -101,21 +111,28 @@ if(in_array($materialtype,array(1,8,6,2))){
 
 
 
-if(!$tpl['filter']['price']['max'] = $cache->load("price_max_$materialtype")) {  
+if(!$tpl['filter']['price']['max'] = $cache->load("price_max_$materialtype"."_".implode("_",$group_data))) {  
 	$tpl['filter']['price']['max'] = (integer)$shopcoins_class->getMaxPrice($group_data);	
-	$cache->save($tpl['filter']['price']['max'], "price_max_$materialtype"."_$search"."_g".implode("_",$group_data));	
+	$cache->save($tpl['filter']['price']['max'], "price_max_$materialtype"."_".implode("_",$group_data));	
 }
-if(!$tpl['filter']['price']['min'] = $cache->load("price_min_$materialtype")) {  
+if($tpl['user']['user_id']==352480){
+	echo time()." f maxprice $i<br>";
+}
+if(!$tpl['filter']['price']['min'] = $cache->load("price_min_$materialtype".implode("_",$group_data))) {  
 	$tpl['filter']['price']['min'] = (integer)$shopcoins_class->getMinPrice($group_data);	
-	$cache->save($tpl['filter']['price']['min'], "price_min_$materialtype"."_$search".implode("_",$group_data));	
+	$cache->save($tpl['filter']['price']['min'], "price_min_$materialtype".implode("_",$group_data));	
 }
-
+if($tpl['user']['user_id']==352480){
+	echo time()." f minprice $i<br>";
+}
 //($
 if(!$tpl['filters']['All_groups'] = $cache->load("all_groups_$materialtype"."_$search")) {
     $tpl['filters']['All_groups'] = $shopcoins_class->getGroups();
     $cache->save( $tpl['filters']['All_groups'], "all_groups_$materialtype"."_$search");	
 }
-
+if($tpl['user']['user_id']==352480){
+	echo time()." f allgroups $i<br>";
+}
 
 if(!in_array($materialtype,array(5))){
 	
@@ -168,12 +185,17 @@ if(!in_array($materialtype,array(5))){
 	}
 	if($groups_filter) $filter_groups[] = $groups_filter;
 }
-
+if($tpl['user']['user_id']==352480){
+	echo time()." f group $i<br>";
+}
 //фильтр по номиналам
 if(!$tpl['filters']['nominals'] = $cache->load("nominals_$materialtype".implode("_",$group_data)."_$search")) { 
     $tpl['filters']['nominals'] = $shopcoins_class->getNominals($group_data);
     
     $cache->save($tpl['filters']['nominals'], "nominals_$materialtype".implode("_",$group_data)."_$search");
+}
+if($tpl['user']['user_id']==352480){
+	echo time()." f nominals $i<br>";
 }
 foreach ($tpl['filters']['nominals'] as $value){
     $childen_data_nominals[] = array(
@@ -195,13 +217,15 @@ if($materialtype&&$group_data){
 				'name'      => $value["name"]);   
 	}
 }
-
+if($tpl['user']['user_id']==352480){
+	echo time()." f series $i<br>";
+}
 
 if( $childen_data_nominals) $filter_groups[] = array('name'=>'Номинал','filter_group_id'=>'nominal','filter_group_id_full'=>'nominals','filter'=>$childen_data_nominals,'materialtype'=>$materialtype);
 
 if( $childen_data_series) $filter_groups[] = array('name'=>'Серии','filter_group_id'=>'series','filter_group_id_full'=>'seriess','filter'=>$childen_data_series,'materialtype'=>$materialtype);
 
-if($nominals&&$groups){
+if(($nominals&&$groups)||($groups&&$materialtype==4)){
     if($childen_data_years) $filter_groups[] = array('name'=>'Год','filter_group_id'=>'years_p','filter_group_id_full'=>'years_p','filter'=>$childen_data_years);
 } else {
     if($childen_data_years) $filter_groups[] = array('name'=>'Год','filter_group_id'=>'years','filter_group_id_full'=>'years','filter'=>$childen_data_years);
