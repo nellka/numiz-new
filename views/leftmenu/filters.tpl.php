@@ -51,7 +51,7 @@ if(isset($filter_groups)&&$filter_groups){
 <input type="hidden" id='yearstart' name='yearstart' value='<?=$yearstart?>'>
 <input type="hidden" id='yearend' name='yearend' value='<?=$yearend?>'>
 
-<div style="width:280px;">
+<div class='f-container'>
 	
 	<div class="box-heading "  style="line-height: 30px;margin-top: 15px;padding: 0 10px;;">
 		<div style="float:left;">Фильтр товаров</div>
@@ -87,12 +87,13 @@ if(isset($filter_groups)&&$filter_groups){
     		</div>
 <?
 
-		if($filter_group['filter_group_id']=='group'){?> 		
+		if($filter_group['filter_group_id']=='group'){?> 
+			<div id='f-details'>		
     		<?
     		foreach ($filter_groups['group_details'] as $group_id=>$group_name){?>
     			<a href="#" class="filtr-g-d" onclick="clear_filter_group('<?=$group_id?>');return false;"><?=$group_name?> - X</a>     
     		<?}?>
-    		
+    		</div>
     		<input type="text" value="" id='group_name' placeholder='Название страны' name="group_name" size="30">
     		
     		<input type="button" value="" class="filtr-s-d" onclick="clear_filter('group_name');return false;">          
@@ -190,7 +191,7 @@ if(isset($filter_groups)&&$filter_groups){
 		//break;
 
 		if($filter_group['filter_group_id']=='years'){?>
-		  <? if($tpl['filter']['price']['max']){?>
+		  <? if($tpl['filter']['price']['max']&&$tpl['filter']['price']['max']!=$tpl['filter']['price']['min']){?>
 		    <div class="filter-block" id='filter-price'>		
 			
 				<div style="float:left;"><b>Цена</b></div> 	

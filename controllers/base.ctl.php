@@ -4,7 +4,7 @@
 
 require $cfg['path'] . '/controllers/start_params.ctl.php';
 
-
+$tpl['is_mobile'] = true;
 
 $tmp['addcall']['errors'] = array();
 if(request('logout')){
@@ -148,24 +148,40 @@ if($tpl["datatype"]=='json'){
 	//die();
 }
 
+
 if($tpl["datatype"]=='text_html'){
 	 if($static_page){
-    	require_once $cfg['path'] .  '/views/static_pages/'.$tpl['module'].'.tpl.php';
+	    if($tpl['is_mobile']&&file_exists($cfg['path'] .  '/views/_mobile/static_pages/'.$tpl['module'].'.tpl.php')){
+	       require_once $cfg['path'] .  '/views/_mobile/static_pages/'.$tpl['module'].'.tpl.php';
+	    } else {	    
+    	   require_once $cfg['path'] .  '/views/static_pages/'.$tpl['module'].'.tpl.php';
+	    }
     } else {
-    	require_once $cfg['path'] .  '/views/'.$tpl['module'].'.tpl.php';
+        if($tpl['is_mobile']&&file_exists($cfg['path'].'/views/_mobile/'.$tpl['module'].'.tpl.php')){
+    	   require_once $cfg['path'].'/views/_mobile/'.$tpl['module'].'.tpl.php';
+        } else {
+            require_once $cfg['path'].'/views/'.$tpl['module'].'.tpl.php';
+        }
     }
     die();
 }
-if($tpl['ajax']){
-    //require_once $cfg['path'] . '/views/common/header/head.tpl.php';
-   
-    require_once $cfg['path'] .  '/views/'.$tpl['module'].'.tpl.php';
+if($tpl['ajax']){   
+    if($tpl['is_mobile']&&file_exists($cfg['path'].'/views/_mobile/'.$tpl['module'].'.tpl.php')){
+        require_once $cfg['path'] .  '/views/_mobile/'.$tpl['module'].'.tpl.php';
+    } else {
+        require_once $cfg['path'] .  '/views/'.$tpl['module'].'.tpl.php';
+    }
   
     die();
 }
 
 require_once  $cfg['path'] .  '/controllers/breadcrumbs.ctl.php';
-require_once  $cfg['path'] .  '/views/template.php';
+
+if($tpl['is_mobile']){
+    require_once  $cfg['path'] .  '/views/_mobile/template.php';
+} else {
+    require_once  $cfg['path'] .  '/views/template.php';   
+}
 
 die();
 ?>

@@ -1,11 +1,18 @@
 <div id='products' class="products-cls m-<?=$materialtype?>">
-
+<div class=ftl>
+<a href="#" onclick="showInvis('search-params-place');return false;">Фильтры</a>
+<a href="#" onclick="showInvis('sorting-place');return false;">Сортировка</a>
+</div>
+<div id='search-params-place' style='display:none'></div>
+<div id='sorting-place' style='display:none'>
+<?include(DIR_TEMPLATE.'shopcoins/nav_catalog.tpl.php');?>
+</div>
 <?	
 $filter_layaut =  contentHelper::render('leftmenu/filters',array('filter_groups'=>$filter_groups,'search'=>$search,'groups'=>$groups,'nominals'=>$nominals,'tpl'=>$tpl,'years'=>$years,'years_p'=>$years_p,'metals'=>$metals,'conditions'=>$conditions,'themes'=>$themes,'materialtype'=>$materialtype,'pricestart'=>$pricestart,'priceend'=>$priceend,'yearstart'=>$yearstart,'yearend'=>$yearend,'seriess'=>$seriess));   
  
  if($filter_layaut){?>
      <script>
-        if(!$('#search-params').length){
+       if(!$('#search-params').length){
         	$('<?=escapeJavaScriptText($filter_layaut)?>').insertAfter('#hidden-shopcoins-menu');
         } else {
         	var last_node = '#yearend';
@@ -47,13 +54,12 @@ $filter_layaut =  contentHelper::render('leftmenu/filters',array('filter_groups'
 	    		$('<div id="filter-price" class="filter-block">'+filter_price.html()+'</div>').insertAfter(last_node);
 	    		last_node = '#filter-price';
 	    	}
-         }    	
-      </script>
-     
+         }    
+      </script>     
  <?}
   
-include('onpage.tpl.php');
-include('nav_catalog.tpl.php');
+include(DIR_TEMPLATE.'shopcoins/onpage.tpl.php');
+
 
 if($tpl['shop']['errors']){?>
 	<font color="red"><?=implode("<br>",$tpl['shop']['errors'])?></font>
@@ -65,13 +71,13 @@ if($tpl['shop']['errors']){?>
     foreach ($tpl['shop']['MyShowArray'] as $key=>$rows){	      
     	if(in_array($materialtype,array(7,4))){
     		echo "<div class='blockshop_spisok' id='item".$rows['shopcoins']."'>";
-    		include('items/item_nabor.tpl.php');
+    		include(DIR_TEMPLATE.'shopcoins/items/item_nabor.tpl.php');
     		echo "</div>";
     	} else {
     		echo "<div class='blockshop' id='item".$rows['shopcoins']."'>
     		<div class='blockshop-full'>
     		";
-    		include('items/item.tpl.php');
+    		include(DIR_TEMPLATE.'shopcoins/items/item.tpl.php');
     		echo "</div>
     		</div>";
     	}	

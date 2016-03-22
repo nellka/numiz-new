@@ -45,7 +45,7 @@ if( $tpl['is_mobile']){?>
 <script type="text/javascript">
 
 $(document).ready(function() {
-    
+    $('#toTop').hide();		
     $('body').on("click", ".ui-widget-overlay", function() {
           $(".ui-icon.ui-icon-closethick").trigger("click");
     }); 
@@ -55,9 +55,10 @@ $(document).ready(function() {
 	//window.requestAnimationFrame(animateIntro);
 		if($(document).scrollTop()>10){
 			setMini(1);
-		} else {
-			console.log($(document).scrollTop());
-			setMini(0);			
+			$('#toTop').show();
+		} else {			
+			setMini(0);	
+			$('#toTop').hide();		
 		}
 		
 	});

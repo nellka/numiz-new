@@ -75,6 +75,11 @@
     </div>       
     
     <?php include $cfg['path'] . '/views/common/bottom.tpl.php'; ?>    
+    <a id="toTop" class="toTop scroll" title="Наверх" href="#page" style="display: block;">
+    <span class="toTop_inner">
+    <span>Наверх</span>
+    </span>
+    </a>
 </div>     
 </body>
 </html>
