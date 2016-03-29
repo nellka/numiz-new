@@ -1,9 +1,10 @@
  <div id=PhonePostReceipt<?=$rows["order"]?> class="frame-form" style="display:none;">
                 <h1 class="yell_b">Просим Вас ответить на вопросы.</h1>
                 
-    	<form action='' method=post name=FormReminder>
+    	<form action='' method=post name=FormReminder id=FormReminder>
     	<input type=hidden name=parent value='<?=$rows["order"]?>'>
     	<input type=hidden name=action value='postreceipt'>
+    	<span class="error" id='errorPostReceipt'></span>
     	<div class="web-form">
             <div class="left">
                 <label>Заказ</label>	
@@ -48,7 +49,7 @@
     	    <textarea name=ReminderComment class=formtxt cols=40 rows=4></textarea>
     	 </div>
     	 <div class="web-form">
-            <input class="yell_b" type="submit" onclick="javascript:if (document.FormReminder.mark.value<1){alert ('Пожалуйста оцените качество обслуживания по данному заказу.'); return false;} else {return true;}" value="Ответить">
+            <input class="yell_b" type="submit" onclick="if($('form#FormReminder #mark').val()<1){$('#errorPostReceipt').text('Пожалуйста оцените качество обслуживания по данному заказу.'); return false;} else {return true;}" value="Ответить">
         </div>	 
     	</form>   
 	</div>  

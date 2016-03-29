@@ -370,10 +370,10 @@ if(!$payment || !$userfio ||!$fio){
 			$countCoupon = $user_class->getUserCouponCount(array('`check`'=>1, 'type'=>2));
 			if ($countCoupon==0) {				
 				$couponup = 0;
-				if (($sum-$sumamountprice - $vipcoinssum)>$bigsumcoupon && $typecoupon<2 && $tpl['user']['user_id']!=811) {				
+				if (($sum-$sumamountprice - $vipcoinssum)>$bigsumcoupon && $user_data['vip_discoint'] && $tpl['user']['user_id']!=811) {				
 					$dis = ceil(($sum-$sumamountprice - $vipcoinssum)*$bigsumcoupondis/100);
 					$couponup=1;
-				} elseif (($sum-$sumamountprice - $vipcoinssum)>$smallsumcoupon && $typecoupon<2 && $tpl['user']['user_id']!=811) {				
+				} elseif (($sum-$sumamountprice - $vipcoinssum)>$smallsumcoupon && $user_data['vip_discoint'] && $tpl['user']['user_id']!=811) {				
 					$dis = ceil(($sum-$sumamountprice - $vipcoinssum)*$smallsumcoupondis/100);
 					$couponup=1;
 				}

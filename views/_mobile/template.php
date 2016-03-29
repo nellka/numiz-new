@@ -80,7 +80,7 @@ $(document).ready(function() {
          $(this).parent().find('.imageBig').hide();    
     });    
      
-  
+  */
     
     $('.down').click(function () {
 		var $input = $(this).parent().find('input[type=text]');
@@ -99,7 +99,7 @@ $(document).ready(function() {
 		$input.val(count);
 		$input.change();
 		return false;
-	});*/
+	});
 });
 </script>
 
@@ -122,7 +122,7 @@ $(document).ready(function() {
                 } else include $cfg['path'] . '/views/_mobile/pagetop/top.tpl.php'; 
                 ?>
 			    </div> 
-        		<? include $cfg['path'] . '/views/' . $tpl['module'] . '/'.$tpl['task'].'.tpl.php'; ?>    
+        		<? include $cfg['path'] . '/views/_mobile/' . $tpl['module'] . '/'.$tpl['task'].'.tpl.php'; ?>    
            <?} else {?>
 			  
 		    <div class="subheader">

@@ -1600,6 +1600,15 @@ function ShowMainCoins(coinsmain, image,details)
             }
     	});    
 	//myDiv.style.top = posY -200;
-	//myDiv.html(str);
-	
+	//myDiv.html(str);	
+}
+
+function showInvis(atrr){
+	 var btn = $('#'+atrr);
+	 var is_visible = btn.is(':visible')?true:false;
+	 if(!is_visible){
+         btn.show();
+    } else {
+        btn.hide();           
+    }
 }

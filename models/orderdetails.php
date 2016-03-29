@@ -7,6 +7,8 @@ class model_orderdetails extends Model_Base
 	static $reservetime = 18000;
 	static $PriceLatter = 16;
 	static  $PostZone = array(1 => 138.80,2 => 140.70,3 => 146.40,4 => 178.30,5 => 199.00);
+	static  $PostZone1= array(1 => 138.80, 2 => 140.70,3 => 146.40,4 => 178.30,5 => 199.00);
+	
 	static  $PackageAddition= array(1 => 12.00,2 => 13.90,3 => 20.30,4 => 29.20,5 => 33.70);
 	static  $WeightPostLatter = 28;
 	static $WeightPostBox = 100;
@@ -79,8 +81,8 @@ class model_orderdetails extends Model_Base
 			$bascetpostweightmin = self::$PostZone[1] + self::$PackageAddition[1]*($bascetweight<500?0:ceil(($bascetweight-500)/500));
 			$bascetpostweightmax = self::$PostZone[5] + self::$PackageAddition[5]*($bascetweight<500?0:ceil(($bascetweight-500)/500));
 		} else {
-			$bascetpostweightmin = $PostZone1[1] + self::$PackageAddition[1]*($bascetweight<500?0:ceil(($bascetweight-500)/500));
-			$bascetpostweightmax = $PostZone1[5] + self::$PackageAddition[5]*($bascetweight<500?0:ceil(($bascetweight-500)/500));
+			$bascetpostweightmin = self::$PostZone1[1] + self::$PackageAddition[1]*($bascetweight<500?0:ceil(($bascetweight-500)/500));
+			$bascetpostweightmax = self::$PostZone1[5] + self::$PackageAddition[5]*($bascetweight<500?0:ceil(($bascetweight-500)/500));
 		}
 
 		return  array('bascetsum'=>$bascetsum,

@@ -111,7 +111,7 @@ class model_user extends Model_Base
 		    if(!$coupon_exist) $couponups = 2;     
 		}
 
-		$data = array('user' => $this->user,
+		$data = array('user' => $this->user_id,
 		              'order'=>$shopcoinsorder,
 		              'sum'=>$dis,
 		              'code'=>$code,

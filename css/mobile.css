@@ -21,7 +21,7 @@ body {
 
 .wraper {
 	margin:0 auto;
-	width: 390px;	
+	width: 350px;	
 }
 .left{
 float:left;
@@ -64,11 +64,23 @@ a{
     display: block;
     line-height: 40px;
     height:35px;
-    width:30px;
+    width:20px;
     padding: 0 11px;
     text-decoration: none;
 }
-
+.inorderamount {
+    background: rgba(0, 0, 0, 0) url("../images/new.png") no-repeat scroll center top;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: bold;
+    height: 20px;
+    left: 22px;
+    line-height: 18px;
+    position: absolute;
+    text-align: center;
+    top: 2px;
+    width: 16px;
+}
 .cssmenu ul {
     display:none;
 }
@@ -84,12 +96,15 @@ a{
 }
 .blocklogin{
 	width:415px;
-	text-align:center;
-	height:30px;
-	padding-top:15px;
+	padding:15px 0;
 	position: absolute; 
 	background-color: rgb(255, 255, 255);
 	display:none;
+}
+
+
+.blocklogin div {
+    padding: 0 0 0 230px;
 }
 /*==================================================
  * Effect 6
@@ -132,7 +147,7 @@ a{
 /*==================================================
  * Effect 6 end
  * ===============================================*/
-.cssmenu ul::before {
+.cssmenu ul::before,.blocklogin::before {
     border-color: rgba(255, 255, 255, 1) transparent;
     border-style: solid;
     border-width: 0 7px 7px;
@@ -142,6 +157,9 @@ a{
     left: 24px;
     position: absolute;
     width: 0;
+}
+.blocklogin::before {
+left: 351px;
 }
 .cssmenu ul {
     background: #fff none repeat scroll 0 0;
@@ -216,7 +234,7 @@ position:relative;
 }
 
 #auth_form {
-    padding: 30px 20px;
+    /*padding: 30px 20px;*/
 }
 .auth_form  {
 	width:90%;
@@ -246,12 +264,17 @@ position:relative;
 }
 
 .web-form {    
+ height: 30px;
 clear: both;
 margin-bottom:10px;
 }
 .web-form .left {
     float: left;
     width: 65px;
+}
+#remind_form .yell_b{
+	margin: 0;
+	display: inline-block;
 }
 
  .yell_b {
@@ -324,7 +347,7 @@ color:#ecb34e;
     background: transparent url("../images/strel-yellow.png") no-repeat scroll 250px 50%;
 }
 .main_img_big img {
-	max-width:600px;
+	max-width:320px;
 	border:1px solid #cccccc;
 	padding:10px;
 }
@@ -332,7 +355,7 @@ color:#ecb34e;
 .menu-sidebar_static a span {
     padding: 15px;
 }
-.menu-sidebar_static, .menu-sidebar_static ul, .filter-block{
+.menu-sidebar_static, .menu-sidebar_static ul{
 	 list-style-type: none;
     border-bottom: 1px solid #ccc;
     border-left: 1px solid #ccc;
@@ -347,18 +370,13 @@ color:#ecb34e;
 }
 
 .box-heading{
-	background-color: #ecb34e;
-    border-bottom: 1px solid #ddd;
-    color: white;
-    font-size: 16px;
-    line-height: 32px;
-    padding: 0;
-    width: 261px;
-	padding-left:17px;
-	font-weight:bold;
-	margin-top:15px;
-	float:left;
-	margin:0px;
+    color: #247bbd;
+    float: left;
+    font-size: 18px;
+    width: 330px;
+    line-height: 30px;
+    margin: 10px 0;
+    padding: 0 10px;
 }
 
 .box-heading a {
@@ -394,9 +412,8 @@ color:#ecb34e;
 }
 
 .filter-block {
-    border: 1px solid #ccc;
-    margin: 10px 0;
-    padding: 10px;
+    margin: 0 0 10px;
+    padding: 0 30px;
 }
 
 .filter-block #group_name {
@@ -407,7 +424,284 @@ color:#ecb34e;
     padding: 3px;
 }
 
+.ftl {
+    display: block;
+    height: 20px;
+}
+
+.ftl a {
+    font-size: 17px;
+    text-decoration: none;
+}
+
+.new,.new_red {
+    background-color: green;
+    color: #ffffff;
+     padding: 3px 5px;
+    position: absolute;
+    right: 2px;
+    top: 2px;
+
+}
+
+.new_red {
+    background-color: red;
+}
 /*
+.blockshop-full {
+    background: white none repeat scroll 0 0;    
+    position: absolute;
+    z-index: 100;
+    padding: 5px;
+    overflow:visible;
+    z-index:2000;
+}
+*/
+.blockshop {
+    cursor: pointer;
+    display: block;
+    margin: 30px 2px 2px 0;
+    position: relative;
+    width: 100%;
+    z-index: 1;
+}
+.amount {
+	text-align:right;
+	padding: 5px 0;
+}
+.amount_padding div{
+width:100px !important;
+}
+.amount span {
+	display:inline-block;
+	width:20px;
+	height:20px;
+	line-height:20px;
+	background:#ededed;
+	cursor:pointer;
+	text-align:center;
+}
+.amount span:hover {
+	background:#dfdfdf;
+}
+.amount input {
+	width:20px;
+	text-align:center;
+}
+span.extdown{
+		background:#ffffff;
+	display:inline-block;
+	width:20px;
+	height:20px;
+}
+span.extup{
+	background:#ffffff;
+	display:inline-block;
+	width:20px;
+	height:20px;
+}
+.button25,.button26,.button27 {
+    background: #367e9b none repeat scroll 0 0;
+    border: 0 none;
+    color: white;
+    display: inline-block;
+    outline: medium none;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.2s ease 0s;
+    min-width: 90px;
+    cursor: pointer;
+}
+
+.n-price {
+
+    color: #ca0606;
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 25px;
+}
+
+
+.center{
+text-align:center;
+}
+
+.borderimage img{
+	border:0px solid #cccccc;
+	padding: 0;
+    max-width: 220px;
+	max-height:125px;
+}
+a.borderimage{
+ display: block;
+    height: 135px;
+}
+.buy-div{
+    display:inline-block;
+    width:245px;
+    text-align:right;
+}
+div.reserv{
+	height:45px;
+	color: #666666;
+	font-size:11px;
+	text-align:left;
+}
+
+.search-params-place,.sorting-place{
+    border: 1px solid #ccc;
+    display: none;
+    left: -10px;
+    position: absolute;
+    width: 350px;
+    z-index: 4000;
+    background: white none repeat scroll 0 0;
+    top: 70px;
+}
+.closef{
+    background: transparent url("../images/closef.png") no-repeat scroll center center;
+    display: block;
+    height: 30px;
+    width: 30px;
+}
+.har {
+    border: 1px solid #ccc;
+    cursor: pointer;
+    display: block;
+    font-weight: bold;
+    line-height: 30px;
+    padding: 5px 0 5px 10px;
+     margin: 15px 0;
+}
+.har div {
+    font-weight: normal;
+    padding: 0 5px 0 0;
+}
+
+.har div  ul {
+    line-height: 20px;
+    padding: 0 10px;
+}
+.close-h-x{
+    background: transparent url("../images/error-d.png") no-repeat scroll center center;
+    display: block;
+    height: 30px;
+    float:right;
+    width: 30px;
+}
+
+.sort div {
+    line-height: 25px;
+    padding: 0 20px;
+    vertical-align: middle;
+}
+.sort img {
+    line-height: 25px;
+    vertical-align: middle;
+}
+
+.clearf {
+    float: left;
+    line-height: 25px;
+    padding: 0 0 0 100px;
+}
+
+.filtr-s-d,.filtr-s{
+  cursor: pointer;
+    display: block;
+    margin: 1px;
+    float:right
+}
+.filtr-s{
+    background: #eeeeee url("../images/f-low.png") no-repeat scroll center center;
+}
+.filtr-s-d{
+    background: #eeeeee url("../images/delete_16.png") no-repeat scroll center center;
+}
+
+
+h1 {
+    margin: 0 0 15px;
+}
+
+.h-cat,.h-cat-title {
+	background-color:#eeeeee;
+	font-weight:bold;
+	padding:  10px;
+}
+.h-cat-title{
+background-color:grey;
+color: white;
+}
+.detailsItem {
+    line-height: 20px;
+}
+.cart-info table td {
+    padding: 10px;
+}
+.tboard{
+	border: 1px solid #cccccc;
+	padding:  10px;
+}
+.button26 { background: #999999 none repeat scroll 0 0;}
+
+.button27 { background: #ffcc33 none repeat scroll 0 0;}
+
+h5 {
+    font-size: 18px;
+    margin: 0 0 20px;
+}
+
+
+.item_nabor_image img {
+    max-width: 330px;
+}
+
+.blockshop_spisok {
+    margin: 30px 0 0;
+}
+/*
+.coin_info{
+	float:left;
+	width:230px;
+	height:240px;
+	padding-left:15px;
+	padding-top:10px;
+	padding-bottom:10px;
+	margin-right:10px;
+
+}*/
+.coin_info{
+    padding-bottom:20px;
+	background:#ffffff;	
+	position: relative;
+}
+.coin_info img{
+max-width:230px;
+}
+
+
+.image_block {
+    float: left;
+    width: 35%;
+}
+
+.item-order{
+    border:1px solid #cccccc; 
+    margin:5px;
+    padding:10px;
+    margin-left:0px;
+}
+
+#orde-block img {
+    vertical-align: middle;
+}
+#orde-block .button25{
+padding: 6px;
+}
+/*
+.button26:hover { background: #eee none repeat scroll 0 0;}
 #leftmemu .menu-sidebar li {   
     list-style: outside none none;
 
@@ -694,16 +988,7 @@ cursor:pointer;
 .open-top{
 background: url("../images/expand.jpg") no-repeat scroll left center;
 }
-.borderimage img{
-	border:1px solid #cccccc;
-	padding: 3px 0;
-    max-width: 220px;
-	max-height:125px;
-}
-a.borderimage{
- display: block;
-    height: 135px;
-}
+
 
 .m-2 a.borderimage{
     height: 190px;
@@ -826,9 +1111,6 @@ padding:10px  0 0;
 
 
 
-.center{
-text-align:center;
-}
  
 a.yell_b:hover,input.yell_b:hover{
 color:#006699;
@@ -971,18 +1253,6 @@ padding: 10px 0 0;
 }
 
 
-.filtr-s-d,.filtr-s{
-  cursor: pointer;
-    display: block;
-    margin: 1px;
-    float:right
-}
-.filtr-s{
-    background: #eeeeee url("../images/f-low.png") no-repeat scroll center center;
-}
-.filtr-s-d{
-    background: #eeeeee url("../images/delete_16.png") no-repeat scroll center center;
-}
 
 
 
@@ -1228,24 +1498,10 @@ a.button24:active { background: linear-gradient(#f59500, #f5ae00) #f59500; }
  color: white;
 }
 
-.button25,.button26,.button27 {
-    background: #367e9b none repeat scroll 0 0;
-    border: 0 none;
-    color: white;
-    display: inline-block;
-    outline: medium none;
-    padding: 5px 10px;
-    text-align: center;
-    text-decoration: none;
-    transition: all 0.2s ease 0s;
-    min-width: 90px;
-    cursor: pointer;
-}
+
 .button25:hover {  color: white; cursor:pointer;}
 
-.button26 { background: #999999 none repeat scroll 0 0;}
-.button26:hover { background: #eee none repeat scroll 0 0;}
-.button27 { background: #ffcc33 none repeat scroll 0 0;}
+
 .button27:hover { background: #eee none repeat scroll 0 0;}
 
 .pager, .pager_s {
@@ -1330,18 +1586,7 @@ a.button24:active { background: linear-gradient(#f59500, #f5ae00) #f59500; }
   transition: all .218s ease 0s;
 }
 
-.blockshop {
-    border: 1px solid #cccccc;
-    cursor: pointer;
-    display: inline-block;
-    float: left;
-    height: 320px;
-    margin: 2px 2px 2px 0;
-    overflow: hidden;
-    position: relative;
-    width: 237px;
-    z-index:1;
-}
+
 
 
 
@@ -1379,21 +1624,6 @@ a.button24:active { background: linear-gradient(#f59500, #f5ae00) #f59500; }
 }
 
 
-.blockshop-full:hover{
-   box-shadow: 0px 0px 7px -1px #000000;
-  border:1px solid #7f7979;  
-}
-
-
-.blockshop-full {
-    background: white none repeat scroll 0 0;    
-    position: absolute;
-    z-index: 100;
-    width: 227px;
-    padding: 5px;
-    overflow:visible;
-    z-index:2000;
-}
 
 .blockshop:hover{
   overflow: visible;
@@ -1431,17 +1661,7 @@ a.button24:active { background: linear-gradient(#f59500, #f5ae00) #f59500; }
 }
 .blockshop_spisok:hover{ border:1px solid #7f7979;}
 
-.coin_info{
-	float:left;
-	width:230px;
-	height:240px;
-	padding-left:15px;
-	padding-top:10px;
-	padding-bottom:10px;
-	margin-right:10px;
-	background:#ffffff;
-	position: relative;
-}
+
 .club_review{
 	float:left;
 	width:230px;
@@ -1505,11 +1725,6 @@ a.button24:active { background: linear-gradient(#f59500, #f5ae00) #f59500; }
 }
 .tabs li.passive{
 	 
-}
-.buy-div{
-    display:inline-block;
-    width:130px;
-    text-align:right;
 }
 
 
@@ -1578,46 +1793,8 @@ a.button24:active { background: linear-gradient(#f59500, #f5ae00) #f59500; }
 #raiting_info img{vertical-align:middle; margin:0 5px; display:none}
 
 
-.amount {
-	width:225px;
-	text-align:right;
-	padding: 5px 0;
-}
-.amount_padding div{
-width:100px !important;
-}
-.amount span {
-	display:inline-block;
-	width:20px;
-	height:20px;
-	line-height:20px;
-	background:#ededed;
-	cursor:pointer;
-	text-align:center;
-}
-.amount span:hover {
-	background:#dfdfdf;
-}
-.amount input {
-	width:20px;
-	text-align:center;
-}
-span.extdown{
-		background:#ffffff;
-	display:inline-block;
-	width:20px;
-	height:20px;
-}
-span.extup{
-	background:#ffffff;
-	display:inline-block;
-	width:20px;
-	height:20px;
-}
-div.coinname {
-	height:30px;
-	overflow:hidden;
-}
+
+
 div.subinfo{
 	background:#ffffff;
 	margin-top:30px;
@@ -1625,12 +1802,7 @@ div.subinfo{
 div.other{
 	background:#ffffff;
 }
-div.reserv{
-	height:45px;
-	color: #666666;
-	font-size:11px;
-	text-align:left;
-}
+
 .product-grid div.reserv{
 text-align:right;
 }
@@ -1661,15 +1833,7 @@ div.stars {
 width:100px;
 display:inline-block;
 }
-.h-cat {
-	background-color:#eeeeee;
-	font-weight:bold;
-	padding:  10px;
-}
-.tboard{
-	border: 1px solid #cccccc;
-	padding:  10px;
-}
+
 .tboardtop{
 	font-weight:bold;
 	padding:  10px;
@@ -1690,7 +1854,7 @@ float:left;
     margin: -30px 0;
     text-align: left;
 }
-
+*/
 .jcarousel-direction-rtl {
 	direction: rtl;
 }
@@ -1741,11 +1905,11 @@ text-align: center;
 
 .d-carousel .coin_info,
 .d-carousel-show .coin_info{
-    height: 260px;
+   /* height: 260px;*/
 }
 .d-carousel .jcarousel-item {
 	width: 180px;
-	height: 270px;
+	/*height: 270px;*/
 }
 
 .d-carousel-show .jcarousel-item {
@@ -1754,16 +1918,10 @@ text-align: center;
 }
 .d-carousel .jcarousel-container-horizontal,
 .d-carousel-show .jcarousel-container-horizontal {
-	height: 275px;
-    padding: 10px 20px;
-    width: 665px;
+	/*height: 275px;*/
+    padding: 10px 15px;
+    width: 350px;
 }
-
-.d-carousel-show .jcarousel-container-horizontal {
-    width: 1080px;
-}
-
-
 
 .d-carousel .jcarousel-item-horizontal {
 	margin-left: 3px;
@@ -1775,7 +1933,7 @@ text-align: center;
 .d-carousel .jcarousel-next-horizontal,
 .d-carousel-show .jcarousel-next-horizontal {
 	position: absolute;
-	top: 105px;
+	top: 135px;
 	right: 0;
 	margin-right: 0px;
 	width: 15px;
@@ -1799,7 +1957,7 @@ text-align: center;
 .d-carousel .jcarousel-prev-horizontal,
 .d-carousel-show .jcarousel-prev-horizontal {
 	position: absolute;
-	top: 105px;
+	top: 135px;
 	left: 0;
 	width: 15px;
 	height: 28px;
@@ -1821,23 +1979,12 @@ text-align: center;
 
 .triger-carusel {
     background: #eeeeee none repeat scroll 0 0;
-    height: 300px;
-    padding: 0 10px;
+    /*height: 300px;*/
+    padding: 0 5px;
+     margin: 0 -30px;
 }
 
-.new,.new_red {
-    background-color: green;
-    color: #ffffff;
-     padding: 3px 5px;
-    position: absolute;
-    right: 2px;
-    top: 2px;
-
-}
-
-.new_red {
-    background-color: red;
-}
+/*
 #subsription-error {
     font-size: 12px;
     line-height: 15px;
@@ -1845,13 +1992,6 @@ text-align: center;
     padding: 0;
 }
 
-.n-price {
-
-    color: #ca0606;
-    font-size: 15px;
-    font-weight: bold;
-    line-height: 25px;
-}
 
 .group_href {
     display: block;

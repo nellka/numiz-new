@@ -168,11 +168,11 @@ if (sizeof($arrayresult)>0) {
 	
 	//расчет почтового сбора
 	if ($mymaterialtype!=0)	{
-		$bascetpostweightmin = $PostZone[1] + $PackageAddition[1]*($bascetweight<500?0:ceil(($bascetweight-500)/500));
-		$bascetpostweightmax = $PostZone[5] + $PackageAddition[5]*($bascetweight<500?0:ceil(($bascetweight-500)/500));
+		$bascetpostweightmin = $orderdetails_class::$PostZone[1] + $orderdetails_class::$PackageAddition[1]*($bascetweight<500?0:ceil(($bascetweight-500)/500));
+		$bascetpostweightmax = $orderdetails_class::$PostZone[5] + $orderdetails_class::$PackageAddition[5]*($bascetweight<500?0:ceil(($bascetweight-500)/500));
 	} else {
-		$bascetpostweightmin = $PostZone1[1] + $PackageAddition[1]*($bascetweight<500?0:ceil(($bascetweight-500)/500));
-		$bascetpostweightmax = $PostZone1[5] + $PackageAddition[5]*($bascetweight<500?0:ceil(($bascetweight-500)/500));
+		$bascetpostweightmin = $orderdetails_class::$PostZone1[1] + $orderdetails_class::$PackageAddition[1]*($bascetweight<500?0:ceil(($bascetweight-500)/500));
+		$bascetpostweightmax = $orderdetails_class::$PostZone1[5] + $orderdetails_class::$PackageAddition[5]*($bascetweight<500?0:ceil(($bascetweight-500)/500));
 	}	
 }
 if (!$data_result['error']&&sizeof($arrayresult)){

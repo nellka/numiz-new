@@ -1,5 +1,5 @@
 <div class="top-menu">        
-  <div id="header-menu">
+  <div id="header" class="wraper">
 		<ul class="left cssmenu">
 	          <li>
 				<a href="#" class="coins" onclick="showInvis('shopMenu');return false;"></a>
@@ -38,9 +38,9 @@
 			</li>
 
 			<li>   
-				<a href='#' class="cart decoratnone">
+				<a href='<?=$cfg['site_dir']?>/shopcoins/index.php?page=orderdetails' class="cart decoratnone">
 					<img src="<?=$cfg['site_dir']?>images/mobile/mobile_korz.jpg">
-					<span id=inorderamount style="position:absolute; color:#ffffff;top:-9px;left:29px;">
+					<span id=inorderamount  class="inorderamount">
 						<?=$tpl['user']['product_amount']?>
 					</span>
 				</a>
@@ -64,17 +64,18 @@
     </form>    
 </div>		
 <div id="userMenu" class="blocklogin">
+    
 	<?if (!$tpl['user']["is_logined"]) {?>
-		
-			<a class="abold " href="<?=$cfg['site_dir']?>user/login.php">Войти</a> или
-			
-			<a  class="abold " href="<?=$cfg['site_dir']?>user/registration.php">Зарегистрироваться</a>						
-		
+	   <div class="u_l">		
+		<a class="abold " href="<?=$cfg['site_dir']?>user/login.php">Войти</a> или <a  class="abold " href="<?=$cfg['site_dir']?>user/registration.php">Зарегистрироваться</a>						
+		</div>    
 	<?} else {?>
+	   <div class="n_l">	
 		<a class="abold " href='<?=$cfg['site_dir']?>/shopcoins/order.php'>Мои заказы</a><br>  
 		<a class="abold " href="<?=$cfg['site_dir']?>shopcoins/?catalognewstr=1&savesearch=1">Монеты по заявкам (<?=$tpl['user']['catalogamount']?>)<br>  
-		<a class="abold " href="<?=$cfg['site_dir']?>shopcoins/?logout=1">Выйти</a><br>         
-<?}?>									
+		<a class="abold " href="<?=$cfg['site_dir']?>shopcoins/?logout=1">Выйти</a><br>     
+		</div>    
+    <?}?>									
 </div>	
 	
 <div id=MainBascet></div>
