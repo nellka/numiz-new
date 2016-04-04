@@ -52,7 +52,14 @@ a{
     margin: 0 auto;
     padding: 0;
 }
-
+.u_l{
+	padding-top:10px !important;
+	padding-bottom:10px !important;
+}
+.n_l{
+	padding-top:10px !important;
+	padding-bottom:10px !important;
+}
 .cssmenu li {
     float: left;
     list-style: outside none none;
@@ -96,7 +103,7 @@ a{
 }
 .blocklogin{
 	width:415px;
-	padding:15px 0;
+	
 	position: absolute; 
 	background-color: rgb(255, 255, 255);
 	display:none;
@@ -154,7 +161,7 @@ a{
     bottom: 100%;
     content: "";
     height: 0;
-    left: 24px;
+    left: 46px;
     position: absolute;
     width: 0;
 }
@@ -171,6 +178,7 @@ left: 351px;
     padding: 0;
     position: absolute;
     top: 35px;
+	left:-32px;
     width: 415px;
     z-index: 1000;
 }

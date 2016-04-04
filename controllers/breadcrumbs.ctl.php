@@ -1,58 +1,25 @@
 <? //немного костыльный модуль, так как четкой иерархии страниц и меню пока нет
 
-if(!$tpl['is_mobile']){
-	$tpl['breadcrumbs'][] = array(
-		'text' => 'Главная',
-		'href' => $cfg['site_dir'],
-		'base_href' =>'/'
-	);
-	$tpl['current_page'] = '/';
-}
-if($tpl['module']=='user'&&$tpl['task']=='login'){
-     $tpl['breadcrumbs'][] = array(
+$tpl['breadcrumbs'][] = array(
+	'text' => 'Главная',
+	'href' => $cfg['site_dir'],
+	'base_href' =>'/'
+);
+$tpl['current_page'] = '/';
+
+if ($tpl['module']=='shopcoins'&&$tpl['task']=='viporder'){
+      $tpl['breadcrumbs'][] = array(
     	'text' => 'Магазин',
     	'href' => $cfg['site_dir'].'shopcoins',
     	'base_href' =>'shopcoins'
     );
-    
+   
     $tpl['breadcrumbs'][] = array(
-    	'text' => "Форма входа",
+    	'text' => "Рекомендуем заказать",
     	'href' => "",
     	'base_href' =>""    );
 
-    
     $tpl['current_page'] = '';
-    
-}elseif($tpl['module']=='user'&&$tpl['task']=='remind'){
-     $tpl['breadcrumbs'][] = array(
-    	'text' => 'Магазин',
-    	'href' => $cfg['site_dir'].'shopcoins',
-    	'base_href' =>'shopcoins'
-    );
-    
-    $tpl['breadcrumbs'][] = array(
-    	'text' => "Забыли пароль?",
-    	'href' => "",
-    	'base_href' =>""    );
-
-    
-    $tpl['current_page'] = '';
-    
-} elseif($tpl['module']=='user'&&$tpl['task']=='registration'){
-     $tpl['breadcrumbs'][] = array(
-    	'text' => 'Магазин',
-    	'href' => $cfg['site_dir'].'shopcoins',
-    	'base_href' =>'shopcoins'
-    );
-    
-    $tpl['breadcrumbs'][] = array(
-    	'text' => "Регистрация",
-    	'href' => "",
-    	'base_href' =>""    );
-
-    
-    $tpl['current_page'] = '';
-    
 } elseif($tpl['module']=='order'&&$tpl['task']=='showorders'){
      $tpl['breadcrumbs'][] = array(
     	'text' => 'Магазин',

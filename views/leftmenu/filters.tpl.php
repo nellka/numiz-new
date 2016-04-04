@@ -69,7 +69,9 @@ if(isset($filter_groups)&&$filter_groups){
 	 		if(in_array($filter_group['filter_group_id_full'],array('nominals','years','years_p'))){
 	 			$ahref = $ahref_groups;
 	 		}
-	 			
+	 		if(in_array($filter_group['filter_group_id_full'],array('years','years_p'))){
+	 			$ahref .= $ahref_nominals;
+	 		}	
 	 		//var_dump();    
 	 	    ?>
 	

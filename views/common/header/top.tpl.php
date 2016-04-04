@@ -1,4 +1,4 @@
-<!--<div id='closeTop' class="close-top" onclick="setMini(1)"></div>-->
+<div id='closeTop' class="close-top" onclick="setMini(1)"></div>
 <div id="logo">
     <a class="logo-img" href="http://www.numizmatik.ru"><img src="<?=$cfg['site_dir']?>images/logo_small.jpg" border=0></a>
     <a href="<?=$cfg['site_dir']?>ocenka-stoimost-monet">Оценка монет</a>

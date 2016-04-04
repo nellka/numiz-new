@@ -66,11 +66,11 @@
 <div id="userMenu" class="blocklogin">
     
 	<?if (!$tpl['user']["is_logined"]) {?>
-	   <div class="u_l">		
+	   <div class="u_l shadoweffect">		
 		<a class="abold " href="<?=$cfg['site_dir']?>user/login.php">Войти</a> или <a  class="abold " href="<?=$cfg['site_dir']?>user/registration.php">Зарегистрироваться</a>						
 		</div>    
 	<?} else {?>
-	   <div class="n_l">	
+	   <div class="n_l shadoweffect">	
 		<a class="abold " href='<?=$cfg['site_dir']?>/shopcoins/order.php'>Мои заказы</a><br>  
 		<a class="abold " href="<?=$cfg['site_dir']?>shopcoins/?catalognewstr=1&savesearch=1">Монеты по заявкам (<?=$tpl['user']['catalogamount']?>)<br>  
 		<a class="abold " href="<?=$cfg['site_dir']?>shopcoins/?logout=1">Выйти</a><br>     
@@ -85,24 +85,35 @@
 <div class="wraper" id=top>
 
 <div class="logo" id="logoblock">
-    <a class="logo-img" href="http://www.numizmatik.ru"><img src="<?=$cfg['site_dir']?>images/logo_small.jpg" border=0></a>
-    <div> <a href="<?=$cfg['site_dir']?>ocenka-stoimost-monet">Оценка монет</a>
-    <a href="http://www.numizmatik.ru/gde-prodat-monety">Скупка монет</a>
-    <a href="http://www.numizmatik.ru/shopcoins">Продажа монет</a>
-    </div>
-    <div>В Москве и Санкт-Петербурге</div>
-
-    <div id="contact-top-module">  
-        <p><b>Москва</b>, ул. Тверская 12 стр. 8<br>
-        <b>Санкт-Петербург</b>, ул. Турку 31</p>
-       
-    </div>       
+	<table>
+		<tr>
+			<td>
+				 <a class="logo-img" href="http://www.numizmatik.ru"><img src="<?=$cfg['site_dir']?>images/logo_small.jpg" border=0></a>
+			</td>
+			<td class="fontsize12">
+				<div id="contact-top-module">  
+					<p><b>Москва</b>, ул. Тверская 12 стр. 8<br>
+					<b>Санкт-Петербург</b>, ул. Турку 31</p>  
+				</div>       
+				<div id="contact-top-phone">
+					 8-800-333-14-77 <br>
+					 7-903-006-00-44 <br>
+					 7-812-925-53-22    
+				</div> 
+			</td>
+		</tr>
+	</table>
 </div>
-<div id="contact-top-phone" class="logo">
-     8-800-333-14-77 (по России бесплатно)<br>
-     +7-903-006-00-44 (Москва)<br>
-     +7-812-925-53-22 (Санкт-Петербург)     
-</div> 
+<div class="abold" >
+	<center>
+	 <a class="abold" href="http://www.numizmatik.ru/shopcoins">Продажа</a>,
+	<a class="abold" href="<?=$cfg['site_dir']?>ocenka-stoimost-monet">Оценка </a> и 
+    <a  class="abold" href="http://www.numizmatik.ru/gde-prodat-monety">Скупка монет</a> <br>
+   
+	В Москве и Санкт-Петербурге
+	</center>
+</div>
+   
      
 <script>
 $(document).ready(function(){   

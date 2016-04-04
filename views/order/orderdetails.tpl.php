@@ -138,6 +138,14 @@ if($rows["amountAll"]>1){?>
 <?} else {?>
 <div class="error">Ваша корзина пуста</div>
 <?}?>
+
+<?if($viporder_id){?>
+	<div class="error">
+	Предзаказ создан. Номер предзаказа:<?=$viporder_id?><br>
+	Посмотреть предзаказа:<a href="<?=$cfg['site_dir']?>shopcoins?page=viporder&id=<?=$viporder_id?>"><?=$viporder_id?></a>
+	</div>
+<?}?>
+
 <div class="clearfix">
 <a href='<?=$cfg['site_dir']?>shopcoins' class="left c-b">Продолжить покупки </a>
  <div class="right">
@@ -148,8 +156,15 @@ if($rows["amountAll"]>1){?>
     	    <a class="button25 right" onclick="showWin('<?=$cfg['site_dir']?>user/login_order.php?ajax=1',500);return false;" href="#" style="width:150px" id='of-1'>Оформить заказ</a>
 	<?} else {?>
         	<form action="<?=$cfg['site_dir']?>shopcoins?page=order&page2=1" method="post">
-        	<input type=submit  class="button25 right" name=submit value='Оформить заказ' style="width:150px">
+        	<input type=submit  class="button25 right" name=submit value='Оформить заказ' style="width:150px">       	
         	</form>
+        	
+        	<? if($tpl['user']['user_id']==811){?>
+        		<br><br><form action="<?=$cfg['site_dir']?>shopcoins?page=orderdetails" method="post">
+        		<input type="hidden" id='viporder' name='viporder' value="1">
+        		<input type=submit  class="button25 right" name=submit value='Создать Предзаказ' style="width:150px">       	
+        		</form>
+        	<?}?>
     	<?}?>
     <?} elseif($tpl['orderdetails']['ArrayShopcoinsInOrder']) { ?>
         <input type="button"  class="button26 right" value='Оформить заказ'>

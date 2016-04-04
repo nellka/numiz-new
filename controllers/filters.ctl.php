@@ -6,6 +6,7 @@ $childen_data_thems = array();
 $childen_data_conditions = array();
 $childen_data_nominals = array();
 $childen_data_series = array();
+
 /*
 монеты
 наборы монет
@@ -15,6 +16,7 @@ $childen_data_series = array();
 барахолка - что это
 */
 if($tpl['user']['user_id']==352480){
+    $i = 0;
 	echo time()." f st $i<br>";
 }
 if(in_array($materialtype,array(1,7,8,6,4))){

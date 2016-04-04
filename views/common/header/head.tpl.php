@@ -45,7 +45,6 @@ if( $tpl['is_mobile']){?>
 <script type="text/javascript">
 
 $(document).ready(function() {
-    $('#toTop').hide();		
     $('body').on("click", ".ui-widget-overlay", function() {
           $(".ui-icon.ui-icon-closethick").trigger("click");
     }); 
@@ -54,11 +53,13 @@ $(document).ready(function() {
 	//animations will be smoother
 	//window.requestAnimationFrame(animateIntro);
 		if($(document).scrollTop()>10){
-			setMini(1);
+			setMini(1,true);
 			$('#toTop').show();
+			$('#toTopLeft').show();
 		} else {			
-			setMini(0);	
-			$('#toTop').hide();		
+			setMini(0,true);	
+			$('#toTop').hide();	
+			$('#toTopLeft').hide();		
 		}
 		
 	});
@@ -73,7 +74,7 @@ $(document).ready(function() {
     $('.image_block').mouseout(function(){
          $(this).parent().find('.imageBig').hide();    
     });    
-     /*   
+      
     $('#header-mini #search').autocomplete({
       source: 'shopcoins/index.php?search=1',
       minLength:3,
@@ -88,7 +89,7 @@ $(document).ready(function() {
             .data( "item.autocomplete", item )
             .append( "<a href='"+item.href+"'>" + item.image+ " <span> " + item.label+ "</span></a>" )
             .appendTo( ul );
-    };*/
+    };
     $('#header #search').autocomplete({
       source: 'shopcoins/index.php?search=1',
       minLength:3,

@@ -35,7 +35,16 @@ function showMenuDescription(id){
     }
 }
 
-function setMini(on){
+function setMini(on,onscroll){    
+    
+    if(!on&&onscroll){      
+        if($.cookie('mini')==0){
+           //console.log('идем дальше надо развернуть');          
+        } else {
+            return;
+        }
+    }
+    
 	if(on){
 		//console.log('setmini');
 		$('#header').hide();
@@ -43,15 +52,16 @@ function setMini(on){
 		$('#small-logo').hide();
 		//$('#shop-logo').css("height",'0');	
 		//$('#shop-logo').hide();
-		///$.cookie('mini', 1);
+		if(!onscroll) $.cookie('mini', 1);
 	} else {
-		//console.log('setful');
+	    
+		console.log('setful');
 		$('#header-mini').hide();
 		$('#header').show();
 		$('#small-logo').show();
 		//$('#shop-logo').css("height",'20px');
 		//$('#shop-logo').show();
-		//$.cookie('mini', 0);
+		if(!onscroll) $.cookie('mini', 0);
 	}
 	//console.log(('shop-logo'));
 	//console.log($('#shop-logo').height());
@@ -1600,15 +1610,6 @@ function ShowMainCoins(coinsmain, image,details)
             }
     	});    
 	//myDiv.style.top = posY -200;
-	//myDiv.html(str);	
-}
-
-function showInvis(atrr){
-	 var btn = $('#'+atrr);
-	 var is_visible = btn.is(':visible')?true:false;
-	 if(!is_visible){
-         btn.show();
-    } else {
-        btn.hide();           
-    }
+	//myDiv.html(str);
+	
 }

@@ -34,7 +34,7 @@ class mails
 		$mytext .= "</td></tr></table>";	
 		$html = $this->createFullHtml($mytext);
 
-		$this->mail->setBodyHtml($html,'UTF-8',Zend_Mime::ENCODING_BASE64);			   
+		$this->mail->setBodyHtml($html);			   
 		$this->mail->send();
 	}
 	public function orderLetter($dataUser,$mytext){
@@ -45,7 +45,7 @@ class mails
 
 		$html = $this->createFullHtml($mytext);
 
-		$this->mail->setBodyHtml($html,'UTF-8',Zend_Mime::ENCODING_BASE64);
+		$this->mail->setBodyHtml($html);
 		$this->mail->send();
 	}
 	
@@ -61,7 +61,7 @@ class mails
 		$mytext .= "<p>Пароль: ".$dataUser['userpassword'];		
 	    $mytext .= "</td></tr></table>";
 		$html = $this->createFullHtml($mytext,"Восстановление пароля в Клубе Нумизмат");
-		$this->mail->setBodyHtml($html,'UTF-8',Zend_Mime::ENCODING_BASE64);	    
+		$this->mail->setBodyHtml($html);	    
         $this->mail->send();
 	}
 	

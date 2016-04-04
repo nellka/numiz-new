@@ -1,6 +1,6 @@
 <div id="remind_form">
 
-<h1 class="yell_b"> Восстановление пароля</h1>
+<h1 class="yell_b" style='width:300px'> Восстановление пароля</h1>
 
 <div class="frame-form">
 <? if($tpl['user']['send_status']){?>

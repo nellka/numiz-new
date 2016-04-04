@@ -1,7 +1,7 @@
 <?
 require_once $cfg['path'] . '/models/order.php';
 require_once $cfg['path'] . '/models/orderdetails.php';
-
+require_once $cfg['path'] . '/models/viporder.php';
 require $cfg['path'] . '/configs/config_shopcoins.php';
 
 $order_class = new model_order($cfg['db'],$shopcoinsorder,$tpl['user']['user_id']);
@@ -16,6 +16,13 @@ if($tpl['user']['user_id']){
 $shopcoins = intval(request("shopcoins"));
 $pageinfo = request("pageinfo");
 $amount = request("amount");
+
+$viporder_id = 0;
+
+$viporder= request("viporder");
+if($tpl['user']['user_id']!=811){
+	$viporder = 0;
+}
 
 $ourcoinsorder = array();
 $ourcoinsorderamount = array();
@@ -74,6 +81,23 @@ if ($amount>0){
 }
 
 $orderdetails= $orderdetails_class->getDetails($tpl['user']['user_id']);
+
+if($viporder){
+	$viporder_class = new model_shopcoinsvipclientanswer($cfg['db']);
+	$viporder_id = $viporder_class->getNewViporder();
+	foreach ($orderdetails as 	$row ){	
+		$viporder_class->addInOrder($viporder_id,$row["catalog"]);		
+		//удаляем позицию из заказа				
+		$orderdetails_class->deletePostion($row["catalog"]);		
+		$data = array('reserve'=>0,'reserveorder'=>0,'doubletimereserve'=>0,'userreserve'=>0);  
+		$shopcoins_class->updateRow($data,"shopcoins='{$row["catalog"]}' and reserveorder='$shopcoinsorder'");				
+		$orderdetails_class->deletePostionHelpshopcoinsorder($row["catalog"]);			
+	}
+	$orderdetails_class->removeOrderCache($tpl['user']['user_id']);		
+}
+
+
+$orderdetails= $orderdetails_class->getDetails($tpl['user']['user_id']);
 $user_basket = $orderdetails_class->basket($tpl['user']['user_id']);
 //на случай пересчета корзины
 $tpl['user']['summ'] = $user_basket['bascetsum'];
@@ -110,6 +134,7 @@ foreach ($orderdetails as 	$rows ){
 	}
 	$i++;
 }
+
 
 $tpl['orderdetails']['related'] = array();
 

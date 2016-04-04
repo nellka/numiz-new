@@ -12,25 +12,20 @@ $rows['amountall'] = $amountall;
 <div class="amount">
 
 <?
-
+//var_dump($rows['buy_status']);
 //кнопки в корзину, резервирует и тд
 if($rows['buy_status']==2){?>
-	
-	<img src='<?=$cfg['site_dir']?>images/corz7.gif' alt='Уже в вашей корзине'>
+	<a class="button7" href="#" onclick="return false;" alt='Уже в вашей корзине'>Корзина</a>
 <?} else if($rows['buy_status']==3){?>
+	<a class="button6" href="#" onclick="return false;" alt='Покупает другой посетитель <?=contentHelper::setWordWhat($rows["materialtype"])?> <?=$rows["gname"]?> <?=$rows["name"]?>'>Корзина</a>		
+<?} elseif ($rows['buy_status']==4){?>	
+	<a class="button6" href="#" onclick="return false;" alt='Покупает другой посетитель <?=contentHelper::setWordWhat($rows["materialtype"])?> <?=$rows["gname"]?> <?=$rows["name"]?>'>Корзина</a>		
 	
-	<img src='<?=$cfg['site_dir']?>images/corz6.gif' alt='Покупает другой посетитель <?=contentHelper::setWordWhat($rows["materialtype"])?> <?=$rows["gname"]?> <?=$rows["name"]?>'>		
-<?} elseif ($rows['buy_status']==4){?>
-	
-	<img src='<?=$cfg['site_dir']?>images/corz6.gif' alt='Покупает другой посетитель <?=contentHelper::setWordWhat($rows["materialtype"])?> <?=$rows["gname"]?> <?=$rows["name"]?>'>
-	<img src='<?=$cfg['site_dir']?>images/corz77.gif' alt='Вы в очереди на покупку <?=contentHelper::setWordThat($rows["materialtype"])?> <?=$rows["gname"]?> <?=$rows["name"]?>'>		
+	<a class="button7" href="#" onclick="return false;" alt='Вы в очереди на покупку <?=contentHelper::setWordThat($rows["materialtype"])?> <?=$rows["gname"]?> <?=$rows["name"]?>'>В очереди</a>	
 <?} elseif ($rows['buy_status']==5){?>
-	
-	<img align='left' src='<?=$cfg['site_dir']?>images/corz6.gif' alt='Покупает другой посетитель <?=contentHelper::setWordWhat($rows["materialtype"])?> <?=$rows["gname"]?> <?=$rows["name"]?>'>
+	<a class="button6" href="#" onclick="return false;" alt='Покупает другой посетитель <?=contentHelper::setWordWhat($rows["materialtype"])?> <?=$rows["gname"]?> <?=$rows["name"]?>'>Корзина</a>		
 	<div id=bascetshop<?=$rows["shopcoins"]?>>
-	  <a href='#' onclick="AddNext('<?=$rows["shopcoins"]?>','1');return false;" rel="nofollow" title='Стать в очередь на <?=contentHelper::setWordOn($rows["materialtype"])?> <?=$rows["gname"]?> <?=$rows["name"]?>'>
-	      <img align='right;' src='<?=$cfg['site_dir']?>images/corz11.gif' alt='<?=contentHelper::setWordOn($rows["materialtype"])?> <?=$rows["gname"]?> <?=$rows["name"]?>'>
-	  </a>
+	  <a href='#' onclick="AddNext('<?=$rows["shopcoins"]?>','1');return false;" rel="nofollow" title='Стать в очередь на <?=contentHelper::setWordOn($rows["materialtype"])?> <?=$rows["gname"]?> <?=$rows["name"]?>' class="button11">Стать в очередь</a>
 	</div>
 <?} elseif ($rows['buy_status']==8){?>
 	<input type="hidden" value="<?=$rows['amountall']?>" id='amountall<?=$rows["shopcoins"]?>'>
@@ -38,7 +33,7 @@ if($rows['buy_status']==2){?>
     <input type=text name=amount<?=$rows["shopcoins"]?> id=amount<?=$rows["shopcoins"]?> size=1 value='<?=$ourcoinsorderamount[$rows["shopcoins"]]?>'> 
 	<span class="up">+</span>
     <a href='#' onclick='AddAccessory(<?=$rows["shopcoins"]?>,<?=$rows["materialtype"]?>);return false;' title='<?=$rows["name"]?>'>
-	  <div id=bascetshopcoins<?=$rows["shopcoins"]?>><img src=<?=$cfg['site_dir']?>images/corz7.gif alt='Уже в корзине'></div>
+	  <div id=bascetshopcoins<?=$rows["shopcoins"]?>><a class="button7" href="#" onclick="return false;" alt='Уже в вашей корзине'>Корзина</a></div>
 	 </a>
 <?} else if ($rows['buy_status']==6){?>			
 	<div id=bascetshopcoins<?=$rows["shopcoins"]?>>		

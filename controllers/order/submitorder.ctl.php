@@ -232,6 +232,8 @@ if(!$payment || !$userfio ||!$fio){
 
 			$ParentArray = Array();				
 			foreach ($result as $rows) {
+			    $shopcoinsItem =  $shopcoins_class->getItem($rows["catalog"]);
+			    
 				$ParentArray[] = $rows["parent"];
 				//монеты, боны, подарочные наборы
 				if ($rows["materialtype"]==1){		
@@ -262,7 +264,7 @@ if(!$payment || !$userfio ||!$fio){
 					
 				} elseif (in_array($rows["materialtype"],array(4,7,8,6,2,12))) {
 					$data_update = array(                     
-                                    'amount' => "amount-".$rows["orderamount"],                       
+                                    'amount' => ($shopcoinsItem["amount"]-$rows["orderamount"]),                       
     		                        'reserveorder'=>$shopcoinsorder, 
     		                        'dateorder' =>time()
     		                        );  
@@ -274,7 +276,7 @@ if(!$payment || !$userfio ||!$fio){
 				} elseif ($rows["materialtype"]==3 || $rows["materialtype"]==5) {  
 				     //аксессуары, книги
 				     $data_update = array(                     
-                                    'amount' => "amount-".$rows["orderamount"],	                        
+                                    'amount' => ($shopcoinsItem["amount"]-$rows["orderamount"]),	                        
     		                        'dateorder' =>time()
     		                        );  
     		       if($rows["orderamount"]>=$rows["samount"]){
@@ -285,8 +287,7 @@ if(!$payment || !$userfio ||!$fio){
     		                          'shopcoins'=>$rows["catalog"], 
     		                          'insertdate'=>time(), 
     		                          'updatedate'=>0,
-    		                          'check'=>1
-    		                          );
+    		                          'check'=>1);
     		           $shopcoins_class->addNew('shopcoinsend',$data_insert);						
     		       }
 				} else {

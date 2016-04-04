@@ -1,6 +1,5 @@
 <?php
 
-
 class model_shopcoins extends Model_Base
 {	
     public $id;
@@ -466,9 +465,10 @@ class model_shopcoins extends Model_Base
     	   		$select->where("(shopcoins.materialtype='".$this->materialtype."' and shopcoins.amountparent > 0) ".(isset($WhereParams['group'])?" or shopcoins.materialtype='8'":"")); 		
 
     	   } elseif ($this->materialtype==1){
-    	     	$select->where("(shopcoins.materialtype='".$this->materialtype."' and shopcoins.amountparent > 0) or shopcoins.materialtypecross =16 ".(isset($WhereParams['group'])?" or shopcoins.materialtype='8' ":"")); 		
+    	     	$select->where("(shopcoins.materialtype='".$this->materialtype."' and shopcoins.amountparent > 0) or shopcoins.materialtypecross =18 ".(isset($WhereParams['group'])?" or shopcoins.materialtype='8' ":"")); 		
     	   }  elseif ($this->materialtype==7){
-    	     	$select->where("shopcoins.materialtype='".$this->materialtype."' or shopcoins.materialtypecross =16 "); 		
+    	     	$select->where("shopcoins.materialtype='".$this->materialtype."' or shopcoins.materialtypecross =144 or  shopcoins.materialtypecross = 128 "); 
+
     	   } else {
     	        $select->where("shopcoins.materialtype=? ",$this->materialtype); 
     	   }
@@ -646,6 +646,7 @@ class model_shopcoins extends Model_Base
           $select = $this->setMaterialtypeSelect($select);
           $select->order($orderby);
           $select->where("shopcoins.check=1 or (shopcoins.check>3 and shopcoins.check<20)");
+          
           return   $this->db->fetchAll($select);
 	}
 	
@@ -1085,11 +1086,11 @@ class model_shopcoins extends Model_Base
 	   	}      
 	
 	   if ($materialtype==1 ){
-	       $select->where("(shopcoins.materialtype=1 and shopcoins.amountparent > 0) or shopcoins.materialtypecross =4"); 		            
+	       $select->where("(shopcoins.materialtype=1 and shopcoins.amountparent > 0) or shopcoins.materialtypecross =18"); 		            
 	   } elseif ($materialtype==10){
 	       $select->where("(shopcoins.materialtype=10 and shopcoins.amountparent > 0)"); 		            
 	   } elseif ($materialtype==7){
-	       $select->where("(shopcoins.materialtype=7  or shopcoins.materialtypecross=4)"); 		            
+	       $select->where("(shopcoins.materialtype=7  or shopcoins.materialtypecross =144 or  shopcoins.materialtypecross =128)"); 		            
 	   } else {
 	        $select->where("shopcoins.materialtype=?",$materialtype); 
 	   }
@@ -1109,11 +1110,11 @@ class model_shopcoins extends Model_Base
 	   	}      
 	
 	   if ($materialtype==1 ){
-	       $select->where("(shopcoins.materialtype=1 and shopcoins.amountparent > 0) or shopcoins.materialtypecross =4"); 		            
+	       $select->where("(shopcoins.materialtype=1 and shopcoins.amountparent > 0) or shopcoins.materialtypecross =18"); 		            
 	   } elseif ($materialtype==10){
 	       $select->where("(shopcoins.materialtype=10 and shopcoins.amountparent > 0)"); 		            
 	   } elseif ($materialtype==7){
-	       $select->where("(shopcoins.materialtype=7  or shopcoins.materialtypecross=4)"); 		            
+	       $select->where("(shopcoins.materialtype=7  or shopcoins.materialtypecross =144 or  shopcoins.materialtypecross =128)"); 		            
 	   } else {
 	        $select->where("shopcoins.materialtype=?",$materialtype); 
 	   }
@@ -1255,7 +1256,7 @@ class model_shopcoins extends Model_Base
 	     $select = $this->db->select()
                   ->from('shopcoins',array('distinct(name)'))
                   ->where('name<>"" and nominal_id=0')
-                  ->limit(5);
+                  ->limit(200);
          foreach ($this->db->fetchAll($select) as $row){
              $select  = $this->db->select()
                                 ->from('nominals',array('id'))

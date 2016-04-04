@@ -5,10 +5,10 @@
     </div> 
 </div>     
 
-<div id="header" class="wraper header" style="display:block">
+<div id="header" class="wraper header" style="display:<?=$mini?'none':'block'?>">
     <?php include $cfg['path'] . '/views/common/header/top.tpl.php'; ?>
 </div> 
-<div id="header-mini" class="wraper header-mini" style="display:none">
+<div id="header-mini" class="wraper header-mini" style="display:<?=$mini?'block':'none'?>">
     <?php include $cfg['path'] . '/views/common/header/top-mini.tpl.php'; ?>
 </div>  
 <div id=MainBascet></div>

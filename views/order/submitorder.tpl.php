@@ -44,6 +44,7 @@
 
    ?>
 	<div style="font-weight:400;">
+	   <h5 class=error>Поздравляем. Ваш заказ успешно оформлен.</div></h5>
 		<h5>Спасибо за покупку!</h5>
 		Уважаемый покупатель!<br>Ваш заказ принят к рассмотрению. 
 		Вы можете связаться с менеджером по адресу <a href=mailto:administrator@numizmatik.ru>administrator@numizmatik.ru</a> в рабочие дни 
@@ -62,8 +63,8 @@
 			</tr>
 		
 			<?
-			foreach ( $tpl['submitorder']['result'] as $rows){
-				if ($tpl['submitorder']['result'][$i]['title_materialtype']){?>
+			foreach ( $tpl['submitorder']['result'] as $rows){			   
+				if ($rows['title_materialtype']){?>
 					<tr><td colspan=7 class="h-cat" ><b><?=$MaterialTypeArray[$rows["materialtype"]]?></b></td></tr>
 				<?}?>
 

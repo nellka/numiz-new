@@ -15,7 +15,7 @@
 
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" ></script>
-
+<script src="<?=$cfg['site_dir']?>js/shopcoins.js"></script>
 <link rel="stylesheet" type="text/css" href="<?=$cfg['site_dir']?>css/jqueryui.custom.css" media="screen" />
 
 <?
@@ -27,7 +27,7 @@ if(!in_array($tpl["task"],array('login_order','registration','login','remind')))
 <script src="<?=$cfg['site_dir']?>js/jquery.easing.1.3.js" type= "text/javascript"></script>
 <script src="<?=$cfg['site_dir']?>js/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="<?=$cfg['site_dir']?>js/jquery.maskedinput.min.js"></script>
-<script src="<?=$cfg['site_dir']?>js/shopcoins.js"></script>
+
 <script type="text/javascript" src="<?=$cfg['site_dir']?>js/jquery.jcarousel.js"></script>
 <?}?>
    <script src="<?=$cfg['site_dir']?>js/jquery.ui.touch-punch.min.js"></script> 

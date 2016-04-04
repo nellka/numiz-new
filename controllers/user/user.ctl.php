@@ -110,6 +110,8 @@ switch ($tpl['task']){
 	        $tpl['user']['username'] =request('username');
 	        $tpl['user']['remember_me'] = request('remember_me');
 	        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+	        	//var_dump($tpl['user']['username'],$tpl['user']['password']);
+	        	//die();
 	            $is_logined = $user_class->loginUser($tpl['user']['username'],$tpl['user']['password']);
 	            if(!$is_logined) {
 	            	$tpl['user']['errors'][] = "Неверные логин/пароль";           

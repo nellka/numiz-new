@@ -4,7 +4,9 @@
 
 require $cfg['path'] . '/controllers/start_params.ctl.php';
 
-$tpl['is_mobile'] = true;
+if($tpl['is_mobile']&&isset($_COOKIES['fullversion'])){
+	$tpl['is_mobile'] = false;
+}
 
 $tmp['addcall']['errors'] = array();
 if(request('logout')){
@@ -61,9 +63,6 @@ $tpl['user']['orderusernow'] = 0;
 if ($blockend < time()&& $tpl['user']['user_id']) {
 	$tpl['user']['orderusernow'] = $user_class->setOrderusernow();   
 }
-
-
-
 
 include_once($cfg['path'] ."/configs/keywordsAdmin.php");
 
@@ -132,12 +131,6 @@ if(file_exists($controller)){
     require  $controller;
 }
 /*
-if ($catalog){	
-	require_once($cfg['path'] . '/controllers/catalog.ctl.php');
-} else {	
-// перенесли в admin keywords
-	require_once($cfg['path'] . '/controllers/site_titles.ctl.php');
-}*/
 
 if($tpl["datatype"]=='json'){
    // if(!$tpl['task']){
@@ -148,6 +141,26 @@ if($tpl["datatype"]=='json'){
 	//die();
 }
 
+if($tpl["datatype"]=='text_html'){
+	 if($static_page){
+    	require_once $cfg['path'] .  '/views/static_pages/'.$tpl['module'].'.tpl.php';
+    } else {
+    	require_once $cfg['path'] .  '/views/'.$tpl['module'].'.tpl.php';
+    }
+    die();
+}
+if($tpl['ajax']){
+    //require_once $cfg['path'] . '/views/common/header/head.tpl.php';
+   
+    require_once $cfg['path'] .  '/views/'.$tpl['module'].'.tpl.php';
+  
+    die();
+}
+
+require_once  $cfg['path'] .  '/controllers/breadcrumbs.ctl.php';
+require_once  $cfg['path'] .  '/views/template.php';
+
+die();*/
 
 if($tpl["datatype"]=='text_html'){
 	 if($static_page){
@@ -164,14 +177,17 @@ if($tpl["datatype"]=='text_html'){
         }
     }
     die();
+} elseif ($tpl["datatype"]=='json'){
+   echo json_encode($tpl[$tpl['module']]);
+   die();
 }
+
 if($tpl['ajax']){   
     if($tpl['is_mobile']&&file_exists($cfg['path'].'/views/_mobile/'.$tpl['module'].'.tpl.php')){
         require_once $cfg['path'] .  '/views/_mobile/'.$tpl['module'].'.tpl.php';
     } else {
         require_once $cfg['path'] .  '/views/'.$tpl['module'].'.tpl.php';
-    }
-  
+    }  
     die();
 }
 

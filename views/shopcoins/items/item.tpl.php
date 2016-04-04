@@ -60,6 +60,7 @@ if($rows["materialtype"]==3){?>
 
 if($rows["materialtype"]!=3){?>
 <div id='info' class="info_ext">	
+	<div>
 	<?
 	if($rows['year'] == 1990 && $materialtype==12) $rows['year'] = '1990 ЛМД';
 	if($rows['year'] == 1991 && $materialtype==12) $rows['year'] = '1991 ЛМД';
@@ -69,12 +70,19 @@ if($rows["materialtype"]!=3){?>
 	<?=in_array($rows["materialtype"],array(9,3,5))?"Группа":"Страна"?>: 
 	<a class="group_href" href=<?=$cfg['site_dir']?>shopcoins?group=<?=$rows['group']?>&materialtype=<?=$rows["materialtype"]?> title='Посмотреть <?=contentHelper::setWordThat($rows["materialtype"])?> <?=$rows["gname"]?>'>
 	<?=$rows["gname"]?>
-	</a><br>
+	</a>
 	<?}?>
-	<?= ($rows["year"]?"Год:&nbsp;<strong>".$rows["year"]."</strong><br>":"")?>
-	<?= (trim($rows["metal"])?"Металл: <strong>".$rows["metal"]."</strong><br>":"")?>
-	<?=(trim($rows["condition"])?"Состояние: <strong><font color=blue>".$rows["condition"]."</font></strong>":"")?>
+	<?=$rows["year"]?"<br>Год:&nbsp;<strong>".$rows["year"]."</strong>":""?>
+	<?=trim($rows["metal"])?"<br>Металл: <strong>".$rows["metal"]."</strong>":""?>
+	</div>
+	<div class="left">
+	<?=trim($rows["condition"])?"Состояние: <strong><font color=blue>".$rows["condition"]."</font></strong>":""?>
+	</div>
+	<div class="right">
+	<?=trim($rows["number"])? "Номер: <strong>".$rows["number"]."</strong>":"";?>
+	</div>
 </div>
+
 <?}?>
 <? echo contentHelper::render('shopcoins/price/prices',$rows);?>
 
@@ -90,7 +98,6 @@ if(($rows['buy_status']==7||$rows['buy_status']==6)&&($minpriceoneclick<=$rows['
 
 <div id=subinfo class="subinfo">
 Название: <strong><?=$rows["name"]?></strong><br>
-Номер: <strong><?=$rows["number"]?></strong><br>
 <?
 echo ($rows["width"]&&$rows["height"]?"<br>Приблизительный размер: <strong>".$rows["width"]."*".$rows["height"]." мм.</strong>":"")."
 ".($rows["weight"]>0?"<br>Вес: <strong>".$rows["weight"]." гр.</strong>":"")."
@@ -106,10 +113,10 @@ if($rows['materialtype']==5){
 	if($rows["accessoryColors"]) echo "<br>Цвета:<strong> ".$rows["accessoryColors"]."</strong>";
 	if($rows["accessorySize"]) echo "<br>Размеры:<strong> ".$rows["accessorySize"]."</strong>";
 }
-
 		
-				
-echo "<br>Количество:  <strong>".($rows["amountall"]?$rows["amountall"]:1)."</strong>";		
+if(!in_array($rows['materialtype'],array(1,4))){				
+	echo "<br>Количество:  <strong>".($rows["amountall"]?$rows["amountall"]:1)."</strong>";	
+}	
 if (sizeof($rows['shopcoinstheme']))
 	echo "<br>Тематика: <strong>".implode(", ", $rows['shopcoinstheme'])."</strong>";
 

@@ -40,7 +40,8 @@ if(request('onpage')){
     $tpl['onpage'] =$_COOKIE['onpage'];
 }	
 if(!isset($tpl['onpage']))	$tpl['onpage'] = 18;
-setcookie('onpage', $tpl['onpage'],  time()+ 86400 * 90,'/',$cfg['domain']);
+
+setcookie('onpage', $tpl['onpage'],  time()+ 86400 * 90,'/',$domain);
 
 //сохраняем сортировку элементов на странице в куке
 if(request('orderby')){
@@ -448,7 +449,12 @@ if($tpl['user']['user_id']==352480){
 
 if (sizeof($tpl['shop']['ArrayParent'])) {
     $result_search = $shopcoins_class->getCoinsParents($tpl['shop']['ArrayParent']);
-	foreach ($result_search as $rows_search ){		
+	foreach ($result_search as $rows_search ){	
+	    if($rows_search["shopcoins"]==$rows_search["parent"]) continue;
+    	/*if($tpl['user']['user_id']==352480){
+        	var_dump($rows_search["shopcoins"],$rows_search["parent"]);
+        	echo "<br>";
+        }*/
 		$tpl['shop']['ImageParent'][$rows_search["parent"]][] = $rows_search["image_small"];
 	}	
 }

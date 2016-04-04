@@ -1,5 +1,5 @@
 <div id="registration_form">
-<div class="frame-form" style="padding: 0 10px;">
+<div class="frame-form" >
 <h1 class="yell_b">Регистрация</h1>
 
 <? if($tpl['user']['send_status']){?>
@@ -40,17 +40,17 @@
         <label for="subscr">Подписаться на новости: </label>
          <input type="checkbox" id=subscr name=subscr <?=checked_box($tpl['user']['subscr'])?> value='1'>
 </div>
-<div class="web-form" style='line-height:30px;padding:0 0 20px '>
-        <label for="subscr">Введите цифрами число <font style='background:#ffcc66' id='inttostring_text'><?=$tpl['user']['inttostring']?></font>: </label>
+<div class="web-form" >
+        <label for="subscr" style="line-height: 30px;">Введите цифрами <font style='background:#ffcc66' id='inttostring_text'><?=$tpl['user']['inttostring']?></font>: </label>
         
-        <div class="inttostring">
-        <input type=text name=inttostring value='' id=inttostring class=formtxt size=4 maxlength=3>
+        <div class="inttostring right">
+        <input type=text name=inttostring value='' id=inttostring class=formtxt size=4 maxlength=3 style="width: 30px;">
         </div>
 </div>
 <input type=hidden id=inttostringm name=inttostringm value='<?=$tpl['user']['inttostringm']?>'>
 
 <div>
-    <input type="button" onclick="Register()"name=register value='Зарегистрироваться' class="yell_b" style="float: right">
+   <center> <input type="button" onclick="Register()"name=register value='Зарегистрироваться' class="yell_b"> </center>
 </div>
 </form>
 </div>
