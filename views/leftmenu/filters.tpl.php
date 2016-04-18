@@ -19,14 +19,14 @@ if(isset($filter_groups)&&$filter_groups){
     $yearend = isset($rows['yearend'])?$rows['yearend']:'';
     $seriess = isset($rows['seriess'])?$rows['seriess']:array();
     $search = isset($rows['search'])?$rows['search']:'';
+    $nocheck = isset($rows['nocheck'])?$rows['nocheck']:'';
    // var_dump($priceend,$pricestart);
 
-    $ahref = "";
+    $ahref = $nocheck?"&nocheck=$nocheck":'';
     $ahref_groups ='';
     $ahref_years_p ='';
     $ahref_years ='';
     $ahref_nominals ='';
-    
     foreach ((array)$groups as $group){
     	$ahref_groups ='&groups[]='.$group;
     }
@@ -67,7 +67,7 @@ if(isset($filter_groups)&&$filter_groups){
 	 		if(!isset($filter_group['filter_group_id_full'])) continue;
 
 	 		if(in_array($filter_group['filter_group_id_full'],array('nominals','years','years_p'))){
-	 			$ahref = $ahref_groups;
+	 			$ahref .= $ahref_groups;
 	 		}
 	 		if(in_array($filter_group['filter_group_id_full'],array('years','years_p'))){
 	 			$ahref .= $ahref_nominals;

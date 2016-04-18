@@ -8,6 +8,8 @@ if($tpl['is_mobile']&&isset($_COOKIES['fullversion'])){
 	$tpl['is_mobile'] = false;
 }
 
+$nocheck = request('nocheck');
+
 $tmp['addcall']['errors'] = array();
 if(request('logout')){
 

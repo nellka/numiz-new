@@ -4,6 +4,9 @@ require_once $cfg['path'] . '/models/orderdetails.php';
 require_once $cfg['path'] . '/models/viporder.php';
 require $cfg['path'] . '/configs/config_shopcoins.php';
 
+require_once $cfg['path'] . '/models/shopcoinsdetails.php';
+$details_class = new model_shopcoins_details($cfg['db']);
+
 $order_class = new model_order($cfg['db'],$shopcoinsorder,$tpl['user']['user_id']);
 $orderdetails_class = new model_orderdetails($cfg['db'],$shopcoinsorder);
 
@@ -111,7 +114,10 @@ $tpl['orderdetails']['ArrayGroupShopcoins'] = array();
 
 $i=0;
 foreach ($orderdetails as 	$rows ){	
-    
+    $rows["details"] = '';
+    $details = $details_class->getItem($rows['catalog']);
+    if($details) $rows["details"] = $details["details"];
+
 	$tpl['orderdetails']['ArrayShopcoinsInOrder'][$i] = $rows;
 	$tpl['orderdetails']['ArrayGroupShopcoins'][] = $rows['group'];
 

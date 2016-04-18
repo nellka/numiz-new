@@ -15,7 +15,10 @@
             <li><a href='http://www.numizmatik.ru/shopcoins/?materialtype=4' onmouseover="showMenuDescription(4);" title='Подарочные наборы монет  стоимость(цены) весь мир' class=topmenu>Подарочные наборы</a></li>
             <li><a href='http://www.numizmatik.ru/shopcoins/index.php?materialtype=5' onmouseover="showMenuDescription(5);" title='Книги о нумизматике бонистике цены' class=topmenu>Книги о монетах</a>
             <li><a href='http://www.numizmatik.ru/shopcoins/index.php?search=revaluation' onmouseover="showMenuDescription('revaluation');" title='Распродажа монет' class=topmenu>Распродажа монет</a></li>    
-            <li><a href='http://www.numizmatik.ru/shopcoins/?materialtype=11' onmouseover="showMenuDescription('11');" title='Барахолка' class=topmenu>Барахолка</a></li>    
+            <li><a href='http://www.numizmatik.ru/shopcoins/?materialtype=11' onmouseover="showMenuDescription('11');" title='Барахолка' class=topmenu>Барахолка</a></li>     
+             <? if($tpl['user']['user_id']){?>
+             <li><a href='http://www.numizmatik.ru/shopcoins/mycoins.php' onmouseover="showMenuDescription('0');" title='Монеты из ваших заказов в интернет-магазине монет' class="topmenu"><span class="error">Монеты из ваших заказов</span></a></li> 
+             <?}?>   
             </ul>          
            <div class="menuDescription" id='menudiscription-m0'>          
            <p>
@@ -45,6 +48,9 @@
                  <li><a href='http://www.numizmatik.ru/garantii-podlinosti-monet' title='Гарантии подлинности монет и банкнот от Клуба Нумизмат' class=topmenu>Гарантии подлиности монет</a></li> 
                 <? if($tpl['user']['user_id']){?><li><a href='http://www.numizmatik.ru/shopcoins/order.php' title='Ваши заказы монет, банкнот, аксессуаров для коллекционеров в интернет-магазине монет' class=topmenu>Ваши заказы</a></li>
                 <?}?>
+                 <? if($tpl['user']['user_id']){?>
+             <li><a href='http://www.numizmatik.ru/shopcoins/mycoins.php' onmouseover="showMenuDescription('0');" title='Монеты из ваших заказов в интернет-магазине монет' class="topmenu"><span class="error">Монеты из ваших заказов</span></a></li> 
+                <?}?>   
                 <li><a href='http://www.numizmatik.ru/shopinfo.php' title='Салон продаж' class=topmenu>Контакты</a></li>
                 </ul>
            </div> 

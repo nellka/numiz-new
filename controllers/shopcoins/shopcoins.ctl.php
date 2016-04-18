@@ -1,11 +1,19 @@
 <?
 require($cfg['path'].'/helpers/Paginator.php');
 require $cfg['path'] . '/configs/config_shopcoins.php';
+require_once $cfg['path'] . '/models/shopcoinsdetails.php';
+$details_class = new model_shopcoins_details($cfg['db']);
 if($tpl['user']['user_id']==352480){
 	echo time()." 1<br>";
 }
 
-$search = request('search');
+$mycoins = 0;
+
+if(isset($_REQUEST['mycoins_php'])){
+    $mycoins = 1;
+} else $mycoins = request('mycoins');
+
+
 $group = request('group');
 $catalognewstr = request('catalognewstr');
 
@@ -201,6 +209,10 @@ if($tpl['user']['user_id']==352480){
 	echo time()." 3<br>";
 }
 
+if($mycoins) {
+    $shopcoins_class->setMycoins($mycoins);
+}
+
 
 require($cfg['path'].'/controllers/filters.ctl.php');
 
@@ -216,7 +228,6 @@ $WhereParams = Array();
 
 $page_string = "";
 
-$mycoins = 0;
 $ourcoinsorder = Array();
 $ourcoinsorderamount = Array();
 
@@ -234,6 +245,7 @@ if($nominal_data)  $WhereParams['nominals'] = $nominal_data;
 if($series_data)  $WhereParams['series'] = $series_data;
 if($catalognewstr) $WhereParams['catalognewstr'] = $catalognewstr;
 
+
 if($searchname) {
     //так как ссылки были вида cp1251
     $WhereParams['searchname'] = str_replace("'","",iconv("cp1251",'utf8',$searchname));
@@ -246,6 +258,7 @@ $dateinsert_orderby = "dateinsert";
 //end - потом не забыть подключить
 $addhref = ($yearstart?"&yearstart=".$yearstart:"").
 ($catalognewstr?"&catalognewstr=$catalognewstr":"").
+($mycoins?"&mycoins=$mycoins":"").
 ($yearend?"&yearend=".$yearend:"").
 ($metal?"&metal=".urlencode($metal):"").
 ($search?"&search=".urlencode($search):"").
@@ -489,7 +502,10 @@ if (sizeof($tpl['shop']['MyShowArray'])==0){
 
 	    $tpl['shop']['MyShowArray'][$i]['condition'] = $tpl['conditions'][$rows['condition_id']];
 	    $tpl['shop']['MyShowArray'][$i]['metal'] = $tpl['metalls'][$rows['metal_id']];
-	   
+	    $details = $details_class->getItem($rows["shopcoins"]);
+	    $tpl['shop']['MyShowArray'][$i]["details"] =  '';
+	    if($details) $tpl['shop']['MyShowArray'][$i]["details"] = $details["details"];
+
 		//формируем картинки "подобные"
 		$tpl['shop']['MyShowArray'][$i]['tmpsmallimage'] = array();
 		

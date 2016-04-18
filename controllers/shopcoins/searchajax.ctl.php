@@ -3,138 +3,10 @@
 
 require $cfg['path'] . '/configs/config_shopcoins.php';
 
+require_once $cfg['path'] . '/models/shopcoinsdetails.php';
+$details_class = new model_shopcoins_details($cfg['db']);
+
 $search = request('term');
-
-/*
-$SearchTemp = explode(' ',$search);
-$WhereThemesearch = array();
-$SearchTempDigit = array();
-$WhereCountryes = array();
-$SearchTempStr = array();
-
-$tigger=0;
-if (sizeof($SearchTemp)>0) {
-	for ($i=0;$i<sizeof($SearchTemp);$i++) {		
-		if (!trim($SearchTemp[$i]))
-			continue;
-
-		if (intval($SearchTemp[$i]) ) {
-			
-			if ( (isset($SearchTemp[$i-1]) && intval($SearchTemp[$i-1])) || !$SearchTemp[$i+1] || intval($SearchTemp[$i+1])) { 
-				
-				$SearchTempMatch[] = $SearchTemp[$i];
-				$tigger=0;
-			}
-			else 
-				$tigger=1;
-			
-			$SearchTempDigit[] = $SearchTemp[$i];
-		} else {			
-			$SearchTemp[$i] = str_replace("+"," ",$SearchTemp[$i]);			
-			$strlen = mb_strlen(trim($SearchTemp[$i]),'UTF-8');
-			$substr = mb_substr(trim($SearchTemp[$i]),0,$strlen-1,'UTF-8');
-			//var_dump($SearchTemp[$i],$strlen,$substr);
-			$SearchTempStr[] = $strlen>4?$substr:trim($SearchTemp[$i]);
-
-			if ($i>0){ 
-				$SearchTempMatch[] = ">".($strlen>4?$substr."*":trim($SearchTemp[$i]));
-			} else {
-				$SearchTempMatch[] = ($strlen>4?$substr."*":trim($SearchTemp[$i]));
-			}
-		
-			if ($tigger==1) {
-			
-				$SearchTempMatch[] = '"'.$SearchTemp[$i-1]." ".trim($SearchTemp[$i]).'"';
-				$SearchTempMatch[] = $SearchTemp[$i-1];
-				$tigger=0;
-			}
-			
-		}
-		
-		foreach ($ThemeArray as $key=>$value) {
-			if (mb_stristr($SearchTemp[$i],$value,false,'UTF-8') ) {
-				$WhereThemesearch[] = "`theme` & ".pow(2,$key).">0";
-			}
-		}
-	
-	}	
-}
-
-$result_temp_metal = array();
-$result_temp_name = array();
-$result_temp_condition = array();
-
-if (sizeof($SearchTempStr)) {
-	$result_temp_metal = $shopcoins_class->searchTable('metals',$SearchTempStr);
-	$result_temp_name = $shopcoins_class->searchTable('nominals',$SearchTempStr);
-	$result_temp_condition = $shopcoins_class->searchTable('conditions',$SearchTempStr);
-	
-	$result_temp = $shopcoins_class->searchGroups($SearchTempStr);
-    $parents = array();
-	foreach ($result_temp as $rows_temp) {	
-		$WhereCountryes[] = $rows_temp['group'];
-		if ($rows_temp['groupparent']==0) {			
-			$parents[] = $rows_temp['group'];
-		}
-	}
-	if($parents){
-		$p_groups = $shopcoins_class->searchParrentGroups($parents);
-		foreach ($p_groups as $gr){
-			if(!in_array($gr["group"],$WhereCountryes)) $WhereCountryes[] = $gr["group"];
-		}		
-	}	
-}
-
-				
-$CounterSQL = '';
-
-$CounterSQL = (sizeof($SearchTempMatch)?" MATCH(shopcoins.`name`,shopcoins.details,shopcoins.number) AGAINST('".implode(" ",$SearchTempMatch)." ' IN BOOLEAN MODE) as coefficientcoins, if(`group`.`name` like '%".implode("%' or `group`.`name` like '%",$SearchTempStr)."%', 3,0) as coefficientgroup":"");
-
-if (sizeof($WhereThemesearch) || sizeof($SearchTempDigit)) {
-    $CounterSQL .= ($CounterSQL)?",":'';
-	$CounterSQL .= "if(".(sizeof($WhereThemesearch)?implode(" or ",$WhereThemesearch).", ".(sizeof($SearchTempDigit)?"if( shopcoins.year in ('".implode("','",$SearchTempDigit)."') and shopcoins.year<>0,3,2)":"2").",".(sizeof($SearchTempDigit)?" if( shopcoins.year in ('".implode("','",$SearchTempDigit)."') and shopcoins.year<>0,1.5,0)":"0"):" shopcoins.year in ('".implode("','",$SearchTempDigit)."') and shopcoins.year<>0,1.5,0").") as counterthemeyear";
-}
-
-$wArr =  " ( ".(sizeof($SearchTempStr)?"((shopcoins.details like '%".implode("%' or shopcoins.details like '%",$SearchTempStr)."%') and shopcoins.details<>'')":"")."
-".(sizeof($SearchTempDigit)?"or ((shopcoins.details like '".implode("' or shopcoins.details like '",$SearchTempDigit)."') and shopcoins.details<>'')":"")."
-".(sizeof($SearchTempStr)?"or shopcoins.number in ('".implode("','",$SearchTemp)."')":"")."
-".(sizeof($SearchTempStr)?"or shopcoins.number2 in ('".implode("','",$SearchTemp)."')":"")."
-".(sizeof($SearchTempDigit)?"or (shopcoins.year in ('".implode("','",$SearchTempDigit)."') and shopcoins.year<>0)":"");
-
-if($result_temp_metal){
-    $wArr .=" or (shopcoins.metal_id in (".implode(",",$result_temp_metal)."))";
-}
-if($result_temp_condition){
-    $wArr .=" or (shopcoins.condition_id in (".implode(",",$result_temp_condition)."))";
-}
-
-if($result_temp_name){
-    $wArr .=" or (shopcoins.nominal_id in (".implode(",",$result_temp_name)."))";
-}
-
-$wArr .=(sizeof($WhereThemesearch)?" or ".implode(" or ",$WhereThemesearch):"")." ".(sizeof($WhereCountryes)>0?" or shopcoins.`group` in (".implode(",",$WhereCountryes).")":"").")";
-
-$WhereArray[] = $wArr;
-$OrderByArray = Array();
-if (isset($CounterSQL)&&$CounterSQL)
-	if (sizeof($WhereThemesearch) || sizeof($SearchTempDigit))
-		$OrderByArray[] = " (coefficientcoins+counterthemeyear+coefficientgroup) desc, counterthemeyear desc, (coefficientcoins+coefficientgroup) desc, coefficientgroup desc, coefficientcoins desc  ";
-	else
-		$OrderByArray[] = " (coefficientcoins+coefficientgroup) desc, coefficientgroup desc, coefficientcoins desc ";
-
-if (sizeof($OrderByArray))
-	$orderby = "order by shopcoins.`check` asc,".implode(",",$OrderByArray);
-
-$positive_amount = '';
-$where = " where shopcoins.check=1 and ((shopcoins.materialtype in (2,4,7,8,3,5,9)) or (shopcoins.materialtype in(1,10) and shopcoins.amountparent>0) or shopcoins.number='$search' or shopcoins.number2='$search') 
-	".(sizeof($WhereArray)?" and ".implode(" and ", $WhereArray):"");
-
-//var_dump($CounterSQL);
-$sql = "select shopcoins.*, group.name as gname, group.groupparent ".($CounterSQL?",".$CounterSQL:"")." from shopcoins, `group`
-$where ".$positive_amount."and shopcoins.group=group.group  $orderby limit 5;";
-//echo 	$sql;	
-$data = array();
-$res = $shopcoins_class->getDataSql($sql);*/
 
 $searchArray = explode(' ',$search);
 
@@ -233,55 +105,6 @@ $SearchTempStr = array();
 $SearchTempMatch = array();
 
 $tigger=0;
-/*
-if (sizeof($SearchTemp)>0) {
-	for ($i=0;$i<sizeof($SearchTemp);$i++) {		
-		if (!trim($SearchTemp[$i]))
-			continue;
-
-		if (intval($SearchTemp[$i]) ) {
-			
-			if ( (isset($SearchTemp[$i-1]) && intval($SearchTemp[$i-1])) || !$SearchTemp[$i+1] || intval($SearchTemp[$i+1])) { 
-				
-				$SearchTempMatch[] = $SearchTemp[$i];
-				$tigger=0;
-			}
-			else 
-				$tigger=1;
-			
-			$SearchTempDigit[] = $SearchTemp[$i];
-		} else {
-			
-			$SearchTemp[$i] = str_replace("+"," ",$SearchTemp[$i]);
-			
-			$strlen = mb_strlen(trim($SearchTemp[$i]),'UTF-8');
-			$substr = mb_substr(trim($SearchTemp[$i]),0,$strlen-1,'UTF-8');
-			//var_dump($SearchTemp[$i],$strlen,$substr);
-			$SearchTempStr[] = $strlen>4?$substr:trim($SearchTemp[$i]);
-
-			if ($i>0){ 
-				$SearchTempMatch[] = ">".($strlen>4?$substr."*":trim($SearchTemp[$i]));
-			} else {
-				$SearchTempMatch[] = ($strlen>4?$substr."*":trim($SearchTemp[$i]));
-			}
-		
-			if ($tigger==1) {
-			
-				$SearchTempMatch[] = '"'.$SearchTemp[$i-1]." ".trim($SearchTemp[$i]).'"';
-				$SearchTempMatch[] = $SearchTemp[$i-1];
-				$tigger=0;
-			}
-			
-		}
-		
-		foreach ($ThemeArray as $key=>$value) {
-			if (mb_stristr($SearchTemp[$i],$value,false,'UTF-8') ) {
-				$WhereThemesearch[] = "`theme` & ".pow(2,$key).">0";
-			}
-		}
-	
-	}	
-}*/
 
 //var_dump($numbers,$years,$digits,$strings);
 $where = array();
@@ -314,6 +137,18 @@ foreach ($strings as &$string){
 $result_temp_name = array();
 $result_temp_metal = array();
 $result_temp_condition = array();
+$result_temp_details = array();
+
+if (sizeof($digits)) {  
+    $result_temp_details = $details_class->search($digits);   
+}
+
+if (sizeof($strings)) {  
+    $result_t_details = $details_class->search($strings);
+    foreach ($result_t_name as $key=>$row){
+        $result_temp_details[$key] = $row;
+    }    
+}
 
 if (sizeof($digits)) {  
     $result_temp_name = $shopcoins_class->searchInTable('nominals',$digits);   
@@ -369,12 +204,19 @@ if (sizeof($years)) {
 				
 
 $CounterSQL_data = array();
-
+/*
 if(sizeof($words)){
     $CounterSQL = "MATCH(shopcoins.details) AGAINST('".implode(" ",$words)." ' IN BOOLEAN MODE) as coefficientcoins";
 } else {
     $CounterSQL = "0 as coefficientcoins";
+}*/
+
+if ($result_temp_details) {
+	$CounterSQL = "if(shopcoins.shopcoins in (".implode(",",array_keys($result_temp_details))."), 1,0) as coefficientcoins";
+} else {
+    $CounterSQL = "0 as coefficientcoins";
 }
+
 if($WhereCountryes){
     $CounterSQL .= ", if(shopcoins.group in (".implode(",",$WhereCountryes)."), 5,0) as coefficientgroup";
 } else {
@@ -422,7 +264,13 @@ if (sizeof($WhereThemesearch) || sizeof($SearchTempDigit)) {
 }
 
 */
-$WhereArray =(sizeof($words)?"(shopcoins.details like '%".implode("%' or shopcoins.details like '%",$words)."%')":"").
+
+$WhereArray = '';
+if($result_temp_details){
+    $WhereArray =" (shopcoins.shopcoins in (".implode(",",array_keys($result_temp_details))."))";
+}
+
+$WhereArray .=/*(sizeof($words)?"(shopcoins.details like '%".implode("%' or shopcoins.details like '%",$words)."%')":"").*/
 (sizeof($numbers)?" or ($whereNumber) or ($whereNumber2)":"").
 (sizeof($years)?" or ($whereYear)":"").
 (sizeof($WhereThemesearch)?" or ".implode(" or ",$WhereThemesearch):""). 

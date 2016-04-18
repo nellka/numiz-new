@@ -3,6 +3,9 @@ require($cfg['path'].'/helpers/Paginator.php');
 require $cfg['path'] . '/configs/config_shopcoins.php';
 //require $cfg['path'] . '/models/search.php';
 
+require_once $cfg['path'] . '/models/shopcoinsdetails.php';
+$details_class = new model_shopcoins_details($cfg['db']);
+
 //$serach_class = new search($cfg['db'],$tpl['user']['user_id'],$nocheck);
  
 $search = request('search');
@@ -184,6 +187,7 @@ foreach ($strings as &$string){
 $result_temp_name = array();
 $result_temp_metal = array();
 $result_temp_condition = array();
+$result_temp_details =  array();
 
 if (sizeof($digits)) {  
     $result_temp_name = $shopcoins_class->searchInTable('nominals',$digits);   
@@ -196,6 +200,19 @@ if (sizeof($strings)) {
     }    
 }
 
+if (sizeof($digits)) {  
+    $result_temp_details = $details_class->search($digits);   
+}
+
+if (sizeof($strings)) {  
+    $result_t_details = $details_class->search($strings);
+    foreach ($result_t_name as $key=>$row){
+        $result_temp_details[$key] = $row;
+    }    
+}
+
+//var_dump($result_temp_details);
+//die();
 if (sizeof($strings)) {  
    $result_temp_metal = $shopcoins_class->searchTable('metals',$strings);
 
@@ -239,12 +256,20 @@ if (sizeof($years)) {
 				
 
 $CounterSQL_data = array();
-
+/*
 if(sizeof($words)){
     $CounterSQL = "MATCH(shopcoins.details) AGAINST('".implode(" ",$words)." ' IN BOOLEAN MODE) as coefficientcoins";
 } else {
     $CounterSQL = "0 as coefficientcoins";
+}*/
+if ($result_temp_details) {
+	$CounterSQL = "if(shopcoins.shopcoins in (".implode(",",array_keys($result_temp_details))."), 1,0) as coefficientcoins";
+} else {
+    $CounterSQL = "0 as coefficientcoins";
 }
+
+
+
 if($WhereCountryes){
     $CounterSQL .= ", if(shopcoins.group in (".implode(",",$WhereCountryes)."), 5,0) as coefficientgroup";
 } else {
@@ -292,7 +317,12 @@ if (sizeof($WhereThemesearch) || sizeof($SearchTempDigit)) {
 }
 
 */
-$WhereArray =(sizeof($words)?"(shopcoins.details like '%".implode("%' or shopcoins.details like '%",$words)."%')":"").
+$WhereArray = '';
+if($result_temp_details){
+    $WhereArray =" (shopcoins.shopcoins in (".implode(",",array_keys($result_temp_details))."))";
+}
+
+$WhereArray .=/*(sizeof($words)?"(shopcoins.details like '%".implode("%' or shopcoins.details like '%",$words)."%')":"").*/
 (sizeof($numbers)?" or ($whereNumber) or ($whereNumber2)":"").
 (sizeof($years)?" or ($whereYear)":"").
 (sizeof($WhereThemesearch)?" or ".implode(" or ",$WhereThemesearch):""). 
@@ -304,6 +334,8 @@ if($result_temp_metal){
 if($result_temp_condition){
     $WhereArray .=" or (shopcoins.condition_id in (".implode(",",array_keys($result_temp_condition))."))";
 }
+
+
 
 if($result_temp_name){
     $WhereArray .=" or (shopcoins.nominal_id in (".implode(",",array_keys($result_temp_name))."))";
@@ -333,14 +365,13 @@ $where = " where shopcoins.check=1 $whereMaterialtype ".($WhereArray?" and ($Whe
 $sql_all = "select count(shopcoins.shopcoins) from shopcoins, `group` $where ".$positive_amount."and shopcoins.group=group.group";
 
 
-//echo $sql_all;
+
 $countpubs = $shopcoins_class->countByParams($sql_all);
 //var_dump($countpubs );
 //echo "<br><br>";
 $sql = "select shopcoins.*, group.name as gname, group.groupparent ".($CounterSQL?",".$CounterSQL:"")." from shopcoins, `group` 
 $where ".$positive_amount."and shopcoins.group=group.group  $orderby limit ".($tpl['pagenum']-1)*$tpl['onpage'].",".$tpl['onpage'];
 
-		
 $addhref = ($materialtype?"&materialtype=$materialtype":"")."&search=".$search."&pagenum=".$tpl['pagenum'];
 //echo $sql;
 //echo "<br><br>";
@@ -364,6 +395,10 @@ $tpl['shop']['MyShowArray'] = Array();
 $tpl['shop']['ArrayParent'] = Array();
 
 foreach ($data as &$rows){
+    $details = $details_class->getItem($rows['shopcoins']);
+    $rows['details'] = '';
+    if($details)$rows['details']  = $details['details'];
+	
    // var_dump($rows['coefficientcoins'],$rows['coefficientgroup'],$rows['coefficientnominal'],$rows['coefficientyear'],$rows['coefficientmetal'],$rows['coefficientcondition'],$rows['year'],$rows['group']);
    // echo "<br><br>";
     $rows['metal'] = $tpl['metalls'][$rows['metal_id']];

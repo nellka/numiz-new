@@ -71,8 +71,9 @@
 		</div>    
 	<?} else {?>
 	   <div class="n_l shadoweffect">	
-		<a class="abold " href='<?=$cfg['site_dir']?>/shopcoins/order.php'>Мои заказы</a><br>  
-		<a class="abold " href="<?=$cfg['site_dir']?>shopcoins/?catalognewstr=1&savesearch=1">Монеты по заявкам (<?=$tpl['user']['catalogamount']?>)<br>  
+		<a class="abold " href='<?=$cfg['site_dir']?>shopcoins/order.php'>Мои заказы</a><br>  
+		<a class="abold " href="<?=$cfg['site_dir']?>shopcoins/?catalognewstr=1&savesearch=1">Монеты по заявкам (<?=$tpl['user']['catalogamount']?>)<br> 
+		<a href='<?=$cfg['site_dir']?>shopcoins/mycoins.php' title='Монеты из ваших заказов в интернет-магазине монет' class="abold "><span class="error">Монеты из ваших заказов</span></a> <br>
 		<a class="abold " href="<?=$cfg['site_dir']?>shopcoins/?logout=1">Выйти</a><br>     
 		</div>    
     <?}?>									

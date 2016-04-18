@@ -19,11 +19,17 @@ if($tpl['user']['user_id']==352480){
     $i = 0;
 	echo time()." f st $i<br>";
 }
+
+            
+$cache_prefix = "$materialtype"."_$search";
+
+if($mycoins) $cache_prefix .='mycoins_1_u_'.$tpl['user']['user_id'];
+if($nocheck) $cache_prefix .='nocheck_'.$nocheck;
+
 if(in_array($materialtype,array(1,7,8,6,4))){
-	if(!$tpl['filters']['metalls'] = $cache->load("metalls_$materialtype")) {	   
-	    $tpl['filters']['metalls'] = $shopcoins_class->getMetalls();	 
-	    $cache->save($tpl['filters']['metalls'], "metalls_$materialtype"."_$search");
-	    	 
+	if(!$tpl['filters']['metalls'] = $cache->load("metalls_$cache_prefix")) {	   
+	    $tpl['filters']['metalls'] = $shopcoins_class->getMetalls(false);	 
+	    $cache->save($tpl['filters']['metalls'], "metalls_".$cache_prefix);	    	 
 	} 	
 
 	foreach ($tpl['filters']['metalls'] as $value){
@@ -32,6 +38,7 @@ if(in_array($materialtype,array(1,7,8,6,4))){
 				'name'      => $value["name"]);   
 	}
 }
+
 if($tpl['user']['user_id']==352480){
 	echo time()." f metal $i<br>";
 }
@@ -43,9 +50,9 @@ if($tpl['user']['user_id']==352480){
 подарочные наборы
 */
 if(in_array($materialtype,array(1,7,8,6,4))){
-	if(!$tpl['filters']['conditions'] = $cache->load("conditions_$materialtype")) {	   
-	    $tpl['filters']['conditions'] = $shopcoins_class->getConditions();
-	    $cache->save($tpl['filters']['conditions'], "conditions_$materialtype"."_$search");	 
+	if(!$tpl['filters']['conditions'] = $cache->load("conditions_$cache_prefix")) {	   
+	    $tpl['filters']['conditions'] = $shopcoins_class->getConditions(false);
+	    $cache->save($tpl['filters']['conditions'], "conditions_$cache_prefix");	 
 	} 	
 	
 	foreach ($tpl['filters']['conditions'] as $value){
@@ -128,17 +135,19 @@ if($tpl['user']['user_id']==352480){
 	echo time()." f minprice $i<br>";
 }
 //($
-if(!$tpl['filters']['All_groups'] = $cache->load("all_groups_$materialtype"."_$search")) {
+if(!$tpl['filters']['All_groups'] = $cache->load("all_groups_$cache_prefix")) {
     $tpl['filters']['All_groups'] = $shopcoins_class->getGroups();
-    $cache->save( $tpl['filters']['All_groups'], "all_groups_$materialtype"."_$search");	
+    $cache->save( $tpl['filters']['All_groups'], "all_groups_$cache_prefix");	
 }
+
 if($tpl['user']['user_id']==352480){
-	echo time()." f allgroups $i<br>";
+    //var_dump("all_groups_$cache_prefix");    
+	//echo time()." f allgroups $i<br>";
 }
 
 if(!in_array($materialtype,array(5))){
 	
-	if(!$groups_filter = $cache->load("groups_$materialtype"."_$search")) {  
+	if(!$groups_filter = $cache->load("groups_$cache_prefix")) {  
 	    $Group = array();
 		foreach ($tpl['filters']['All_groups'] as $rows) {			
 			$Group[] = $rows["group"];
@@ -179,11 +188,11 @@ if(!in_array($materialtype,array(5))){
 		                                                     'filter_group_id'=>'group',
 		                                                     'filter_group_id_full'=>'groups',
 		                                                     'filter'=>$childen_data_group);
-		   
 	        	
 				 
 		}
-		$cache->save($groups_filter, "groups_$materialtype"."_$search");		
+		
+		$cache->save($groups_filter, "groups_$cache_prefix");		
 	}
 	if($groups_filter) $filter_groups[] = $groups_filter;
 }
@@ -191,10 +200,10 @@ if($tpl['user']['user_id']==352480){
 	echo time()." f group $i<br>";
 }
 //фильтр по номиналам
-if(!$tpl['filters']['nominals'] = $cache->load("nominals_$materialtype".implode("_",$group_data)."_$search")) { 
+if(!$tpl['filters']['nominals'] = $cache->load("nominals".implode("_",$group_data)."_$cache_prefix")) { 
     $tpl['filters']['nominals'] = $shopcoins_class->getNominals($group_data);
     
-    $cache->save($tpl['filters']['nominals'], "nominals_$materialtype".implode("_",$group_data)."_$search");
+    $cache->save($tpl['filters']['nominals'], "nominals".implode("_",$group_data)."_$cache_prefix");
 }
 if($tpl['user']['user_id']==352480){
 	echo time()." f nominals $i<br>";
@@ -208,10 +217,10 @@ foreach ($tpl['filters']['nominals'] as $value){
 
 //фильтр по сериям
 if($materialtype&&$group_data){
-	if(!$tpl['filters']['series'] = $cache->load("series_$materialtype".implode("_",$group_data))) { 
+	if(!$tpl['filters']['series'] = $cache->load("series_$cache_prefix".implode("_",$group_data))) { 
 	    $tpl['filters']['series'] = $shopcoins_class->getFilterSeries($group_data);
 	    
-	    $cache->save($tpl['filters']['series'], "series_$materialtype".implode("_",$group_data));	
+	    $cache->save($tpl['filters']['series'], "series_$cache_prefix".implode("_",$group_data));	
 	}
 	foreach ((array)$tpl['filters']['series'] as $value){  
 	    $childen_data_series[] = array(

@@ -4,7 +4,8 @@
 require_once $cfg['path'] . '/models/order.php';
 require_once $cfg['path'] . '/models/orderdetails.php';
 require $cfg['path'] . '/configs/config_shopcoins.php';
-
+require_once $cfg['path'] . '/models/shopcoinsdetails.php';
+$details_class = new model_shopcoins_details($cfg['db']);
 //способ доставки
 
 $delivery = request('delivery');
@@ -186,7 +187,10 @@ $tpl['orderdetails']['ArrayGroupShopcoins'] = array();
 
 $i=0;
 foreach ($orderdetails as 	$rows ){
-
+    $details = $details_class->getItem($rows['catalog']);
+	$rows["details"] =  '';
+	if($details) $rows["details"] = $details["details"];
+	
 	$tpl['orderdetails']['ArrayShopcoinsInOrder'][$i] = $rows;
 	$tpl['orderdetails']['ArrayGroupShopcoins'][] = $rows['group'];
 	$tpl['orderdetails']['ArrayShopcoinsInOrder'][$i]['title_materialtype'] = '';

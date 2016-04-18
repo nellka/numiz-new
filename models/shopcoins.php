@@ -18,8 +18,17 @@ class model_shopcoins extends Model_Base
 	    $this->user_id = $user_id;
 	    $this->nocheck = $nocheck;
 	    $this->materialtype = 1;
+	    $this->mycoins = 0;
 	    $this->categoty_type = self::BASE;
 	    $this->arraynewcoins = Array(1=>date('Y')-2,2=>date('Y')-1,3=>date('Y'));
+	}
+	
+	public function getMycoins(){       
+        return $this->mycoins;
+	}
+	
+	public function setMycoins($mycoins=0){       
+        return $this->mycoins = $mycoins;
 	}
 	
     public function getCategoryType(){       
@@ -43,17 +52,23 @@ class model_shopcoins extends Model_Base
 	}
 		
 	public function showedWith($id,$rows99){
+		$select  =  $this->db->select()
+                  ->from('shopcoins_details',array('details'))                  
+                  ->where('catalog=?',$rows99['shopcoins']);
+		$rows99['details'] = $this->db->fetchOne($select);;
+        
         $select = $this->db->select()
 	                      ->from('shopcoins',array('*',
                                     'pgroup'=>"if(shopcoins.group=".$rows99['group'].",10,0)",
                                     'pname' =>"if(shopcoins.name='".$rows99['name']."',2,0)",
                                     'pmetal_id'=>"if(shopcoins.metal_id='".$rows99['metal_id']."',3,0)",
                                     'pyear' =>"if(abs(shopcoins.year-".intval($rows99['year']).")<=10,4,0)",
-                                    'pdetails'=>"if((shopcoins.details='".$rows99['details']."' and trim(shopcoins.details)<>''),1,0)",
+                                    'pdetails'=>"if((shopcoins_details.details='".$rows99['details']."' and trim(shopcoins_details.details)<>''),1,0)",
                                     "ptheme"=>"if(shopcoins.theme & ".$rows99['theme'].",1,0)", 
                                     "pmaterialtype"=>"if(shopcoins.materialtype='".$rows99['materialtype']."',2,0)",
                                     "concat(shopcoins.name,shopcoins.group)"))
 	                      ->join(array('group'),'shopcoins.group=group.group',array('gname'=>'group.name'))
+	                      ->join(array('shopcoins_details'),'shopcoins.shopcoins=shopcoins_details.catalog')
 	                      ->where("shopcoins.check=1 and shopcoins.shopcoins<>?",$id)
 	                      ->where("shopcoins.parent<>?",$rows99['parent'])
 	                      ->where("shopcoins.price>=?",intval($rows99['price']/3))
@@ -500,17 +515,47 @@ class model_shopcoins extends Model_Base
     	
 		return $myCoins;
     }
+   
+
+	 
+    public function getMyShopCoinsIDs(){
+    	/*$sql = "select s.shopcoins from shopcoins as s, 
+    	`order` as o, orderdetails as od where s.materialtype".($materialtype==1||$materialtype==8?" in(1,8)":"=$materialtype")." and s.shopcoins=od.catalog and od.order=o.order and o.check=1 and od.status=0 and o.user=".intval($cookiesuser).";";
+    	*/
+    	if(!$myCoins = $this->cache->load("myOrderCoins_".$this->user_id)){
+    	 	$select = $this->db->select()
+		               ->from(array('s'=>$this->table),array('shopcoins'))
+		               ->join(array('od'=>'orderdetails'),'s.shopcoins=od.catalog',array())
+		               ->join(array('o'=>'order'),'od.order=o.order',array())
+		               ->where('o.user =?',$this->user_id)
+		               ->where('s.materialtype in (1,8)');
+		               /*if($this->user_id==352480){
+		                  echo $select->__toString();
+		               }*/
+		    $myCoins = $this->db->fetchAll($select);   
+		    $this->cache->save($myCoins, "myOrderCoins_".$this->user_id);   
+    	}
+    	
+		return $myCoins;
+    }
     
-	
     //число товаров для вывода на страницах каталога магазина
 	public function countAllByParams($WhereParams=array(),$searchid='',$yearsearch=''){	
 		//var_dump($WhereParams['catalognewstr']);
-		
 	    $searchname = '';
 	    $select = $this->db->select()
 		               ->from($this->table,array('count(*)'));
-        if(!isset($WhereParams['catalognewstr'])){
+        if(!isset($WhereParams['catalognewstr'])&&!$this->mycoins){
 			$select = $this->setMaterialtypeSelect($select,$WhereParams);
+			$select = $this->byAdmin($select); 	       
+        } elseif ($this->mycoins){
+            //мои монеты
+            $myShopCoinsIDs = $this->getMyShopCoinsIDs();
+            $shopcoins_id = array();
+        	foreach ($myShopCoinsIDs as $v){
+        		$shopcoins_id[] = $v['shopcoins'];
+        	}       
+        	$select->where('shopcoins in ('.implode(",",$shopcoins_id).')');
         } else {
         	//получаем мои монеты
         	$select->where('materialtype = 1');
@@ -521,8 +566,7 @@ class model_shopcoins extends Model_Base
         	foreach ($myCoinsRequest as $v){
         		$shopcoins_id[] = $v['shopcoins'];
         	}       
-        	$select->where('shopcoins in ('.implode(",",$shopcoins_id).')');
-        	
+        	$select->where('shopcoins in ('.implode(",",$shopcoins_id).')');        	
         }
 	
 			
@@ -589,9 +633,7 @@ class model_shopcoins extends Model_Base
         }
         if (isset($WhereParams['condition'])) {             	
         	$select->where("shopcoins.condition_id in (".implode(",",$WhereParams['condition']).")");
-        }
- 
-	    $select = $this->byAdmin($select); 	          
+        }       
 	   	   
 	   if ($searchid) {	
 	       
@@ -660,8 +702,17 @@ class model_shopcoins extends Model_Base
 	                      ->from('shopcoins')
 	                      ->join(array('group'),'shopcoins.group=group.group',array('gname'=>'group.name'));
 	   
-	    if(!isset($WhereParams['catalognewstr'])){
+	    if(!isset($WhereParams['catalognewstr'])&&!$this->mycoins){
 			$select = $this->setMaterialtypeSelect($select,$WhereParams);
+			$select = $this->byAdmin($select); 	       
+        } elseif ($this->mycoins){
+            //мои монеты
+            $myShopCoinsIDs = $this->getMyShopCoinsIDs();
+            $shopcoins_id = array();
+        	foreach ($myShopCoinsIDs as $v){
+        		$shopcoins_id[] = $v['shopcoins'];
+        	}       
+        	$select->where('shopcoins in ('.implode(",",$shopcoins_id).')');
         } else {
         	//получаем мои монеты
         	$select->where('materialtype = 1');
@@ -733,9 +784,7 @@ class model_shopcoins extends Model_Base
         if (isset($WhereParams['condition'])) {             	
         	$select->where("shopcoins.condition_id in (".implode(",",$WhereParams['condition']).")");
         }
-        
-	    $select = $this->byAdmin($select);       
-	  
+  
 	   
 	    if ($searchname) {
         	$searchname = str_replace("'","",$searchname);
@@ -765,9 +814,9 @@ class model_shopcoins extends Model_Base
 	   if($items_for_page!='all'){
 	        $select->limitPage($page, $items_for_page);
 	   }  
-	  if($this->user_id==352480){
-        	echo $select->__toString();
-        }
+	  if($this->user_id==352480||$this->user_id==811){
+        	//echo $select->__toString();
+      }
 	  // echo $select->__toString();
        return $this->db->fetchAll($select);
 	} 
@@ -815,10 +864,18 @@ class model_shopcoins extends Model_Base
 	                      ->join('metals','metals.id=metal_id',array("name"))
 	                      ->where('metal_id>0')             
 	                      ->order('name desc');
-	   if(!$all){
+	    if($this->mycoins) {
+	   		$myShopCoinsIDs = $this->getMyShopCoinsIDs();
+            $shopcoins_id = array();
+        	foreach ($myShopCoinsIDs as $v){
+        		$shopcoins_id[] = $v['shopcoins'];
+        	}       
+        	$select->where('shopcoins in ('.implode(",",$shopcoins_id).')');
+	   } elseif(!$all){
     	   $select=$this->setMaterialtypeSelect($select);
     	   $select = $this->byAdmin($select); 
 	   }
+	   
 	   if($this->user_id==352480){
         	echo $select->__toString();
         }	
@@ -830,16 +887,25 @@ class model_shopcoins extends Model_Base
 	    $select = $this->db->select()
 	                      ->from('shopcoins',array('group'=>'distinct(`group`)'))	                      
 	                      ->where('shopcoins.dateinsert>0')
-	                       ->order('group desc');
-	   $select = $this->byAdmin($select); 
-	   $select=$this->setMaterialtypeSelect($select);
-	   
+	                       ->order('group desc');	   
 	   //$select = $this->byAdmin($select);
-	    
+	   if($this->mycoins) {
+	   		$myShopCoinsIDs = $this->getMyShopCoinsIDs();
+            $shopcoins_id = array();
+        	foreach ($myShopCoinsIDs as $v){
+        		$shopcoins_id[] = $v['shopcoins'];
+        	}       
+        	$select->where('shopcoins in ('.implode(",",$shopcoins_id).')');
+	   } else {
+	   	 	$select = $this->byAdmin($select); 
+	   		$select=$this->setMaterialtypeSelect($select);
+	   }
+	
        if ($this->getCategoryType()==self::BASE ){       
            $select->order('group desc');
        } 
-       if($this->user_id==352480){
+       if($this->user_id==352480||$this->user_id==811){
+           //var_dump($this->mycoins);
         	echo $select->__toString();
         }     
        return $this->db->fetchAll($select);       
@@ -867,7 +933,7 @@ class model_shopcoins extends Model_Base
 	}
 	
 	protected function byAdmin($select,$alias='shopcoins'){
-	    if($this->user_id==811||$this->user_id==309236) {
+	    if($this->user_id==811||$this->user_id==352480) {
 	       if(!$this->nocheck){
 	           $select->where("$alias.check=1 or ($alias.check>3 and $alias.check<20)");
 	       } else {
@@ -876,6 +942,7 @@ class model_shopcoins extends Model_Base
 	   }  else {
 	       $select->where("$alias.check=1");
 	   }  
+	    
 	   return  $select;    
 	}
 	
@@ -887,13 +954,22 @@ class model_shopcoins extends Model_Base
 	                      ->join(array('group'),'shopcoins.group=group.group',array())
 	                      ->join('nominals', 'nominal_id=nominals.id',array('name'))
 	                      ->where("group.group in (".implode(",",$groups).")")
-	                      ->where("shopcoins.check=1")
 	                      ->order('nominals.name asc');  
-	    $select=$this->setMaterialtypeSelect($select);
-	    if($this->user_id==352480){
+	   if($this->mycoins) {
+	   		$myShopCoinsIDs = $this->getMyShopCoinsIDs();
+            $shopcoins_id = array();
+        	foreach ($myShopCoinsIDs as $v){
+        		$shopcoins_id[] = $v['shopcoins'];
+        	}       
+        	$select->where('shopcoins in ('.implode(",",$shopcoins_id).')');
+	   } else {
+	       $select = $this->setMaterialtypeSelect($select);
+	       $select = $this->byAdmin($select); 	 
+	   }
+	   if($this->user_id==352480){
         	echo $select->__toString();
-        }
-	    return $this->db->fetchAll($select);    
+       }
+	   return $this->db->fetchAll($select);    
 	}
 	
 	public function getConditions($all=false){
@@ -902,7 +978,14 @@ class model_shopcoins extends Model_Base
 	                      ->join('conditions', 'condition_id=conditions.id',array('name'))
 	                      ->where('condition_id>0')
 	                      ->order('conditions.name desc'); 
-	    if(!$all){
+	   if($this->mycoins) {
+	   		$myShopCoinsIDs = $this->getMyShopCoinsIDs();
+            $shopcoins_id = array();
+        	foreach ($myShopCoinsIDs as $v){
+        		$shopcoins_id[] = $v['shopcoins'];
+        	}       
+        	$select->where('shopcoins in ('.implode(",",$shopcoins_id).')');
+	   } elseif(!$all){
     	    $select=$this->setMaterialtypeSelect($select);   
     	   	$select = $this->byAdmin($select); 	   
 	    }	

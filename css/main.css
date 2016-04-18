@@ -404,6 +404,10 @@ a.borderimage{
 .m-3 .blockshop{
 height: 290px;}*/
 
+.m-mycoins .blockshop{
+    height: 260px;
+}
+
 .m-2 .blockshop{
     height: 375px;
 }
@@ -806,6 +810,10 @@ leftmenu
     padding: 0;
     width: 280px;
 }
+.menu-heading li {
+    line-height: 20px;
+}
+
 .menu-heading > span {
     padding: 15px;
 }
