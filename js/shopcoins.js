@@ -172,9 +172,10 @@ function initRaiting(id,total_reiting){
     });
 }
 	
-function ShowOneClick(id) {	    
+function ShowOneClick(id,width) {	
+    if(!width) width = 400; 
 	$('#MainBascet').html($('#oneshopcoins'+id+' .messages').html());
-	$("#MainBascet input[name='onephone']").mask("+7(999) 999-9999");
+	$("#MainBascet input[name='onephone']").mask("+9(999) 999-9999");
 	
 	$("#MainBascet").dialog({
         	position: { 
@@ -183,7 +184,7 @@ function ShowOneClick(id) {
                 of: $("#bascetshopcoins"+id)
             },
      		modal:true,
-     		width:400,
+     		width:width,
     		open: function(event, ui){
             }
      });  
@@ -423,7 +424,9 @@ function ShowSmallBascet (id,data) {
 		$("#header #inordersum").html(bascetsum);	
 		
 	
-		$("#bascetshopcoins" + bascetshopcoins).html('<img src="'+site_dir+'images/corz7.gif" title="Уже в корзине" alt="Уже в корзине">');	
+		//$("#bascetshopcoins" + bascetshopcoins).html('<img src="'+site_dir+'images/corz7.gif" title="Уже в корзине" alt="Уже в корзине">');
+		$("#bascetshopcoins" + bascetshopcoins).html('<a class="button7" alt="Уже в вашей корзине" onclick="return false;" href="#">Корзина</a>');
+			
 		return false;
     	/*var str = '';
     		str = '<h1 class="yell_b">Корзина</h1>';
@@ -440,11 +443,13 @@ function ShowSmallBascet (id,data) {
     			
     	} else if (data.error == 'reserved'){
     		$("#MainBascet").html('<h1 class="yell_b">Корзина</h1><p class=center>Товар зарезервирован одновременно с другим пользователем</p>');	
-    		$("#bascetshopcoins" + bascetshopcoins).html('<img src="'+site_dir+'images/corz6.gif" title="Уже в корзине" alt="Уже в корзине">');
-    		
+    		//$("#bascetshopcoins" + bascetshopcoins).html('<img src="'+site_dir+'images/corz6.gif" title="Уже в корзине" alt="Уже в корзине">');
+    		$("#bascetshopcoins" + bascetshopcoins).html('<a class="button6" alt="Уже в корзине" onclick="return false;" href="#">Корзина</a>');    		
     	}	else if (data.error == 'notavailable'){	
     		$("#MainBascet").html('<h1 class="yell_b">Корзина</h1><p class=center>Товар уже продан</p>');	
-    		$("#bascetshopcoins" + bascetshopcoins).html('<img src="'+site_dir+'images/corz6.gif" title="Уже в корзине" alt="Уже в корзине">');
+    		//$("#bascetshopcoins" + bascetshopcoins).html('<img src="'+site_dir+'images/corz6.gif" title="Уже в корзине" alt="Уже в корзине">');
+    		$("#bascetshopcoins" + bascetshopcoins).html('<a class="button6" alt="Уже в корзине" onclick="return false;" href="#">Корзина</a>');
+    		
     	} else if (data.error == 'stopsummax') {
     		$("#MainBascet").html('<h1 class="yell_b">Корзина</h1><p class=center>Максимальная сумма заказа <? echo $stopsummax;?> руб. <br>Если вы не все сложили в корзину, проделайте следующим заказом.</p>');	
     	} else if (data.error == 'amount') {
@@ -513,10 +518,12 @@ function AddNext (id, amount) {
         	} else if (data.error == 'noauth'){
         		$("#MainBascet").html('Чтобы встать в очередь на товар пожалуйста, авторизуйтесь');   		    	} else if (data.error == 'reserved'){
         		$("#MainBascet").html('Товар зарезервирован одновременно с другим пользователем');        
-        		$('#bascetshop' + id).html('<img src="'+site_dir+'images/corz6.gif" alt="Уже в корзине">');        		
+        		//$('#bascetshop' + id).html('<img src="'+site_dir+'images/corz6.gif" alt="Уже в корзине">');  
+        		$('#bascetshop' + id).html('<a class="button6" alt="Уже в корзине" onclick="return false;" href="#">Корзина</a>');         		    		
         	} else if (data.error == 'notavailable') {        		
         		$("#MainBascet").html('Товар уже продан');        		
-        		$('#bascetshop' + id).html('<img src="'+site_dir+'images/corz6.gif" alt="Уже в корзине">');        
+        		//$('#bascetshop' + id).html('<img src="'+site_dir+'images/corz6.gif" alt="Уже в корзине">');    
+        		$('#bascetshop' + id).html('<a class="button6" alt="Уже в корзине" onclick="return false;" href="#">Корзина</a>');       		     
         	} else if (data.error == 'stopsummax') {
         		$("#MainBascet").html('Максимальная сумма заказа <? echo $stopsummax;?> руб.<br>Если вы не все сложили в корзину, проделайте следующим заказом."');
         	}  
@@ -1612,4 +1619,14 @@ function ShowMainCoins(coinsmain, image,details)
 	//myDiv.style.top = posY -200;
 	//myDiv.html(str);
 	
+}
+
+function showInvis(atrr){
+	 var btn = $('#'+atrr);
+	 var is_visible = btn.is(':visible')?true:false;
+	 if(!is_visible){
+         btn.show();
+    } else {
+        btn.hide();           
+    }
 }

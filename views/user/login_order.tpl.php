@@ -18,7 +18,7 @@
     <input type=password name=password id=password size="40" value='<?=$tpl['user']['password']?>' placeholder="Введите пароль">
     
 </div>
-<div id='warn'>
+<div id='warn' class="web-form">
     <p><img src="<?=$cfg['site_dir']?>images/warn.png"> &nbsp;Мы не рассылаем спам и не предлагаем Ваши контакты третьим лицам</p>
 </div>
 <div >
@@ -32,7 +32,7 @@
           <input type="checkbox" name=subscr_shop <?=checked_box($tpl['user']['subscr_shop'])?> value='<?=$tpl['user']['subscr_shop']?>' id='subscr_shop'> <label for="subscr_shop"><b>Подписаться на новости магазина</b></label>
     </div>
 </div>
-<div>
+<div class="web-form">
 <input type="button" class="button25" value="Перейти к оформлению заказа" onclick="Order()">
 </div>
 <div class="auth_form" id='remind-block' style="display:<?=$tpl['user']['user_exist']?'block':'none'?>">

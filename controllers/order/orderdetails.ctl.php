@@ -88,15 +88,22 @@ $orderdetails= $orderdetails_class->getDetails($tpl['user']['user_id']);
 if($viporder){
 	$viporder_class = new model_shopcoinsvipclientanswer($cfg['db']);
 	$viporder_id = $viporder_class->getNewViporder();
+	
+	$viporderCoinsIds = array();
+	
 	foreach ($orderdetails as 	$row ){	
-		$viporder_class->addInOrder($viporder_id,$row["catalog"]);		
-		//удаляем позицию из заказа				
-		$orderdetails_class->deletePostion($row["catalog"]);		
-		$data = array('reserve'=>0,'reserveorder'=>0,'doubletimereserve'=>0,'userreserve'=>0);  
-		$shopcoins_class->updateRow($data,"shopcoins='{$row["catalog"]}' and reserveorder='$shopcoinsorder'");				
-		$orderdetails_class->deletePostionHelpshopcoinsorder($row["catalog"]);			
+		$viporder_class->addInOrder($viporder_id,$row["catalog"]);	
+		$viporderCoinsIds[]	 = $row["catalog"];			
 	}
-	$orderdetails_class->removeOrderCache($tpl['user']['user_id']);		
+	
+	if($viporderCoinsIds){
+	    //удаляем позицию из заказа	   	
+    	$orderdetails_class->deletePostions($viporderCoinsIds);	
+    	$data = array('reserve'=>0,'reserveorder'=>0,'doubletimereserve'=>0,'userreserve'=>0);  
+    	$shopcoins_class->updateRow($data,"shopcoins in (".implode(',',$viporderCoinsIds).") and reserveorder='$shopcoinsorder'");				
+    	$orderdetails_class->deletePostionsHelpshopcoinsorder($viporderCoinsIds);
+    	$orderdetails_class->removeOrderCache($tpl['user']['user_id']);	
+	}	
 }
 
 

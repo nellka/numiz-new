@@ -68,7 +68,6 @@
 			}?>
 		</div>
 	<?}
-	/*CheckFormDelivery()*/
 	?>
 </div>
 <br><br>
@@ -168,8 +167,8 @@
 		<?}	else echo "<input type=hidden name=idadmin value=0>";		
 		?>
 			
-			<input type="submit"  class="button25" value='Подтвердить заказ и перейти к оплате' style="width:330px">
-			<input type="button"  class="button25" onclick="$('#user-compare-block').hide();$('#user-order').show();" value="Редактировать данные заказа" style="width: 330px; margin: 10px 0px;">
+			<input type="submit"  class="button28" value='Подтвердить заказ и перейти к оплате' style="width:390px">
+			<input type="button"  class="button28" onclick="$('#user-compare-block').hide();$('#user-order').show();" value="Редактировать данные заказа" style="width: 390px; margin: 10px 0px;">
 		</div>
 		<div id='user-order'>
 			<div id='user-order-block'>
@@ -189,25 +188,23 @@
 
 				<div id='delivery-block' style="font-weight:400;">
 					<h5>Способ доставки</h5>
-					<?
-
-					foreach ($DeliveryName as $key=>$value){?>
-						<div>
-							<input type=Radio name=delivery id=delivery <?=(isset($DeliveryNameDisabled[$key])&&$DeliveryNameDisabled[$key]==1)?"disabled":""?> value=<?=$key?> <?=checked_radio($delivery,$key)?>
-							onclick="ShowPayment(<?=$key?>);ShowOther(<?=$key?>);"> <img src="<?=$cfg['site_dir']?>images/delivery<?=$key?>.jpg"> <?=$value?>
+				<?foreach ($DeliveryName as $key=>$value){?>
+					<div>
+							<input type=Radio name=delivery id="delivery<?=$key?>" <?=(isset($DeliveryNameDisabled[$key])&&$DeliveryNameDisabled[$key]==1)?"disabled":""?> value=<?=$key?> <?=checked_radio($delivery,$key)?>
+							onclick="ShowPayment(<?=$key?>);ShowOther(<?=$key?>);"> <img src="<?=$cfg['site_dir']?>images/delivery<?=$key?>.jpg"> <label for="delivery<?=$key?>"><?=$value?></label>
 							<?if($key==6){?> 
-							<br> <span style="font-size:11px;color:red;">Стоимость доставки пожалуйста узнавайте на сайте<br> 
+							<br> <span style="font-size:11px;">Стоимость доставки пожалуйста узнавайте на сайте<br> 
 								<a href=http://www.emspost.ru/ target=_blank>http://www.emspost.ru/</a> <br>
 								в разделе Тарифы и сроки и добавляйте к сумме заказа при его оплате</span>
 							<?}
-							if($key!=2){?> [<a href=#top onclick="window.open('<?=$cfg['site_dir']?>shopcoins/deliverydescription.php?delivery=<?=$key?>','_description','width=500,height=350,scrollbars=yes,top=250,left=450');return false;"><font color=red>?</font></a>]
+							if($key!=2){?> [<a href=#top onclick="window.open('<?=$cfg['site_dir']?>shopcoins/deliverydescription.php?delivery=<?=$key?>','_description','width=500,height=350,scrollbars=yes,top=250,left=450');return false;">?</a>]
 							<?}?>
 						</div>
 						<?
 					}
 					if ($tpl['user']['user_id'] == 811 || $user_remote_address == "94.79.50.94") {?>
 						<div>
-							<input type=Radio name=delivery value=10 onclick="ShowPayment(10);"> Покупка в салоне продаж
+							<input type=Radio name="delivery<?=$key?>" value=10 onclick="ShowPayment(10);"> <label for="delivery<?=$key?>">Покупка в салоне продаж</label>
 						</div>
 					<?}?>
 				</div>
@@ -254,14 +251,8 @@
 					foreach ($SumName as $key=>$value){
 						if ($key!=5) {?>
 							<div>
-								<img src="<?=$cfg['site_dir']?>images/payment<?=$key?>.jpg"> <input type=Radio name=payment id=payment<?=$key?> value="<?=$key?>"  <?=checked_radio($payment,$key)?> disabled><?=$value?>
-								[<a href=#top onclick="window.open('<?=$cfg['site_dir']?>shopcoins/paymentdescription.php?payment=<?=$key?>','_payment','width=500,height=350,scrollbars=yes,top=250,left=450');"><font color=red>?</font></a>]
-
-								<? if ($key==6){?>	<br>
-								<span style="font-size:11px;color:red;"><b>!!! 
-								У нас новые <a href=http://www.numizmatik.ru/shopcoins/delivery.php target=_blank>реквизиты</a>!!!
-								<br>Банка Пушкино больше не существует!</b><span style="font-size:11px;color:red;">
-								<?}?>
+								<img src="<?=$cfg['site_dir']?>images/payment<?=$key?>.jpg"> <input type=Radio name=payment id=payment<?=$key?> value="<?=$key?>"  <?=checked_radio($payment,$key)?> disabled><label for="payment<?=$key?>"><?=$value?></label>
+								[<a href=#top onclick="window.open('<?=$cfg['site_dir']?>shopcoins/paymentdescription.php?payment=<?=$key?>','_payment','width=500,height=350,scrollbars=yes,top=250,left=450');">?</a>]
 							</div>
 						<?}
 					}
@@ -318,7 +309,7 @@
 
 					<? if ($userstatus != 2) {
 						if ($sumlimit>=$sumallorder|| $sumlimit== 0) {?>
-							<input type="submit"  class="button25" value='Проверить заказ' style="width:150px" id="CheckFormOrder">
+							<input type="submit"  class="button28" value='Проверить заказ' id="CheckFormOrder">
 						<?} else {?>
 							<div class="error"><b>Внимание!</b> Вы привысили лимит своих невыкупленных заказов по общей сумме.<br>
 								Для выяснения обстоятельств свяжитесь с администрацией по тел. +7-903-006-00-44 или  +7-915-002-22-23. С 10-00 до 18-00 МСК (по рабочим дням).
@@ -335,7 +326,7 @@
 					<a href='<?=$cfg['site_dir']?>shopcoins' class="left c-b">Продолжить покупки </a>
 				</div>
 			</div>
-		</div>	
+		</div>
 </div>
 </form>
 
@@ -352,14 +343,14 @@
 </div>
 <br>
 <div> Нет желаемого способа оплаты или доставки? Возникли вопросы? <br><br>
-	Звоните бесплатно на 8-800-123-45-67 и мы поможем Вам!</div>
+	Звоните бесплатно на +7-800-123-45-67 и мы поможем Вам!</div>
 <!--Конец выбора параметров заказа-->
 
 <input type="hidden" id="timelimit" name="timelimit" value="<?=$timelimit?>">
 <!--Конец блока информации о заказе-->
 <script>
 	$(document).ready(function() {
-		$("#phone").mask("+7(999) 999-9999");
+		$("#phone").mask("+9(999) 999-9999");
 		ShowPayment(<?=$delivery?>);   
 
 		$("#resultform").validate({

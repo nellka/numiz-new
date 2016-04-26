@@ -101,20 +101,23 @@ if($rows['materialtype']==5){
 //echo "<br>Количество:  <strong>".($rows["amountall"]?$rows["amountall"]:1)."</strong>";		
 if (sizeof($rows['shopcoinstheme']))
 	echo "<br>Тематика: <strong>".implode(", ", $rows['shopcoinstheme'])."</strong>";
-/*
+
 if (trim($rows["details"]))
 {
-	$text = substr($rows["details"], 0, 250);
+	$text = mb_substr($rows["details"], 0, 250, 'UTF-8');
 	$text = strip_tags($text);
-	$text = substr($text, 0, strlen($text) - strpos(strrev($text), '.'));
+	if(mb_strlen($text,'UTF-8')<mb_strlen($rows["details"],'UTF-8')){
+		$text .= '...';
+	}
+	//$text = substr($text, 0, strlen($text) - strpos(strrev($text), '.'));
 	$text = str_replace($rows['name'],"<strong>".$rows['name']."</strong>",$text);
 	$text = str_replace($rows['gname'],"<strong>".$rows['gname']."</strong>",$text);
 	$text = str_replace(" монет ","<strong> монет </strong>",$text);
 	$text = str_replace(" монета ","<strong> монета </strong>",$text);
 	$text = str_replace(" монеты ","<strong> монеты </strong>",$text);
 	$text = str_replace(" монетам ","<strong> монетам </strong>",$text);
-	echo "<br>Описание: ".str_replace("\n","<br>",$text)."";
-}*/
+	echo "<br><b>Описание:</b> ".str_replace("\n","<br>",$text)."";
+}
 /*
 if ($rows["dateinsert"]>time()-86400*180 && !$mycoins){
 	echo "<br>Добавлено: <strong>".($rows["dateinsert"]>time()-86400*14?"<font color=red>NEW</font> ".date("Y-m-d", $rows["dateinsert"]):date("Y-m-d", $rows["dateinsert"]))."</strong>";
@@ -169,6 +172,6 @@ if(!$mycoins){
 }
 
 if(($rows['buy_status']==7||$rows['buy_status']==6)&&($minpriceoneclick<=$rows['price'])) {
-	echo contentHelper::render('shopcoins/price/oneclick',$rows);
+	echo contentHelper::render('_mobile/shopcoins/price/oneclick',$rows);
 }?>
 

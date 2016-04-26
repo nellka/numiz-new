@@ -7,6 +7,44 @@ $tpl['breadcrumbs'][] = array(
 );
 $tpl['current_page'] = '/';
 
+
+if ($tpl['module']=='shopcoins'&&$tpl['task']=='series'){
+      $tpl['breadcrumbs'][] = array(
+    	'text' => 'Магазин',
+    	'href' => $cfg['site_dir'].'shopcoins',
+    	'base_href' =>$cfg['site_dir'].'shopcoins'
+    );
+   
+    $tpl['breadcrumbs'][] = array(
+    	'text' => 'Серии монет',
+    	'href' => '',
+    	'base_href' =>''
+    );
+        
+    $tpl['current_page'] = '';
+    
+} else if($tpl['module']=='shopcoins'&&$tpl['task']=='one_serie'){
+      $tpl['breadcrumbs'][] = array(
+    	'text' => 'Магазин',
+    	'href' => $cfg['site_dir'].'shopcoins',
+    	'base_href' =>'shopcoins'
+    );
+   
+    $tpl['breadcrumbs'][] = array(
+    	'text' => 'Серии монет',
+    	'href' => $cfg['site_dir'].'shopcoins/series',
+    	'base_href' =>'shopcoins'
+    );
+    
+    $tpl['breadcrumbs'][] = array(
+    	'text' => $tpl['one_series']['name'],
+    	'href' => '',
+    	'base_href' =>''
+    );
+    
+    $tpl['current_page'] = '';
+}
+
 if ($tpl['module']=='shopcoins'&&$tpl['task']=='viporder'){
       $tpl['breadcrumbs'][] = array(
     	'text' => 'Магазин',
@@ -91,7 +129,7 @@ if ($tpl['module']=='shopcoins'&&$tpl['task']=='viporder'){
         	'base_href' =>""    );
     } elseif($search=='revaluation'){
         $tpl['breadcrumbs'][] = array(
-        	'text' => "revaluation",
+        	'text' => "Распродажа монет",
         	'href' => "",
         	'base_href' =>""    );
     } else {

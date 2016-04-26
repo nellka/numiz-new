@@ -36,7 +36,7 @@
 
 <script>
 $(document).ready(function() {
-    $("#callphone").mask("+7(999) 999-9999");
+    $("#callphone").mask("+9(999) 999-9999");
 });
 function AddMakeCall() {
     var error = "";

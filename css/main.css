@@ -11,6 +11,10 @@ float:left;
 text-align: left;
 }
 
+a.reservedinfo{
+    color: #666666;
+}
+
 input.error, .web-form input.error, textarea.error{
     border: 2px solid red;
 }
@@ -663,9 +667,15 @@ width: 175px;
 }
 
 #orderForm input.button25 {
-    margin: 0;
+    margin:  10px 0;
     width: 365px;
 }
+
+
+.marg-10 {
+    margin: 10px;
+}
+
 .web-form input[type="button"],.web-form input[type="submit"] {
     cursor: pointer;
     float: right;
@@ -1644,14 +1654,14 @@ div.stars {
 }
 
 /*order-page start*/
-#payment-block > div {
+#payment-block > div,#delivery-block > div {
     line-height: 20px;
 	width:500px;
 	text-align:left;
 	margin-bottom:15px;
 }
 
-#payment-block div img {
+#payment-block div img,#delivery-block  div img{
     line-height: 40px;
     vertical-align: middle;
 }
@@ -1912,7 +1922,9 @@ text-align: center;
 overflow: hidden;
 }
 .seo {
-    padding: 0 0 40px;
+    border:1px solid #ccc;
+    padding: 10px;
+   /* padding: 0 0 40px;*/
     font-weight: normal;
 }
 
@@ -2020,4 +2032,33 @@ float: right;
     transition: all 0.4s ease 0s;
     width: 60px;
     z-index: 9;
+}
+
+.ui-dialog #orderForm {
+    width: 370px;
+}
+
+.series-grid {
+    display: block;
+    float: left;
+    margin: 0 20px 0 0;
+    text-align: justify;
+    width: 47%;
+}
+
+
+.series-grid  a.image-s {
+    display: block;
+    float: left;
+    padding: 0 20px 0 0;
+}
+
+.image-t {
+    display: block;
+    margin: 0 0 10px;
+}
+
+.image-s > img {
+    border: 1px solid #ccc;
+    padding: 10px;
 }

@@ -356,7 +356,7 @@
 <!--Конец блока информации о заказе-->
 <script>
 	$(document).ready(function() {
-		$("#phone").mask("+7(999) 999-9999");
+		$("#phone").mask("+9(999) 999-9999");
 		ShowPayment(<?=$delivery?>);   
 
 		$("#resultform").validate({

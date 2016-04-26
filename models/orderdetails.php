@@ -38,9 +38,24 @@ class model_orderdetails extends Model_Base
 	public function deletePostion($id){
 	    $this->db->delete($this->table,"`order`=".$this->getIdentity()." and catalog=".$id);	   
 	}
+	
+	public function deletePostions($ids = array()){
+	    if($ids){
+	       $this->db->delete($this->table,"`order`=".$this->getIdentity()." and catalog in (".implode(',',$ids).")");	 
+	    }  
+	}
+	
 	public function deletePostionHelpshopcoinsorder($id){
 	    $this->db->delete('helpshopcoinsorder',"shopcoins='$id' and reserveorder='".$this->getIdentity()."'");	   
 	}
+	
+	public function deletePostionsHelpshopcoinsorder($ids = array()){
+	    if($ids){	        
+	       $this->db->delete('helpshopcoinsorder',"shopcoins in (".implode(',',$ids).") and reserveorder='".$this->getIdentity()."'");	
+	    }   
+	}
+	
+	
 	public  function updateItemCount($data,$id){
 	  	$this->updateRow($data,"orderdetails.order=".$this->getIdentity()." and catalog=".$id);    	
     	return ;

@@ -140,14 +140,14 @@ class model_shopcoins extends Model_Base
         return $this->db->fetchRow($select);
 	}
 	public function getGroupItem($id){	
-		if(!$dataGroup = $this->cache->load("group_".$id)){       	
+		//if(!$dataGroup = $this->cache->load("group_".$id)){       	
 		    $select = $this->db->select()
 	                  ->from('group')
 	                  ->where('group.group=?',$id)
 	                  ->limit(1);  
 	        $dataGroup =  $this->db->fetchRow($select);
 	        $this->cache->save($dataGroup, "group_".$id);
-		}
+		//}
 		
 		return $dataGroup;
 	}
@@ -861,7 +861,7 @@ class model_shopcoins extends Model_Base
 	public function getMetalls($all=false){
 	    $select = $this->db->select()
 	                      ->from('shopcoins',array('distinct(metal_id)'))
-	                      ->join('metals','metals.id=metal_id',array("name"))
+	                      ->join('shopcoins_metal','shopcoins_metal.id=metal_id',array("name"))
 	                      ->where('metal_id>0')             
 	                      ->order('name desc');
 	    if($this->mycoins) {
@@ -886,7 +886,7 @@ class model_shopcoins extends Model_Base
 		//	".$WhereSearch;	    
 	    $select = $this->db->select()
 	                      ->from('shopcoins',array('group'=>'distinct(`group`)'))	                      
-	                      ->where('shopcoins.dateinsert>0')
+	                      ->where('shopcoins.dateinsert>0 and shopcoins.group<>"790"')
 	                       ->order('group desc');	   
 	   //$select = $this->byAdmin($select);
 	   if($this->mycoins) {
@@ -952,9 +952,9 @@ class model_shopcoins extends Model_Base
 	    $select = $this->db->select()
 	                      ->from('shopcoins',array('distinct(nominal_id)'))
 	                      ->join(array('group'),'shopcoins.group=group.group',array())
-	                      ->join('nominals', 'nominal_id=nominals.id',array('name'))
+	                      ->join('shopcoins_name', 'nominal_id=shopcoins_name.id',array('name'))
 	                      ->where("group.group in (".implode(",",$groups).")")
-	                      ->order('nominals.name asc');  
+	                      ->order('shopcoins_name.name asc');  
 	   if($this->mycoins) {
 	   		$myShopCoinsIDs = $this->getMyShopCoinsIDs();
             $shopcoins_id = array();
@@ -975,9 +975,9 @@ class model_shopcoins extends Model_Base
 	public function getConditions($all=false){
 		$select = $this->db->select()
 	                      ->from('shopcoins',array('distinct(condition_id)'))
-	                      ->join('conditions', 'condition_id=conditions.id',array('name'))
+	                      ->join('shopcoins_condition', 'condition_id=shopcoins_condition.id',array('name'))
 	                      ->where('condition_id>0')
-	                      ->order('conditions.name desc'); 
+	                      ->order('shopcoins_condition.name desc'); 
 	   if($this->mycoins) {
 	   		$myShopCoinsIDs = $this->getMyShopCoinsIDs();
             $shopcoins_id = array();
@@ -1342,13 +1342,13 @@ class model_shopcoins extends Model_Base
                   ->limit(200);
          foreach ($this->db->fetchAll($select) as $row){
              $select  = $this->db->select()
-                                ->from('nominals',array('id'))
+                                ->from('shopcoins_name',array('id'))
                                 ->where('name=?',$row['name']);
              $n_id = $this->db->fetchOne($select);
              if(!$n_id){
                  $data = array('name'=>$row['name']);
-                 $this->db->insert('nominals',$data);
-                 $n_id = $this->db->lastInsertId('nominals');
+                 $this->db->insert('shopcoins_name',$data);
+                 $n_id = $this->db->lastInsertId('shopcoins_name');
              }
              $data = array('nominal_id'=>$n_id);
              $this->db->update('shopcoins',$data,"name='".$row['name']."'");             
@@ -1357,40 +1357,54 @@ class model_shopcoins extends Model_Base
 	
 	public function migrateMetal(){
 	    $select = $this->db->select()
-                  ->from('shopcoins',array('distinct(metal)'))
+                  ->from('shopcoins_old',array('distinct(metal)'))
                   ->where('metal<>"" and metal_id=0');
          foreach ($this->db->fetchAll($select) as $row){
              $select  = $this->db->select()
-                                ->from('metals',array('id'))
+                                ->from('shopcoins_metal',array('id'))
                                 ->where('name=?',$row['metal']);
              $n_id = $this->db->fetchOne($select);
              if(!$n_id){
                  $data = array('name'=>$row['metal']);
-                 $this->db->insert('metals',$data);
-                 $n_id = $this->db->lastInsertId('metals');
+                 $this->db->insert('shopcoins_metal',$data);
+                 $n_id = $this->db->lastInsertId('shopcoins_metal');
              }
-             $data = array('metal_id'=>$n_id);
-             $this->db->update('shopcoins',$data,"metal='".$row['metal']."'");             
+             
+             $select  = $this->db->select()
+                                ->from('shopcoins_old',array('shopcoins'))
+                                ->where('name=?',$row['metal']);
+             $ids =     $this->db->fetchAll($select); 
+             var_dump($ids);     
+             die();        
+             /*$data = array('metal_id'=>$n_id);
+             $this->db->update('shopcoins',$data,"metal='".$row['metal']."'");    */         
          }        
 	    
 	}
 	
     public function migrateCondition(){
         $select = $this->db->select()
-                  ->from('shopcoins',array('distinct(`condition`)'))
+                  ->from('shopcoins_old',array('distinct(`condition`)'))
                   ->where('`condition`<>"" and condition_id=0');
          foreach ($this->db->fetchAll($select) as $row){
              $select  = $this->db->select()
-                                ->from('conditions',array('id'))
+                                ->from('shopcoins_condition',array('id'))
                                 ->where('name=?',$row['condition']);
              $n_id = $this->db->fetchOne($select);
              if(!$n_id){
                  $data = array('name'=>$row['condition']);
-                 $this->db->insert('conditions',$data);
-                 $n_id = $this->db->lastInsertId('conditions');
+                 $this->db->insert('shopcoins_condition',$data);
+                 $n_id = $this->db->lastInsertId('shopcoins_condition');
              }
+             $select  = $this->db->select()
+                                ->from('shopcoins_old',array('shopcoins'))
+                                ->where('condition=?',$row['condition']);
+             $ids =     $this->db->fetchAll($select); 
+             var_dump($ids);     
+             die();        
+             /*
              $data = array('condition_id'=>$n_id);
-             $this->db->update('shopcoins',$data,"`condition`='".$row['condition']."'");             
+             $this->db->update('shopcoins',$data,"`condition`='".$row['condition']."'");   */          
          }                 
         
     }
@@ -1425,5 +1439,23 @@ class model_shopcoins extends Model_Base
         return $data;
 	}
 	
+	public function keywordtexts($arraykeyword=array()){
+	    if($arraykeyword){
+    	    $sql = "select *,match(`keywords`,`name`,`text`) against('".implode(" ",$arraykeyword)."' in boolean mode) as `coefficient` from shopcoinsbiblio where match(`keywords`,`name`,`text`) against('".implode(" ",$arraykeyword)."' in boolean mode) order by `coefficient` desc, shopcoinsbiblio asc limit 3;";
+    	
+    	    return $this->getDataSql($sql);
+    	}
+    	return array();
+	}
+	
+	public function getOtherMaterialData($group,$materialtype=1){
+	    $data = array();
+	    if(!$group||!$materialtype) return $data;
+
+	    $sql = "select * from shopcoins  where shopcoins.check=1 and shopcoins.dateinsert<>0 and shopcoins.dateorder=0 and shopcoins.materialtype <> '".$materialtype."' and `group` = '$group'	group by shopcoins.parent order by rand() limit 5";
+    	
+    	return $this->getDataSql($sql);	    
+	}
 }
+
 ?>

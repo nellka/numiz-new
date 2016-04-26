@@ -9,6 +9,7 @@ Abstract Class Model_Base {
     private $dataResult;
     protected  $cache;
     function __construct($db){
+        $db['driver_options']  = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES "utf8"');
 		$this->db = Zend_Db::factory('PDO_MYSQL', $db);
 	 	$this->db->query("SET names 'utf8'");
 	 	$modelName = get_class($this);

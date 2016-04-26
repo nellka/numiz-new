@@ -11,9 +11,9 @@ class model_shopcoins_details extends Model_Base {
 	
 	 public function migrateDetails(){
         $select = $this->db->select()
-                  ->from('shopcoins',array('shopcoins','details'))
-                  ->joinLeft('shopcoins_details','shopcoins.shopcoins=shopcoins_details.catalog',array('catalog'))
-                  ->where("(trim(shopcoins.details) > '' and  shopcoins.details is not null and shopcoins.details<>'&nbsp;' and shopcoins.details<>'<br>&nbsp;') and catalog is null")
+                  ->from('shopcoins_old',array('shopcoins','details'))
+                  ->joinLeft('shopcoins_details','shopcoins=shopcoins_details.catalog',array('catalog'))
+                  ->where("(trim(shopcoins_old.details) > '' and  shopcoins_old.details is not null and shopcoins_old.details<>'&nbsp;' and shopcoins_old.details<>'<br>&nbsp;') and catalog is null")
                   ->limit(10000);
          foreach ($this->db->fetchAll($select) as $row){
              
@@ -28,9 +28,9 @@ class model_shopcoins_details extends Model_Base {
     
      public function migrateKeywords(){
         $select = $this->db->select()
-                  ->from('shopcoins',array('shopcoins','keywords'))
-                  ->joinLeft('shopcoins_keywords','shopcoins.shopcoins=shopcoins_keywords.catalog',array('catalog'))
-                  ->where("(trim(shopcoins.keywords) > '' and shopcoins.keywords is not null and shopcoins.keywords<>'&nbsp;' and shopcoins.keywords<>'<br>&nbsp;') and catalog is null")
+                  ->from('shopcoins_old',array('shopcoins','keywords'))
+                  ->joinLeft('shopcoins_keywords','shopcoins=shopcoins_keywords.catalog',array('catalog'))
+                  ->where("(trim(shopcoins_old.keywords) > '' and shopcoins_old.keywords is not null and shopcoins_old.keywords<>'&nbsp;' and shopcoins_old.keywords<>'<br>&nbsp;') and catalog is null")
                   ->limit(10000);
  
          foreach ($this->db->fetchAll($select) as $row){

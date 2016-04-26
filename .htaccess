@@ -41,8 +41,10 @@ RewriteRule shopcoins/.*_c([0-9]*)_pc([0-9]*)_m([0-9]*)_pp([0-9]*)\.html$ index.
 #RewriteCond %{REQUEST_URI}	^/shopcoins/.*_m([0-9]*)\.html
 RewriteRule shopcoins/.*_c([0-9]*)_m([0-9]*)\.html$ index.php?module=shopcoins&task=show&catalog=$1&materialtype=$2 [L] 
 
+RewriteRule shopcoins/series/(.*)$ index.php?module=shopcoins&task=series&id=$1 [L]
 
-
+RewriteRule  shopcoins/series         index.php?module=shopcoins&task=series [L,QSA]
+RewriteRule  shopcoins/order.php         index.php?module=order [L,QSA]
 RewriteRule  shopcoins/shopcoinshelp.php         index.php?module=shopcoinshelp [L,QSA]
 RewriteRule  shopcoins/shopcoinsrules.php         index.php?module=shopcoinsrules [L,QSA]
 RewriteRule  shopcoins/delivery.php          index.php?module=delivery [L,QSA]

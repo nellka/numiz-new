@@ -72,16 +72,21 @@ if ($rows["novelty"]){
 
 	if (trim($rows["details"]))
 	{
-		$text = substr($rows["details"], 0, 250);
+		$text = mb_substr($rows["details"], 0, 250, 'UTF-8');
+		//var_dump($text);
 		$text = strip_tags($text);
-		$text = substr($text, 0, strlen($text) - strpos(strrev($text), '.'));
+		if(mb_strlen($text,'UTF-8')<mb_strlen($rows["details"],'UTF-8')){
+			$text .= '...';
+		}
+		//$text = substr($text, 0, strlen($text) - strpos(strrev($text), '.'));
+		
 		$text = str_replace($rows['name'],"<strong>".$rows['name']."</strong>",$text);
 		$text = str_replace($rows['gname'],"<strong>".$rows['gname']."</strong>",$text);
 		$text = str_replace(" монет ","<strong> монет </strong>",$text);
 		$text = str_replace(" монета ","<strong> монета </strong>",$text);
 		$text = str_replace(" монеты ","<strong> монеты </strong>",$text);
 		$text = str_replace(" монетам ","<strong> монетам </strong>",$text);
-		echo "<br>Описание: ".str_replace("\n","<br>",$text)."";
+		echo "<br><b>Описание:</b> ".str_replace("\n","<br>",$text)."";
 	}?>	
 	</div>		
 	</div>	
@@ -95,7 +100,7 @@ if ($rows["novelty"]){
 	?>
 		<div class="div_onecl">
 	<?php
-		echo contentHelper::render('shopcoins/price/oneclick',$rows);
+		echo contentHelper::render('_mobile/shopcoins/price/oneclick',$rows);
 	?>
 		</div>
 	<?php

@@ -184,7 +184,7 @@ if(!in_array($materialtype,array(5))){
 	    	    $i++;	 
 		    }
 		    ksort($childen_data_group);
-		    $groups_filter = array('name'=>($materialtype==5||$materialtype==3)?'Группа':'Страна',
+		    $groups_filter = array('name'=>($materialtype==5||$materialtype==3)?'Группы':'Страны',
 		                                                     'filter_group_id'=>'group',
 		                                                     'filter_group_id_full'=>'groups',
 		                                                     'filter'=>$childen_data_group);
@@ -232,14 +232,14 @@ if($tpl['user']['user_id']==352480){
 	echo time()." f series $i<br>";
 }
 
-if( $childen_data_nominals) $filter_groups[] = array('name'=>'Номинал','filter_group_id'=>'nominal','filter_group_id_full'=>'nominals','filter'=>$childen_data_nominals,'materialtype'=>$materialtype);
+if( $childen_data_nominals) $filter_groups[] = array('name'=>'Номиналы','filter_group_id'=>'nominal','filter_group_id_full'=>'nominals','filter'=>$childen_data_nominals,'materialtype'=>$materialtype);
 
 if( $childen_data_series) $filter_groups[] = array('name'=>'Серии','filter_group_id'=>'series','filter_group_id_full'=>'seriess','filter'=>$childen_data_series,'materialtype'=>$materialtype);
 
 if(($nominals&&$groups)||($groups&&$materialtype==4)){
-    if($childen_data_years) $filter_groups[] = array('name'=>'Год','filter_group_id'=>'years_p','filter_group_id_full'=>'years_p','filter'=>$childen_data_years);
+    if($childen_data_years) $filter_groups[] = array('name'=>'Года','filter_group_id'=>'years_p','filter_group_id_full'=>'years_p','filter'=>$childen_data_years);
 } else {
-    if($childen_data_years) $filter_groups[] = array('name'=>'Год','filter_group_id'=>'years','filter_group_id_full'=>'years','filter'=>$childen_data_years);
+    if($childen_data_years) $filter_groups[] = array('name'=>'Года','filter_group_id'=>'years','filter_group_id_full'=>'years','filter'=>$childen_data_years);
 }
 if($childen_data_metal) $filter_groups[] = array('name'=>'Металл','filter_group_id'=>'metal','filter_group_id_full'=>'metals','filter'=>$childen_data_metal);
 if($childen_data_conditions) $filter_groups[] = array('name'=>'Состояние','filter_group_id'=>'condition','filter_group_id_full'=>'conditions','filter'=>$childen_data_conditions);

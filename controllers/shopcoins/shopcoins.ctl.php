@@ -8,6 +8,7 @@ if($tpl['user']['user_id']==352480){
 }
 
 $mycoins = 0;
+$arraykeyword = array();
 
 if(isset($_REQUEST['mycoins_php'])){
     $mycoins = 1;
@@ -22,6 +23,8 @@ $GroupName = '';
 $metalTitle = '';
 
 $materialtype = request('materialtype')?request('materialtype'):1;
+
+
 if ($search == 'newcoins') {
     $shopcoins_class->setCategoryType(model_shopcoins::NEWCOINS);
 } elseif ($search == 'revaluation') {
@@ -29,6 +32,7 @@ if ($search == 'newcoins') {
 } else {
     $shopcoins_class->setMaterialtype($materialtype);
     $shopcoins_class->setCategoryType(0);
+	$arraykeyword[] = strip_tags($MaterialTypeArray[$materialtype]);
 }
 
 
@@ -83,6 +87,17 @@ $searchid = request('searchid');
 
 
 $groups = request('groups');
+//убираем третий рейх
+if($groups){
+	$is_uncorrect = array_search(790,$groups);
+	
+	if($is_uncorrect!==false){
+	//var_dump($groups,$is_uncorrect);
+		unset($groups[$is_uncorrect]);
+	}
+}
+
+
 $nominals = (array)request('nominals');
 $nominal = request('nominal');
 $group = request('group');
@@ -163,6 +178,9 @@ elseif($group) {
 	$groups =  array($group);
 }
 
+$tpl['shop']['OtherMaterialData'] = array();
+
+$OtherMaterial =  array();
 
 if(count($group_data)==1){
     
@@ -170,12 +188,55 @@ if(count($group_data)==1){
 	
 	$GroupName = $groupData["name"];
 	//$grouphref = strtolower_ru($GroupName)."_gn".$groupData['group'];
-	
+	$arraykeyword[] = $groupData["name"];
+		//var_dump(mb_detect_encoding($groupData["description"]));
+	if (trim($groupData["description"])){
+		$text = substr($groupData["description"], 0, 650);
+		$text = substr($text, 0, strlen($text) - strpos(strrev($text), '.'));
+
+		$text = iconv( "CP1251//TRANSLIT//IGNORE","UTF8", $text);
+
+		//UTF-8
+		$pic = '';
+		
+		if ($groupData["flagsmall"]) {
+		    
+			$pic = "../group/smallimages/".$groupData["flagsmall"];
+		} elseif ($groupData["emblemsmall"]) {
+			$pic = "../group/smallimages/".$groupData["emblemsmall"];
+		} elseif ($groupData["mapsmall"]){
+			$pic = "../group/smallimages/".$groupData["mapsmall"];			
+		}
+				
+		$tpl['GroupDescription'] = "<div class='left' style='padding: 0 10px 0 0;'>".contentHelper::showImage($pic,'')."</div>
+			<div>".str_replace("\n","<br>",$text)."</div>";		
+		unset ($text);
+		unset ($pic);
+	}
+		
 	if ($groupData["groupparent"] != 0 && $groupData["groupparent"] != $groupData["group"]) {	
 	    $groupParentData = $shopcoins_class->getGroupItem($groupData["groupparent"]); 		
 		$GroupNameMain = $groupParentData['name'];
 	}	
+	
+	$tpl['shop']['OtherMaterialData'] = $shopcoins_class->getOtherMaterialData($group_data[0],$materialtype);	
+	if ($tpl['shop']['OtherMaterialData']){		
+	    $i = 0;	
+	    $oldmaterialtype = 0;
+		foreach ($tpl['shop']['OtherMaterialData'] as &$rows){
+		    $rows['metal'] = $tpl['metalls'][$rows['metal_id']];
+		    $rows['condition'] = $tpl['conditions'][$rows['condition_id']];
+		    $tpl['shop']['related'][$i]['additional_title'] = '';
+			if ($oldmaterialtype != $rows["materialtype"]) {
+				$tpl['shop']['related'][$i]['additional_title'] = $MaterialTypeArray[$rows["materialtype"]];
+				$oldmaterialtype = $rows["materialtype"];
+			}
+			$i++;
+		}
+	}
+	
 }
+
 if(count($metal_data)==1){
     $metalTitle = $tpl['metalls'][$metal_data[0]];
 }
@@ -278,7 +339,9 @@ foreach ((array)$conditions as $c){
 }
 foreach ((array)$metals as $m){
     $addhref .="&metals[]=".urlencode($m);
+    $arraykeyword[] = urlencode($m);
 }
+
 foreach ((array)$groups as $g){
     $addhref .="&groups[]=$g";
 }
@@ -289,8 +352,10 @@ foreach ((array)$years_p as $y){
     $addhref .="&years_p[]=$y";
 }
 foreach ((array)$themes as $th){
+    $arraykeyword[] = $ThemeArray[$th];
     $addhref .="&themes[]=$th";
 }
+
 foreach ((array)$nominals as $th){
     $addhref .="&nominals[]=$th";
 }
@@ -670,5 +735,24 @@ if($tpl['user']['user_id']==352480){
 	echo time()." 9<br>";
 }
 
+
+
 require $cfg['path'] . '/configs/shopcoins_keywords.php';
+
+
+$arraykeyword[] = "монеты";
+/*
+if (sizeof($arraykeyword)){
+	
+    $keyword_texts = $shopcoins_class->keywordtexts($arraykeyword);    
+	
+	while ($rows = mysql_fetch_array($result)) {
+	
+		$text = substr(trim(strip_tags($rows['text'])),0,600);
+		$strpos = strpos(strrev($text),".");
+		echo "<p class=txt> &nbsp;&nbsp;&nbsp;<strong>".$rows['name']."</strong><br> &nbsp;&nbsp;&nbsp;".substr($text,0,600-($strpos<200?$strpos:0))."</p><br>";
+	}
+
+}*/
+
 ?>

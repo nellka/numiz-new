@@ -85,12 +85,12 @@ if($tpl['shop']['errors']){?>
 </div>
 
 <?}?>
-<div style="width: 100%; display: table;">
+<div class="pager">
 <?include(DIR_TEMPLATE.'shopcoins/pager.tpl.php');?>
 </div>
 
 <?if ($tpl['catalog']['lastViews']) {	?>
-	<div class="wraper">
+	<div>
 	<h5>10 последних просматриваемых товаров</h5>
 	</div>
 	<div class="triger-carusel">	

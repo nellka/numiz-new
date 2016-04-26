@@ -34,15 +34,7 @@
     </div>
 <?} else {?>
 
-    <? if(isset($tpl['submitorder']['compare'])) {?>
-    <div class="error">На постоянную работу удаленно требуется нумизмат для описания монет в административном интерфейсе. </b><br>
-	    Оплата сдельная - 2 рубля за монету, оплата через вебмани либо яндекс-деньги, либо бартер на заказы монет.
-	    Обращаться к администратору. E-mail: <a href=mailto:administrator@numizmatik.ru>administrator@numizmatik.ru</a>, тел.: +7-903-006-00-44,  +7-915-00-2222-3.
-    </div>
-   <?}
-   //var_dump($tpl['submitorder']);
-
-   ?>
+   
 	<div style="font-weight:400;">
 		<h5>Спасибо за покупку!</h5>
 		Уважаемый покупатель!<br>Ваш заказ принят к рассмотрению. 
@@ -63,7 +55,7 @@
 		
 			<?
 			foreach ( $tpl['submitorder']['result'] as $rows){
-				if ($tpl['submitorder']['result'][$i]['title_materialtype']){?>
+				if (isset($tpl['submitorder']['result'][$i]['title_materialtype'])&&$tpl['submitorder']['result'][$i]['title_materialtype']){?>
 					<tr><td colspan=7 class="h-cat" ><b><?=$MaterialTypeArray[$rows["materialtype"]]?></b></td></tr>
 				<?}?>
 
@@ -137,7 +129,7 @@
 				<div>
 				 14-5 минут от метро Тверская.<br>
 					Рабочие дни с 10.00 до 18.00.  <br><br>
-					<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2244.680447852284!2d37.609148899999994!3d55.76405310000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46b54a46b695b08f%3A0x5e895e0d8de444fe!2z0KLQstC10YDRgdC60LDRjyDRg9C7LiwgMTLRgTgsINCc0L7RgdC60LLQsCwgMTI1MDA5!5e0!3m2!1sru!2sru!4v1416476603568" width="600" height="450" frameborder="0" style="border:0"></iframe>
+					<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2244.680447852284!2d37.609148899999994!3d55.76405310000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46b54a46b695b08f%3A0x5e895e0d8de444fe!2z0KLQstC10YDRgdC60LDRjyDRg9C7LiwgMTLRgTgsINCc0L7RgdC60LLQsCwgMTI1MDA5!5e0!3m2!1sru!2sru!4v1416476603568" width="390" height="250" frameborder="0" style="border:0"></iframe>
 				</div><br>
 			<?}?>
 
@@ -169,5 +161,14 @@
 			}?>
 			<br><br>Спасибо за покупку в нашем магазине !
 			<br>Клуб Нумизмат - <a href=http://www.numizmatik.ru>www.numizmatik.ru</a><br><br>
+	<? if(isset($tpl['submitorder']['compare'])) {?>
+    <div class="error">На постоянную работу удаленно требуется нумизмат для описания монет в административном интерфейсе. </b><br>
+	    Оплата сдельная - 2 рубля за монету, оплата через вебмани либо яндекс-деньги, либо бартер на заказы монет.
+	    Обращаться к администратору. E-mail: <a href=mailto:administrator@numizmatik.ru>administrator@numizmatik.ru</a>, тел.: +7-903-006-00-44,  +7-915-00-2222-3.
+    </div>
+   <?}
+   //var_dump($tpl['submitorder']);
+
+   ?>
 <?}?>
 </div>		

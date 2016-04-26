@@ -19,16 +19,18 @@ if ($status ==1) {?>
 	На монету <?=$rows["gname"]?> <?=$rows["name"]?> была оставлена заявка через <a href=../catalognew target=_blank style="font-size:9px;" title='Каталог монет России, Германии, США и других стран'>каталог</a>. Монету до <?=date("H:i",$rows['timereserved'])?> могут купить только клиенты, оставившие заявку.</font>
 	<br><div id=mysubscribecatalog<?=$rows["shopcoins"]?>><a href='#coin<?=$rows["shopcoins"]?>' onclick="WaitSubscribeCatalog(<?=$rows["shopcoins"]?>);" title='При следующем появлении данного типа монеты в магазине вам будет отправлено уведомление на email...'>Оставить заявку через каталог</a></div>
 <?} elseif ($status ==6) {?>
-	Монета <?=$rows["gname"]?> <?=$rows["name"]?> была забронирована. Монету до <?=date("H:i",$rows['doubletimereserve'])?> может купить только клиент, поставивший бронь.	
+    <a href="#" onclick="return false;" class="reservedinfo" title="Монета <?=$rows["gname"]?> <?=$rows["name"]?> была забронирована. Монету до <?=date("H:i",$rows['doubletimereserve'])?> может купить только клиент, поставивший бронь.">Забронирована до <?=date("H:i",$rows['doubletimereserve'])?></a>	
 <?} elseif ($status ==7) {?>
-	Монета <?=$rows["gname"]?> <?=$rows["name"]?> была забронирована. Монету до <?=date("H:i",$rows['doubletimereserve'])?> может купить только клиент, поставивший бронь.<br>
+    <a href="#" onclick="return false;" class="reservedinfo" title="Монета <?=$rows["gname"]?> <?=$rows["name"]?> была забронирована. Монету до <?=date("H:i",$rows['doubletimereserve'])?> может купить только клиент, поставивший бронь.">Забронирована до <?=date("H:i",$rows['doubletimereserve'])?></a>		
 	<div id=mysubscribecatalog<?=$rows["shopcoins"]?>>
 	   <a href='#coin<?=$rows["shopcoins"]?>' onclick='WaitSubscribeCatalog(<?=$rows["shopcoins"]?>);' title='При следующем появлении данного типа монеты в магазине вам будет отправлено уведомление на email...'>Оставить заявку через каталог</a>
 	</div>
 <?} elseif ($status ==8) {?>
 	Вы в очереди на монету до <?=date("H:i", $rows["doubletimereserve"])?>
 <?} elseif ($status ==9) {?>
-	Вы можете купить монету. Ваша бронь до <?=date("H:i", $rows["doubletimereserve"])?>
+    <a href="#" onclick="return false;" class="reservedinfo" title="Вы можете купить монету. Ваша бронь до <?=date("H:i", $rows["doubletimereserve"])?>">
+	Ваша бронь до <?=date("H:i", $rows["doubletimereserve"])?>
+	</a>
 <?} 
 if (in_array($status,array(1,2,3,4,5,6,7,8,9))) {?>
     </div>

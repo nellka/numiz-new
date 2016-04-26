@@ -145,28 +145,28 @@ if (sizeof($digits)) {
 
 if (sizeof($strings)) {  
     $result_t_details = $details_class->search($strings);
-    foreach ($result_t_name as $key=>$row){
+    foreach ($result_t_details as $key=>$row){
         $result_temp_details[$key] = $row;
     }    
 }
 
 if (sizeof($digits)) {  
-    $result_temp_name = $shopcoins_class->searchInTable('nominals',$digits);   
+    $result_temp_name = $shopcoins_class->searchInTable('shopcoins_name',$digits);   
 }
 
 if (sizeof($strings)) {  
-    $result_t_name = $shopcoins_class->searchInTable('nominals',$strings);
+    $result_t_name = $shopcoins_class->searchInTable('shopcoins_name',$strings);
     foreach ($result_t_name as $key=>$row){
         $result_temp_name[$key] = $row;
     }    
 }
 
 if (sizeof($strings)) {  
-   $result_temp_metal = $shopcoins_class->searchTable('metals',$strings);
+   $result_temp_metal = $shopcoins_class->searchTable('shopcoins_metal',$strings);
 
 }
 if (sizeof($strings)) {  
-	$result_temp_condition = $shopcoins_class->searchTable('conditions',$strings);    
+	$result_temp_condition = $shopcoins_class->searchTable('shopcoins_condition',$strings);    
 }
 
 if (sizeof($strings)) { 
@@ -277,10 +277,10 @@ $WhereArray .=/*(sizeof($words)?"(shopcoins.details like '%".implode("%' or shop
 (sizeof($WhereCountryes)?" or shopcoins.`group` in (".implode(",",$WhereCountryes).")":"");
 
 if($result_temp_metal){    
-    $WhereArray .=" or (shopcoins.metal_id in (".implode(",",array_keys($result_temp_metal))."))";
+    $WhereArray .=" or (shopcoins.metal_id in (".implode(",",$result_temp_metal)."))";
 }
 if($result_temp_condition){
-    $WhereArray .=" or (shopcoins.condition_id in (".implode(",",array_keys($result_temp_condition))."))";
+    $WhereArray .=" or (shopcoins.condition_id in (".implode(",",$result_temp_condition)."))";
 }
 
 if($result_temp_name){

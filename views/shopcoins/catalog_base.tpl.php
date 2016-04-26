@@ -1,3 +1,4 @@
+
 <div id='products' class="products-cls m-<?=$mycoins?'mycoins':$materialtype?>">
 
 <?	
@@ -80,12 +81,13 @@ if($tpl['shop']['errors']){?>
 </div>
 
 <?}?>
+
 <div style="width: 100%; display: table;">
 <?include('pager.tpl.php');?>
 </div>
 
 <?if ($tpl['catalog']['lastViews']) {	?>
-	<div class="wraper">
+	<div>
 	<h5>10 последних просматриваемых товаров</h5>
 	</div>
 	<div class="triger-carusel">	
@@ -112,14 +114,57 @@ if($tpl['shop']['errors']){?>
 		<?}?>
 		</ul>
 	</div>
-</div>	
+</div>
 <?}?>
 <br class="clear:both">
-<?if($tpl['seo_data']){?>
+
+<?
+    if($tpl['seo_data']){?>
 <div class="seo" class="clearfix">
 <h5><?=$tpl['seo_data']['title']?></h5>
 <?=$tpl['seo_data']['text']?>
 </div>
+<br class="clear:both">
+<?} elseif(isset($tpl['GroupDescription'])&&$tpl['GroupDescription']) {?>
+	<div class="seo" class="clearfix">	
+	<?=$tpl['GroupDescription']?>
+	</div>
+	<br class="clear:both">
+<?}?>
+<?
+
+if ($tpl['shop']['OtherMaterialData']) {	?>
+	<div>
+	<h5>Рекомендуемые товары</h5>
+	</div>
+	<div class="triger-carusel">	
+		  <div class="d-carousel">
+          <ul class="carousel">
+          
+		<?
+		foreach ($tpl['shop']['OtherMaterialData'] as $rowsp){
+		    $rowsp['gname'] = $groupData["name"];		   
+		    $rowsp['metal'] = $tpl['metalls'][$rowsp['metal_id']];		   
+		    $rowsp['condition'] = $tpl['conditions'][$rowsp['condition_id']];
+		    $rowsp = array_merge($rowsp, contentHelper::getRegHref($rowsp));
+		    ?>			
+			<li>
+			<div class="coin_info" id='item<?=$rowsp['shopcoins']?>'>
+				<div id=show<?=$rowsp['shopcoins']?>></div>
+			<?	
+			$statuses = $shopcoins_class->getBuyStatus($rowsp["shopcoins"],$tpl['user']['can_see'],$ourcoinsorder,$shopcoinsorder);
+			$rowsp['buy_status'] = $statuses['buy_status'];
+			$rowsp['reserved_status'] = $statuses['reserved_status'];	
+			$rowsp['mark'] = $shopcoins_class->getMarks($rowsp["shopcoins"]);
+			echo contentHelper::render('shopcoins/item/itemmini-carusel',$rowsp);
+            ?>				
+			</div>
+			</li>
+		<?}?>
+		</ul>
+	</div>
+</div>	
+<br class="clear:both">
 <?}?>
 
 <script type="text/javascript" charset="utf-8">
@@ -219,18 +264,7 @@ function resetSliderYear() {
      return false;
  }
 
-function mCustomScrollbars(){
-	/* 
-	Параметры плагина CustomScrollbar: 
-	1) Тип прокрутки (значение: "vertical" или "horizontal")
-	2) Величина перемещения со сглаживанием (0 - сглаживание не используется) 
-	3) Тип сглаживания перемещений 
-	4) Дополнительное место снизу, только для вертикального типа прокрутки (минимальное значение: 1)
-	5) Настройка высоты/ширины панели прокрутки (значение: "auto" или "fixed")
-	6) Поддержка прокрутки колесиком мыши (значение: "yes" или "no")
-	7) Прокрутка с помощью клавиш (значения: "yes" или "no")
-	8) Скорость прокрутки (значение: 1-20, 1 соответствует самой медленной скорости)
-	*/
+function mCustomScrollbars(){	
 	//if($("#filter-groupgroup_container")) $("#filter-groupgroup_container").mCustomScrollbar({theme:"dark-thick"});
 	//"vertical",0,"easeOutCirc",1.05,"auto","yes","yes",10);
 	if($(".filter-groupgroup_container_1")) $(".filter-groupgroup_container_1").mCustomScrollbar({theme:"dark-thick"});
@@ -238,28 +272,10 @@ function mCustomScrollbars(){
 	//console.log(jQuery("#filter-grouptheme_container"));
 	if($("#filter-grouptheme_container")) $("#filter-grouptheme_container").mCustomScrollbar({theme:"dark-thick"});
 	if($(".filter-groupnominal_container_1")) $(".filter-groupnominal_container_1").mCustomScrollbar({theme:"dark-thick"});
-	//console.log(jQuery(".filter-groupnominal_container_1"));
-	/*$("#mcs2_container").mCustomScrollbar(); 
-	$("#mcs3_container").mCustomScrollbar("vertical",900,"easeOutCirc",1.05,"auto","no","no",0); 
-	$("#mcs4_container").mCustomScrollbar("vertical",200,"easeOutCirc",1.25,"fixed","yes","no",0); 
-	$("#mcs5_container").mCustomScrollbar("horizontal",500,"easeOutCirc",1,"fixed","yes","yes",20); */
+	//console.log(jQuery(".filter-groupnominal_container_1"));	
 }
 
-/* Функция для обхода ошибки с 10000 px для jquery.animate 
-$.fx.prototype.cur = function(){
-    if ( this.elem[this.prop] != null && (!this.elem.style || this.elem.style[this.prop] == null) ) {
-      return this.elem[ this.prop ];
-    }
-    var r = parseFloat( jQuery.css( this.elem, this.prop ) );
-    return typeof r == 'undefined' ? 0 : r;
-}*/
 
-/* Функция для динамической загрузки содержания 
-function LoadNewContent(id,file){
-	$("#"+id+" .customScrollBox .content").load(file,function(){
-		mCustomScrollbars();
-	});
-}*/
 
 
 function full_filter(name,auto,hide) {

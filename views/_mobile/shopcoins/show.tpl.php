@@ -23,14 +23,13 @@ if($tpl['show']['error']['no_coins']){?>
 		echo contentHelper::render('shopcoins/price/buy_button',$rows_main);
 		?>
 		 <?if(($rows_main['buy_status']==7||$rows_main['buy_status']==6)&&($minpriceoneclick<=$rows_main['price'])) {
-        	echo contentHelper::render('shopcoins/price/oneclick',$rows_main);
+        	echo contentHelper::render('_mobile/shopcoins/price/oneclick',$rows_main);
         }?>
 	</div>    	
 </div>
-    
-<div class="har" id="h-details" onclick="showInvis('details');">
-    Характеристики<div class="close-h-x"></div>
-    <div  class="detailsItem" id='details' style="display:none">	           
+   <br style="clear:both"> 
+<div class="" id="h-details"">   
+    <div  class="detailsItem" id='details' style="display:block">	           
        <?if ($rows_main["gname"]){?>
     	<?=in_array($rows_main["materialtype"],array(9,3,5))?"Группа":"Страна"?>: 
     	<a href=<?=$cfg['site_dir']?>/shopcoins?group=<?=$rows_main['group']?>&materialtype=<?=$rows_main["materialtype"]?> title='Посмотреть <?=contentHelper::setWordThat($rows_main["materialtype"])?> <?=$rows_main["gname"]?>'>
@@ -399,11 +398,11 @@ if(isset($tpl['show']['resultcicle'])&&$tpl['show']['resultcicle']){?>
 <?}
 		
 if ($tpl['shop']['resultp']) {	?>
-	<div class="wraper clearfix">
+	<div class="wraper">
 	<h5>Вместе с этим товаром просматривали также:</h5>
 	</div>
 	<div class="triger">	
-		<div class="wraper clearfix">
+		<div class="clearfix">
 		    <form action=# method=post>
 			<?$kn = 100;
 			$sumseecoins = 0;
@@ -448,7 +447,7 @@ if ($tpl['shop']['resultp']) {	?>
 
 <br style="clear:both">
 <?if( $tpl['shop']['result_show_relation2']) {	?>
-<div class="wraper clearfix">
+<div class="clearfix">
 	<h5>Подобные позиции в магазине:</h5>
 	</div>
 	<div class="triger-carusel">	

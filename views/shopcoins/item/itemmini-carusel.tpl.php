@@ -3,10 +3,10 @@ include(START_PATH."/config.php");
 
 ?>
   <center>
-  <a class="borderimage primage"  href='<?=$rows["rehref"]?>' title='<?=$cfg['site_dir']?>/shopcoins<?=$rows['namecoins']?>' >
+  <a class="borderimage primage"  href='/<?=$rows["rehref"]?>' title='<?=$cfg['site_dir']?>/shopcoins<?=$rows['namecoins']?>' >
   <?=contentHelper::showImage("images/".$rows["image"],$rows["gname"]." | ".$rows["name"]);?>
   </a></center>
-  <a href=index.php?catalog=<?=$rows["shopcoins"]?>&page=show&materialtype=<?=$rows["materialtype"]?>><?=$rows['name']?></a><br>
+  <a href=<?=$cfg['site_dir']?>shopcoins/index.php?catalog=<?=$rows["shopcoins"]?>&page=show&materialtype=<?=$rows["materialtype"]?>><?=$rows['name']?></a><br>
   <b>Страна:</b> <?=$rows['gname']?><br>
   <b>Год:</b> <?=$rows['year']?$rows['year']:"Без указания года"?><br>
   <b>Металл:</b> <?=$rows['metal']?><br>

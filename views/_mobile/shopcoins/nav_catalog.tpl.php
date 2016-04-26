@@ -15,9 +15,9 @@
 			foreach (array('asc','desc') as $v){
 				$orderBy = $key.$v;
 				if($orderBy==$tpl['orderby']){?>
-					<img style="cursor:pointer;" onclick="sendData('orderby','<?=$orderBy?>')" src="<?=$cfg['site_dir']?>images/static_images/<?=($v=='desc')?'pricedowncolor.jpg':'priceupcolor.jpg'?>" border="">				  
+					<img style="cursor:pointer;" onclick="sendData('orderby','<?=$orderBy?>')" src="<?=$cfg['site_dir']?>images/static_images/<?=($v=='desc')?'pricedowncolor_m.jpg':'priceupcolor_m.jpg'?>" border="">				  
 				<?} else {?>
-					<img style="cursor:pointer;" onclick="sendData('orderby','<?=$orderBy?>')" src="<?=$cfg['site_dir']?>images/static_images/<?=($v=='desc')?'pricedown.jpg':'priceup.jpg'?>" border="">
+					<img style="cursor:pointer;" onclick="sendData('orderby','<?=$orderBy?>')" src="<?=$cfg['site_dir']?>images/static_images/<?=($v=='desc')?'pricedown_m.jpg':'priceup_m.jpg'?>" border="">
 				<?}
 			}
 			echo '</div>';

@@ -12,18 +12,20 @@
 
 <div class="error" id='orderForm-errors'><?=implode("<br>",$tpl['user']['errors'])?></div>
 <div>
-    <input class="auth_form left" type=text name=email value='<?=$tpl['user']['email']?>' id='email' size="40" placeholder="Введите e-mail">
-</div>
+    <input class="auth_form left" type=text name=email value='<?=$tpl['user']['email']?>' id='email' size="43" placeholder="Введите e-mail">
+</div><br>
 <div id=password-block style="display:<?=$tpl['user']['user_exist']?'block':'none'?>">
-    <input type=password name=password id=password size="40" value='<?=$tpl['user']['password']?>' placeholder="Введите пароль">
+    <input type=password name=password id=password size="43" value='<?=$tpl['user']['password']?>' placeholder="Введите пароль">
     
 </div>
 <div id='warn'>
     <p><img src="<?=$cfg['site_dir']?>images/warn.png"> &nbsp;Мы не рассылаем спам и не предлагаем Ваши контакты третьим лицам</p>
 </div>
 <div >
-    <input type="button" name=newUser id='newUser' value='Я новый покупатель' onclick="Login()" class="button27 left" style="font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp;
-    <input type="button" name=existUser id=existUser value='Я уже заказывал ранее' onclick="Login(1)" class="button26" style="font-weight:bold;">
+    <input type="button" name=newUser id='newUser' value='Я новый покупатель' onclick="Login()" class="button27 left " style="font-weight:bold;width:300px">
+</div>
+<div>
+    <input type="button" name=existUser id=existUser value='Я уже заказывал ранее' onclick="Login(1)" class="button26 marg-10" style="font-weight:bold;width:300px">
 </div>
 
 <div id='subscr-order'>    
@@ -33,7 +35,7 @@
     </div>
 </div>
 <div>
-<input type="button" class="button25" value="Перейти к оформлению заказа" onclick="Order()">
+<input type="button" class="button25" value="Перейти к оформлению заказа" onclick="Order()" style="width:300px; margin: 10px 0;">
 </div>
 <div class="auth_form" id='remind-block' style="display:<?=$tpl['user']['user_exist']?'block':'none'?>">
 <a href="#" onclick="showOn('<?=$cfg['site_dir']?>user/remind.php?ajax=1')" title='Восстановить пароль'><b>Забыли пароль?</b></a>

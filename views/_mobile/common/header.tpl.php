@@ -2,7 +2,7 @@
   <div id="header" class="wraper">
 		<ul class="left cssmenu">
 	          <li>
-				<a href="#" class="coins" onclick="showInvis('shopMenu');return false;"></a>
+				<a href="#" class="coins" onclick="$('#userMenu').hide();showInvis('shopMenu');return false;"></a>
 				
 					<ul id="shopMenu" >
 						<div  class="shadoweffect shadowblock">
@@ -22,14 +22,11 @@
 						</div>
 					</ul>	
 
-			</li>	
-			<li class="rss_lenta">   
-			 <a href='http://www.numizmatik.ru/shopcoins/rss.xml' target='_blank' title='Новые поступления монет,банкнот,аксессуаров - канал RSS' class=topmenu></a>
-			</li>
+			</li>			
 		</ul>
 		<ul class="cssmenu right" id='rmenu'>
 			<li>
-				<a href='#' class="searchbtn" onclick="showInvis('searchblock');return false;"></a>
+				<a href='#' class="searchbtn" onclick="$('#shopMenu').hide();$('#userMenu').hide();showInvis('searchblock');return false;"></a>
 			</li>
 			<li>
 				<a href='<?=$cfg['site_dir']?>/shopcoins/delivery.php' class="car decoratnone">
@@ -47,7 +44,7 @@
     	        <span id=inordersum style="display:none"><?=$tpl['user']['summ']?></span>				
 			</li>			
 	       	<li>
-				<a href="#" class="user decoratnone" onclick="showInvis('userMenu');return false;">
+				<a href="#" class="user decoratnone" onclick="$('#shopMenu').hide();showInvis('userMenu');return false;">
 					<img src="<?=$cfg['site_dir']?>images/mobile/profile_mobile.jpg">
 				</a>
 				
@@ -67,14 +64,14 @@
     
 	<?if (!$tpl['user']["is_logined"]) {?>
 	   <div class="u_l shadoweffect">		
-		<a class="abold " href="<?=$cfg['site_dir']?>user/login.php">Войти</a> или <a  class="abold " href="<?=$cfg['site_dir']?>user/registration.php">Зарегистрироваться</a>						
+		<li><a class="abold " href="<?=$cfg['site_dir']?>user/login.php">Войти</a> или <a  class="abold " href="<?=$cfg['site_dir']?>user/registration.php">Зарегистрироваться</a></li>			
 		</div>    
 	<?} else {?>
 	   <div class="n_l shadoweffect">	
-		<a class="abold " href='<?=$cfg['site_dir']?>shopcoins/order.php'>Мои заказы</a><br>  
-		<a class="abold " href="<?=$cfg['site_dir']?>shopcoins/?catalognewstr=1&savesearch=1">Монеты по заявкам (<?=$tpl['user']['catalogamount']?>)<br> 
-		<a href='<?=$cfg['site_dir']?>shopcoins/mycoins.php' title='Монеты из ваших заказов в интернет-магазине монет' class="abold "><span class="error">Монеты из ваших заказов</span></a> <br>
-		<a class="abold " href="<?=$cfg['site_dir']?>shopcoins/?logout=1">Выйти</a><br>     
+		<li><a class="abold " href='<?=$cfg['site_dir']?>shopcoins/order.php'>Мои заказы</a></li>
+		<li><a class="abold " href="<?=$cfg['site_dir']?>shopcoins/?catalognewstr=1&savesearch=1">Монеты по заявкам (<?=$tpl['user']['catalogamount']?>)</li>
+		<li><a href='<?=$cfg['site_dir']?>shopcoins/mycoins.php' title='Монеты из ваших заказов в интернет-магазине монет' class="abold "><span class="error">Монеты из ваших заказов</span></a> </li>
+		<li><a class="abold " href="<?=$cfg['site_dir']?>shopcoins/?logout=1">Выйти</a></li>    
 		</div>    
     <?}?>									
 </div>	
@@ -86,7 +83,7 @@
 <div class="wraper" id=top>
 
 <div class="logo" id="logoblock">
-	<table>
+	<table width=100%>
 		<tr>
 			<td>
 				 <a class="logo-img" href="http://www.numizmatik.ru"><img src="<?=$cfg['site_dir']?>images/logo_small.jpg" border=0></a>
@@ -94,12 +91,11 @@
 			<td class="fontsize12">
 				<div id="contact-top-module">  
 					<p><b>Москва</b>, ул. Тверская 12 стр. 8<br>
-					<b>Санкт-Петербург</b>, ул. Турку 31</p>  
 				</div>       
-				<div id="contact-top-phone">
-					 8-800-333-14-77 <br>
-					 7-903-006-00-44 <br>
-					 7-812-925-53-22    
+				<div id="contact-top-phone" class="contact-top-phone">
+					 +7 (800) 333-14-77 <br>
+					 +7 (903) 006-00-44 <br>
+					 +7 (812) 925-53-22    
 				</div> 
 			</td>
 		</tr>
@@ -118,6 +114,9 @@
      
 <script>
 $(document).ready(function(){   
+    $('body').on("click", ".ui-widget-overlay", function() {
+          $(".ui-icon.ui-icon-closethick").trigger("click");
+    }); 
  /* $('.dropdown li.top').click(function(event) {
        
         var cur_href =  $('a',this).filter( ':first' );       

@@ -12,12 +12,16 @@ $nocheck = request('nocheck');
 
 $tmp['addcall']['errors'] = array();
 if(request('logout')){
-
+   
 	$user_class->logout();
 	unset($_POST['logout']);
+	$url = $_SERVER["REQUEST_URI"];
+	$url = str_replace('?logout=1','',$url);
+	$url = str_replace('&logout=1','',$url);
 	//var_dump($user_class->is_logged_in(),$_POST['logout']);
 	  // die();
-	header("location: ".$_SERVER["REQUEST_URI"]);
+	header("location: ".$url);
+	die();
 }
 
 $user_remote_address = $_SERVER['REMOTE_ADDR'] ;
@@ -57,7 +61,13 @@ if ($tpl['user']['is_logined']){
 	$tpl['user']['user_id'] = 0;
 	$shopcoins_class = new model_shopcoins($cfg['db'],$tpl['user']['user_id'],$nocheck);
 }
-	
+if($tpl['is_mobile']&&$fv){
+	$tpl['is_mobile'] = false;
+}
+
+if($tpl['user']['user_id']==355337){
+    $tpl['is_mobile'] = true;
+}
 //var_dump($tpl);
 //если пользователь залогинен и запрещено делать заказы, то проверяем те заказы, которые были
 $tpl['user']['orderusernow'] = 0;  

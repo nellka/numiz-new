@@ -6,7 +6,7 @@
     <?
     if($tpl['can_order']){?>
       <?if(!$tpl['user']['user_id']){?>
-    	    <a class="button25 right" onclick="showWin('<?=$cfg['site_dir']?>user/login_order.php?ajax=1',500);return false;" href="#" style="width:150px" id='of-1'>Оформить заказ</a>
+    	    <a class="button25 right" onclick="showWin('<?=$cfg['site_dir']?>user/login_order.php?ajax=1',400);return false;" href="#" style="width:150px" id='of-1'>Оформить заказ</a>
     	<?} else {?>
         	<form action="<?=$cfg['site_dir']?>shopcoins?page=order&page2=1" method="post">
         	<input type=submit  class="button25 right" name=submit value='Оформить заказ' style="width:150px">
@@ -123,10 +123,17 @@ if($rows["amountAll"]>1){?>
 <input type=hidden name=amount value='<?=$i?>'>
 </form>
 <div class="clearfix"> 
+<?
+if($sum<500){?>
+
 <p><b>Доставка</b> осуществляется на сумму <b><font color=red>не менее 500 руб.</font></b> и <b><font color=red>не более <?=$stopsummax?> руб.</font></b> по территории РФ. </p>
 <p style="border: 1px solid #cccccc;margin: 0;  padding: 10px; width: 630px;" class="left">Заказ на сумму менее 500 руб. могут сделать авторизованые пользователи, у которых есть ранее сделанный заказ, но еще не отправленный покупателю. В таком случае новый заказ будет объединен с предыдущим не отправленным.
 К стоимости Вашего заказа будет добавлена стоимость почтовых услуг по упаковке, страховке и доставке его Вам, которая зависит от пункта назначения, массы и стоимости товара.</p>
-<div class="right">Итого(без суммы доставки): <b><?=$sum?> рублей</b> <br>
+<?
+}?>
+
+<div class="right marg-10">Итого(без суммы доставки): <b><?=$sum?> рублей</b> <br>
+
 <? if($tpl['user']['user_id']&&$tpl['user']['user_data']['vip_discoint']){?>
     Ваша скидка как VIP-клиента: <b><?=$tpl['user']['user_data']['vip_discoint']?> %</b> <br>
     Итого c учетом скидки (без суммы доставки): <b><?=($sum-floor($sum*$tpl['user']['user_data']['vip_discoint']/100))?> рублей</b> <br>
@@ -153,7 +160,7 @@ if($rows["amountAll"]>1){?>
     if($tpl['can_order']){?>
         
     	<?if(!$tpl['user']['user_id']){?>
-    	    <a class="button25 right" onclick="showWin('<?=$cfg['site_dir']?>user/login_order.php?ajax=1',500);return false;" href="#" style="width:150px" id='of-1'>Оформить заказ</a>
+    	    <a class="button25 right" onclick="showWin('<?=$cfg['site_dir']?>user/login_order.php?ajax=1',400);return false;" href="#" style="width:150px" id='of-1'>Оформить заказ</a>
 	<?} else {?>
         	<form action="<?=$cfg['site_dir']?>shopcoins?page=order&page2=1" method="post">
         	<input type=submit  class="button25 right" name=submit value='Оформить заказ' style="width:150px">       	

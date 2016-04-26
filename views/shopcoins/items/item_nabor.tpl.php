@@ -73,9 +73,13 @@ if ($rows["novelty"]){
 
 	if (trim($rows["details"]))
 	{
-		$text = substr($rows["details"], 0, 250);
+		$text = mb_substr($rows["details"], 0, 250, 'UTF-8');
 		$text = strip_tags($text);
-		$text = substr($text, 0, strlen($text) - strpos(strrev($text), '.'));
+		if(mb_strlen($text,'UTF-8')<mb_strlen($rows["details"],'UTF-8')){
+			$text .= '...';
+		}
+		//$text = substr($text, 0, strlen($text) - strpos(strrev($text), '.'));
+		//$text = substr($text, 0, strlen($text) - strpos(strrev($text), '.'));
 		$text = str_replace($rows['name'],"<strong>".$rows['name']."</strong>",$text);
 		$text = str_replace($rows['gname'],"<strong>".$rows['gname']."</strong>",$text);
 		$text = str_replace(" монет ","<strong> монет </strong>",$text);

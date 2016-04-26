@@ -109,15 +109,15 @@ $(document).ready(function() {
 
 <div class="bg_shadow"></div>
 <div class="container"> 
-<?php include $cfg['path'] . '/views/_mobile/common/header.tpl.php'; ?>    
+<?php include $cfg['path'] . '/views/_mobile/common/header.tpl.php';  ?>    
     <div class="clearfix content" id='content-<?=$tpl['module']?>'>
         <?php      
 
         if($tpl['module']=='shopcoins'||$tpl['module']=='order'){
-            if(in_array($tpl['task'],array('show','catalog_search'))||$tpl['module']=='order'){?>
-    			<div class="wraper clearfix">  
+           if(in_array($tpl['task'],array('show','catalog_search'))||$tpl['module']=='order'){?>
+    			<div class="clearfix">  
 			     <?php
-                if(file_exists($cfg['path'] . '/views/_mobile/pagetop/'.$tpl['task'].'.tpl.php')){
+	            if(file_exists($cfg['path'] . '/views/_mobile/pagetop/'.$tpl['task'].'.tpl.php')){
 			         include $cfg['path'] . '/views/_mobile/pagetop/'.$tpl['task'].'.tpl.php'; 
                 } else include $cfg['path'] . '/views/_mobile/pagetop/top.tpl.php'; 
                 ?>
@@ -127,14 +127,16 @@ $(document).ready(function() {
 			  
 		    <div class="subheader">
 			<div class="clearfix">
+			
 			        <div id='leftmemu'>
-			         <?php include $cfg['path'] . '/views/leftmenu/leftmenu_shopcoins.tpl.php'; ?>
+			         <?php include $cfg['path'] . '/views/_mobile/pagetop/shortmenu.tpl.php'; ?>
 			        </div>
 			        <div id='subheader-body'>
 			            <?php include $cfg['path'] . '/views/common/breadcrumb.tpl.php'; ?> 
 			            <? include $cfg['path'] . '/views/_mobile/' . $tpl['module'] . '.tpl.php'; ?>		            
 			        </div>
-			    </div> 
+			    </div>
+			 
 		    </div>               
        <? }
        } else if($static_page){?>

@@ -18,7 +18,7 @@
    <li>
    <?=($tpl['user']['user_id']==811&$materialtype!=3&&$materialtype!=5)?"&nbsp;&nbsp;<a href='".$cfg['site_dir']."shopcoins/index.php?materialtype=2&nocheck=1' style='float:left' class='pls'><font color=black>(".(($nocheck&&$materialtype==2)?" - ":" + ").")</font></a>":""?>
    <a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=2' title='Банкноты стоимость(цены) весь мир' class="topmenu <?=(isset($materialtype)&&$materialtype==2)?'active':''?>">Банкноты</a></li>
-   <li><a href='<?=$cfg['site_dir']?>shopcoins/?materialtype=4' title='Аксессуары для коллекционеров цены' class="topmenu <?=(isset($materialtype)&&$materialtype==3)?'active':''?>">Аксессуары для монет</a></li>
+   <li><a href='<?=$cfg['site_dir']?>shopcoins/?materialtype=3' title='Аксессуары для коллекционеров цены' class="topmenu <?=(isset($materialtype)&&$materialtype==3)?'active':''?>">Аксессуары для монет</a></li>
    <li><?=($tpl['user']['user_id']==811&$materialtype!=3&&$materialtype!=5)?"&nbsp;&nbsp;<a href='".$cfg['site_dir']."shopcoins/index.php?materialtype=7&nocheck=1' style='float:left' class='pls'><font color=black>(".(($nocheck&&$materialtype==7)?" - ":" + ").")</font></a>":""?>
    <a href='<?=$cfg['site_dir']?>shopcoins/?materialtype=4' title='Подарочные наборы монет  стоимость(цены) весь мир' class=topmenu>Подарочные наборы</a></li>
    <li><?=($tpl['user']['user_id']==811&$materialtype!=3&&$materialtype!=5)?"&nbsp;&nbsp;<a href='".$cfg['site_dir']."shopcoins/index.php?materialtype=11&nocheck=1' style='float:left' class='pls'><font color=black>(".(($nocheck&&$materialtype==11)?" - ":" + ").")</font></a>":""?>
