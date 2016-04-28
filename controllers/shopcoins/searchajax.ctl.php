@@ -165,9 +165,15 @@ if (sizeof($strings)) {
    $result_temp_metal = $shopcoins_class->searchTable('shopcoins_metal',$strings);
 
 }
-if (sizeof($strings)) {  
-	$result_temp_condition = $shopcoins_class->searchTable('shopcoins_condition',$strings);    
+
+if (sizeof($strings)||sizeof($numbers)) {  
+    $array_for_conditions = $strings;
+    foreach ($numbers as $number){
+        $array_for_conditions[] = $number;
+    }
+	$result_temp_condition = $shopcoins_class->searchTable('shopcoins_condition',$array_for_conditions);    
 }
+
 
 if (sizeof($strings)) { 
     $result_temp = $shopcoins_class->searchGroups($strings);
@@ -271,8 +277,9 @@ if($result_temp_details){
 }
 
 $WhereArray .=/*(sizeof($words)?"(shopcoins.details like '%".implode("%' or shopcoins.details like '%",$words)."%')":"").*/
-(sizeof($numbers)?" or ($whereNumber) or ($whereNumber2)":"").
-(sizeof($years)?" or ($whereYear)":"").
+(sizeof($numbers)? ($WhereArray? "(or $whereNumber or $whereNumber2)":"($whereNumber or $whereNumber2)"):"");
+
+$WhereArray .= (sizeof($years)?($WhereArray? " or ($whereYear)":"($whereYear)"):"").
 (sizeof($WhereThemesearch)?" or ".implode(" or ",$WhereThemesearch):""). 
 (sizeof($WhereCountryes)?" or shopcoins.`group` in (".implode(",",$WhereCountryes).")":"");
 
@@ -310,7 +317,7 @@ $where = " where shopcoins.check=1 $whereMaterialtype ".($WhereArray?" and ($Whe
 //echo $where;
 
 $sql = "select shopcoins.*, group.name as gname, group.groupparent ".($CounterSQL?",".$CounterSQL:"")." from shopcoins, `group` 
-$where ".$positive_amount."and shopcoins.group=group.group  $orderby limit 5";
+$where ".$positive_amount."and shopcoins.group=group.group and shopcoins.group<>790 $orderby limit 5";
 
 
 //echo $sql;

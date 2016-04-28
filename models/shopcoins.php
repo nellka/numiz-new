@@ -31,6 +31,10 @@ class model_shopcoins extends Model_Base
         return $this->mycoins = $mycoins;
 	}
 	
+	function lockTablesForOrder(){
+        $this->db->getConnection()->exec('LOCK TABLE shopcoins WRITE, helpshopcoinsorder WRITE,shopcoinsend WRITE, catalogshopcoinssubscribe WRITE;');
+    }
+    
     public function getCategoryType(){       
         return $this->categoty_type;
 	}
@@ -241,8 +245,10 @@ class model_shopcoins extends Model_Base
 		if (in_array($item["materialtype"],array(7,8,6,2,4))) {			
 			//получаем уже зарезервированные монеты
 			$result_amount = $this->getReserved($id,self::$reservetime);
-
-			foreach ($result_amount as $rows_amount){				
+            
+		
+			foreach ($result_amount as $rows_amount){	
+			    	
 				if ( $rows_amount["reserve"] > 0 && ( time() - (int) $rows_amount["reserve"] < self::$reservetime ) ) { 					
 					$reservedForSomeUser = ( $rows_amount["reserve"] > 0 && ( time() - (int) $rows_amount["reserve"] < self::$reservetime ) );
 					
@@ -267,8 +273,10 @@ class model_shopcoins extends Model_Base
 			} elseif (($item['amount'] - $reserveamount)>1)	{
 				$statusopt = 1;	
 			}	
-			if (!$reserveuser && $reservealluser) $reserveuser=$reservealluser;		
 			
+			if (!$reserveuser && $reservealluser) $reserveuser=$reservealluser;
+					
+			     	
 			if ($statusshopcoins) {
 			    $buy_status = 2;
 			} elseif ( ($reservedForSomeUser || (!$this->user_id && $reservedForSomeGroup) || (false === $isInRerservedGroup)) && $reserveamount>=$item["amount"]){
@@ -311,11 +319,25 @@ class model_shopcoins extends Model_Base
     			}
 			}			 
 		}
+		
+		if($this->user_id==352480){
+             var_dump($id,$reserveamount,$item["amount"],$statusshopcoins,$reservedForSomeUser,$buy_status); echo "<br>";
+                           
+            //var_dump($id,$buy_status,$reserved_status); echo "<br>";
+         }	
 		//var_dump( $buy_status);
-		if ($reservedForSomeUser) {
-			$reserved_status = 1;
-			if (time() - (int) $item["reserve"] >= (self::$reservetime)  || $item["reserveorder"] != $shopcoinsorder  && $item['relationcatalog']>0 && $this->user_id)
-				$reserved_status = 2;
+		
+       
+       if ($reservedForSomeUser) {
+           if($item["amount"]>$reserveamount){
+              $reserved_status = 0;
+           } else $reserved_status = 1;	
+				
+			if (time() - (int) $item["reserve"] >= (self::$reservetime)  || $item["reserveorder"] != $shopcoinsorder  && $item['relationcatalog']>0 && $this->user_id){
+				
+			    $reserved_status = 2;
+			    if($buy_status==6&&($item["amount"]>$reserveamount)) $reserved_status = 0;
+			}
 		} elseif($reservedForSomeGroup) {
 			if($isInRerservedGroup) {
 				$reserved_status = 3;
@@ -488,6 +510,7 @@ class model_shopcoins extends Model_Base
     	        $select->where("shopcoins.materialtype=? ",$this->materialtype); 
     	   }
 		}
+		$select->where('shopcoins.group<>790'); 
 		return $select;
     }
 
@@ -640,7 +663,8 @@ class model_shopcoins extends Model_Base
        } else {
 	       
 	   } 
-    if($this->user_id==352480){
+	   //var_dump($this->user_id);
+       if($this->user_id==352480){
         	echo $select->__toString();
         }
        return $this->db->fetchOne($select);       
@@ -862,8 +886,9 @@ class model_shopcoins extends Model_Base
 	    $select = $this->db->select()
 	                      ->from('shopcoins',array('distinct(metal_id)'))
 	                      ->join('shopcoins_metal','shopcoins_metal.id=metal_id',array("name"))
-	                      ->where('metal_id>0')             
-	                      ->order('name desc');
+	                      ->where('metal_id>0 and shopcoins_metal.name<>""')             
+	                      ->order('shopcoins_metal.name asc');
+	                      
 	    if($this->mycoins) {
 	   		$myShopCoinsIDs = $this->getMyShopCoinsIDs();
             $shopcoins_id = array();
@@ -969,7 +994,17 @@ class model_shopcoins extends Model_Base
 	   if($this->user_id==352480){
         	echo $select->__toString();
        }
-	   return $this->db->fetchAll($select);    
+       
+       $result = $this->db->fetchAll($select);
+       
+       foreach ($result as &$row){
+    	    $number = (int) $row['name'];
+    	    $string = str_replace($number,'<<<>>>',$row['name']);
+    	    $n = number_format($number, 0, ',', '.');
+    	    $row['name'] = str_replace('<<<>>>',$n, $string);        	    
+       }  
+    	       
+	   return $result;    
 	}
 	
 	public function getConditions($all=false){
@@ -977,7 +1012,7 @@ class model_shopcoins extends Model_Base
 	                      ->from('shopcoins',array('distinct(condition_id)'))
 	                      ->join('shopcoins_condition', 'condition_id=shopcoins_condition.id',array('name'))
 	                      ->where('condition_id>0')
-	                      ->order('shopcoins_condition.name desc'); 
+	                      ->order('shopcoins_condition.name asc'); 
 	   if($this->mycoins) {
 	   		$myShopCoinsIDs = $this->getMyShopCoinsIDs();
             $shopcoins_id = array();
@@ -996,11 +1031,14 @@ class model_shopcoins extends Model_Base
 	}
 	
 	public function getYears($nominals=array(),$groups=array()){
+	    
+	   $WhereParams['group'] = true;
+	   
 	   $select = $this->db->select()
 	                      ->from('shopcoins',array('year'=>'distinct(year)'))
 	                     // ->where('year>0')
 	                      ->order('year desc');   
-	   $select=$this->setMaterialtypeSelect($select); 
+	   $select=$this->setMaterialtypeSelect($select,$WhereParams); 
 	   $select = $this->byAdmin($select); 
 	   if($nominals){	       	
             $select->where("nominal_id in (".implode(",",$nominals).")");
@@ -1336,10 +1374,12 @@ class model_shopcoins extends Model_Base
 	}
 	
 	public function migrateNominals(){
+
 	     $select = $this->db->select()
                   ->from('shopcoins',array('distinct(name)'))
                   ->where('name<>"" and nominal_id=0')
-                  ->limit(200);
+                  ->limit(2000);
+                  echo $select->__toString();
          foreach ($this->db->fetchAll($select) as $row){
              $select  = $this->db->select()
                                 ->from('shopcoins_name',array('id'))
@@ -1356,10 +1396,13 @@ class model_shopcoins extends Model_Base
 	}
 	
 	public function migrateMetal(){
+	  
 	    $select = $this->db->select()
                   ->from('shopcoins_old',array('distinct(metal)'))
                   ->where('metal<>"" and metal_id=0');
+                                   
          foreach ($this->db->fetchAll($select) as $row){
+            
              $select  = $this->db->select()
                                 ->from('shopcoins_metal',array('id'))
                                 ->where('name=?',$row['metal']);
@@ -1372,12 +1415,19 @@ class model_shopcoins extends Model_Base
              
              $select  = $this->db->select()
                                 ->from('shopcoins_old',array('shopcoins'))
-                                ->where('name=?',$row['metal']);
-             $ids =     $this->db->fetchAll($select); 
-             var_dump($ids);     
-             die();        
-             /*$data = array('metal_id'=>$n_id);
-             $this->db->update('shopcoins',$data,"metal='".$row['metal']."'");    */         
+                                ->where('metal_id=0 and metal=?',$row['metal']);
+           
+             $ids = $this->db->fetchAll($select); 
+             $ids_metal = array();
+             foreach ( $ids as $id){
+                 $ids_metal[] = $id['shopcoins'];
+             }
+             
+             $data = array('metal_id'=>$n_id);
+             
+             $this->db->update('shopcoins',$data,"shopcoins in (".implode(',',$ids_metal).")"); 
+             $this->db->update('shopcoins_old',$data,"shopcoins in (".implode(',',$ids_metal).")");             
+       
          }        
 	    
 	}
@@ -1398,16 +1448,28 @@ class model_shopcoins extends Model_Base
              }
              $select  = $this->db->select()
                                 ->from('shopcoins_old',array('shopcoins'))
-                                ->where('condition=?',$row['condition']);
-             $ids =     $this->db->fetchAll($select); 
-             var_dump($ids);     
-             die();        
+                                ->where('condition_id=0 and `condition`=?',$row['condition']);
+                                //echo $select->__toString();
+             $ids =  $this->db->fetchAll($select); 
+            
+             $ids_metal = array();
+             foreach ( $ids as $id){
+                 $ids_metal[] = $id['shopcoins'];
+             }
+             var_dump($ids_metal);
+             $data = array('condition_id'=>$n_id);
+//var_dump($data);
+             $this->db->update('shopcoins',$data,"shopcoins in (".implode(',',$ids_metal).")"); 
+             $this->db->update('shopcoins_old',$data,"shopcoins in (".implode(',',$ids_metal).")");          
+             
+            // die('condition');        
              /*
              $data = array('condition_id'=>$n_id);
              $this->db->update('shopcoins',$data,"`condition`='".$row['condition']."'");   */          
          }                 
         
     }
+    
     public function migrateTheme(){
         
     }	

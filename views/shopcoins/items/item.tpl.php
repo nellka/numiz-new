@@ -25,10 +25,14 @@ if($rows["materialtype"]==3){?>
     	<a name=coin<?=$rows["shopcoins"]?> title='<?=$rows["name"]?>'></a>
 	    <p class="ctitle"><?=$rows['namecoins']?></p>
     	<?if ($rows["gname"]){?>
-    	Группа:
-    	<a class="group_href" href=<?=$cfg['site_dir']?>shopcoins?group=<?=$rows['group']?>&materialtype=<?=$rows["materialtype"]?> title='Посмотреть <?=contentHelper::setWordThat($rows["materialtype"])?> <?=$rows["gname"]?>'>
-    	<?=$rows["gname"]?>
-    	</a><br>
+    	<div class="left" style="width: 140px;">Группа:
+        	<a class="group_href" style="width: 90px;" href=<?=$cfg['site_dir']?>shopcoins?group=<?=$rows['group']?>&materialtype=<?=$rows["materialtype"]?> title='Посмотреть <?=contentHelper::setWordThat($rows["materialtype"])?> <?=$rows["gname"]?>'>
+        	<?=$rows["gname"]?>
+        	</a>
+    	</div>
+        <div class="right">
+    	   <?=trim($rows["number"])? "Номер: <strong>".$rows["number"]."</strong>":"";?>
+    	</div>
     	<?}?>
     	<?=($rows["year"]?"Год:&nbsp;<strong>".$rows["year"]."</strong><br>":"")?>
     </div>
@@ -143,11 +147,13 @@ if ($rows["dateinsert"]>time()-86400*180 && !$mycoins){
 }*/
 ?>
 
-<div class="stars">
 	<?php
-	echo contentHelper::render('shopcoins/price/markitem',$rows['mark']);	
+	
+//<div class="stars">
+	//echo contentHelper::render('shopcoins/price/markitem',$rows['mark']);	
+	//</div>
 	?>
-</div>	
+	
 </div>	
 
 <div class="optprice">

@@ -1,3 +1,6 @@
+<?if(isset($mycoins)&&$mycoins) {?>
+   <div class="menu-heading"  id='hidden-shopcoins-menu'></div> 
+<?} else {?>
 <div class="menu-heading"  id='hidden-shopcoins-menu'>
 	<a style="color:#ffffff;text-decoration:none;" href="#s" >
 		<span style="padding-left:17px;" id='hidden-shopcoins-span'>Разделы магазина</span>
@@ -20,7 +23,7 @@
    <a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=2' title='Банкноты стоимость(цены) весь мир' class="topmenu <?=(isset($materialtype)&&$materialtype==2)?'active':''?>">Банкноты</a></li>
    <li><a href='<?=$cfg['site_dir']?>shopcoins/?materialtype=3' title='Аксессуары для коллекционеров цены' class="topmenu <?=(isset($materialtype)&&$materialtype==3)?'active':''?>">Аксессуары для монет</a></li>
    <li><?=($tpl['user']['user_id']==811&$materialtype!=3&&$materialtype!=5)?"&nbsp;&nbsp;<a href='".$cfg['site_dir']."shopcoins/index.php?materialtype=7&nocheck=1' style='float:left' class='pls'><font color=black>(".(($nocheck&&$materialtype==7)?" - ":" + ").")</font></a>":""?>
-   <a href='<?=$cfg['site_dir']?>shopcoins/?materialtype=4' title='Подарочные наборы монет  стоимость(цены) весь мир' class=topmenu>Подарочные наборы</a></li>
+   <a href='<?=$cfg['site_dir']?>shopcoins/?materialtype=4' title='Подарочные наборы монет  стоимость(цены) весь мир' class="topmenu <?=(isset($materialtype)&&$materialtype==4)?'active':''?>">Подарочные наборы</a></li>
    <li><?=($tpl['user']['user_id']==811&$materialtype!=3&&$materialtype!=5)?"&nbsp;&nbsp;<a href='".$cfg['site_dir']."shopcoins/index.php?materialtype=11&nocheck=1' style='float:left' class='pls'><font color=black>(".(($nocheck&&$materialtype==11)?" - ":" + ").")</font></a>":""?>
    <a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=11' title='Барахолка' class="topmenu <?=(isset($materialtype)&&!$search&&$materialtype==11)?'active':''?>">Барахолка</a></li>
     <li>
@@ -37,7 +40,7 @@
    <?=($tpl['user']['user_id']==811&$materialtype!=3&&$materialtype!=5)?"&nbsp;&nbsp;<a href='".$cfg['site_dir']."shopcoins/index.php?search=revaluation&nocheck=1' style='float:left' class='pls'><font color=black>(".(($nocheck&&$search=='revaluation')?" - ":" + ").")</font></a>":""?>
    <a href='<?=$cfg['site_dir']?>shopcoins/index.php?search=revaluation' title='Распродажа монет' class="topmenu <?=(isset($search)&&$search=='revaluation')?'active':''?>">Распродажа монет</a></li>        
    <li><?=($tpl['user']['user_id']==811&$materialtype!=3&&$materialtype!=5)?"&nbsp;&nbsp;<a href='".$cfg['site_dir']."shopcoins/index.php?search=newcoins&nocheck=1' style='float:left' class='pls'><font color=black>(".(($nocheck&&$search=='newcoins')?" - ":" + ").")</font></a>":""?>
-   <a href='<?=$cfg['site_dir']?>shopcoins/index.php?search=newcoins' title='Новинки 2013-2015' class="topmenu <?=(isset($search)&&$search=='newcoins')?'active':''?>">Новинки 2015-2015</a></li>
+   <a href='<?=$cfg['site_dir']?>shopcoins/index.php?search=newcoins' title='Новинки <?=(date('Y',time())-1)?>-<?=date('Y',time())?>' class="topmenu <?=(isset($search)&&$search=='newcoins')?'active':''?>">Новинки <?=(date('Y',time())-1)?>-<?=date('Y',time())?></a></li>
  </ul>   
   </div> 
    <?  
@@ -73,3 +76,4 @@
 		}
 	);	*/
     </script>
+<?}?>

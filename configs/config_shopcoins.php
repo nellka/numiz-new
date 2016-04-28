@@ -47,8 +47,9 @@ $yearsArray = Array (
 		2 => array('name' => '1901-2000','data'=>array(1901,2000)),
 		3 => array('name' => '1801-1900','data'=>array(1801,1900)),
 		4 => array('name' => '1701-1800','data'=>array(1701,1800)),
-		5 => array('name' => 'до 1600','data'=>array(0,1600)),
-		6 => array('name' => 'Без указания года','data'=>array(0,0)));
+		5 => array('name' => '1601-1700','data'=>array(1601,1700)),
+		6 => array('name' => 'до 1600','data'=>array(0,1600)),
+		7 => array('name' => 'Без указания года','data'=>array(0,0)));
 
 $arraynewcoins = Array(1=>date('Y')-2,2=>date('Y')-1,3=>date('Y'));							    
 $TimeMetroMeeting = Array (
@@ -241,7 +242,7 @@ $PriceLatter = 16;
 
 $DeliveryName[2] = 'В офисе м.Тверская';
 $DeliveryName[1] = 'Встречи на кольцевых';
-$DeliveryName[3] = 'Доставка в пределах МКАД';
+$DeliveryName[3] = 'Курьерская доставка';
 $DeliveryName[4] = 'Отправка по почте';
 //$DeliveryName[5] = 'Экспресс доставка (СПСР)';
 $DeliveryName[6] = 'Экспресс доставка (ЕМС)';

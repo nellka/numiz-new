@@ -12,7 +12,7 @@
 
 <div class="error" id='orderForm-errors'><?=implode("<br>",$tpl['user']['errors'])?></div>
 <div>
-    <input class="auth_form left" type=text name=email value='<?=$tpl['user']['email']?>' id='email' size="40" placeholder="Введите e-mail">
+    <input class="auth_form left" type=text name=email value='<?=$tpl['user']['email']?>' id='email' size="40" placeholder="Введите e-mail или логин">
 </div>
 <div id=password-block style="display:<?=$tpl['user']['user_exist']?'block':'none'?>">
     <input type=password name=password id=password size="40" value='<?=$tpl['user']['password']?>' placeholder="Введите пароль">
@@ -21,7 +21,7 @@
 <div id='warn' class="web-form">
     <p><img src="<?=$cfg['site_dir']?>images/warn.png"> &nbsp;Мы не рассылаем спам и не предлагаем Ваши контакты третьим лицам</p>
 </div>
-<div >
+<div id='user-login-button'>
     <input type="button" name=newUser id='newUser' value='Я новый покупатель' onclick="Login()" class="button27 left" style="font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp;
     <input type="button" name=existUser id=existUser value='Я уже заказывал ранее' onclick="Login(1)" class="button26" style="font-weight:bold;">
 </div>
@@ -43,9 +43,7 @@
 </form>
 <br><br>
 <script>
-function Login(on) { 
-	console.log(on);
-	
+function Login(on) { 		
     if(on){
         $('form#orderForm #password-block').show();
         $('form#orderForm #remind-block').show();
@@ -56,6 +54,7 @@ function Login(on) {
         $('form#orderForm #newUser').addClass('button26');
         $('form#orderForm #existUser').removeClass('button26');
         $('form#orderForm #existUser').addClass('button27');
+        $('form#orderForm #user-login-button').hide();
     } else {
         $('form#orderForm #password-block').hide();
         $('form#orderForm #remind-block').hide();

@@ -6,7 +6,9 @@
      </div>	
      <div class="caption">
         <p>
-        	<a href="<?=$cfg['site_dir']?>shopcoins/index.php?page=orderdetails" title="Показать корзину"><font color="Black">Корзина покупок</font></a>
+        	<a href="<?=$cfg['site_dir']?>shopcoins/index.php?page=orderdetails" title="Показать корзину"><font color="Black">Корзина покупок</font>
+        	<span id='basket-order'><?=($shopcoinsorder&&$tpl['user']['product_amount'])?" № ".$shopcoinsorder:''?></span>
+        	</a>
          </p>
     	<div class="basket-label" id='basket-info-ne' style="display:<?=$tpl['user']['product_amount']?'block':'none'?>">  
     	<p>	

@@ -2,6 +2,9 @@
 require($cfg['path'].'/helpers/Paginator.php');
 require($cfg['path'].'/models/catalogshopcoinsrelation.php');
 require $cfg['path'] . '/configs/config_shopcoins.php';
+require_once $cfg['path'] . '/models/shopcoinsdetails.php';
+$details_class = new model_shopcoins_details($cfg['db']);
+
 $catalogshopcoinsrelation_class = new model_catalogshopcoinsrelation($cfg['db']);
 //var_dump($_SERVER);
 
@@ -30,6 +33,11 @@ $tpl['show']['error'] = false;
 if ($catalog){	
     //стартовая инфа о монете независимо от родитея
 	$rows_main = $shopcoins_class ->getItem($catalog,true);	
+	$rows_main['name'] = contentHelper::nominalFormat($rows_main['name']);
+	$details = $details_class->getItem($catalog);
+	$rows_main["details"] =  '';
+	if($details) $rows_main["details"] = $details["details"];
+	
 	$rows_main['metal'] = $tpl['metalls'][$rows_main['metal_id']];
 	$rows_main['condition'] = $tpl['conditions'][$rows_main['condition_id']];	
 	

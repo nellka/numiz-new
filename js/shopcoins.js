@@ -36,7 +36,7 @@ function showMenuDescription(id){
 }
 
 function setMini(on,onscroll){    
-    
+    //console.log(on+','+onscroll);
     if(!on&&onscroll){      
         if($.cookie('mini')==0){
            //console.log('идем дальше надо развернуть');          
@@ -420,6 +420,9 @@ function ShowSmallBascet (id,data) {
 		$("#header-mini #inorderamount").html(bascetamount);	
 		$("#header #inorderamount").html(bascetamount);	
 	
+		$("#header-mini #basket-order").html(' №'+shopcoinsorder);	
+		$("#header #basket-order").html(' №'+shopcoinsorder);	
+		
 		$("#header-mini #inordersum").html(bascetsum);	
 		$("#header #inordersum").html(bascetsum);	
 		

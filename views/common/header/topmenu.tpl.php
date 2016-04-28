@@ -1,7 +1,7 @@
 <div id="cssmenu" class="wraper">
     <ul id="ddmenu">  
        <li class="home"><a href="http://www.numizmatik.ru/"></a>
-       <li class="top"><a href="http://www.numizmatik.ru" onmouseover="showMenuDescription(0);" class="<?=('/'==$tpl['current_page'])?'active':''?>" >Магазин монет</a>
+       <li class="top"><a href="http://www.numizmatik.ru/shopcoins/" onmouseover="showMenuDescription(0);" class="<?=('/'==$tpl['current_page'])?'active':''?>" >Магазин монет</a>
        <div id="menu3"  class="submenu">   
             <ul>
             <li><a href='http://www.numizmatik.ru/shopcoins/' onmouseover="showMenuDescription(1);" title='Монеты стоимость(цены) весь мир' class=topmenu>Монеты</a></li>
@@ -9,7 +9,7 @@
             <li><a href='http://www.numizmatik.ru/shopcoins/index.php?materialtype=10' onmouseover="showMenuDescription(10);" title='Нотгельды стоимость(цены) весь мир' class=topmenu>Нотгельды </a></li>
             <li><a href='http://www.numizmatik.ru/shopcoins/index.php?materialtype=7' onmouseover="showMenuDescription(7);" title='Наборы монет стоимость(цены) весь мир' class=topmenu>Наборы монет</a></li>
              <li><a href='http://www.numizmatik.ru/shopcoins/index.php?materialtype=9' onmouseover="showMenuDescription(9);" title='Лоты монет для начинающих нумизматов' class=topmenu>Лоты монет для начинающих нумизматов</a></li>
-            <li><a href='http://www.numizmatik.ru/shopcoins/index.php?search=newcoins' onmouseover="showMenuDescription('newcoins');" title='Новинки 2013-2015' class=topmenu>Новинки 2015-2015</a></li>
+            <li><a href='http://www.numizmatik.ru/shopcoins/index.php?search=newcoins' onmouseover="showMenuDescription('newcoins');" title='Новинки <?=(date('Y',time())-1)?>-<?=date('Y',time())?>' class=topmenu>Новинки <?=(date('Y',time())-1)?>-<?=date('Y',time())?></a></li>
             <li><a href='http://www.numizmatik.ru/shopcoins/index.php?materialtype=2' onmouseover="showMenuDescription(2);" title='Банкноты стоимость(цены) весь мир' class=topmenu>Боны</a></li>
             <li><a href='http://www.numizmatik.ru/shopcoins/?materialtype=3' onmouseover="showMenuDescription(3);" title='Аксессуары для коллекционеров цены' class=topmenu>Аксессуары для монет</a></li>
             <li><a href='http://www.numizmatik.ru/shopcoins/?materialtype=4' onmouseover="showMenuDescription(4);" title='Подарочные наборы монет  стоимость(цены) весь мир' class=topmenu>Подарочные наборы</a></li>
@@ -132,9 +132,9 @@
        <li class="top"><a href="http://www.numizmatik.ru/ocenka-stoimost-monet"><span>Контакты</span></a>       
           <div id="menu11"  class="submenu">          
             <ul>          
-                <li><a href='shopinfo.php' title='Салон продаж' class=topmenu>Контакты</a></li> 
+                <li><a href='http://www.numizmatik.ru/new/shopinfo.php' title='Салон продаж' class=topmenu>Контакты</a></li> 
                 <li><a title="Почему нам доверяют и покупают у нас монеты и банкноты?" href="http://www.numizmatik.ru/presentation.pdf">О Клубе Нумизмат</a>
-                <li><a href='about.php' title='Салон продаж' class=topmenu>Наш суперский коллектив</a></li>      
+                <li><a href='http://www.numizmatik.ru/new/about.php' title='Салон продаж' class=topmenu>Наш суперский коллектив</a></li>      
             </ul> 
            </div>
        </li>

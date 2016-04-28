@@ -96,7 +96,7 @@
 		<?}	else echo "<input type=hidden name=idadmin value=0>";		
 		?>
 			
-			<input type="submit"  class="button25" value='Подтвердить заказ и перейти к оплате' style="width:350px">
+			<input type="submit"  class="button25" value='Подтвердить заказ и перейти к оплате' style="width:350px" onclick="$('.bg_shadow').show();">
 			<input type="button"  class="button25" onclick="$('#user-compare-block').hide();$('#user-order').show();" value="Редактировать данные заказа">
 		</div>
 		<div id='user-order'>
@@ -124,7 +124,7 @@
 							<input type=Radio name=delivery id=delivery <?=(isset($DeliveryNameDisabled[$key])&&$DeliveryNameDisabled[$key]==1)?"disabled":""?> value=<?=$key?> <?=checked_radio($delivery,$key)?>
 							onclick="ShowPayment(<?=$key?>);ShowOther(<?=$key?>);"> <img src="<?=$cfg['site_dir']?>images/delivery<?=$key?>.jpg"> <?=$value?>
 							<?if($key==6){?> 
-							<br> <span style="font-size:11px;color:red;">Стоимость доставки пожалуйста узнавайте на сайте<br> 
+							<br> <span style="font-size:11px;">Стоимость доставки пожалуйста узнавайте на сайте<br> 
 								<a href=http://www.emspost.ru/ target=_blank>http://www.emspost.ru/</a> <br>
 								в разделе Тарифы и сроки и добавляйте к сумме заказа при его оплате</span>
 							<?}
@@ -183,13 +183,7 @@
 						if ($key!=5) {?>
 							<div>
 								<img src="<?=$cfg['site_dir']?>images/payment<?=$key?>.jpg"> <input type=Radio name=payment id=payment<?=$key?> value="<?=$key?>"  <?=checked_radio($payment,$key)?> disabled><?=$value?>
-								[<a href=#top onclick="window.open('<?=$cfg['site_dir']?>shopcoins/paymentdescription.php?payment=<?=$key?>','_payment','width=500,height=350,scrollbars=yes,top=250,left=450');"><font color=red>?</font></a>]
-
-								<? if ($key==6){?>	<br>
-								<span style="font-size:11px;color:red;"><b>!!! 
-								У нас новые <a href=http://www.numizmatik.ru/shopcoins/delivery.php target=_blank>реквизиты</a>!!!
-								<br>Банка Пушкино больше не существует!</b><span style="font-size:11px;color:red;">
-								<?}?>
+								[<a href=#top onclick="window.open('<?=$cfg['site_dir']?>shopcoins/paymentdescription.php?payment=<?=$key?>','_payment','width=500,height=350,scrollbars=yes,top=250,left=450');"><font color=red>?</font></a>]								
 							</div>
 						<?}
 					}

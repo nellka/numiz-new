@@ -19,7 +19,12 @@ Abstract Class Model_Base {
         $arrExp = explode('_', $modelName);
         $tableName = strtolower($arrExp[1]);
         $this->table = $tableName;        
-	}     
+	}   
+	
+    function unlockTable(){        
+    	$this->db->getConnection()->exec('UNLOCK TABLES;');   
+    }
+    
 	//получаем количество всех записей
     function countAll(){
         $select = $this->db->select()

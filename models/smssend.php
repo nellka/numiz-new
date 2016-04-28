@@ -160,7 +160,7 @@ class model_smssend extends Model_Base
     			"<pwd>" . self::$passwordsms . "</pwd>".
     			"<id>" . $this->transactionsms . "</id>".
     			"<sender></sender>".
-    			"<text>" . strtolower_rusms($sms_text) . "</text>".
+    			"<text>" . $this->strtolower_rusms($sms_text) . "</text>".
     			// "<time>20101118214600</time>".		// Можно указать время отправки этого сообщения
     			"<phones>".
     			"<phone>" . $ttt . "</phone>".
@@ -182,7 +182,7 @@ class model_smssend extends Model_Base
     		$status = $matches[1];
     		//echo htmlspecialchars($html);
     		if ($status == '0' || $status == '11')
-    			return array(0=>$status,1=>$ttt,2=>strtolower_rusms($sms_text));
+    			return array(0=>$status,1=>$ttt,2=>$this->strtolower_rusms($sms_text));
     		else
     			return $status; 
     				

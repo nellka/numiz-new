@@ -12,7 +12,7 @@ foreach ( $tpl['submitorder']['result'] as $rows){
 	}
 	$mail_text .= '<tr>';
 	$mail_text .= '<td  style="border:1px solid #cccccc;padding:10px;">'.$rows["number"].'</td>';
-    $mail_text .= '<td  style="border:1px solid #cccccc;padding:10px;"><a href='.$cfg['site_dir'].'shopcoins/show.php?catalog='.$rows["catalog"].'&from=email target=_blank>'.$rows["name"].'</a></td>';
+    $mail_text .= '<td  style="border:1px solid #cccccc;padding:10px;"><a href='.$cfg['site_dir'].'shopcoins/show.php?catalog='.$rows["catalog"].' target=_blank>'.$rows["name"].'</a></td>';
     $mail_text .= '<td  style="border:1px solid #cccccc;padding:10px;">'.round($rows['price'],2).' руб.</td>';
     $mail_text .= '<td  style="border:1px solid #cccccc;padding:10px;">'.($rows["oamount"]?$rows["oamount"]:1).'</td>';
     $mail_text .= '<td  style="border:1px solid #cccccc;padding:10px;">'.round(($rows["oamount"]?$rows["oamount"]:1)*$rows['price'],2).' руб.</td>';

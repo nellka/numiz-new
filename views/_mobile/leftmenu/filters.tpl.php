@@ -19,15 +19,14 @@ if(isset($filter_groups)&&$filter_groups){
     $yearend = isset($rows['yearend'])?$rows['yearend']:'';
     $seriess = isset($rows['seriess'])?$rows['seriess']:array();
     $search = isset($rows['search'])?$rows['search']:'';
-    $nocheck = isset($rows['nocheck'])?$rows['nocheck']:'';
    // var_dump($priceend,$pricestart);
 
-    $ahref = $nocheck?"&nocheck=$nocheck":'';
-    $ahref = $search?"&search=$search":'';
+    $ahref = "";
     $ahref_groups ='';
     $ahref_years_p ='';
     $ahref_years ='';
     $ahref_nominals ='';
+    
     foreach ((array)$groups as $group){
     	$ahref_groups ='&groups[]='.$group;
     }
@@ -54,25 +53,27 @@ if(isset($filter_groups)&&$filter_groups){
 
 <div class='f-container'>
 	
-	<div class="box-heading "  style="line-height: 30px;margin-top: 15px;padding: 0 10px;;">
-		<div style="float:left;">Фильтр товаров</div>
-		<div style="float:right;">
+    <div  class="box-heading ">
+    	<div class='left'>Фильтр товаров</div>
+    	<div class='clearf'>
 			<a  href="#" onclick="clear_filter();return false;">Очистить</a>
 		</div>
-	</div>
-	<br style="clear: both;">
-
+		
+    	<div class='right'>
+    		<a onclick="$('#search-params-place').hide();return false;" href="#" class="closef"></a>
+    	</div>
+    	
+    </div>
+    <br style="clear: both;">
 	<?php   
 	//вводим фильтр для стран
 	 	foreach ($filter_groups as $k=>$filter_group) { 
 	 		if(!isset($filter_group['filter_group_id_full'])) continue;
-            
+
 	 		if(in_array($filter_group['filter_group_id_full'],array('nominals','years','years_p'))){
-	 			$ahref .= $ahref_groups;
+	 			$ahref = $ahref_groups;
 	 		}
-	 		if(in_array($filter_group['filter_group_id_full'],array('years','years_p'))){
-	 			$ahref .= $ahref_nominals;
-	 		}	
+	 			
 	 		//var_dump();    
 	 	    ?>
 	
@@ -98,6 +99,10 @@ if(isset($filter_groups)&&$filter_groups){
     		<?}?>
     		</div>
     		<input type="text" value="" id='group_name' placeholder='Название страны' name="group_name" size="30">
+    		
+    		<input type="button" value="" class="filtr-s-d" onclick="clear_filter('group_name');return false;">          
+    		<input type="button" value="" class="filtr-s" onclick="fgroup();return false;">
+    		
 
 		<?}
 		?>
@@ -114,11 +119,11 @@ if(isset($filter_groups)&&$filter_groups){
 									//подключаем отдельный вид фильтра  ?>	
 									<div class="checkbox">
 										<?php  if (is_array($$filter_group['filter_group_id_full'])&&in_array($filter['filter_id'], $$filter_group['filter_group_id_full'])) { ?>
-											<input type="checkbox" name="<?=$filter_group['filter_group_id_full']?>[]" value="<?=$filter['filter_id']?>" checked="checked" />
+											<!--<input type="checkbox" name="<?=$filter_group['filter_group_id_full']?>[]" value="<?=$filter['filter_id']?>" checked="checked" />-->
 											<a href="?materialtype=<?=$materialtype?><?=$ahref?>&yearsrart=&yearend"> <?=$filter['name'];?></a>
 										<?php } else { ?>
-											<input type="checkbox" name="<?php echo $filter_group['filter_group_id_full']; ?>[]" value="<?=$filter['filter_id']?>" />
-											<a href="?materialtype=<?=$materialtype?><?=$ahref?>&years[]=<?=$filter['filter_id']?>"> <?=$filter['name'];?></a>
+											<!--<input type="checkbox" name="<?php echo $filter_group['filter_group_id_full']; ?>[]" value="<?=$filter['filter_id']?>" />-->
+											<a href="?materialtype=<?=$materialtype?><?=$ahref?>&yearsrart=&yearend"> <?=$filter['name'];?></a>
 										  <?}?>
 									</div>
 									
@@ -126,10 +131,10 @@ if(isset($filter_groups)&&$filter_groups){
 									<div class="checkbox">
 										<?php            
 										 if (is_array($$filter_group['filter_group_id_full'])&&in_array($filter['filter_id'], $$filter_group['filter_group_id_full'])) { ?>
-											<input type="checkbox" name="<?=$filter_group['filter_group_id_full']?>[]" value="<?=$filter['filter_id']?>" checked="checked" />
+											<!--<input type="checkbox" name="<?=$filter_group['filter_group_id_full']?>[]" value="<?=$filter['filter_id']?>" checked="checked" />-->
 									   <a href="?materialtype=<?=$materialtype?><?=$ahref?>&<?=$filter_group['filter_group_id']?>=<?=$filter['filter_id']?>"> <?=$filter['name'];?></a>
 										<?php } else { ?>
-											<input type="checkbox" name="<?php echo $filter_group['filter_group_id_full']; ?>[]" value="<?=$filter['filter_id']?>" />
+											<!--<input type="checkbox" name="<?php echo $filter_group['filter_group_id_full']; ?>[]" value="<?=$filter['filter_id']?>" />-->
 									   <a href="?materialtype=<?=$materialtype?><?=$ahref?>&<?=$filter_group['filter_group_id']?>=<?=urlencode(iconv("utf8","cp1251",$filter['filter_id']))?>"> <?=$filter['name'];?></a>
 										  <?}?>
 									</div>
@@ -140,10 +145,10 @@ if(isset($filter_groups)&&$filter_groups){
 											<div class="checkbox">
 												<?php             
 												 if (is_array($$filter_group['filter_group_id_full'])&&in_array($filter_child['filter_id'], $$filter_group['filter_group_id_full'])) { ?>
-												<input type="checkbox" name="<?=$filter_group['filter_group_id_full']?>[]" value="<?=$filter_child['filter_id']?>" checked="checked" />
+												<!--<input type="checkbox" name="<?=$filter_group['filter_group_id_full']?>[]" value="<?=$filter_child['filter_id']?>" checked="checked" />-->
 												<a href="?materialtype=<?=$materialtype?><?=$ahref?>&<?=$filter_group['filter_group_id']?>=<?=urlencode(iconv("utf8","cp1251",$filter_child['filter_id']))?>"> <?=$filter_child['name'];?></a>
 												<?php } else { ?>
-												<input type="checkbox" name="<?php echo $filter_group['filter_group_id_full']; ?>[]" value="<?php echo $filter_child['filter_id']; ?>" />
+												<!--<input type="checkbox" name="<?php echo $filter_group['filter_group_id_full']; ?>[]" value="<?php echo $filter_child['filter_id']; ?>" />-->
 												  <a href="?materialtype=<?=$materialtype?><?=$ahref?>&<?=$filter_group['filter_group_id']?>=<?=urlencode(iconv("utf8","cp1251",$filter_child['filter_id']))?>"> <?=$filter_child['name'];?></a>
 
 												<?php } ?>

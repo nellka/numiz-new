@@ -5,6 +5,10 @@ require_once $cfg['path'] . '/models/catalogshopcoinsrelation.php';
 require $cfg['path'] . '/configs/config_shopcoins.php';
 require_once($cfg['path'] . '/models/mails.php');
 
+if($tpl['user']['user_id']==352480){
+	echo time()." start<br>";
+}
+
 $payment = request('payment');
 $userfio = request('userfio');
 $fio = request('fio');
@@ -49,6 +53,10 @@ if(!$payment || !$userfio ||!$fio){
     $timelimit = $user_data['timelimit'];
     
     $rows90 = $order_class->getOrder();
+    
+    if($tpl['user']['user_id']==352480){
+    	echo time()." 1<br>";
+    }
 
 	if ($userstatus==2) {
 		$tpl['submitorder']['error_userstatus'] = true;
@@ -70,6 +78,10 @@ if(!$payment || !$userfio ||!$fio){
 		
 		$basket_data = $orderdetails_class->PostSum($postindex,$clientdiscount);
 
+		if($tpl['user']['user_id']==352480){
+        	echo time()." 2<br>";
+        }
+
         $tpl['submitorder']['bascetsum'] = $bascetsum = $basket_data["bascetsum"];
 		$tpl['submitorder']['amountbascetsum'] = $amountbascetsum = $basket_data['amountbascetsum'];
 		$tpl['submitorder']['suminsurance'] = $suminsurance = $basket_data["suminsurance"];
@@ -87,7 +99,9 @@ if(!$payment || !$userfio ||!$fio){
 		$discountcoupon = 0;
 		$i = 0;
 		$oldmaterialtype = 0;
-		
+		if($tpl['user']['user_id']==352480){
+        	echo time()." 3<br>";
+        }
 		foreach ($tpl['submitorder']['result'] as $rows ){	
 		    $tpl['submitorder']['result'][$i]['title_materialtype'] = '';	
 	
@@ -129,7 +143,9 @@ if(!$payment || !$userfio ||!$fio){
 				}
 			}
 		}
-
+		if($tpl['user']['user_id']==352480){
+        	echo time()." 5<br>";
+        }
 		if ($discountcoupon<0) $discountcoupon = 0;
 		
 		if ( $sum < $discountcoupon) {			
@@ -193,7 +209,9 @@ if(!$payment || !$userfio ||!$fio){
 		}
 		
 		if ($payment != 2 && $needcallingorder1) $needcallingorder = 1;
-		
+		if($tpl['user']['user_id']==352480){
+        	echo time()." 6<br>";
+        }
 		if (($sum <= 0.00 || !$sum || $FinalSum <=0.00 || !$FinalSum) && $discountcoupon<=0) {
 			$tpl['submitorder']['error_little'] = true;			
 		} else {				
@@ -229,7 +247,11 @@ if(!$payment || !$userfio ||!$fio){
 			
 			//делаем update единичный товаров и изменение количества у других------------------------------------------------------
 			$result = $orderdetails_class->getOrderDetails();						
-
+    		if($tpl['user']['user_id']==352480){
+            	echo time()." 7<br>";            	
+            }
+            $shopcoins_class->lockTablesForOrder();
+	    
 			$ParentArray = Array();				
 			foreach ($result as $rows) {
 			    $shopcoinsItem =  $shopcoins_class->getItem($rows["catalog"]);
@@ -299,13 +321,23 @@ if(!$payment || !$userfio ||!$fio){
     		                        );				
 				}
 				
+				if($tpl['user']['user_id']==352480){
+                	var_dump($data_update);    	
+                }
+                
 				$shopcoins_class->updateRow($data_update,"shopcoins='".$rows["catalog"]."'");  
 				
 				if ($deletesubscribecoins && $tpl['user']['user_id'] && $rows["catalog"]) {
 				    $shopcoins_class->deleteRow('catalogshopcoinssubscribe',"user='".$tpl['user']['user_id']."' and catalog='".$rows["catalog"]."'");			
 				}
 			}
-
+			
+    		if($tpl['user']['user_id']==352480){
+            	echo time()." 8<br>";            	
+            }
+            
+            $shopcoins_class->unlockTable();
+            
 			if (sizeof($ParentArray)>0) {				
 				$result = $shopcoins_class->coinsParents($ParentArray);				
 				foreach ($result as $rows) {
@@ -353,7 +385,9 @@ if(!$payment || !$userfio ||!$fio){
             if((int)$idadmin>0) $data_order['addidadmin'] = (int) $idadmin;
 
 			$order_class->updateRow($data_order,"`order`='".$shopcoinsorder."'");
-
+    		if($tpl['user']['user_id']==352480){
+            	echo time()." 9<br>";
+            }
 			//подтверждаем заказ - order -------------------------------------------------------------------------------------------
 						
 			if($user_data['sms']==1&&in_array($delivery,array(1,3,4,6,7))) {
@@ -392,7 +426,9 @@ if(!$payment || !$userfio ||!$fio){
 				}
 			}
 			
-			
+			if($tpl['user']['user_id']==352480){
+            	echo time()." 10<br>";
+            }
 			
 			$resultsum = ($FinalSum>0?$FinalSum:$sum);
 			//рассылаем письма------------------------------------------------------------------------------------------------------
@@ -420,7 +456,9 @@ if(!$payment || !$userfio ||!$fio){
 			                  'adress'=>$adress);
 				$user_class->updateRow($data,"user='".$tpl['user']['user_id']."'"); 				
 			}	
-			
+			if($tpl['user']['user_id']==352480){
+            	echo time()." 11<br>";
+            }
 			//удаляем cookies пользователя------------------------------------------------------------------------------------------			
             setcookie("shopcoinsorder", 0, time() + 2, "/shopcoins/", $domain);
             setcookie("shopcoinsorder", 0, time() + 2, "/shopcoins/");
@@ -443,4 +481,8 @@ if(!$payment || !$userfio ||!$fio){
             $tpl['user']['summ']= 0;
 		}
 	}
+}
+
+if($tpl['user']['user_id']==352480){
+	echo time()." end<br>";
 }

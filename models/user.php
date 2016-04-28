@@ -216,8 +216,37 @@ class model_user extends Model_Base
     }
 
 	//проверяем, что пользователь залогинен
-	public function loginUser($email,$userpassword){
+	public function loginUser($email,$userpassword,$from_form){
 	   if ($email &&$userpassword){
+	       $show = false;
+	       $userpassword_new = '';
+	       $userpassword_new = '';
+	       if(isset($_COOKIE['cookiesuser'])&&$_COOKIE['cookiesuser']=='304334'){
+	           /*$show = true;
+	           var_dump($email,$userpassword,'email',mb_detect_encoding($email, array('UTF-8', 'Windows-1251')),'cookiesuser',mb_detect_encoding($_COOKIE['cookiesuser'], array('UTF-8', 'Windows-1251')));
+	           var_dump(iconv( "CP1251//TRANSLIT//IGNORE","UTF8", $email));
+	           echo "<br>";*/
+	       }
+	      
+	       if(mb_detect_encoding($email, array('UTF-8', 'Windows-1251'))=='Windows-1251'){
+	           $email = iconv( "CP1251//TRANSLIT//IGNORE","UTF8", $email);
+	          /* if($show){
+	               echo "<br>";
+	               var_dump($email);
+	               echo "<br>";
+	           }*/
+	       }
+	       
+	       if(mb_detect_encoding($userpassword, array('UTF-8', 'Windows-1251'))=='Windows-1251'){
+	           $userpassword = iconv( "CP1251//TRANSLIT//IGNORE","UTF8", $userpassword);
+	       }
+	      // var_dump( $email_new,$userpassword_new);
+	       // if( $email_new)  $email =  $email_new;
+	        //if($userpassword_new) $userpassword = $userpassword_new;
+	        
+	        if($show){
+	          // var_dump($email,$userpassword,$email_new,$userpassword_new);
+	       }
 	       //получаем данные из базы
 	        $select = $this->db->select()
 		               ->from('user',array('fio','user', 'userlogin', 'userpassword'))
@@ -226,14 +255,24 @@ class model_user extends Model_Base
     	   $userData  = $this->db->fetchRow($select);       
           
         	if ($userData){
+        	    $domains = array('.numizmatik.ru','www.numizmatik.ru');
+		    	foreach ($domains as $d){
+		    		setcookie("cookiesfio", $userData['fio'], time() + 86400 * 90, "/", $d);
+	        		setcookie("cookiesuserlogin", $userData['userlogin'], time() + 86400 * 90, "/", $d);
+	        		setcookie("cookiesuserpassword", $userData['userpassword'], time() + 86400 * 90, "/", $d);
+	        		setcookie("cookiesuser", $userData['user'], time() + 86400 * 90, "/", $d);
+		    	}
         	    
-        	    $domain = $_SERVER["HTTP_HOST"];
+        	   /*
+        		
         	    $domain = '.'.str_replace('www.','', $domain);
         	    
         		setcookie("cookiesfio", $userData['fio'], time() + 86400 * 90, "/", $domain);
         		setcookie("cookiesuserlogin", $userData['userlogin'], time() + 86400 * 90, "/", $domain);
         		setcookie("cookiesuserpassword", $userData['userpassword'], time() + 86400 * 90, "/", $domain);
-        		setcookie("cookiesuser", $userData['user'], time() + 86400 * 90, "/", $domain);
+        		setcookie("cookiesuser", $userData['user'], time() + 86400 * 90, "/", $domain);*/
+        		
+        		
         		$_SESSION['cookiesuserlogin'] = $userData['userlogin'];
         		$_SESSION['cookiesuserpassword'] = $userpassword;
         		$_SESSION['cookiesuser'] = $userData['user'];
@@ -268,17 +307,41 @@ class model_user extends Model_Base
     }
     
     public function logout(){
-    	$domain = $_SERVER["HTTP_HOST"];
-        $domain = '.'.str_replace('www.','', $domain);  
-              	    
-    	setcookie("cookiesfio", "", time()-3600, "/", $domain);        		
-		setcookie("cookiesuserlogin", "", time()-3600, "/", $domain);
-		setcookie("cookiesuserpassword", "", time()-3600, "/", $domain);
-		setcookie("cookiesuser", "", time()-3600, "/", $domain);
-		unset($_COOKIE['cookiesuserlogin']);
+    	$domains = array('.numizmatik.ru','numizmatik.ru','.www.numizmatik.ru','www.numizmatik.ru','');
+    	foreach ($domains as $domain){
+	    	//$domain = $_SERVER["HTTP_HOST"];
+	    	setcookie("cookiesfio","1", time()-3600, "/");        		
+			setcookie("cookiesuserlogin", "1", time()-3600, "/");
+			setcookie("cookiesuserpassword", "1", time()-3600, "/");
+			setcookie("cookiesuser", "1", time()-3600, "/");	
+			
+	    	setcookie("cookiesfio","1", time()-3600, "/",$domain);        		
+			setcookie("cookiesuserlogin", "1", time()-3600, "/",$domain);
+			setcookie("cookiesuserpassword", "1", time()-3600, "/",$domain);
+			setcookie("cookiesuser", "1", time()-3600, "/",$domain);	
+			
+			setcookie("cookiesfio","1", time()-3600, "/shopcoins/",$domain);        		
+			setcookie("cookiesuserlogin", "1", time()-3600, "/shopcoins/",$domain);
+			setcookie("cookiesuserpassword", "1", time()-3600, "/shopcoins/",$domain);
+			setcookie("cookiesuser", "1", time()-3600, "/shopcoins/",$domain);
+			//setcookie("test",null,555,'/')      
+    	}
+    	setcookie("cookiesfio","1", time()-3600, "/shopcoins/");        		
+		setcookie("cookiesuserlogin", "1", time()-3600, "/shopcoins/");
+		setcookie("cookiesuserpassword", "1", time()-3600, "/shopcoins/");
+		setcookie("cookiesuser", "1", time()-3600, "/shopcoins/");
+    		
+
+	
+		/*unset($_COOKIE['cookiesuserlogin']);
 		unset($_COOKIE['cookiesuserpassword']);
 		unset($_COOKIE['cookiesuser']);
 		
+		unset($_SESSION['cookiesuserlogin']);
+		unset($_SESSION['cookiesuserpassword']);
+		unset($_SESSION['cookiesuser']);*/
+		
+				
 		unset($_SESSION['cookiesuserlogin']);
 		unset($_SESSION['cookiesuserpassword']);
 		unset($_SESSION['cookiesuser']);

@@ -812,7 +812,7 @@ leftmenu
 
 .menu-heading {
 
-    background: #ecb34e url("../images/cat-top.png") no-repeat scroll 250px 50%;
+    background: #ecb34e url("../images/cat-top.png") no-repeat scroll 250px 8px;
     border-bottom: 1px solid #ddd;
     color: white;
     font-size: 16px;
@@ -896,7 +896,9 @@ color:#ecb34e;
 }
 
 .filter-block #group_name {
-  width: 200px;
+  margin: 5px 0;
+    padding: 5px;
+    width: 250px;
 }
 .menu-sidebar_static ul {
     border: 1px solid #ccc;
@@ -2061,4 +2063,8 @@ float: right;
 .image-s > img {
     border: 1px solid #ccc;
     padding: 10px;
+}
+
+#user-order .web-form input {
+  width: 265px;
 }

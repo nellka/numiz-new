@@ -74,7 +74,6 @@ if(($rows_main['buy_status']==7||$rows_main['buy_status']==6)&&($minpriceoneclic
 	<div style="margin-left:15px;margin-bottom:10px;">
 		<?
 		//оценки
-		echo contentHelper::render('shopcoins/price/markitem',$rows_main['mark']);
 		?>
 	</div>
 	<div class="amount_padding">
@@ -112,4 +111,6 @@ if (trim($rows_main["details"]))
 	echo "<br>Описание: ".str_replace("\n","<br>",$text)."";
 }?>
 </div>
+<br><br>
+<center><? //echo contentHelper::render('shopcoins/price/markitem',$rows_main['mark']);?></center>
 </div>

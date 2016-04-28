@@ -106,55 +106,6 @@ $SearchTempStr = array();
 $SearchTempMatch = array();
 
 $tigger=0;
-/*
-if (sizeof($SearchTemp)>0) {
-	for ($i=0;$i<sizeof($SearchTemp);$i++) {		
-		if (!trim($SearchTemp[$i]))
-			continue;
-
-		if (intval($SearchTemp[$i]) ) {
-			
-			if ( (isset($SearchTemp[$i-1]) && intval($SearchTemp[$i-1])) || !$SearchTemp[$i+1] || intval($SearchTemp[$i+1])) { 
-				
-				$SearchTempMatch[] = $SearchTemp[$i];
-				$tigger=0;
-			}
-			else 
-				$tigger=1;
-			
-			$SearchTempDigit[] = $SearchTemp[$i];
-		} else {
-			
-			$SearchTemp[$i] = str_replace("+"," ",$SearchTemp[$i]);
-			
-			$strlen = mb_strlen(trim($SearchTemp[$i]),'UTF-8');
-			$substr = mb_substr(trim($SearchTemp[$i]),0,$strlen-1,'UTF-8');
-			//var_dump($SearchTemp[$i],$strlen,$substr);
-			$SearchTempStr[] = $strlen>4?$substr:trim($SearchTemp[$i]);
-
-			if ($i>0){ 
-				$SearchTempMatch[] = ">".($strlen>4?$substr."*":trim($SearchTemp[$i]));
-			} else {
-				$SearchTempMatch[] = ($strlen>4?$substr."*":trim($SearchTemp[$i]));
-			}
-		
-			if ($tigger==1) {
-			
-				$SearchTempMatch[] = '"'.$SearchTemp[$i-1]." ".trim($SearchTemp[$i]).'"';
-				$SearchTempMatch[] = $SearchTemp[$i-1];
-				$tigger=0;
-			}
-			
-		}
-		
-		foreach ($ThemeArray as $key=>$value) {
-			if (mb_stristr($SearchTemp[$i],$value,false,'UTF-8') ) {
-				$WhereThemesearch[] = "`theme` & ".pow(2,$key).">0";
-			}
-		}
-	
-	}	
-}*/
 
 //var_dump($numbers,$years,$digits,$strings);
 $where = array();
@@ -212,15 +163,17 @@ if (sizeof($strings)) {
     }    
 }
 
-//var_dump($result_temp_details);
-//die();
 if (sizeof($strings)) {  
    $result_temp_metal = $shopcoins_class->searchTable('shopcoins_metal',$strings);
 
 }
 
-if (sizeof($strings)) {  
-	$result_temp_condition = $shopcoins_class->searchTable('shopcoins_condition',$strings);    
+if (sizeof($strings)||sizeof($numbers)) {  
+    $array_for_conditions = $strings;
+    foreach ($numbers as $number){
+        $array_for_conditions[] = $number;
+    }
+	$result_temp_condition = $shopcoins_class->searchTable('shopcoins_condition',$array_for_conditions);    
 }
 
 if (sizeof($strings)) { 
@@ -242,8 +195,8 @@ if (sizeof($strings)) {
 
 
 if (sizeof($numbers)) {
-    $whereNumber = "number like '%".implode("%' or number like '%",$numbers)."%'";   
-    $whereNumber2 = "number2 like '%".implode("%' or number like '%",$numbers)."%'";   
+    $whereNumber = "number like '".implode("%' or number like '%",$numbers)."%'";   
+    $whereNumber2 = "number2 like '".implode("%' or number like '%",$numbers)."%'";   
 }
 if (sizeof($years)) {
     $whereYear = "year in (".implode(",",$years).")";   
@@ -324,9 +277,12 @@ if($result_temp_details){
     $WhereArray =" (shopcoins.shopcoins in (".implode(",",array_keys($result_temp_details))."))";
 }
 
+
+
 $WhereArray .=/*(sizeof($words)?"(shopcoins.details like '%".implode("%' or shopcoins.details like '%",$words)."%')":"").*/
-(sizeof($numbers)?" or ($whereNumber) or ($whereNumber2)":"").
-(sizeof($years)?" or ($whereYear)":"").
+(sizeof($numbers)? ($WhereArray? "(or $whereNumber or $whereNumber2)":"($whereNumber or $whereNumber2)"):"");
+
+$WhereArray .= (sizeof($years)?($WhereArray? " or ($whereYear)":"($whereYear)"):"").
 (sizeof($WhereThemesearch)?" or ".implode(" or ",$WhereThemesearch):""). 
 (sizeof($WhereCountryes)?" or shopcoins.`group` in (".implode(",",$WhereCountryes).")":"");
 
@@ -366,13 +322,16 @@ $where = " where shopcoins.check=1 $whereMaterialtype ".($WhereArray?" and ($Whe
 
 $sql_all = "select count(shopcoins.shopcoins) from shopcoins, `group` $where ".$positive_amount."and shopcoins.group=group.group";
 
-
+if($tpl['user']['user_id']==352480){
+//echo $sql_all;
+//echo "<br><br>";
+}
 
 $countpubs = $shopcoins_class->countByParams($sql_all);
 //var_dump($countpubs );
 //echo "<br><br>";
 $sql = "select shopcoins.*, group.name as gname, group.groupparent ".($CounterSQL?",".$CounterSQL:"")." from shopcoins, `group` 
-$where ".$positive_amount."and shopcoins.group=group.group  $orderby limit ".($tpl['pagenum']-1)*$tpl['onpage'].",".$tpl['onpage'];
+$where ".$positive_amount."and shopcoins.group=group.group and shopcoins.group<>790 $orderby limit ".($tpl['pagenum']-1)*$tpl['onpage'].",".$tpl['onpage'];
 
 $addhref = ($materialtype?"&materialtype=$materialtype":"")."&search=".$search."&pagenum=".$tpl['pagenum'];
 //echo $sql;

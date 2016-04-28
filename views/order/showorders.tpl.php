@@ -25,7 +25,7 @@
 		</tr>
 		<? foreach ($tpl['orders'] as $rows){?>
 			<tr valign=top >
-			<td class=tboard nowrap><?=($rows["ParentOrder"]>0?"<img src='".$cfg['site_dir']."shopcoins/images/folderfor.gif>'":"").$rows["order"].($tpl['user']['user_id'] == 811?"<br>".$rows['userfio']:"")?></td>
+			<td class=tboard nowrap><?=($rows["ParentOrder"]>0?"<img src='".$cfg['site_dir']."images/folderfor.gif'>":"").$rows["order"].($tpl['user']['user_id'] == 811?"<br>".$rows['userfio']:"")?></td>
 			<td class=tboard><?=date("y-m-d", $rows["date"])?></td>
 			<td class=tboard align=center><?=($rows["SendPost"]?date("y-m-d", $rows["SendPost"]):"-")?></td>
 			<td class=tboard><?=$SumName[$rows["payment"]];

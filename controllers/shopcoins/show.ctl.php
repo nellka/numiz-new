@@ -86,7 +86,8 @@ $tpl['show']['error'] = false;
 
 if ($catalog){	
     //стартовая инфа о монете независимо от родитея
-	$rows_main = $shopcoins_class ->getItem($catalog,true);	
+	$rows_main = $shopcoins_class ->getItem($catalog,true);
+	$rows_main['name'] = contentHelper::nominalFormat($rows_main['name']);
 	$details = $details_class->getItem($catalog);
 	$rows_main['details'] =  '';
 	if($details) $rows_main['details'] = $details["details"];

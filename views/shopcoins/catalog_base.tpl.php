@@ -239,9 +239,11 @@ function resetSliderYear() {
  
 }
 
- function  clear_filter(filter){
+ function  clear_filter(filter,clname){
  	if(filter=='group_name'){
- 		$("#group_name").val('');
+ 	    if(!clname){
+ 		 $("#group_name").val('');
+ 	    }
  		$('#fb-groups .checkbox').each(function(i, elem) {			    	
 	        $(elem).show();
 	    });
@@ -278,8 +280,8 @@ function mCustomScrollbars(){
 
 
 
-function full_filter(name,auto,hide) {
-    console.log($.cookie(name+'-full-show'));
+function full_filter(name,auto,hide,setcook) {
+
 	var cookiefull = 0;	
 	if($.cookie(name+'-full-show')){
 		var cookiefull = $.cookie(name+'-full-show');
@@ -293,36 +295,36 @@ function full_filter(name,auto,hide) {
 	    }
 		if(cookiefull>0){
 		    $(".filter-groupgroup_container_1").height("auto");
-		    $('#group-full-show').attr("onClick","full_filter('"+name+"',false,1);return false;");
+		    $('#group-full-show').attr("onClick","full_filter('"+name+"',false,1,1);return false;");
 		    $('#group-full-show').text("Свернуть");	
 		    
-		    $('#group-full-show-top').attr("onClick","full_filter('"+name+"',false,1);return false;");
+		    $('#group-full-show-top').attr("onClick","full_filter('"+name+"',false,1,1);return false;");
 		    $('#group-full-show-top').text("Свернуть");	
 		    	   
 		} else {			
 		    $(".filter-groupgroup_container_1").height("290px");
-		    $('#group-full-show').attr("onClick","full_filter('"+name+"',false,0);return false;");
+		    $('#group-full-show').attr("onClick","full_filter('"+name+"',false,0,1);return false;");
 		    $('#group-full-show').text("Развернуть");	    
 		    
-		    $('#group-full-show-top').attr("onClick","full_filter('"+name+"',false,0);return false;");
+		    $('#group-full-show-top').attr("onClick","full_filter('"+name+"',false,0,1);return false;");
 		    $('#group-full-show-top').text("Развернуть");	    
 		}   
 	} else {			
 		if(!hide){
 		    $(".filter-groupgroup_container_1").height("auto");
-		    $.cookie(name+'-full-show', 1);
-		    $('#group-full-show').attr("onClick","full_filter('"+name+"',false,1);return false;");
+		    if(setcook) $.cookie(name+'-full-show', 1);
+		    $('#group-full-show').attr("onClick","full_filter('"+name+"',false,1,1);return false;");
 		    $('#group-full-show').text("Свернуть");	
 		    
-		    $('#group-full-show-top').attr("onClick","full_filter('"+name+"',false,1);return false;");
+		    $('#group-full-show-top').attr("onClick","full_filter('"+name+"',false,1,1);return false;");
 		    $('#group-full-show-top').text("Свернуть");		   
 		} else {			
 		    $(".filter-groupgroup_container_1").height("290px");
-		    $.cookie(name+'-full-show', 0);
-		    $('#group-full-show').attr("onClick","full_filter('"+name+"',false,0);return false;");
+		    if(setcook)  $.cookie(name+'-full-show', 0);
+		    $('#group-full-show').attr("onClick","full_filter('"+name+"',false,0,1);return false;");
 		    $('#group-full-show').text("");	
 		    
-		    $('#group-full-show-top').attr("onClick","full_filter('"+name+"',false,0);return false;");
+		    $('#group-full-show-top').attr("onClick","full_filter('"+name+"',false,0,1);return false;");
 		    $('#group-full-show-top').text("Развернуть");	
 		    $('html, body').animate({
                 scrollTop: $("#search-params").offset().top
@@ -340,7 +342,12 @@ function full_filter(name,auto,hide) {
      	    $('#search-params input').unbind("change");
      		sendData(null,null,'<?=$tpl['filter']['price']['min']?>','<?=$tpl['filter']['price']['max']?>','<?=$tpl['filter']['yearstart']?>','<?=date("Y",time())?>');
      	}
-     }); 
-     full_filter('groups',true)    
+     });
+     
+     <?if($tpl['user']['showfullgrouplist']) {?>
+     	full_filter('groups',false,0,0)    
+     <?} else {?>     
+     	full_filter('groups',true)    
+     <?}?>
     });
 </script>

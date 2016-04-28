@@ -141,7 +141,8 @@ if(!$tpl['filters']['All_groups'] = $cache->load("all_groups_$cache_prefix")) {
 }
 
 if($tpl['user']['user_id']==352480){
-    //var_dump("all_groups_$cache_prefix");    
+    
+    var_dump($tpl['filters']['All_groups']);    
 	//echo time()." f allgroups $i<br>";
 }
 

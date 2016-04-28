@@ -19,7 +19,7 @@ if(isset($tpl['user']["error_login"])){
 	?>
 	<div class='user_details' id='user_top_block' style='padding:20px 0 0'>
 	<p>Здравствуйте, <b><?=$tpl['user']['username']?></b>!</p>
-	<p><a href="http://numizmatik.ru/user/profile.php"  title="Просмотр/редактирование личных данных/настроек">Ваш профайл</a></p>
+	<p><a href="http://www.numizmatik.ru/user/profile.php"  title="Просмотр/редактирование личных данных/настроек">Ваш профайл</a></p>
 	<p>
 	<form action="<?=$_SERVER["REQUEST_URI"]?>" method="POST">
 	<input type="hidden" value="1" name="logout" id="logout">

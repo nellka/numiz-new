@@ -41,6 +41,15 @@ class contentHelper{
        return "<img  src='http://numizmatik.ru/shopcoins/$url' title='$title' $on>";
        
     }
+    
+    static function nominalFormat($name){    	
+		$number = (int) $name;
+		$string = str_replace($number,'<<<>>>',$name);
+		$n = number_format($number, 0, ',', '.');
+		$name = str_replace('<<<>>>',$n, $string); 
+		return $name ;
+    }
+    
     static function urlImage($url){
        if(!trim($url)) return ;
        return "http://numizmatik.ru/shopcoins/images/$url";       

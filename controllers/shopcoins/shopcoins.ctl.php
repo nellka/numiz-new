@@ -62,7 +62,7 @@ if(request('orderby')){
     $tpl['orderby'] =$_COOKIE['orderby'];
 }	
 if(!isset($tpl['orderby']))	$tpl['orderby'] = "dateinsertdesc";
-setcookie('orderby', $tpl['orderby'],  time()+ 86400 * 90,'/',$cfg['domain']);
+setcookie('orderby', $tpl['orderby'],  time()+ 86400 * 90,'/',$domain);
 
 $tpl['pagenum'] = request('pagenum')?request('pagenum'):1;
 
@@ -579,7 +579,7 @@ if (sizeof($tpl['shop']['MyShowArray'])==0){
 			$tpl['shop']['MyShowArray'][$i]['tmpsmallimage'][] =contentHelper::showImage("smallimages/".$tpl['shop']['ImageParent'][$rows["parent"]][0],"Монета ".$rows["gname"]." | ".$rows["name"]);
 		}
 
-
+		$tpl['shop']['MyShowArray'][$i]['name'] = contentHelper::nominalFormat($tpl['shop']['MyShowArray'][$i]['name']);
 		$tpl['shop']['MyShowArray'][$i] = array_merge($tpl['shop']['MyShowArray'][$i], contentHelper::getRegHref($tpl['shop']['MyShowArray'][$i],$materialtype,$parent));
 		
 		 if ($materialtype==5||$materialtype==3){			

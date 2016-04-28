@@ -4,16 +4,17 @@
     +7-903-006-00-44 (Москва)<br>
 </div>
 <div class="search-top-module" style="float:left">   
-     <form action="<?=$cfg['site_dir']?>shopcoins/index.php" method=get>         
+     <form action="<?=$cfg['site_dir']?>shopcoins/index.php" method="get"  >         
 			<input type="hidden"  value="4">    
-          	<input type="text" class="search rounded" name=search id=search value="<?=$search?>">
+          	<input type="text" class="search rounded" name=search id=search value="<?=$search?>" placeholder='Поиск: Например, Россия 1 рубль 1994 серебро'>
 			<input type="submit" id=globalsearch-submit name="submit" value="">             
      </form> 
 </div>
 
 <div>
     <div style="float:right">
-        <a href="<?=$cfg['site_dir']?>shopcoins/index.php?page=orderdetails" title="Показать корзину"><font color="Black">Корзина покупок</font></a>:<br>
+        <a href="<?=$cfg['site_dir']?>shopcoins/index.php?page=orderdetails" title="Показать корзину"><font color="Black">Корзина покупок</font><span id='basket-order'><?=($shopcoinsorder&&$tpl['user']['product_amount'])?" № ".$shopcoinsorder:''?></span></a>
+        :<br>
         <span><a href='<?=$cfg['site_dir']?>shopcoins/index.php?page=orderdetails'>
         <span id=inorderamount><?=$tpl['user']['product_amount']?></span> товаров</a></span> / <span id=inordersum><?=$tpl['user']['summ']?></span> рублей
         <?/*($cookiesuser?($catalogamount>0?"<a href=$script?catalognewstr=1&savesearch=1><font color=red>Ответы на оставленные заявки ($catalogamount)</font></a>":"<b>Ответы на оставленные заявки (0)</b>"):"<b>Ответы на оставленные заявки</b> (нужна авторизация)")*/

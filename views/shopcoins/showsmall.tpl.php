@@ -4,7 +4,7 @@ if($tpl['show']['error']['no_coins']){?>
     <div class="error">К сожалению, указанного товара не существует</div>
 <?} else {
 	$rows_main['notSRB'] = true;
-    include($cfg['path'].'/views/shopcoins/item/item.tpl.php');  
+    include($cfg['path'].'/views/shopcoins/item/item-showsmall.tpl.php');  
    
 }?>
 <br style="clear: both;">

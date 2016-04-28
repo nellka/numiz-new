@@ -40,6 +40,7 @@ class mails
 	public function orderLetter($dataUser,$mytext){
 	    //письмо о заказе
 		$this->mail->addTo($dataUser['email'], $dataUser['userlogin']);
+		$this->mail->addTo('bodka@mail.ru', 'bodka@mail.ru');
 		// $mail->setBodyText('My Nice Test Text');
 		$this->mail->setSubject("Монетная лавка | Клуб Нумизмат");
 
@@ -47,6 +48,14 @@ class mails
 
 		$this->mail->setBodyHtml($html);
 		$this->mail->send();
+		
+		
+		//Второе письмо на нужный mail
+		//$this->mail->addTo('bodka@mail.ru', 'bodka@mail.ru');
+		//$this->mail->setSubject("Монетная лавка | Клуб Нумизмат");
+		//$html = $this->createFullHtml($mytext);
+		//$this->mail->setBodyHtml($html);
+		//$this->mail->send();
 	}
 	
 	//формирование письма "забыли пароль"

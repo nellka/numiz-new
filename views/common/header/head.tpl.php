@@ -45,6 +45,8 @@ if( $tpl['is_mobile']){?>
 <script type="text/javascript">
 
 $(document).ready(function() {
+	console.log(5);
+	
     $('body').on("click", ".ui-widget-overlay", function() {
           $(".ui-icon.ui-icon-closethick").trigger("click");
     }); 
@@ -124,6 +126,15 @@ $(document).ready(function() {
 		$input.change();
 		return false;
 	});
+
+	$("#fb-groups #group_name").keyup(function(){
+        var vl = $(this).val();
+        if (vl.length >= 3) {
+            fgroup();           
+        } else {            
+            clear_filter('group_name',1);
+        }
+    });
 });
 </script>
 

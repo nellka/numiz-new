@@ -69,7 +69,7 @@
 				<?}?>
 
 				<tr valign=top>
-					<td class="tboardtop"><div id="image<?=$rows['catalog']?>"><a href=<?=$cfg['site_dir']?>shopcoins/show.php?catalog=<?=$rows["catalog"]?>&from=email target=_blank><?=$rows["name"]?></a></td>
+					<td class="tboardtop"><div id="image<?=$rows['catalog']?>"><a href=<?=$cfg['site_dir']?>shopcoins/show.php?catalog=<?=$rows["catalog"]?> target=_blank><?=$rows["name"]?></a></td>
 					<td class="tboardtop"><?=$rows["gname"]?></td>
 					<td class="tboardtop"><?=$rows["year"]?></td>
 					<td class="tboardtop"><?=$rows["number"]?></td>

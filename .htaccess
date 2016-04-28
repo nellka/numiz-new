@@ -43,6 +43,8 @@ RewriteRule shopcoins/.*_c([0-9]*)_m([0-9]*)\.html$ index.php?module=shopcoins&t
 
 RewriteRule shopcoins/series/(.*)$ index.php?module=shopcoins&task=series&id=$1 [L]
 
+RewriteRule  shopcoins/show.php         index.php?module=shopcoins&task=show [L,QSA]
+
 RewriteRule  shopcoins/series         index.php?module=shopcoins&task=series [L,QSA]
 RewriteRule  shopcoins/order.php         index.php?module=order [L,QSA]
 RewriteRule  shopcoins/shopcoinshelp.php         index.php?module=shopcoinshelp [L,QSA]
@@ -60,6 +62,7 @@ RewriteRule  shopcoins/showringmetro.php          index.php?module=delivery&task
 
 
 RewriteRule  shopcoins/change_coin.php    index.php?module=shopcoins&task=change_coin [L,QSA]
+#RewriteRule  shopcoins/ordernow123.php    index.php?module=shopcoins&task=ordernow123 [L,QSA]
 RewriteRule  shopcoins/addsubscribecatalog.php    index.php?module=shopcoins&task=addsubscribecatalog [L,QSA]
 RewriteRule  shopcoins/addnext.php    index.php?module=shopcoins&task=addnext [L,QSA]
 RewriteRule  shopcoins/addbascetlast.php    index.php?module=shopcoins&task=addbascetlast [L,QSA]

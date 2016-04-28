@@ -249,9 +249,10 @@ class model_order extends Model_Base
 					)
 				)
 			) as price, c.image, c.metal_id, c.year, 
-			c.condition_id, c.number, c.shopcoins, g.name as gname, c.materialtype, c.details
+			c.condition_id, c.number, c.shopcoins, g.name as gname, c.materialtype, cd.details
 			 from `orderdetails` as o left join shopcoins as c 
 			on o.catalog = c.shopcoins 
+			left join `shopcoins_details` as cd on c.shopcoins =cd.catalog
 			left join `group` as g on c.group=g.group 
 			where o.order='".$order."' and o.typeorder=1 and o.status=0 order by c.materialtype, c.number;";
 	      return $this->db->fetchAll($sql);

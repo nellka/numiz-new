@@ -2,6 +2,23 @@
 //require_once($cfg['path'].'/helpers/mobile_detect.php');
 //require $cfg['path'] . '/helpers/cookiesWork.php';
 
+if(request('logout')){
+
+	$user_class->logout();
+	unset($_POST['logout']);
+	$url = $_SERVER["REQUEST_URI"];
+	$url = str_replace('?logout=1','',$url);
+	$url = str_replace('&logout=1','',$url);
+	//var_dump($_COOKIE);
+	  // die();
+	header("location: ".$url);
+	die();
+}
+/*if($_COOKIE){
+	var_dump($_COOKIE);
+}*/
+//die();
+
 require $cfg['path'] . '/controllers/start_params.ctl.php';
 
 if($tpl['is_mobile']&&isset($_COOKIES['fullversion'])){
@@ -11,18 +28,6 @@ if($tpl['is_mobile']&&isset($_COOKIES['fullversion'])){
 $nocheck = request('nocheck');
 
 $tmp['addcall']['errors'] = array();
-if(request('logout')){
-   
-	$user_class->logout();
-	unset($_POST['logout']);
-	$url = $_SERVER["REQUEST_URI"];
-	$url = str_replace('?logout=1','',$url);
-	$url = str_replace('&logout=1','',$url);
-	//var_dump($user_class->is_logged_in(),$_POST['logout']);
-	  // die();
-	header("location: ".$url);
-	die();
-}
 
 $user_remote_address = $_SERVER['REMOTE_ADDR'] ;
 $tpl['user']['remote_address'] = $user_remote_address;
@@ -61,12 +66,29 @@ if ($tpl['user']['is_logined']){
 	$tpl['user']['user_id'] = 0;
 	$shopcoins_class = new model_shopcoins($cfg['db'],$tpl['user']['user_id'],$nocheck);
 }
+
+$tpl['user']['showfullgrouplist'] = false;
+
+if(!isset($_COOKIE['groups-full-show'])&&$tpl['user']['user_id']) {
+	$tpl['user']['showfullgrouplist'] = true;
+}
+
+$mini = false;
+if(!isset($_COOKIE['mini'])&&$tpl['user']['user_id']) {
+	$mini = true;
+} else if(isset($_COOKIE['mini'])&&$_COOKIE['mini']>0){
+	$mini = true;
+}
+
 if($tpl['is_mobile']&&$fv){
 	$tpl['is_mobile'] = false;
 }
 
+if($tpl['user']['user_id']==352480){
+//var_dump($tpl);
+}
 if($tpl['user']['user_id']==355337){
-    $tpl['is_mobile'] = true;
+    //$tpl['is_mobile'] = true;
 }
 //var_dump($tpl);
 //если пользователь залогинен и запрещено делать заказы, то проверяем те заказы, которые были

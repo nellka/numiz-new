@@ -97,6 +97,8 @@ if (!$metroid || intval($metroid)<1 || intval($metroid)>12) {
 	
 	if (!$timelimit || $timelimit>30) $timelimit = 30;	
 	$n = 0;
+	
+
 	for ($i=1; $i<=$timelimit; $i++) {
 		$time = $timenow+$i*86400;	
 		if ( (date("w", $time)==2 || date("w", $time)==4) AND ($intervals === NULL OR !is_in_interval($time, $intervals)) ) {			
@@ -108,7 +110,7 @@ if (!$metroid || intval($metroid)<1 || intval($metroid)>12) {
 	
 	
     $n = 0;
-	for ($i = 64800; $i <= 72000; $i = $i+300){
+	for ($i = (64800-30*60); $i <= 72000; $i = $i+300){
 		$TimesArray[$n]['text'] = date("H-i", $timenow+$i);
 		$TimesArray[$n]['val'] = $i;
 		$n++;		

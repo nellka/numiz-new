@@ -40,7 +40,7 @@
 
 		<?}?>
 		<tr valign=top>
-		<td class=tboard><a href='<?=$cfg['site_dir']?>shopcoins/show.php?catalog=<?=$rows["shopcoins"]?>&from=email' target=_blank><?=$rows["name"]?></a></td>
+		<td class=tboard><a href='<?=$cfg['site_dir']?>shopcoins/show.php?catalog=<?=$rows["shopcoins"]?>' target=_blank><?=$rows["name"]?></a></td>
 		<td class=tboard><?=$rows["gname"]?></td>
 		<td class=tboard>
 		<?if ( $rows["year"]) echo $rows["year"]?>

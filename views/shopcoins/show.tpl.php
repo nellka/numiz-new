@@ -200,7 +200,7 @@ if ($tpl['shop']['resultp']) {	?>
 				<font size=+2> =	<?=$sumseecoins?>  руб.</font>
 			</div>
 			<div id='bascetshopcoins0'  style="float:left;margin-left:50px;margin-top:10px;">
-				<img src=../images/corz1.gif border=0 onclick="AddBascetLast2(<?=$kn?>);" title="Положить все отмеченные монеты из списка в корзину">
+			 <a class="button25" href="#" onclick="AddBascetLast2(<?=$kn?>);return false;" title="Положить все отмеченные монеты из списка в корзину">Купить</a>			
 			</div>
 	</form>
 	</div>

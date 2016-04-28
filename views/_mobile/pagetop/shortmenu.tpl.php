@@ -37,7 +37,7 @@
    <?=($tpl['user']['user_id']==811&$materialtype!=3&&$materialtype!=5)?"&nbsp;&nbsp;<a href='".$cfg['site_dir']."shopcoins/index.php?search=revaluation&nocheck=1' style='float:left' class='pls'><font color=black>(".(($nocheck&&$search=='revaluation')?" - ":" + ").")</font></a>":""?>
    <a href='<?=$cfg['site_dir']?>shopcoins/index.php?search=revaluation' title='Распродажа монет' class="topmenu <?=(isset($search)&&$search=='revaluation')?'active':''?>">Распродажа монет</a></li>        
    <li><?=($tpl['user']['user_id']==811&$materialtype!=3&&$materialtype!=5)?"&nbsp;&nbsp;<a href='".$cfg['site_dir']."shopcoins/index.php?search=newcoins&nocheck=1' style='float:left' class='pls'><font color=black>(".(($nocheck&&$search=='newcoins')?" - ":" + ").")</font></a>":""?>
-   <a href='<?=$cfg['site_dir']?>shopcoins/index.php?search=newcoins' title='Новинки 2013-2015' class="topmenu <?=(isset($search)&&$search=='newcoins')?'active':''?>">Новинки 2015-2015</a></li>
+   <a href='<?=$cfg['site_dir']?>shopcoins/index.php?search=newcoins' title='Новинки <?=(date('Y',time())-1)?>-<?=date('Y',time())?>' class="topmenu <?=(isset($search)&&$search=='newcoins')?'active':''?>">Новинки <?=(date('Y',time())-1)?>-<?=date('Y',time())?></a></li>
  </ul>   
   </div> 
    <?  
