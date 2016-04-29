@@ -33,7 +33,7 @@ class contentHelper{
        	return str_replace($ruskey,$engkey,$text);
     } 
     static function showImage($url,$title,$params=array()){
-       if(!file_exists("/var/www/htdocs/numizmatik.ru/shopcoins/".$url)) return false;
+      // if(!file_exists("/var/www/htdocs/numizmatik.ru/shopcoins/".$url)) return false;
        $on = '';
        foreach ($params as $key=>$value){
             $on.= "$key=$value ";

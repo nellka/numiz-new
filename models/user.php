@@ -216,7 +216,7 @@ class model_user extends Model_Base
     }
 
 	//проверяем, что пользователь залогинен
-	public function loginUser($email,$userpassword,$from_form){
+	public function loginUser($email,$userpassword){
 	   if ($email &&$userpassword){
 	       $show = false;
 	       $userpassword_new = '';

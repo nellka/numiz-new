@@ -15,7 +15,7 @@ try {
      require_once 'Zend/Cache.php';
     //проверяем, что мобильное устройство
     $Mobile_Detect = new Mobile_Detect();
-    $tpl['is_mobile'] = $Mobile_Detect->isMobile();         
+    $tpl['is_mobile'] = $tpl['mv'] = $Mobile_Detect->isMobile();         
      //подключаем кеш
     $frontendOptions = array('lifetime' => 7200, // время жизни кэша - 2 часа   
        'automatic_serialization' => true);
