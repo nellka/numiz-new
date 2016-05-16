@@ -28,7 +28,20 @@ if ($blockend > time()) {
 
 if (!$tpl['addinorder']['error']) {
 	$rows_temp = $order_class->getPreviosOrder();
-
+	
+	$phone = $rows_temp['phone'];
+	$fio = $rows_temp['userfio'];
+	$adress = $rows_temp['adress'];
+	
+    $delivery = $rows_temp['delivery'];
+    $payment = $rows_temp['payment'];
+    
+    $meetingdate = $rows_temp['DateMeeting'];
+    $meetingfromtime = $rows_temp['MeetingFromTime'];
+    $meetingtotime = $rows_temp['MeetingToTime'];
+    
+	$timenow = mktime(0, 0, 0, date("m", time()), date("d", time()), date("Y", time()));
+	
 	$user_data =  $user_class->getUserData();
 
 	$userstatus = (integer) $user_data['userstatus'];
@@ -252,10 +265,15 @@ if (!$tpl['addinorder']['error']) {
                 			 'NeedCall' => 2, 
                 			 'suminsurance'=>'0');
 
-			$order_class->updateRow($data_order,"`order`='".$shopcoinsorder."'");			
+			$order_class->updateRow($data_order,"`order`='".$shopcoinsorder."'");
+						
+			$tpl['submitorder']['sum'] = $sum;
+			$tpl['submitorder']['FinalSum'] = $FinalSum;
 			
-			$mail_class = new mails();						
-			$mail_class->orderLetter($user_data['email'],array());   
+			$mail_class = new mails();		
+			include $cfg['path']."/views/mails/ordermail.tpl.php";
+								
+			$mail_class->orderLetter($user_data,$mail_text);   
 
 			//удаляем cookies пользователя------------------------------------------------------------------------------------------
 			//удаляем cookies пользователя------------------------------------------------------------------------------------------			

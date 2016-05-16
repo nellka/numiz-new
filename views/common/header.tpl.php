@@ -2,7 +2,8 @@
 	<center><a href="<?=$_SERVER['REQUEST_URI']?>" onclick="$.cookie('fv', 0);" class="button24" style="margin:10px 0 0;">Мобильная версия сайта</a></center>
 <?}?>
 <div class="top-menu" <?=($tpl['mv'])?"style='position: relative;'":""?>>  
-  	<div class="wraper logo-text" id='shop-logo'>Магазин монет от Клуба Нумизмат</div>            
+
+  	<div class="wraper logo-text" id='shop-logo' style="display:<?=$mini?'none':'block'?>;">Магазин монет от Клуба Нумизмат</div>            
     <div id="header-menu"  <?=($tpl['mv'])?"style='position: relative;'":""?>>
         <?php  include $cfg['path'] . '/views/common/header/topmenu.tpl.php'; ?>
     </div> 

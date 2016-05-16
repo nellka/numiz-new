@@ -34,13 +34,17 @@ class model_user extends Model_Base
 	 }*/
 	 //при оформлении заказа
 
-	 public function getUserCoupon($data=array()){
+	 public function getUserCoupon($data=array(),$active=false){
 		$select = $this->db->select()
 			->from('coupon')
 			->where('user =?',$this->user_id);
 
 		foreach($data as $key=>$value){
 			$select->where("$key=?",$value);
+		}
+		
+		if($active){
+			$select->where("dateend>?",time());
 		}
 		return $this->db->fetchRow($select);
 	 }
@@ -221,14 +225,15 @@ class model_user extends Model_Base
 	       $show = false;
 	       $userpassword_new = '';
 	       $userpassword_new = '';
-	       if(isset($_COOKIE['cookiesuser'])&&$_COOKIE['cookiesuser']=='304334'){
+	       if(isset($_COOKIE['cookiesuser'])&&$_COOKIE['cookiesuser']=='317741'){
+	           // var_dump($email,$userpassword,contentHelper::get_encoding($userpassword),contentHelper::get_encoding($userpassword));
 	           /*$show = true;
-	           var_dump($email,$userpassword,'email',mb_detect_encoding($email, array('UTF-8', 'Windows-1251')),'cookiesuser',mb_detect_encoding($_COOKIE['cookiesuser'], array('UTF-8', 'Windows-1251')));
+	          
 	           var_dump(iconv( "CP1251//TRANSLIT//IGNORE","UTF8", $email));
 	           echo "<br>";*/
 	       }
 	      
-	       if(mb_detect_encoding($email, array('UTF-8', 'Windows-1251'))=='Windows-1251'){
+	       if(contentHelper::get_encoding($email)=='windows-1251'){
 	           $email = iconv( "CP1251//TRANSLIT//IGNORE","UTF8", $email);
 	          /* if($show){
 	               echo "<br>";
@@ -237,7 +242,7 @@ class model_user extends Model_Base
 	           }*/
 	       }
 	       
-	       if(mb_detect_encoding($userpassword, array('UTF-8', 'Windows-1251'))=='Windows-1251'){
+	       if(contentHelper::get_encoding($userpassword)=='windows-1251'){
 	           $userpassword = iconv( "CP1251//TRANSLIT//IGNORE","UTF8", $userpassword);
 	       }
 	      // var_dump( $email_new,$userpassword_new);

@@ -14,16 +14,22 @@ if(isset($_REQUEST['mycoins_php'])){
     $mycoins = 1;
 } else $mycoins = request('mycoins');
 
-
-$group = request('group');
+if($mycoins&&!$tpl['user']['user_id']){
+    header("location: http://www.numizmatik.ru/shopcoins");
+    die();
+}
+$group = (int)request('group');
 $catalognewstr = request('catalognewstr');
 
 $GroupNameMain = '';
 $GroupName = ''; 
 $metalTitle = '';
 
-$materialtype = request('materialtype')?request('materialtype'):1;
+$materialtype = request('materialtype')?(int)request('materialtype'):1;
 
+if(contentHelper::get_encoding($search)=='windows-1251'){
+	$search = iconv( "CP1251//TRANSLIT//IGNORE","UTF8", $search);
+}
 
 if ($search == 'newcoins') {
     $shopcoins_class->setCategoryType(model_shopcoins::NEWCOINS);
@@ -87,6 +93,11 @@ $searchid = request('searchid');
 
 
 $groups = request('groups');
+
+foreach ($groups as $k=>$v){
+    $groups[$k] = (int)$v;
+}
+
 //убираем третий рейх
 if($groups){
 	$is_uncorrect = array_search(790,$groups);
@@ -100,7 +111,7 @@ if($groups){
 
 $nominals = (array)request('nominals');
 $nominal = request('nominal');
-$group = request('group');
+
 $seriess = request('seriess');
 
 $series = request('series');
@@ -125,6 +136,10 @@ $searchname = request('searchname');
 $coinssearch = request('coinssearch');
 $years  = (array)request('years');
 $years_p = (array)request('years_p');
+
+if($materialtype==2){
+    $yearsArray[3] = array('name' => 'до 1900','data'=>array(0,1900));
+}
 
 if(($nominals&&$groups)||($groups&&$materialtype==4)){
     $years_p_data = $years_p;
@@ -165,13 +180,28 @@ $condition = iconv("cp1251",'utf8',request('condition'));
 //это новые данные в виде массива
 $conditions = (array)request('conditions');
 
+if($metals&&!is_array($metals)){
+    $metals = array($metals);
+}
+if($tpl['user']['user_id']==352480){
+	var_dump($metals);
+}
 
 if ($metals) $metal_data =$metals;
 elseif($metal) {
-	$metal_data =  array($metal);
-	$metals =  array($metal);
+	
+	if((int)$metal==0){
+		//для старых запросов
+		$metal = array_search($metal,$tpl['metalls']);
+	}
+	
+	if($metal){
+		$metal_data =  array($metal);
+		$metals =  array($metal);
+	}
 }
 
+	
 if ($groups)  $group_data =$groups;
 elseif($group) {
 	$group_data =  array($group);
@@ -181,11 +211,15 @@ elseif($group) {
 $tpl['shop']['OtherMaterialData'] = array();
 
 $OtherMaterial =  array();
-
+if($tpl['user']['user_id']==352480){
+	echo time()." 2<br>";
+}
 if(count($group_data)==1){
     
     $groupData = $shopcoins_class->getGroupItem($group_data[0]);
-	
+	if($tpl['user']['user_id']==352480){
+		echo time()." 2_1<br>";
+	}
 	$GroupName = $groupData["name"];
 	//$grouphref = strtolower_ru($GroupName)."_gn".$groupData['group'];
 	$arraykeyword[] = $groupData["name"];
@@ -213,13 +247,21 @@ if(count($group_data)==1){
 		unset ($text);
 		unset ($pic);
 	}
-		
+	if($tpl['user']['user_id']==352480){
+		echo time()." 2_2<br>";
+	}
 	if ($groupData["groupparent"] != 0 && $groupData["groupparent"] != $groupData["group"]) {	
 	    $groupParentData = $shopcoins_class->getGroupItem($groupData["groupparent"]); 		
 		$GroupNameMain = $groupParentData['name'];
 	}	
-	
+	if($tpl['user']['user_id']==352480){
+		echo time()." 2_3<br>";
+	}
 	$tpl['shop']['OtherMaterialData'] = $shopcoins_class->getOtherMaterialData($group_data[0],$materialtype);	
+	
+	if($tpl['user']['user_id']==352480){
+		echo time()." 2_4<br>";
+	}
 	if ($tpl['shop']['OtherMaterialData']){		
 	    $i = 0;	
 	    $oldmaterialtype = 0;
@@ -251,8 +293,15 @@ if($groups){
 
 if ($conditions) $condition_data =$conditions;
 elseif($condition) {
-	$condition_data =  array($condition);
-	$conditions =  array($condition);
+    if((int)$condition==0){
+		//для старых запросов
+		$condition = array_search($condition,$tpl['conditions']);
+	}
+	
+	if($condition){
+		$condition_data =  array($condition);
+	   $conditions =  array($condition);
+	}	
 }
 
 if ($seriess)  $series_data = $seriess;
@@ -273,7 +322,6 @@ if($tpl['user']['user_id']==352480){
 if($mycoins) {
     $shopcoins_class->setMycoins($mycoins);
 }
-
 
 require($cfg['path'].'/controllers/filters.ctl.php');
 
@@ -307,9 +355,25 @@ if($series_data)  $WhereParams['series'] = $series_data;
 if($catalognewstr) $WhereParams['catalognewstr'] = $catalognewstr;
 
 
+
+if(contentHelper::get_encoding($searchname)=='windows-1251'){
+	$searchname = iconv( "CP1251//TRANSLIT//IGNORE","UTF8", $searchname);	
+}
+
+if($tpl['user']['user_id']==352480){
+    /*var_dump($searchname,mb_substr($searchname,0,5,'utf-8'),iconv("CP1251//TRANSLIT//IGNORE", "UTF8", $searchname), iconv("CP1251", "UTF8", $searchname));  
+    
+    $searchname = iconv("UTF-8", "CP1251", $searchname);
+    var_dump($searchname);
+$searchname = iconv("CP1251", "UTF-8",$searchname); 
+var_dump($searchname);
+    die();
+	//var_dump($searchname,(string)$searchname,mb_detect_encoding(urldecode($searchname),  'UTF-8','windows-1251'),contentHelper::get_encoding($searchname));
+	//die();*/
+}
 if($searchname) {
     //так как ссылки были вида cp1251
-    $WhereParams['searchname'] = str_replace("'","",iconv("cp1251",'utf8',$searchname));
+    $WhereParams['searchname'] = str_replace("'","",$searchname);
 }
 
 
@@ -514,6 +578,7 @@ if($tpl['user']['user_id']==352480){
 $ArrayParent = Array();
 $tpl['shop']['MyShowArray'] = Array();
 $tpl['shop']['ArrayParent'] = Array();
+$tpl['shop']['items'] = Array();
 if($data){
 	foreach ($data as $rows){
 		$tpl['shop']['ArrayShopcoins'][] = $rows["shopcoins"];
@@ -521,10 +586,14 @@ if($data){
 		$tpl['shop']['MyShowArray'][] = $rows;
 	}
 }
-if($tpl['user']['user_id']==352480){
-	echo time()." 8<br>";
-}
 
+if($tpl['shop']['ArrayShopcoins']) $itemsShopcoins = $shopcoins_class->findByIds($tpl['shop']['ArrayShopcoins']);
+
+//полные данные о выборках
+foreach ($itemsShopcoins as $item){
+	$tpl['shop']['items'][$item["shopcoins"]] = $item;
+}
+	
 if (sizeof($tpl['shop']['ArrayParent'])) {
     $result_search = $shopcoins_class->getCoinsParents($tpl['shop']['ArrayParent']);
 	foreach ($result_search as $rows_search ){	
@@ -564,7 +633,8 @@ if (sizeof($tpl['shop']['MyShowArray'])==0){
 	$amountsearch = count($tpl['shop']['MyShowArray']);	
 
 	foreach ($tpl['shop']['MyShowArray'] as $i=>$rows) {
-
+		$rows = array_merge($rows,$tpl['shop']['items'][$rows["shopcoins"]]);
+        $tpl['shop']['MyShowArray'][$i] = array_merge($rows,$tpl['shop']['items'][$rows["shopcoins"]]);
 	    $tpl['shop']['MyShowArray'][$i]['condition'] = $tpl['conditions'][$rows['condition_id']];
 	    $tpl['shop']['MyShowArray'][$i]['metal'] = $tpl['metalls'][$rows['metal_id']];
 	    $details = $details_class->getItem($rows["shopcoins"]);
@@ -603,7 +673,7 @@ if (sizeof($tpl['shop']['MyShowArray'])==0){
 		$textoneclick='';	
 		
 		if(!$mycoins) {			
-			$statuses = $shopcoins_class->getBuyStatus($rows['shopcoins'],$tpl['user']['can_see'],$ourcoinsorder,$shopcoinsorder);
+			$statuses = $shopcoins_class->getBuyStatus($rows['shopcoins'],$tpl['user']['can_see'],$ourcoinsorder,$shopcoinsorder,$rows);
 			$tpl['shop']['MyShowArray'][$i]['buy_status'] = $statuses['buy_status'];
 			$tpl['shop']['MyShowArray'][$i]['reserved_status'] = $statuses['reserved_status'];	
 		}						

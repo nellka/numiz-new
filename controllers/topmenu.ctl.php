@@ -6,7 +6,9 @@ foreach ($materialtypes as $materialtype){
     $ShopcoinsThemeArray = Array();
     $ShopcoinsGroupArray = Array(); 
     
-    if(!$tpl['topmenu']['m'.$materialtype] = $cache->load("topmenu_m".$materialtype)){    
+    $tpl['topmenu']['m'.$materialtype] = $cache->load("topmenu_m".$materialtype);
+    
+    if(!$tpl['topmenu']['m'.$materialtype]){    
         if ($materialtype == 'newcoins') {
             $shopcoins_class->setCategoryType(model_shopcoins::NEWCOINS);
         } elseif ($materialtype == 'revaluation') {

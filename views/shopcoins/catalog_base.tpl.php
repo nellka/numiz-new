@@ -1,7 +1,14 @@
 
 <div id='products' class="products-cls m-<?=$mycoins?'mycoins':$materialtype?>">
 
+<div class="filter-products-block">
+    <?
+    include(DIR_TEMPLATE.'leftmenu/filters_new.tpl.php');
+    ?>
+</div>
+
 <?	
+/*
 $filter_layaut =  contentHelper::render('leftmenu/filters',array('filter_groups'=>$filter_groups,'search'=>$search,'groups'=>$groups,'nominals'=>$nominals,'tpl'=>$tpl,'years'=>$years,'years_p'=>$years_p,'metals'=>$metals,'conditions'=>$conditions,'themes'=>$themes,'materialtype'=>$materialtype,'pricestart'=>$pricestart,'priceend'=>$priceend,'yearstart'=>$yearstart,'yearend'=>$yearend,'seriess'=>$seriess,'nocheck'=>$nocheck));   
  
  if($filter_layaut){?>
@@ -51,8 +58,8 @@ $filter_layaut =  contentHelper::render('leftmenu/filters',array('filter_groups'
          }    	
       </script>
      
- <?}
-  
+ <?}*/
+
 include('onpage.tpl.php');
 include('nav_catalog.tpl.php');
 
@@ -60,9 +67,10 @@ if($tpl['shop']['errors']){?>
 	<font color="red"><?=implode("<br>",$tpl['shop']['errors'])?></font>
 <?} else {
 ?>
-<div class="product-grid">
-<?
-    $i=1;
+
+
+<div class="product-grid">   
+<?   $i=1;
     foreach ($tpl['shop']['MyShowArray'] as $key=>$rows){	      
     	if(in_array($materialtype,array(7,4))){
     		echo "<div class='blockshop_spisok' id='item".$rows['shopcoins']."'>";
@@ -170,54 +178,20 @@ if ($tpl['shop']['OtherMaterialData']) {	?>
 <script type="text/javascript" charset="utf-8">
 
  jQuery(document).ready(function() {    
- 	$(".blockshop").on("hover", function(e) {
-	    if (e.type == "mouseenter") {
-	    	if($(this).find(".qwk")) $(this).find(".qwk").show();
-	    } else { // mouseleave
-	        if($(this).find(".qwk")) $(this).find(".qwk").hide();
-	    }
-	});
-
-     $('.d-carousel .carousel').jcarousel({
-        scroll: 1,
-        itemFallbackDimension: 75
-     }); 	
-     $("#slider-range-price").slider("destroy");
-     $( "#slider-range-price" ).slider({
-           range: true,
-           min: <?=$tpl['filter']['price']['min']?>,                            
-           max: <?=$tpl['filter']['price']['max']?>,
-           values: [ <?=(integer)$pricestart?>,  <?=$priceend?$priceend:$tpl['filter']['price']['max']?>], 
-           slide: function( event, ui ) {
-                $( "#amount-price0" ).val(ui.values[ 0 ]);
-                $( "#amount-price1" ).val(ui.values[ 1 ]);
-             },
-             stop: function(event, ui) {
-               sendData(null,null,'<?=$tpl['filter']['price']['min']?>','<?=$tpl['filter']['price']['max']?>','<?=$tpl['filter']['yearstart']?>','<?=date("Y",time())?>');
-	         }
+     	$(".blockshop").on("hover", function(e) {
+    	    if (e.type == "mouseenter") {
+    	    	if($(this).find(".qwk")) $(this).find(".qwk").show();
+    	    } else { // mouseleave
+    	        if($(this).find(".qwk")) $(this).find(".qwk").hide();
+    	    }
+    	});
+    
+         $('.d-carousel .carousel').jcarousel({
+            scroll: 1,
+            itemFallbackDimension: 75
          });
-     $( "#amount-price0" ).val($( "#slider-range-price" ).slider( "values", 0 ));
-     $( "#amount-price1" ).val($( "#slider-range-price" ).slider( "values", 1 ));
-    <? if(isset($tpl['filter']['yearend'])){?>
-  		$( "#slider-range-years" ).slider({
-           range: true,
-           min: <?=$tpl['filter']['yearstart']?>,                            
-           max: <?=date("Y",time())?>,
-           values: [ <?=(integer)$yearstart?>,  <?=$yearend?$yearend:$tpl['filter']['yearend']?>], 
-           slide: function( event, ui ) {
-                $( "#amount-years0" ).val(ui.values[0]);
-                $( "#amount-years1" ).val(ui.values[1 ]);
-           },
-           stop: function(event, ui) {
-               sendData(null,null,'<?=$tpl['filter']['price']['min']?>','<?=$tpl['filter']['price']['max']?>','<?=$tpl['filter']['yearstart']?>','<?=date("Y",time())?>');
-           }
-         });
-         $( "#amount-years0" ).val($( "#slider-range-years" ).slider( "values", 0 ));
-     	 $( "#amount-years1" ).val($( "#slider-range-years" ).slider( "values", 1 ));
-     	 <?}?>
-  		 //jQuery("#filter-groupgroup").mCustomScrollbar("vertical",400,"easeOutCirc",1.05,"auto","yes","yes",10);
-  		 mCustomScrollbars()
 
+  		 mCustomScrollbars();
      }
  );
      
@@ -229,7 +203,8 @@ if ($tpl['shop']['OtherMaterialData']) {	?>
  function clear_filter_group(id){
  	if($("#fb-groups :checkbox[value="+id+"]").prop("checked")){
  		$("#fb-groups :checkbox[value="+id+"]").prop("checked",false);
- 		sendData(null,null,'<?=$tpl['filter']['price']['min']?>','<?=$tpl['filter']['price']['max']?>','<?=$tpl['filter']['yearstart']?>','<?=date("Y",time())?>');
+ 		$("#clear_filter_group"+id).remove();
+ 		sendData(null,null,'<?=$tpl['filter']['price']['min']?>','<?=$tpl['filter']['price']['max']?>','<?=$tpl['filter']['yearstart']?>','<?=$tpl['filter']['yearend']?>');
  	}
  	//var is_visible = jQuery('#'+filter).is(':visible')?true:false;
  	//is_visible?jQuery('#'+filter).hide():jQuery('#'+filter).show();
@@ -239,30 +214,45 @@ function resetSliderYear() {
  
 }
 
- function  clear_filter(filter,clname){
- 	if(filter=='group_name'){
- 	    if(!clname){
- 		 $("#group_name").val('');
- 	    }
- 		$('#fb-groups .checkbox').each(function(i, elem) {			    	
-	        $(elem).show();
-	    });
-	    mCustomScrollbars();
-	    return;
- 	}
-    if(filter){
-        jQuery('input[name="'+filter+'[]"]:checked').attr('checked',false); 
-    } else {  
-         jQuery('#search-params input').attr('checked',false); 
-    }
-    
-    if(filter=='years'||filter=='price'){
-          var $slider = $("#slider-range-"+filter);
-          $slider.slider('option', 'values', [$slider.slider("option", "min"),$slider.slider("option", "max")]);
-           $( "#amount-"+filter+"0" ).val($slider.slider("option", "min"));
-           $( "#amount-"+filter+"1" ).val($slider.slider("option", "max"));
-     }
-     sendData(null,null,'<?=$tpl['filter']['price']['min']?>','<?=$tpl['filter']['price']['max']?>','<?=$tpl['filter']['yearstart']?>','<?=date("Y",time())?>');
+ function  clear_filter(filter,clname){ 	
+	if(filter=='group_name'){
+	   if(!clname){
+		 $("#group_name").val('');
+	    }
+		$('#fb-groups .checkbox').each(function(i, elem) {			    	
+		    $(elem).show();
+		});
+		mCustomScrollbars();
+		return;
+	}
+	
+	if(filter=='groups'){
+		 $("#group_name").val('');
+		 $('#f-details').html('');
+		 $('#fb-groups .checkbox').each(function(i, elem) {			    	
+		    $(elem).show();
+		});
+		mCustomScrollbars();
+		//return;
+	}
+	
+	if(filter){	
+		$('input[name="'+filter+'[]"]:checked').attr('checked',false); 
+	} else {  
+		$('#search-params input').attr('checked',false); 
+		$('#f-zone input').attr('checked',false); 
+	}
+	
+	if(filter=='years'||!filter){
+		$( "#amount-years0" ).val('<?=$tpl['filter']['yearstart']?>');
+		$( "#amount-years1" ).val('<?=$tpl['filter']['yearend']?>');
+	}
+	if(filter=='price'||!filter){
+		$( "#amount-price0" ).val('<?=$tpl['filter']['price']['min']?>');
+		$( "#amount-price1" ).val('<?=$tpl['filter']['price']['max']?>');
+	}
+
+     sendData(null,null,'<?=$tpl['filter']['price']['min']?>','<?=$tpl['filter']['price']['max']?>','<?=$tpl['filter']['yearstart']?>','<?=$tpl['filter']['yearend']?>');
      return false;
  }
 
@@ -273,7 +263,13 @@ function mCustomScrollbars(){
 	
 	//console.log(jQuery("#filter-grouptheme_container"));
 	if($("#filter-grouptheme_container")) $("#filter-grouptheme_container").mCustomScrollbar({theme:"dark-thick"});
-	if($(".filter-groupnominal_container_1")) $(".filter-groupnominal_container_1").mCustomScrollbar({theme:"dark-thick"});
+	if($(".filter-groupnominals_container_1")) $(".filter-groupnominals_container_1").mCustomScrollbar({theme:"dark-thick"});
+	$(".filter-groupyears_p_container_1").mCustomScrollbar({theme:"dark-thick"});	
+	$(".filter-groupcondition_container_1").mCustomScrollbar({theme:"dark-thick"});	
+	
+	if($(".filter-groupmetals_container_1")) $(".filter-groupmetals_container_1").mCustomScrollbar({theme:"dark-thick"});
+	
+	//if($(".filter-groupnominal_container_1")) $(".filter-groupnominal_container_1").mCustomScrollbar({theme:"dark-thick"});
 	//console.log(jQuery(".filter-groupnominal_container_1"));	
 }
 
@@ -288,50 +284,55 @@ function full_filter(name,auto,hide,setcook) {
 	}
 
 	if(auto){
-	    
-	    if(!$(".filter-groupgroup_container_1").length) {
-	        $('#group-full-show').remove();
+	    //console.log(".filter-group"+name+"_container_1");
+	   // console.log(name);
+	  //  console.log(name);
+	    if(!$(".filter-group"+name+"_container_1").length) {
+	        $("#"+name+"-full-show").text("");
 	        return;
 	    }
+	   // console.log(name+','+$(".filter-group"+name+"_container_1").height());
+	    // console.log(name+','+$(".filter-group"+name+"_container_1 .mCSB_container").height());
+	    if($(".filter-group"+name+"_container_1").height()>$(".filter-group"+name+"_container_1 .mCSB_container").height()){
+	        $("#"+name+"-full-show").text("");
+	        return;
+	    }
+	    //console.log(name);
 		if(cookiefull>0){
-		    $(".filter-groupgroup_container_1").height("auto");
-		    $('#group-full-show').attr("onClick","full_filter('"+name+"',false,1,1);return false;");
-		    $('#group-full-show').text("Свернуть");	
+		   
+		    $(".filter-group"+name+"_container_1").height("auto");
+		    $("#"+name+"-full-show").attr("onClick","full_filter('"+name+"',false,1,1);return false;");
+		    $("#"+name+"-full-show").text("Свернуть");	
 		    
-		    $('#group-full-show-top').attr("onClick","full_filter('"+name+"',false,1,1);return false;");
-		    $('#group-full-show-top').text("Свернуть");	
+		    //$("#"+name+"-full-show-top").attr("onClick","full_filter('"+name+"',false,1,1);return false;");
+		   // $("#"+name+"-full-show-top").text("Свернуть");	
 		    	   
-		} else {			
-		    $(".filter-groupgroup_container_1").height("290px");
-		    $('#group-full-show').attr("onClick","full_filter('"+name+"',false,0,1);return false;");
-		    $('#group-full-show').text("Развернуть");	    
+		} else {	
+		    	
+		   // $(".filter-group"+name+"_container_1").height("290px");
+		    $("#"+name+"-full-show").attr("onClick","full_filter('"+name+"',false,0,1);return false;");
+		    $("#"+name+"-full-show").text("Развернуть");	    
 		    
-		    $('#group-full-show-top').attr("onClick","full_filter('"+name+"',false,0,1);return false;");
-		    $('#group-full-show-top').text("Развернуть");	    
+		    //$("#"+name+"-full-show-top").attr("onClick","full_filter('"+name+"',false,0,1);return false;");
+		   // $("#"+name+"-full-show-top").text("Развернуть");	    
 		}   
 	} else {			
 		if(!hide){
-		    $(".filter-groupgroup_container_1").height("auto");
+		    $(".filter-group"+name+"_container_1").height("auto");
 		    if(setcook) $.cookie(name+'-full-show', 1);
-		    $('#group-full-show').attr("onClick","full_filter('"+name+"',false,1,1);return false;");
-		    $('#group-full-show').text("Свернуть");	
-		    
-		    $('#group-full-show-top').attr("onClick","full_filter('"+name+"',false,1,1);return false;");
-		    $('#group-full-show-top').text("Свернуть");		   
+		    $("#"+name+"-full-show").attr("onClick","full_filter('"+name+"',false,1,1);return false;");
+		    $("#"+name+"-full-show").text("Свернуть");		   
 		} else {			
-		    $(".filter-groupgroup_container_1").height("290px");
+		   $(".filter-group"+name+"_container_1").removeAttr('style');
 		    if(setcook)  $.cookie(name+'-full-show', 0);
-		    $('#group-full-show').attr("onClick","full_filter('"+name+"',false,0,1);return false;");
-		    $('#group-full-show').text("");	
-		    
-		    $('#group-full-show-top').attr("onClick","full_filter('"+name+"',false,0,1);return false;");
-		    $('#group-full-show-top').text("Развернуть");	
+		    $("#"+name+"-full-show").attr("onClick","full_filter('"+name+"',false,0,1);return false;");
+		    $("#"+name+"-full-show").text("Развернуть");	
 		    $('html, body').animate({
                 scrollTop: $("#search-params").offset().top
             }, 1000);	    
 		}        
 	}
-	$(".filter-groupnominal_container").mCustomScrollbar("update");
+	//$(".filter-groupnominal_container").mCustomScrollbar("update");
   
 }
  
@@ -340,7 +341,14 @@ function full_filter(name,auto,hide,setcook) {
      $('#search-params input').bind('change',function(){               	
      	if($(this).attr('id')!='group_name'){
      	    $('#search-params input').unbind("change");
-     		sendData(null,null,'<?=$tpl['filter']['price']['min']?>','<?=$tpl['filter']['price']['max']?>','<?=$tpl['filter']['yearstart']?>','<?=date("Y",time())?>');
+     		sendData(null,null,'<?=$tpl['filter']['price']['min']?>','<?=$tpl['filter']['price']['max']?>','<?=$tpl['filter']['yearstart']?>','<?=$tpl['filter']['yearend']?>');
+     	}
+     });
+     
+     $('#f-zone input').bind('change',function(){               	
+     	if($(this).attr('id')!='group_name'){
+     	    $('#search-params input').unbind("change");
+     		sendData(null,null,'<?=$tpl['filter']['price']['min']?>','<?=$tpl['filter']['price']['max']?>','<?=$tpl['filter']['yearstart']?>','<?=$tpl['filter']['yearend']?>');
      	}
      });
      
@@ -349,5 +357,10 @@ function full_filter(name,auto,hide,setcook) {
      <?} else {?>     
      	full_filter('groups',true)    
      <?}?>
+        full_filter('metals',true);  
+        full_filter('theme',true);   
+        full_filter('nominals',true); 
+        full_filter('condition',true);   
+        full_filter('years_p',true);               
     });
 </script>

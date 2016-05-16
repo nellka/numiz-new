@@ -33,7 +33,7 @@ class contentHelper{
        	return str_replace($ruskey,$engkey,$text);
     } 
     static function showImage($url,$title,$params=array()){
-      // if(!file_exists("/var/www/htdocs/numizmatik.ru/shopcoins/".$url)) return false;
+       if(!file_exists("/var/www/htdocs/numizmatik.ru/shopcoins/".$url)) return false;
        $on = '';
        foreach ($params as $key=>$value){
             $on.= "$key=$value ";
@@ -42,6 +42,16 @@ class contentHelper{
        
     }
     
+    static function get_encoding($str){
+	    $cp_list = array('utf-8', 'windows-1251');
+	    foreach ($cp_list as $k=>$codepage){
+	        if (md5($str) === md5(iconv($codepage, $codepage, $str))){
+	            return $codepage;
+	        }
+	    }
+	    return null;
+	}
+	
     static function nominalFormat($name){    	
 		$number = (int) $name;
 		$string = str_replace($number,'<<<>>>',$name);

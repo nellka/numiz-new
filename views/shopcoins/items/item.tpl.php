@@ -1,12 +1,17 @@
 <?
 include(START_PATH."/config.php");
 //новинки
-
-if ($rows["novelty"]){?>
+if($tpl['user']['user_id']==352480){
+        	//var_dump($rows["novelty"]);
+        }
+if ($rows["novelty"]){
+    
+    
+    ?>
     <div class="new">Новинка</div>
 <?} elseif ($rows["dateinsert"]>time()-86400*180 && !$mycoins){
 ?>
-	<div class="new_red">NEW</div>
+	<div class="new_red">NEW <?=date('m-d',$rows["dateinsert"])?></div>
 <?php 
  }
 ?>
@@ -107,7 +112,7 @@ if(($rows['buy_status']==7||$rows['buy_status']==6)&&($minpriceoneclick<=$rows['
 echo ($rows["width"]&&$rows["height"]?"<br>Приблизительный размер: <strong>".$rows["width"]."*".$rows["height"]." мм.</strong>":"")."
 ".($rows["weight"]>0?"<br>Вес: <strong>".$rows["weight"]." гр.</strong>":"")."
 ".($rows["series"]&&$group?"<br>Серия монет: <a href=$script?series=".$rows["series"]."&group=".$group."&materialtype=".$materialtype.">".$series_name[$rows["series"]]."</a>":"")."
-".($rows["materialtype"]==8&&$materialtype==1&&!$mycoins?"<br><font color=red>МОНЕТА С РАЗДЕЛА МЕЛОЧЬ, см. условия покупки в разделе</font>":"");
+".($rows["materialtype"]==8&&$materialtype==1&&!$mycoins?"<br><font color=red>Монета из раздела мелочь, см. условия покупки в разделе</font>":"");
 
 if($rows['materialtype']==5){
 	if (trim($rows["accessoryProducer"])) echo "<br><b>ISBN: </b>".$rows["accessoryProducer"];

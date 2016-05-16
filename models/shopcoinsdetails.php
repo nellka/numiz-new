@@ -42,9 +42,9 @@ class model_shopcoins_details extends Model_Base {
          }        
     }
     
-    public function search($SearchTempStr=array()){	   
+    public function search($SearchTempStr=array(),$table='shopcoins_details'){	   
 	    $select = $this->db->select()               
- 	 	          ->from('shopcoins_details');
+ 	 	          ->from($table);
  		if($SearchTempStr){
  			$select->where("details like '%".implode("%' or details like '%",$SearchTempStr)."%'");
  		} 	else return array();

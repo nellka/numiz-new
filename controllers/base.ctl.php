@@ -87,9 +87,7 @@ if($tpl['is_mobile']&&$fv){
 if($tpl['user']['user_id']==352480){
 //var_dump($tpl);
 }
-if($tpl['user']['user_id']==355337){
-    //$tpl['is_mobile'] = true;
-}
+
 //var_dump($tpl);
 //если пользователь залогинен и запрещено делать заказы, то проверяем те заказы, которые были
 $tpl['user']['orderusernow'] = 0;  
@@ -143,6 +141,11 @@ if(!$tpl['conditions'] = $cache->load("conditions")) {
     $cache->save($tpl['conditions'], "conditions");	 
 }
 
+if($tpl['user']['user_id']==352480){
+   // var_dump($tpl);
+   // die();
+}
+
 require $cfg['path'] . '/controllers/topmenu.ctl.php';
 
 $dir = $cfg['path'] .  '/controllers/'.$tpl['module'].'/';
@@ -164,6 +167,8 @@ if(file_exists($controller)){
     //для статических страниц контроллера может не быть
     require  $controller;
 }
+$tpl["datatype"] = request('datatype');
+
 /*
 
 if($tpl["datatype"]=='json'){

@@ -101,28 +101,29 @@
 		</div>
 		<div id='user-order'>
 			<div id='user-order-block'>
-				<h5>Заказчик</h5>
-				<div class="web-form">
-					<font color="red">* </font> <input type=text id=fio name=fio placeholder='ФИО' value="<?=$fio?>" size=50>
-				</div>
-				<div class="web-form">
-					<font color="red">* </font><input id="userfio" type="text" name="userfio" value="<?=$userfio?>" size="40" placeholder='ФИО получателя'>
-				</div>
-				<div class="web-form">
-					<font color="red">* </font><input id="phone" type="text" name="phone" value="<?=$phone?>" size="40" placeholder='Телефон с указанием кода'>
-				</div>
-				<div class="web-form">
-					Данные требуются для подтверждения заказа
-				</div>
-
-				<div id='delivery-block' style="font-weight:400;">
+				<div class="bordered_oder">
+    				<h5>Заказчик</h5>
+    				<div class="web-form">
+    					<font color="red">* </font> <input type=text id=fio name=fio placeholder='ФИО' value="<?=$fio?>" size=50>
+    				</div>
+    				<div class="web-form">
+    					<font color="red">* </font><input id="userfio" type="text" name="userfio" value="<?=$userfio?>" size="40" placeholder='ФИО получателя'>
+    				</div>
+    				<div class="web-form">
+    					<font color="red">* </font><input id="phone" type="text" name="phone" value="<?=$phone?>" size="40" placeholder='Телефон с указанием кода'>
+    				</div>
+    				<div class="web-form">
+    					Данные требуются для подтверждения заказа
+    				</div>
+                </div>
+				<div id='delivery-block' class="bordered_oder">
 					<h5>Способ доставки</h5>
 					<?
 
 					foreach ($DeliveryName as $key=>$value){?>
 						<div>
-							<input type=Radio name=delivery id=delivery <?=(isset($DeliveryNameDisabled[$key])&&$DeliveryNameDisabled[$key]==1)?"disabled":""?> value=<?=$key?> <?=checked_radio($delivery,$key)?>
-							onclick="ShowPayment(<?=$key?>);ShowOther(<?=$key?>);"> <img src="<?=$cfg['site_dir']?>images/delivery<?=$key?>.jpg"> <?=$value?>
+							<input type=Radio name=delivery id="delivery<?=$key?>" <?=(isset($DeliveryNameDisabled[$key])&&$DeliveryNameDisabled[$key]==1)?"disabled":""?> value=<?=$key?> <?=checked_radio($delivery,$key)?>
+							onclick="ShowPayment(<?=$key?>);ShowOther(<?=$key?>);"> <img src="<?=$cfg['site_dir']?>images/delivery<?=$key?>.jpg"> <label for="delivery<?=$key?>"><?=$value?></label>
 							<?if($key==6){?> 
 							<br> <span style="font-size:11px;">Стоимость доставки пожалуйста узнавайте на сайте<br> 
 								<a href=http://www.emspost.ru/ target=_blank>http://www.emspost.ru/</a> <br>
@@ -135,35 +136,36 @@
 					}
 					if ($tpl['user']['user_id'] == 811 || $user_remote_address == "94.79.50.94") {?>
 						<div>
-							<input type=Radio name=delivery value=10 onclick="ShowPayment(10);"> Покупка в салоне продаж
+							<input type=Radio name="delivery" id="delivery10" value=10 onclick="ShowPayment(10);"> <label for="delivery10">Покупка в салоне продаж</label>
 						</div>
 					<?}?>
-				</div>
-				<div id='metro-block' style="display:none">
-				    <br>			
-				    <div id=metro-error></div>	
-					<div id=delivery-m>
-						<b>Выбор метро</b>
-						<select name=metro id='metro'><option value=0>Выбор метро</select>
-						<div id=pricemetro></div>
-					</div>
-					<b>Дата и время</b>
-					<select name=meetingdate id='meetingdate'><option value=0>Дата</select>
-					<span id="meeting-from">c </span><select name=meetingfromtime id=meetingfromtime></select>
-					<span id="meeting-to">по <select name=meetingtotime id=meetingtotime></select> </span>
-
-					<div id=MetroGif><img src=<?=$cfg['site_dir']?>images/wait.gif border=0></div>
-
-					<br><br>Более подробно смотрите раздел <a href=http://www.numizmatik.ru/shopcoins/delivery target=_blank>Оплата и доставка</a>
-				</div>
-
-				<div id="adress-block" style="display: none">
-					<h5>Адрес доставки</h5>
-					<input type=text name=postindex id='postindex' value="<?=$postindex?>" size=50 placeholder="Индекс" onblur="calculateOrder()">
-					<textarea name=adress id=adress cols=50 rows=5><?=$adress?></textarea>
-				</div>
-
-				<div id=payment-block style="font-weight:400;">
+				
+    				<div id='metro-block' style="display:none">
+    				    <br>			
+    				    <div id=metro-error></div>	
+    					<div id=delivery-m>
+    						<b>Выбор метро</b>
+    						<select name=metro id='metro'><option value=0>Выбор метро</select>
+    						<div id=pricemetro></div>
+    					</div>
+    					<b>Дата и время</b>
+    					<select name=meetingdate id='meetingdate'><option value=0>Дата</select>
+    					<span id="meeting-from">c </span><select name=meetingfromtime id=meetingfromtime></select>
+    					<span id="meeting-to">по <select name=meetingtotime id=meetingtotime></select> </span>
+    
+    					<div id=MetroGif><img src=<?=$cfg['site_dir']?>images/wait.gif border=0></div>
+    
+    					<br><br>Более подробно смотрите раздел <a href=http://www.numizmatik.ru/shopcoins/delivery target=_blank>Оплата и доставка</a>
+    				</div>
+    
+    				<div id="adress-block" style="display: none">
+    					<h5>Адрес доставки</h5>
+    					<input type=text name=postindex id='postindex' value="<?=$postindex?>" size=50 placeholder="Индекс" onblur="calculateOrder()">
+    					<textarea name=adress id=adress cols=50 rows=5><?=$adress?></textarea>
+    				</div>
+                </div>
+                
+				<div id=payment-block class="bordered_oder">
 					<h5>Способ оплаты</h5>
 					<div class="error" id='payment4-error' style="display:none">
 						<b>Уважаемый пользователь!</b><br>
@@ -182,7 +184,7 @@
 					foreach ($SumName as $key=>$value){
 						if ($key!=5) {?>
 							<div>
-								<img src="<?=$cfg['site_dir']?>images/payment<?=$key?>.jpg"> <input type=Radio name=payment id=payment<?=$key?> value="<?=$key?>"  <?=checked_radio($payment,$key)?> disabled><?=$value?>
+								<img src="<?=$cfg['site_dir']?>images/payment<?=$key?>.jpg"> <input type=Radio name=payment id="payment<?=$key?>" value="<?=$key?>"  <?=checked_radio($payment,$key)?> disabled><label for="payment<?=$key?>"><?=$value?></label>
 								[<a href=#top onclick="window.open('<?=$cfg['site_dir']?>shopcoins/paymentdescription.php?payment=<?=$key?>','_payment','width=500,height=350,scrollbars=yes,top=250,left=450');"><font color=red>?</font></a>]								
 							</div>
 						<?}
@@ -191,29 +193,27 @@
 				</div>
 
 				<div class="clearfix">
-					<a href=http://www.numizmatik.ru/shopcoins/aboutdiscont.php target=_blank>Система купонов на скидку >>></a><br>
-					<?if($tpl['orderdetails']['coupons']){?>
-						<a href='#' onclick="showCoupon();return false;">Скидочный купон </a>
-					<?}?>
+					<a href=http://www.numizmatik.ru/shopcoins/aboutdiscont.php target=_blank>Система купонов на скидку >>></a>				
 				</div>
 				<?if($tpl['orderdetails']['coupons']){?>
-					<div id="coupon-block" style="display: none">
+					<div id="coupon-block">
 						<div class="error" id="coupon-error"></div>
-						Если у Вас есть купон(ы) на скидку и Вы желаете их использовать в данном заказе, введите код в нижеприведенной форме.
-						<strong>Код купона:</strong>
-						<input type=text name="code1" id='code1' value="" size=4 maxlength=4 > -
-						<input type=text name="code2" id='code2' value="" size=4 maxlength=4 > -
-						<input type=text name="code3" id='code3' value="" size=4 maxlength=4 > -
-						<input type=text name="code4" id='code4' value="" size=4 maxlength=4 >
-						<input type="hidden" value="" name="dis" id="dis">
-						<? if($tpl['orderdetails']['coupons']['friends']){
-						 $codetmp = $tpl['orderdetails']['coupons']['friends'];
-						?>
-						<br><b>Вам доступен купон на скидку по акции Приведи друга:<?=$codetmp[0]?>-<?=$codetmp[1]?>-<?=$codetmp[2]?>-<?=$codetmp[3]?></b>
-						<?}?>
-
+						Если у Вас есть купон(ы) на скидку и Вы желаете их использовать в данном заказе, введите код в нижеприведенной форме.<br>
+						<div class="left">
+    						<strong>Код купона:</strong>
+    						<input type=text name="code1" id='code1' value="" size=4 maxlength=4 > -
+    						<input type=text name="code2" id='code2' value="" size=4 maxlength=4 > -
+    						<input type=text name="code3" id='code3' value="" size=4 maxlength=4 > -
+    						<input type=text name="code4" id='code4' value="" size=4 maxlength=4 >
+    						<input type="hidden" value="" name="dis" id="dis">
+    						<? if($tpl['orderdetails']['coupons']['friends']){
+    						 $codetmp = $tpl['orderdetails']['coupons']['friends'];
+    						?>
+    						<br><b>Вам доступен купон на скидку по акции Приведи друга:<?=$codetmp[0]?>-<?=$codetmp[1]?>-<?=$codetmp[2]?>-<?=$codetmp[3]?></b>
+    						<?}?>&nbsp;&nbsp;
+                        </div>
 						<div id="CouponInfo" name="CouponInfo">
-							<input type=button class=formtxt value="Проверить купон" onClick="checkFormCoupon();">
+							<input type=button class=formtxt value="Подтвердить купон" onClick="checkFormCoupon();">
 						</div>
 
 					</div>

@@ -25,6 +25,8 @@ $from_ubb =  request('from_ubb');
 $deletesubscribecoins =  request('deletesubscribecoins');
 $idadmin = request('idadmin');
 
+$timenow = mktime(0, 0, 0, date("m", time()), date("d", time()), date("Y", time()));
+
 if ($delivery==2){$DeliveryName[$delivery] = "В офисе (возможность посмотреть материал до выставления)";}
 
 $code1 = request('code1');
@@ -250,7 +252,7 @@ if(!$payment || !$userfio ||!$fio){
     		if($tpl['user']['user_id']==352480){
             	echo time()." 7<br>";            	
             }
-            $shopcoins_class->lockTablesForOrder();
+            //$shopcoins_class->lockTablesForOrder();
 	    
 			$ParentArray = Array();				
 			foreach ($result as $rows) {
@@ -322,10 +324,17 @@ if(!$payment || !$userfio ||!$fio){
 				}
 				
 				if($tpl['user']['user_id']==352480){
-                	var_dump($data_update);    	
+                	var_dump($data_update,$rows["orderamount"],$rows["samount"],$data_update['check']);    	
                 }
                 
 				$shopcoins_class->updateRow($data_update,"shopcoins='".$rows["catalog"]."'");  
+				
+				if($data_update['check']===0){
+					if($tpl['user']['user_id']==352480){
+                    	var_dump($data_update['check'],$rows["catalog"]);    	
+                    }
+					$shopcoins_class->deteteFromTemp($rows["catalog"]);
+				}
 				
 				if ($deletesubscribecoins && $tpl['user']['user_id'] && $rows["catalog"]) {
 				    $shopcoins_class->deleteRow('catalogshopcoinssubscribe',"user='".$tpl['user']['user_id']."' and catalog='".$rows["catalog"]."'");			
@@ -333,10 +342,10 @@ if(!$payment || !$userfio ||!$fio){
 			}
 			
     		if($tpl['user']['user_id']==352480){
-            	echo time()." 8<br>";            	
+            	//echo time()." 8<br>";            	
             }
             
-            $shopcoins_class->unlockTable();
+           // $shopcoins_class->unlockTable();
             
 			if (sizeof($ParentArray)>0) {				
 				$result = $shopcoins_class->coinsParents($ParentArray);				
@@ -386,7 +395,8 @@ if(!$payment || !$userfio ||!$fio){
 
 			$order_class->updateRow($data_order,"`order`='".$shopcoinsorder."'");
     		if($tpl['user']['user_id']==352480){
-            	echo time()." 9<br>";
+            	//echo time()." 9<br>";
+            	//var_dump($data_order);
             }
 			//подтверждаем заказ - order -------------------------------------------------------------------------------------------
 						
@@ -403,12 +413,17 @@ if(!$payment || !$userfio ||!$fio){
 			$order_class->updateRow(array('markadmincheck'=>3),"user='".$tpl['user']['user_id']."'  and `user`<>811 and `check`=1 and markadmincheck=2 and mark=2"); 	
 						
 			$countCoupon = $user_class->getUserCouponCount(array('`check`'=>1, 'type'=>2));
+			
+			if($tpl['user']['user_id']==352480){
+            	var_dump($countCoupon);
+            }
+            
 			if ($countCoupon==0) {				
 				$couponup = 0;
-				if (($sum-$sumamountprice - $vipcoinssum)>$bigsumcoupon && $user_data['vip_discoint'] && $tpl['user']['user_id']!=811) {				
+				if (($sum-$sumamountprice - $vipcoinssum)>$bigsumcoupon && !$user_data['vip_discoint'] && $tpl['user']['user_id']!=811) {				
 					$dis = ceil(($sum-$sumamountprice - $vipcoinssum)*$bigsumcoupondis/100);
 					$couponup=1;
-				} elseif (($sum-$sumamountprice - $vipcoinssum)>$smallsumcoupon && $user_data['vip_discoint'] && $tpl['user']['user_id']!=811) {				
+				} elseif (($sum-$sumamountprice - $vipcoinssum)>$smallsumcoupon && !$user_data['vip_discoint'] && $tpl['user']['user_id']!=811) {				
 					$dis = ceil(($sum-$sumamountprice - $vipcoinssum)*$smallsumcoupondis/100);
 					$couponup=1;
 				}
@@ -427,6 +442,7 @@ if(!$payment || !$userfio ||!$fio){
 			}
 			
 			if($tpl['user']['user_id']==352480){
+				var_dump($couponup,$dis);
             	echo time()." 10<br>";
             }
 			

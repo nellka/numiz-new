@@ -5,7 +5,7 @@ if ($rows["novelty"]){?>
     <div class="new">Новинка</div>
 <?} elseif ($rows["dateinsert"]>time()-86400*180 ){
 ?>
-	<div class="new_red">NEW</div>
+	<div class="new_red">NEW <?=date('m-d',$rows["dateinsert"])?></div>
 <?php 
  }
 ?>

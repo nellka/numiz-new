@@ -13,7 +13,9 @@
 
 <div class="error" id="oneshopcoins<?=$rows["shopcoins"]?>-error"></div>
 <p>
-    <b>Вы заказываете:</b> <center><?
+    <b>Вы заказываете:</b> <center>
+    <div class="qw-form">
+    <?
     
     if($rows["materialtype"]==3){	
 		echo $rows['namecoins'].''.contentHelper::showImage('images/'.$rows["image"],$rows['namecoins']);
@@ -22,6 +24,7 @@
     } else {
         echo $rows['namecoins'].' '.contentHelper::showImage('images/'.$rows["image"],'');		
     }?>
+    </div>
     </center>
 </p>
 <div class="web-form">

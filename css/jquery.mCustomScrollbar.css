@@ -13,7 +13,9 @@
 #filter-groupgroup_container .dragger{position:absolute; width:12px; height:60px; background:#367e9b; text-align:center; margin-left:1px; line-height:60px; color:#666; overflow:hidden; border-left:1px solid #367e9b; border-right:1px solid #367e9b; cursor:pointer;}
 #filter-groupgroup_container .dragger_pressed{position:absolute; width:6px; height:60px; background:#367e9b text-align:center; margin-left:1px; line-height:60px; color:#367e9b; overflow:hidden; border-left:1px solid #367e9b; border-right:1px solid #367e9b; cursor:pointer;}
 
-#filter-grouptheme_container{position:relative; left:0; /*top:20px;*/ margin:0; height:290px; }
+#filter-grouptheme_container{position:relative; left:0; /*top:20px;*/ margin:0; height:253px; }
+.s_mt #filter-grouptheme_container{height:185px; }
+
 #filter-grouptheme_container .customScrollBox{position:relative; height:100%; overflow:hidden;float:left;}
 #filter-grouptheme_container .customScrollBox .container{position:relative; width:230px; top:10px; float:left;}
 #filter-grouptheme_container .customScrollBox .content{clear:both;}
@@ -29,7 +31,25 @@
 /*#filter-groupnominal_container{position:relative; left:0;  margin:0; height:290px; }*/
 #filter-groupnominal_container{position:relative; left:0;  margin:0; }
 
-.filter-groupnominal_container_1{height:290px;}
+.filter-groupcondition_container_1{height:296px;}
+ul.m .filter-groupcondition_container_1{height:277px;}
+
+ul.s_t .filter-groupcondition_container_1{height:254px;}
+ul.s_tm .filter-groupcondition_container_1{height:187px;}
+
+
+.filter-groupnominal_container_1{height:269px;}
+.filter-groupnominals_container_1{height:269px;}
+.filter-groupyears_p_container_1{height:198px;}
+
+.rf-3 ul.c .filter-groupmetals_container_1 {
+    height: 232px;
+}
+.rf-2 .filter-groupmetals_container_1 {
+    height: 296px;
+}
+
+.filter-groupmetals_container_1{height:190px;}
 
 #filter-groupnominal_container .customScrollBox{position:relative; height:100%; overflow:hidden;float:left;}
 #filter-groupnominal_container .customScrollBox .container{position:relative; width:230px; top:10px; float:left;}
@@ -56,7 +76,7 @@
 		overflow: hidden;
 		height: 100%;
 		/*max-width: 100%;*/
-		 width: 260px;
+		 width: 220px;
 		outline: none;
 		direction: ltr;
 	}

@@ -3,8 +3,11 @@ body {
 	padding: 0;
 	color: #000;
 	font-size: 12px;
-	font-family:Arial,Tahoma, sans-serif;	
+	font-family:Arial,Tahoma, sans-serif;		
 	/* 'Roboto',*/
+}
+.container{
+background: #ffffff;
 }
 .left{
 float:left;
@@ -770,8 +773,9 @@ padding: 10px 0 0;
 }
 
 .filter_heading{
-	background-color: #ffffff;
-    /*border-bottom: 1px solid #ddd;*/
+	/*background-color: #ffffff;
+    border-bottom: 1px solid #ddd;*/
+    background-color: #ebe4d4;
     color: black;
     font-size: 12px;
     line-height: 20px;
@@ -871,6 +875,11 @@ color:#ecb34e;
 	border:1px solid #cccccc;
 	padding:10px;
 }
+
+.showitem .main_img_big img{
+padding:0;
+}
+
 /*стили для статического левого меню*/
 .menu-sidebar_static a span {
     padding: 15px;
@@ -891,8 +900,9 @@ color:#ecb34e;
 
 .filter-block {
     border: 1px solid #ccc;
-    margin: 10px 0;
-    padding: 10px;
+    margin: 5px 0 0;
+    padding: 8px;
+    background-color: #ebe4d4;
 }
 
 .filter-block #group_name {
@@ -1343,7 +1353,7 @@ a.button24:active { background: linear-gradient(#f59500, #f5ae00) #f59500; }
     position: relative;
     text-align: center;
     top: 0;
-    width: 60px;
+    width: 85px;
 }
 .borderimage img {
     border: 1px solid #cccccc;
@@ -1360,7 +1370,7 @@ a.button24:active { background: linear-gradient(#f59500, #f5ae00) #f59500; }
 
 
 .blockshop-full {
-    background: white none repeat scroll 0 0;    
+    background: #fff8e8;    
     position: absolute;
     z-index: 100;
     width: 227px;
@@ -1547,9 +1557,9 @@ div.fancybox-showcalllink{left: 820px !important;top: 165px !important;}*/
   padding: 5px 0 0;
   /*margin:100px auto;
   width:80px;
-  height:80px;*/
-  background-color:white;
-  border-radius:50%;
+  height:80px;
+  background-color:white;*/
+
 }
 
 
@@ -1630,8 +1640,14 @@ div.coinname {
 	height:30px;
 	overflow:hidden;
 }
+div.info_coins{
+border:1px solid #cccccc;
+padding:10px;
+margin-top:20px;
+ background: #fff8e8 none repeat scroll 0 0;
+}
 div.subinfo{
-	background:#ffffff;
+	/*background:#ffffff;*/
 	margin-top:30px;
 }
 div.other{
@@ -1707,7 +1723,7 @@ float:left;
 /*min-height:40px;*/
 }
 .products-cls {
-    margin: -30px 0;
+    /*margin: -30px 0;*/
     text-align: left;
 }
 /*
@@ -1896,6 +1912,7 @@ text-align: center;
     font-size: 15px;
     font-weight: bold;
     line-height: 25px;
+    white-space: nowrap;
 }
 /*style="font-size:16px;font-weight:bold;margin-left:5px;margin-right:5px;"*/
 .group_href {
@@ -1938,6 +1955,8 @@ border: 1px solid rgb(204, 204, 204);
 padding: 10px; 
 margin-top: 20px; 
 position: relative;
+
+background: #fff8e8 none repeat scroll 0 0;
 }
 .oldprice{
 font-size:11px;
@@ -1967,7 +1986,7 @@ float: right;
 }
 
 .toTop {
-    background: rgba(153, 153, 153, 0.1) none repeat scroll 0 0;
+    background: #ebe4d4 none repeat scroll 0 0;
     bottom: 0;
     color: #ecb34e;
     cursor: pointer;
@@ -2017,7 +2036,7 @@ float: right;
 }
 
 .toTopLeft {
-    background: rgba(153, 153, 153, 0.1) none repeat scroll 0 0;
+    background: #ebe4d4  none repeat scroll 0 0;
     bottom: 0;
     color: #ecb34e;
     cursor: pointer;
@@ -2067,4 +2086,156 @@ float: right;
 
 #user-order .web-form input {
   width: 265px;
+}
+
+.filter-products-block .box-heading{
+    float: none;
+    height: 35px;
+    width: 705px;
+}
+
+
+.rowf {
+    display: block;
+    float: left;
+    margin:0 2px 3px 0;
+    position: relative;
+     width: 239px;
+}
+
+#f-zone {
+    display: block;
+    overflow: hidden;
+    position: relative;
+}
+
+.products-cls{
+position: relative;
+}
+
+
+.rowf button.right {
+    color: red;
+    margin: 0;
+    padding: 0;
+    width: 30px;
+}
+
+
+.filter-products-block .right {
+    padding: 0 10px 0 0;
+}
+
+.filter-products-block .closed {
+    margin: 0 0 0 170px;
+}
+
+.filter-products-block {
+    margin: 0 0 10px;
+}
+
+.filter-products-block .button25 {
+    color: white;
+    display: block;
+    min-width: 5px;
+    padding: 5px 0;
+    text-decoration: none;
+    width: 25px;
+}
+#filter-price input{
+width: 52px;
+}
+#filter-groupyears_container #amount-years0,#filter-groupyears_container #amount-years1{
+width: 52px;
+}
+
+.rf-1 .filter_heading{
+padding: 0 0 10px;
+}
+
+.rf-1 #fb-years ul {
+    height: 209px;
+}
+
+.rf-1 #fb-years .checkbox {
+    line-height: 22px;
+}
+.rf-2 .filter_heading{
+padding: 0 0 10px;
+}
+
+.rf-2 #fb-years ul {
+    height: 188px;
+}
+.rf-2 #fb-years .checkbox {
+    line-height: 20px;
+}
+
+.rf-2 #metal-header-open.filter_heading,.rf-2 #fb-condition .filter_heading ,.rf-2 #fb-years_p .filter_heading{
+    padding: 0;
+}
+.yc{
+margin: 0 23px 0 0; max-width: 50px;
+}
+
+.yc:last-child{
+    margin: 0;
+}
+
+
+.user_menu_href,.user_menu_href_c {
+  	background: #fff url("../images/user_up.gif") no-repeat scroll 50% 50%;
+    display: block;
+    height: 50px;
+    text-decoration: none;
+    width: 70px;
+}
+
+.user_menu_href_c{ 
+	background: #fff url("../images/user_down.gif") no-repeat scroll 50% 50%;
+}
+
+.u_submunu {
+    background: white none repeat scroll 0 0;
+    border: 1px solid #ccc;
+    list-style: outside none none;
+    padding: 10px;
+    position: absolute;
+    top: 100px;
+    z-index: 4000;
+}
+
+.u_submunu:before {    
+  content: "";
+  width: 0;
+  height: 0;
+  position: absolute;
+  bottom: 100%;
+  left: 20px;
+  border-width: 0 10px 10px 10px;
+  border-style: solid;
+  border-color: rgba(255, 204, 102, 1) transparent;
+}
+
+#u_submunu > li {
+    line-height: 30px;
+}
+.qw-form img {
+   
+    margin: 5px;
+    padding: 2px;
+}
+
+.coin_info img,.qw-form img ,.image_block  img{
+ border: 1px solid #ccc;
+}
+
+.bordered_oder {
+    border: 1px solid #ccc;
+    margin: 20px 20px 0 0;
+    padding: 0 10px ;
+}
+
+#coupon-block div{
+padding: 5px 0;
 }

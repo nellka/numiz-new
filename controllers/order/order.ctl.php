@@ -66,7 +66,7 @@ if (!$tpl['user']['user_id']){
 				
 			}
 			$tpl['orders'][$i]['dissert'] = $dissert;
-			/*if (!$rows["SendPost"] && !$rows["ReceiptMoney"] && !$rows["SendPostBanderoleNumber"] && $rows["ParentOrder"]==0 && (($rows['payment'] !=1 && $rows['payment'] !=2 && ($rows['delivery']==4 || $rows['delivery']==6)) || (($rows['delivery']==10 || $rows['delivery']==2) && ($ipmyshop==$_SERVER['REMOTE_ADDR'] || $_SERVER['REMOTE_ADDR']=="127.0.0.1")))) */
+			//if (!$rows["SendPost"] && !$rows["ReceiptMoney"] && !$rows["SendPostBanderoleNumber"] && $rows["ParentOrder"]==0 && (($rows['payment'] !=1 && $rows['payment'] !=2 && ($rows['delivery']==4 || $rows['delivery']==6)) || (($rows['delivery']==10 || $rows['delivery']==2) && ($ipmyshop==$_SERVER['REMOTE_ADDR'] || $_SERVER['REMOTE_ADDR']=="127.0.0.1"))))
 			{
 			
 				$resultsum = ($rows['SumAll']>0?$rows['SumAll']:($rows['FinalSum']>0?$rows['FinalSum']:$rows['sum']))-$dissert;
@@ -82,8 +82,8 @@ if (!$tpl['user']['user_id']){
 						$shopcoinsorders[] = $rows3['order'];
 					}
 					
-					if (sizeof($shopcoinsorders)<2)
-						$shopcoinsorder = $shopcoinsorders[0];
+					/*if (sizeof($shopcoinsorders)<2)
+						$shopcoinsorders = $shopcoinsorders[0];*/
 					
 					$clientdiscount = $orderdetails_class->getClientdiscount($tpl['user']['user_id']);
 					$postindex = 0;
@@ -102,8 +102,10 @@ if (!$tpl['user']['user_id']){
 					if (!$postindex) $postindex = "690000";
 					
 					//if ($postindex){
-						$bastet_details = $orderdetails_class->PostSum($postindex, $clientdiscount, $shopcoinsorder);
+						$bastet_details = $orderdetails_class->PostSum($postindex, $clientdiscount, $shopcoinsorder,$shopcoinsorders);
 						$bascetsum = $bastet_details['bascetsum'];
+						//var_dump($bastet_details);
+				//echo "<br>";
 						$bascetpostweight = $bastet_details['bascetpostweight'];	
 						$PostAllPrice = $bastet_details['PostAllPrice'];				
 					//}
@@ -128,7 +130,14 @@ if (!$tpl['user']['user_id']){
 				
 				$tpl['orders'][$i]['crcode']  = md5("numizmatikru:".sprintf ("%01.2f",round($resultsum*$krobokassa-$dissert,2)).":".$rows['order'].":$robokassapasword1:Shp_idu=".$tpl['user']['user_id']);				
 				
-				$tpl['orders'][$i]['OutSum'] = sprintf ("%01.2f",round($resultsum*$krobokassa-$dissert,2));				
+			//	var_dump($resultsum);
+				//echo "<br>";
+				$tpl['orders'][$i]['OutSum'] = sprintf ("%01.2f",round($resultsum*$krobokassa-$dissert,2));	
+				if($tpl['user']['user_id']==811){
+					
+					//var_dump($tpl['orders'][$i]["FinalSum"],$tpl['orders'][$i]['dissert'],$tpl['orders'][$i]['OutSum'],$resultsum);
+					//echo "<br><br>";
+				}			
 			}		
 			$i++;			
 		}

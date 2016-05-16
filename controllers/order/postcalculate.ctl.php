@@ -10,6 +10,7 @@ $code2 = request('code2');
 $code3 = request('code3');
 $code4 = request('code4');
 
+$timenow = mktime(0, 0, 0, date("m", time()), date("d", time()), date("Y", time()));
 
 if(!$tpl['user']['user_id']) $data_result['error'] = "noauth";
 
@@ -36,6 +37,8 @@ $amountbascetsum = $rows['mysumamount'];
 $vipcoinssum = $rows['vipcoinssum'];
 
 $discountcoupon = 0;
+
+$sumEMC = 0;
 
 $user_data =  $user_class->getUserData();
 if($user_data['vip_discoint']) {
@@ -122,6 +125,7 @@ if ($mymaterialtype!=0){
 $PostAllPrice = $PostZonePrice + $PriceLatter + $bascetinsurance + $bascetsum;
 
 
+
 /*
 if ($checking)
 {
@@ -152,7 +156,11 @@ if ($delivery==6) {
 } else {
     $FinalSum = $bascetsum;
 }
-		
+
+
+if($tpl['user']['user_id']==811)	{
+	//var_dump($bascetsum,$PriceLatter,10,$sumEMC,$FinalSum);
+}	
 //echo $discountcoupon;
 
 
@@ -184,7 +192,10 @@ if ($metro and $delivery == 1) {
 	$data_result['metroprice'] = $metro_data['price'];
 	$FinalSum +=$metro_data['price'];
 }
-
+if($tpl['user']['user_id']==352480){
+    //var_dump(date("w",$meetingdate),date("d-m-Y", $meetingdate));
+	//var_dump($PostZoneNumber, $orderdetails_class::$PostZone1[$PostZoneNumber]);
+}
 $data_result['meetingdate'] = "";
 if ($meetingdate and ($delivery == 1 || $delivery == 2 || $delivery == 3 || $delivery == 7))
 	$data_result['meetingdate'] = $DaysArray[date("w",$meetingdate)].":".date("d-m-Y", $meetingdate);
@@ -197,11 +208,12 @@ if ($meetingfromtime and ($delivery == 1 || $delivery == 2 || $delivery == 3 || 
 $data_result['meetingtotime'] = "";
 
 if ($meetingtotime and ($delivery == 1 || $delivery == 2 || $delivery == 3 || $delivery == 7)) {
-	$data_result['meetingtotime'] = date("H-i", time() + $meetingtotime);
+	$data_result['meetingtotime'] = date("H-i", $timenow + $meetingtotime);
 }
 
 
 $data_result['FinalSum']=$FinalSum;
+$data_result['sumEMC'] = $sumEMC;
 $data_result['bascetamount']=$bascetamount;
 $data_result['bascetsum']=$bascetsum;
 $data_result['bascetweight']=$bascetweight;

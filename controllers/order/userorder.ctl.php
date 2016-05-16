@@ -139,7 +139,7 @@ $tpl['orderdetails']['coupons'] = array();
 
 if (!$user_data['vip_discoint']) {
 
-	$iscoup1 = $user_class->getUserCoupon(array('`check`'=>1, 'type'=>1, '`order`'=>0));
+	$iscoup1 = $user_class->getUserCoupon(array('`check`'=>1, 'type'=>1),true);
 	if($iscoup1){
 		$iscoup = 1;
 		$tpl['orderdetails']['coupons'][1] = $iscoup1['code'];

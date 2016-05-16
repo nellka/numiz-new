@@ -149,11 +149,11 @@
 			<?}
 			//дата
 			if ($meetingdate and ($delivery == 1 || $delivery == 2 || $delivery == 3 || $delivery == 7)){?>
-				<div><b>Дата: </b><?=$DaysArray[date("w",$meetingdate)].":".date("d-m-Y", $meetingdate)?>"</div>
+				<div><b>Дата: </b><?=$DaysArray[date("w",$meetingdate)].":".date("d-m-Y", $meetingdate)?></div>
 			<?}
 			//время
 			if ($meetingfromtime and ($delivery == 1 || $delivery == 2 || $delivery == 3 || $delivery == 7)){?>
-				<div><b>Время: </b><?=date("H-i", time() + $meetingfromtime)." по ".date("H-i", time() + $meetingtotime)?></div>
+				<div><b>Время: </b><?=date("H-i", $timenow + $meetingfromtime)." по ".date("H-i", $timenow + $meetingtotime)?></div>
 			<?}
 			if ($payment==8) {
 				echo "<tr><td colspan=6><form action='".$urlrobokassa."/Index.aspx' method=POST>".

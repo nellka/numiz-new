@@ -158,7 +158,7 @@ if (!$data_result['error']){
 	$data_result['shopcoinsorder'] = $shopcoinsorder;
 	$data_result['bascetshopcoins'] = $shopcoins;
 	$data_result['bascetamount'] = $dataBasket["bascetamount"];
-	$data_result['bascetsum'] = $dataBasket["bascetsum"];
+	$data_result['bascetsum'] = ceil($dataBasket["bascetsum"]);
 	$data_result['bascetsumclient']=$dataBasket["bascetsumclient"];
 	$data_result['bascetweight']=$dataBasket["bascetweight"];
 	$data_result['bascetreservetime']=$dataBasket["bascetreservetime"];

@@ -7,7 +7,7 @@ class mails
     
     function __construct(){
 		$this->mail = new Zend_Mail('UTF-8');
-		$this->mail->addHeader("Content-Type:","text/html; charset=UTF-8");
+		//$this->mail->addHeader("Content-Type:","text/html; charset=UTF-8");
 		$this->mail->setFrom('administrator@numizmatik.ru', 'Numizmatik.Ru');  
 	 	
 	}   

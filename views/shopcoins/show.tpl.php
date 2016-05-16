@@ -6,7 +6,7 @@ if($tpl['show']['error']['no_coins']){?>
     include($cfg['path'].'/views/shopcoins/item/item.tpl.php');   
 }?>
 </div>
-<div class="wraper clearfix" style="border:1px solid #cccccc;padding:10px;margin-top:20px;">
+<div class="wraper clearfix info_coins">
 	<div style="display: inline-block;width:400px;">
 		<div id=allreviews style="vertical-align:top;width:400px;margin-top:20px;overflow:hidden;height:500px;">
 			<a name=showreview></a>

@@ -1,6 +1,6 @@
-<?if(isset($mycoins)&&$mycoins) {?>
+<?/*if(isset($mycoins)&&$mycoins) {?>
    <div class="menu-heading"  id='hidden-shopcoins-menu'></div> 
-<?} else {?>
+<?} else {*/?>
 <div class="menu-heading"  id='hidden-shopcoins-menu'>
 	<a style="color:#ffffff;text-decoration:none;" href="#s" >
 		<span style="padding-left:17px;" id='hidden-shopcoins-span'>Разделы магазина</span>
@@ -45,7 +45,7 @@
   </div> 
    <?  
    //подключаем фильтры для магазина
-   //if($tpl['task']=='catalog_base')  include('filters.tpl.php');
+    if($tpl['task']=='catalog_base')  include('filter_country.tpl.php');
 ?>
 
    <script> 
@@ -76,4 +76,4 @@
 		}
 	);	*/
     </script>
-<?}?>
+<?//}?>

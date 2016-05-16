@@ -51,7 +51,7 @@ function setMini(on,onscroll){
 		$('#header-mini').show();
 		$('#small-logo').hide();
 		//$('#shop-logo').css("height",'0');	
-		//$('#shop-logo').hide();
+		$('#shop-logo').hide();
 		if(!onscroll) $.cookie('mini', 1);
 	} else {
 	    
@@ -60,7 +60,7 @@ function setMini(on,onscroll){
 		$('#header').show();
 		$('#small-logo').show();
 		//$('#shop-logo').css("height",'20px');
-		//$('#shop-logo').show();
+		$('#shop-logo').show();
 		if(!onscroll) $.cookie('mini', 0);
 	}
 	//console.log(('shop-logo'));
@@ -279,21 +279,27 @@ function ShowOneClickResult(id,data) {
 }	
 	
 function sendData(name,val,p0,p1,y0,y1){  
+   
     if(name){
         $('#'+name).val(val);
     }
-    if($('#amount-price0').val()!=p0) $('#pricestart').val($('#amount-price0').val());
-    if($('#amount-price1').val()!=p1) $('#priceend').val($('#amount-price1').val());
+    console.log($('#amount-years1').val()+','+y1+','+((+$('#amount-years1').val()==+p1) ));
+    
+    if(+$('#amount-price0').val()!=+p0) $('#pricestart').val($('#amount-price0').val());
+    if(+$('#amount-price1').val()!=+p1) $('#priceend').val($('#amount-price1').val());
 
-    if($('#amount-years0').val()!=y0) $('#yearstart').val($('#amount-years0').val());
-    if($('#amount-years1').val()!=y1) $('#yearend').val($('#amount-years1').val());
+    if(+$('#amount-years0').val()!=+y0) $('#yearstart').val($('#amount-years0').val());
+    if(+$('#amount-years1').val()!=+y1) $('#yearend').val($('#amount-years1').val());
 
     $(".bg_shadow").show();
-    
-    var datastring = JSON.parse(JSON.stringify($("form#search-params").serializeArray()));	
-    //console.log(datastring);
+    if($("#f-zone")){
+        var datastring = JSON.parse(JSON.stringify($("form#search-params").serializeArray().concat($("#f-zone input").serializeArray())));	
+    } else {
+        var datastring = JSON.parse(JSON.stringify($("form#search-params").serializeArray()));	
+    }
     datastring.push({ name:"datatype",  value:"text_html"});
     datastring.push({ name:"pagenum",  value:1});
+
 	$.ajax({
         type: "POST",
         url: $('form#search-params').attr('action'),
@@ -417,8 +423,8 @@ function ShowSmallBascet (id,data) {
     	$('.transfer_class').find('img').css('height', '100%');
 	
 	
-		$("#header-mini #inorderamount").html(bascetamount);	
-		$("#header #inorderamount").html(bascetamount);	
+		$("#header-mini #inorderamount").html("<a href='"+site_dir+"shopcoins/index.php?page=orderdetails'>"+bascetamount+" товаров</a>");	
+		$("#header #inorderamount").html("<a href='"+site_dir+"shopcoins/index.php?page=orderdetails'>"+bascetamount+" товаров</a>");	
 	
 		$("#header-mini #basket-order").html(' №'+shopcoinsorder);	
 		$("#header #basket-order").html(' №'+shopcoinsorder);	
@@ -624,7 +630,7 @@ function checkFormCoupon() {
 			if (!data.error) {
 				dissum = data.dissum;
 				$('#dissum').val(dissum);
-				$('#coupon-error').text('Купод активен. Скидка '+dissum+' руб. будет добавлена к заказу');
+				$('#coupon-error').text('Купон активен. Скидка '+dissum+' руб. будет добавлена к заказу');
 				calculateOrder();
 			} else {
 				if (data.error == "error1") {
@@ -677,14 +683,14 @@ function ShowMetro(delivery){
 	var metroid = 0;
 
 	if (delivery == 3) {
-		url = 'shopcoins/showallmetro.php';
+		url = site_dir+'shopcoins/showallmetro.php';
 	}
 	if (delivery == 1)	{
-		url = 'shopcoins/showringmetro.php';
+		url = site_dir+'shopcoins/showringmetro.php';
 		metroid =$('#metro').val();
 	}
 
-	if (delivery == 2 || delivery == 7)	url = 'shopcoins/showinoffice.php';
+	if (delivery == 2 || delivery == 7)	url = site_dir+'shopcoins/showinoffice.php';
 
 	$.ajax({
 		url: url,
@@ -786,12 +792,14 @@ function ShowPayment(delivery){
 
 	if (delivery == 5) {
 		$('#payment5').prop("disabled",false);
-		if ($bascetsum>=3000)  $('#payment6').prop("disabled",false);
+		if (bascetsum>=3000)  $('#payment6').prop("disabled",false);
 	}
 
 	if (delivery == 6){
 		$('#payment5').prop("disabled",false);
-		if ($bascetsum>=3000) {
+		if (bascetsum>=3000) {
+		    $('#payment3').prop("disabled",false);
+		    $('#payment4').prop("disabled",false);
 			$('#payment6').prop("disabled",false);
 			$('#payment8').prop("disabled",false);
 		}
@@ -975,7 +983,10 @@ function calculateOrder(on){
 
 			meetingdatevalue = data.meetingdate;
 			if (meetingdatevalue){
+			    $('#meetingdate-block-result').show();
 				$('#meetingdate-result').text(meetingdatevalue);
+			} else {
+			     $('#meetingdate-block-result').hide();
 			}
 
 			meetingfromtimevalue = data.meetingfromtime;
@@ -983,6 +994,13 @@ function calculateOrder(on){
 				$('#meetingfromtime-block-result').show();
 				$('#meetingfromtime-result').text(meetingfromtimevalue);
 			}
+			meetingtotimevalue = data.meetingtotime;
+			if (meetingtotimevalue) {
+				$('#meetingfromtime-block-result').show();
+				$('#meetingtotime-result').text(meetingtotimevalue);
+			}
+			
+			
 			$('#payment-result').text(SumName);
 
 			if (data.postindex) {
@@ -1025,16 +1043,17 @@ function calculateOrder(on){
 		}
 	});
 }
-function SubmitOrder(){	
+function SubmitOrder(){
+
 	var error = CheckCorrectFormOrher();
 	if(!$('#postrulesview').prop("checked")){
 		error +="Вы должны согласиться с правилами<br>";
 	}
-	console.log(error);
+
 	if(error){
 		$('#error-order').text(error);
 	} else {
-		$('#resultform').submit();
+		//$('#resultform').submit();		
 		submit();
 	}
 }

@@ -49,7 +49,7 @@ $yearsArray = Array (
 		4 => array('name' => '1701-1800','data'=>array(1701,1800)),
 		5 => array('name' => '1601-1700','data'=>array(1601,1700)),
 		6 => array('name' => 'до 1600','data'=>array(0,1600)),
-		7 => array('name' => 'Без указания года','data'=>array(0,0)));
+		7 => array('name' => 'Без года','data'=>array(0,0)));
 
 $arraynewcoins = Array(1=>date('Y')-2,2=>date('Y')-1,3=>date('Y'));							    
 $TimeMetroMeeting = Array (

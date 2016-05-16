@@ -6,10 +6,10 @@ class model_orderdetails extends Model_Base
 	static $WeightCoins = 5;
 	static $reservetime = 18000;
 	static $PriceLatter = 16;
-	static  $PostZone = array(1 => 138.80,2 => 140.70,3 => 146.40,4 => 178.30,5 => 199.00);
-	static  $PostZone1= array(1 => 138.80, 2 => 140.70,3 => 146.40,4 => 178.30,5 => 199.00);
-	
-	static  $PackageAddition= array(1 => 12.00,2 => 13.90,3 => 20.30,4 => 29.20,5 => 33.70);
+	static  $PostZone = array(1 => 150,2 => 185,3 => 193,4 => 233,5 => 261);
+	static  $PostZone1= array(1 => 150,2 => 185,3 => 193,4 => 233,5 => 261);
+
+	static  $PackageAddition= array(1 => 16,2 => 19,3 => 26,4 => 39,5 => 44);
 	static  $WeightPostLatter = 28;
 	static $WeightPostBox = 100;
 	public function __construct($db,$shopcoinsorder=0){
@@ -125,9 +125,16 @@ class model_orderdetails extends Model_Base
 	 	return  0;
 	 }
 	 
-    public function forBasket($clientdiscount){	   
+    public function forBasket($clientdiscount,$shopcoinsorders=array()){	   
+		if(!count($shopcoinsorders)){
+			$dataBasket = $this->cache->load("bascet_".$this->getIdentity());
+			//$dataBasket = array();
+			$orders = array($this->getIdentity());
+		} else {
+			$orders = $shopcoinsorders;
+		}		
 		
-	 	if(!$dataBasket = $this->cache->load("bascet_".$this->getIdentity())){ 	 
+	 	if(count($shopcoinsorders)||!$dataBasket){ 	 
     	 	//var_dump($this->cache->load("bascet_".$this->getIdentity()));
     	 	//выборка корзины - вес считается по формуле pi*d^3*10.5/80
     		$sql = "select sum(orderdetails.amount*if
@@ -204,14 +211,18 @@ class model_orderdetails extends Model_Base
     			) as myweight,
     		sum(if(shopcoins.materialtype=2,0,1)) as mymaterialtype 
     		from orderdetails, shopcoins 
-    		where orderdetails.order='".$this->getIdentity()."'  and orderdetails.status=0
+    		where ".(sizeof($shopcoinsorders)>1?"orderdetails.order in (".implode(",",$orders).")":"orderdetails.order='".$orders[0]."'")." 
+    		and orderdetails.status=0
     		and orderdetails.catalog=shopcoins.shopcoins;";
     		$dataBasket = $this->getRowSql($sql);
-    		
-    		$this->cache->save($dataBasket, "bascet_".$this->getIdentity());
+    		//echo "<!--$sql-->";
+    		if(!count($shopcoinsorders)) $this->cache->save($dataBasket, "bascet_".$this->getIdentity());
 	 	}	
+	 	
 		return $dataBasket;
 	 }
+	 
+	 
 	
 	//получаем данные о товаре в заказе
 	public function getPostion($id,$use_status = false){
@@ -331,10 +342,9 @@ and o.catalog=s.shopcoins ".($checking?"":"and s.`check`='1'")." and o.status=0;
 	     $this->db->delete($this->table,"`order` = '".$this->shopcoinsorder."' and catalog=$id");	     
 	 }
 	 
-	public function PostSum($postindex,$clientdiscount,$shopcoinsorder=0){
+	public function PostSum($postindex,$clientdiscount,$shopcoinsorder=0,$shopcoinsorders=array()){
 	    if($shopcoinsorder) $this->shopcoinsorder = $shopcoinsorder;
-	    
-        $rows = $this->forBasket($clientdiscount);
+	    $rows = $this->forBasket($clientdiscount,$shopcoinsorders);
 
         $bascetsum = $rows["mysum"];
         $amountbascetsum = $rows['mysumamount'];
@@ -344,9 +354,13 @@ and o.catalog=s.shopcoins ".($checking?"":"and s.`check`='1'")." and o.status=0;
     	$bascetweight = $rows["myweight"];
     	$bascetamount = $this->getCounter();
         $postcounter = $this->getPaking();
-
-        $sql = "select coupon.* from ordercoupon, coupon where ".(sizeof($this->shopcoinsorder)>1?"ordercoupon.order in (".implode(",",$this->shopcoinsorder).")":"ordercoupon.order='".$this->shopcoinsorder."'")." and ordercoupon.order>0 and ordercoupon.`check`=1 and coupon.coupon=ordercoupon.coupon group by coupon.coupon order by coupon.type desc, coupon.dateinsert desc;";
-
+		if(count($shopcoinsorders)){
+        	$sql = "select coupon.* from ordercoupon, coupon where ".(sizeof($shopcoinsorders)>1?"ordercoupon.order in (".implode(",",$shopcoinsorders).")":"ordercoupon.order='".$shopcoinsorders."'")." and ordercoupon.order>0 and ordercoupon.`check`=1 and coupon.coupon=ordercoupon.coupon group by coupon.coupon order by coupon.type desc, coupon.dateinsert desc;";
+        	//echo $sql;
+		} else {
+			$sql = "select coupon.* from ordercoupon, coupon where ".(sizeof($this->shopcoinsorder)>1?"ordercoupon.order in (".implode(",",$this->shopcoinsorder).")":"ordercoupon.order='".$this->shopcoinsorder."'")." and ordercoupon.order>0 and ordercoupon.`check`=1 and coupon.coupon=ordercoupon.coupon group by coupon.coupon order by coupon.type desc, coupon.dateinsert desc;";
+		
+		}
     	$discountcoupon = 0;
     	$arraycoupcode = array();
 		$typec = 1;

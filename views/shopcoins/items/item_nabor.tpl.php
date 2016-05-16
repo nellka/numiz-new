@@ -3,7 +3,7 @@ $is_new = "";
 if ($rows["novelty"]){
     $is_new = '<div class="new">Новинка</div>';
 } elseif ($rows["dateinsert"]>time()-86400*180 && !$mycoins){
-	$is_new = '<div class="new_red">NEW</div>'; 
+	$is_new = '<div class="new_red">NEW  '.date('m-d',$rows["dateinsert"]).'</div>'; 
 }?>
 
 <div class="item_nabor_image">

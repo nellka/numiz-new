@@ -3,7 +3,7 @@
     <div class="new">Новинка</div>
 <?} elseif ($rows_main["dateinsert"]>time()-86400*180){
 ?>
-	<div class="new_red">NEW</div>
+	<div class="new_red">NEW <?=date('m-d',$rows_main["dateinsert"])?></div>
 <?php 
  }
 ?>
