@@ -29,7 +29,7 @@ if($_SERVER["REDIRECT_URL"]=='/shopcoins/prodaza_banknot_i_bon.html'){
 			</div>
 		</div>
 
-		<div id='f-details'>		
+		<div id='f-details' class="filter-groupdetails_container_<?=(count($filter_groups['group_details'])>5)?1:0?>">		
     		<?foreach ($filter_groups['group_details'] as $group_id=>$group_name){?>
     			<div class="left" id='clear_filter_group<?=$group_id?>'><a href="#" class="filtr-g-d" onclick="clear_filter_group('<?=$group_id?>');return false;"><?=$group_name?> - X</a></div>     
     		<?}?>
