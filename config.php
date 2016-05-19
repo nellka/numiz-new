@@ -1,6 +1,6 @@
 <?php
 ini_set('display_errors', '1');
-error_reporting(E_ALL);	
+error_reporting(E_ALL^E_NOTICE^E_WARNING);	
 if(!defined('PATH_LIBS')) define('PATH_LIBS', dirname(__FILE__) .'/php_lib');
 if(!defined('DIR_TEMPLATE')) define('DIR_TEMPLATE', dirname(__FILE__) .'/views/');
 if(!defined('START_PATH')) define('START_PATH', dirname(__FILE__) );
@@ -12,16 +12,18 @@ $cfg = array(
 
     'db' => array(        
             'host'     => 'localhost',
-            'username' => 'tester',
-            'password' => 'eh3Majyd',
-            'dbname'   => 'tet',
+            'username' => 'numizmatik',
+            'password' => 'numizmatik',
+            'dbname'   => 'numizmatik',
       ),
-      'site_root' => 'http://'.$_SERVER["HTTP_HOST"]."/new/",
-      'site_dir' => 'http://'.$_SERVER["HTTP_HOST"]."/new/",
+      'site_root' => 'http://'.$_SERVER["HTTP_HOST"]."/",
+      'site_dir' => 'http://'.$_SERVER["HTTP_HOST"]."/",
       'domain'=>".numizmatik1.ru",
       'server_name' =>"http://www.numizmatik1.ru",
       'email_admin'=>"bodka@rt.mipt.ru"     
 );
+
+$logfile = $cfg['path'] .'/logs/'.date('Y-m-d').'-errors.log';
 
 $minpriceoneclick = 500;
 $reservetime = 18000;

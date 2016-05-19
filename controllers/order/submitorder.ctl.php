@@ -5,9 +5,6 @@ require_once $cfg['path'] . '/models/catalogshopcoinsrelation.php';
 require $cfg['path'] . '/configs/config_shopcoins.php';
 require_once($cfg['path'] . '/models/mails.php');
 
-if($tpl['user']['user_id']==352480){
-	echo time()." start<br>";
-}
 
 $payment = request('payment');
 $userfio = request('userfio');
@@ -28,6 +25,12 @@ $idadmin = request('idadmin');
 $timenow = mktime(0, 0, 0, date("m", time()), date("d", time()), date("Y", time()));
 
 if ($delivery==2){$DeliveryName[$delivery] = "В офисе (возможность посмотреть материал до выставления)";}
+
+if($tpl['user']['user_id']==352480){
+    
+	//var_dump($meetingdate,$meetingfromtime,$meetingtotime,($meetingdate + $meetingfromtime));
+	//die();
+}
 
 $code1 = request('code1');
 $code2 = request('code2');

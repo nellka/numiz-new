@@ -3,7 +3,9 @@ $status = $rows['reserved_status'];
 if (in_array($status,array(1,2,3,4,5,6,7,8,9))) {?>
     <div class="reserv">
 <?}
-//echo "<!--$status-->";
+
+echo "<!--status $status-->";
+
 if ($status ==1) {?>
 Бронь до <?=date("H:i", $rows["reserve"]+model_shopcoins::$reservetime)?>
 <?} elseif ($status ==2) {?>

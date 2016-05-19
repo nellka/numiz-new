@@ -15,15 +15,15 @@ $rows['amountall'] = $amountall;
 //var_dump($rows['buy_status']);
 //кнопки в корзину, резервирует и тд
 if($rows['buy_status']==2){?>
-	<a class="button7" href="#" onclick="return false;" alt='Уже в вашей корзине'>Корзина</a>
+	<a class="button7" href="#" onclick="return false;" title='Уже в вашей корзине'>Корзина</a>
 <?} else if($rows['buy_status']==3){?>
-	<a class="button6" href="#" onclick="return false;" alt='Покупает другой посетитель <?=contentHelper::setWordWhat($rows["materialtype"])?> <?=$rows["gname"]?> <?=$rows["name"]?>'>Корзина</a>		
+	<a class="button6" href="#" onclick="return false;" title='Покупает другой посетитель <?=contentHelper::setWordWhat($rows["materialtype"])?> <?=$rows["gname"]?> <?=$rows["name"]?>'>Корзина</a>		
 <?} elseif ($rows['buy_status']==4){?>	
-	<a class="button6" href="#" onclick="return false;" alt='Покупает другой посетитель <?=contentHelper::setWordWhat($rows["materialtype"])?> <?=$rows["gname"]?> <?=$rows["name"]?>'>Корзина</a>		
+	<a class="button6" href="#" onclick="return false;" title='Покупает другой посетитель <?=contentHelper::setWordWhat($rows["materialtype"])?> <?=$rows["gname"]?> <?=$rows["name"]?>'>Корзина</a>		
 	
-	<a class="button7" href="#" onclick="return false;" alt='Вы в очереди на покупку <?=contentHelper::setWordThat($rows["materialtype"])?> <?=$rows["gname"]?> <?=$rows["name"]?>'>В очереди</a>	
+	<a class="button7" href="#" onclick="return false;" title='Вы в очереди на покупку <?=contentHelper::setWordThat($rows["materialtype"])?> <?=$rows["gname"]?> <?=$rows["name"]?>'>В очереди</a>	
 <?} elseif ($rows['buy_status']==5){?>
-	<a class="button6" href="#" onclick="return false;" alt='Покупает другой посетитель <?=contentHelper::setWordWhat($rows["materialtype"])?> <?=$rows["gname"]?> <?=$rows["name"]?>'>Корзина</a>		
+	<a class="button6" href="#" onclick="return false;" title='Покупает другой посетитель <?=contentHelper::setWordWhat($rows["materialtype"])?> <?=$rows["gname"]?> <?=$rows["name"]?>'>Корзина</a>		
 	<div id=bascetshop<?=$rows["shopcoins"]?>>
 	  <a href='#' onclick="AddNext('<?=$rows["shopcoins"]?>','1');return false;" rel="nofollow" title='Стать в очередь на <?=contentHelper::setWordOn($rows["materialtype"])?> <?=$rows["gname"]?> <?=$rows["name"]?>' class="button11">Стать в очередь</a>
 	</div>
@@ -33,7 +33,7 @@ if($rows['buy_status']==2){?>
     <input type=text name=amount<?=$rows["shopcoins"]?> id=amount<?=$rows["shopcoins"]?> size=1 value='<?=$ourcoinsorderamount[$rows["shopcoins"]]?>'> 
 	<span class="up">+</span>
     <a href='#' onclick='AddAccessory(<?=$rows["shopcoins"]?>,<?=$rows["materialtype"]?>);return false;' title='<?=$rows["name"]?>'>
-	  <div id=bascetshopcoins<?=$rows["shopcoins"]?>><a class="button7" href="#" onclick="return false;" alt='Уже в вашей корзине'>Корзина</a></div>
+	  <div id=bascetshopcoins<?=$rows["shopcoins"]?>><a class="button7" href="#" onclick="return false;" title='Уже в вашей корзине'>Корзина</a></div>
 	 </a>
 <?} else if ($rows['buy_status']==6){?>			
 	<div id=bascetshopcoins<?=$rows["shopcoins"]?>>		

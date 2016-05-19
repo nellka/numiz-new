@@ -15,8 +15,11 @@ if($id){
     $tpl['one_series'] = $shopcoinsbyseries_class->getSeriesDataById($id);
     
     if($tpl['one_series']){
+
         $tpl['one_series']['data'] = $shopcoinsbyseries_class->getCoinsBySeries($tpl['one_series']["whereselect"]);    
-        $tpl['one_series']['group'] = $shopcoins_class->getGroupItem($tpl['one_series']['countrygroup']);           
+        $tpl['one_series']['group'] = $shopcoins_class->getGroupItem($tpl['one_series']['countrygroup']);       
+        
+                
         $tpl['task'] = 'one_serie';
         
         $ourcoinsorder = array();
@@ -27,6 +30,20 @@ if($id){
         		$ourcoinsorder[] = $rows_ourorder["catalog"];
         		$ourcoinsorderamount[$rows_ourorder["catalog"]] = $rows_ourorder["amount"];
         	}
+        }
+        
+        foreach ($tpl['one_series']['data'] as $key=>$rows){	
+
+            $tpl['one_series']['data'][$key]['gname'] = $tpl['one_series']['group']["name"];		   
+    	    $tpl['one_series']['data'][$key]['metal'] = $tpl['metalls'][$rows['metal_id']];		   
+    	    $tpl['one_series']['data'][$key]['condition'] = $tpl['conditions'][$rows['condition_id']];
+    	    $statuses = $shopcoins_class->getBuyStatus($rows["shopcoins"],$tpl['user']['can_see'],$ourcoinsorder,$shopcoinsorder);
+    	    
+    		$tpl['one_series']['data'][$key]['buy_status'] = $statuses['buy_status'];
+    		$tpl['one_series']['data'][$key]['reserved_status'] = $statuses['reserved_status'];	
+    		$tpl['one_series']['data'][$key]['mark'] = $shopcoins_class->getMarks($rows["shopcoins"]);
+    		
+    	    $tpl['one_series']['data'][$key] = array_merge($rows, contentHelper::getRegHref($rows));      	        	    
         }
     }
     

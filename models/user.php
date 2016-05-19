@@ -219,6 +219,48 @@ class model_user extends Model_Base
         return  $this->db->fetchOne($select)?1:0;
     }
 
+    public 	function getUserCurrentOrder(){
+        
+        if($this->user_id){
+            
+            $reservetime = 18000;
+            
+            $domain = $_SERVER["HTTP_HOST"];
+            $domain = '.'.str_replace('www.','', $domain);
+
+            $select = $this->db->select()
+        		               ->from('order')
+        		               ->where('user =?',$this->user_id)
+        		               ->where("`check`=0  and `user`!=811 and `user`>0 and `date`>?",(time()-$reservetime))
+        		               ->limit(1);   
+        		               
+        	if($this->user_id==352480){
+        	    //echo "<br><br>";
+                //echo $select->__toString();
+                // echo "<br><br>";
+            }
+            		               
+        	$rows_or = $this->db->fetchRow($select);
+        		               
+            if ($rows_or) {
+                
+    			$shopcoinsorder = $rows_or['order'];  
+    			  			
+    			setcookie("shopcoinsorder", $shopcoinsorder, $rows_or['date'] + $reservetime, "/shopcoins/", $domain);
+    			setcookie("shopcoinsorder", $shopcoinsorder, $rows_or['date'] + $reservetime, "/shopcoins/");
+    			setcookie("shopcoinsorder", $shopcoinsorder, $rows_or['date'] + $reservetime, "/shopcoins/", ".shopcoins.numizmatik.ru");
+    			setcookie("shopcoinsorder", $shopcoinsorder, $rows_or['date'] + $reservetime, "/");   				
+				
+    			$_SESSION['shopcoinsorder'] = $shopcoinsorder;   			
+                
+                return $shopcoinsorder;
+    		}    		
+        	 
+        }
+
+        return 0;
+    }
+
 	//проверяем, что пользователь залогинен
 	public function loginUser($email,$userpassword){
 	   if ($email &&$userpassword){

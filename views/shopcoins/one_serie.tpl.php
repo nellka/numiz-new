@@ -10,19 +10,7 @@
         </div>
 
     <div class="product-grid">
-<?   foreach ($tpl['one_series']['data'] as $key=>$rows){	
-
-        $rows['gname'] = $tpl['one_series']['group']["name"];		   
-	    $rows['metal'] = $tpl['metalls'][$rows['metal_id']];		   
-	    $rows['condition'] = $tpl['conditions'][$rows['condition_id']];
-	    $statuses = $shopcoins_class->getBuyStatus($rows["shopcoins"],$tpl['user']['can_see'],$ourcoinsorder,$shopcoinsorder);
-	    
-		$rows['buy_status'] = $statuses['buy_status'];
-		$rows['reserved_status'] = $statuses['reserved_status'];	
-		$rows['mark'] = $shopcoins_class->getMarks($rows["shopcoins"]);
-		
-	    $rows = array_merge($rows, contentHelper::getRegHref($rows));  	
-	    
+<?   foreach ($tpl['one_series']['data'] as $key=>$rows){	      
 	    
 		echo "<div class='blockshop' id='item".$rows['shopcoins']."'>
 		<div class='blockshop-full'>";

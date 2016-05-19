@@ -2,6 +2,8 @@
 //require_once($cfg['path'].'/helpers/mobile_detect.php');
 //require $cfg['path'] . '/helpers/cookiesWork.php';
 
+require_once $cfg['path'] . '/models/orderdetails.php';
+
 if(request('logout')){
 
 	$user_class->logout();
@@ -20,6 +22,8 @@ if(request('logout')){
 //die();
 
 require $cfg['path'] . '/controllers/start_params.ctl.php';
+
+$orderdetails_class = new model_orderdetails($cfg['db'],$shopcoinsorder);
 
 if($tpl['is_mobile']&&isset($_COOKIES['fullversion'])){
 	$tpl['is_mobile'] = false;
@@ -62,6 +66,25 @@ if ($tpl['user']['is_logined']){
 	$shopcoins_class = new model_shopcoins($cfg['db'],$tpl['user']['user_id'],$nocheck);
 	$tpl['user']['catalogamount'] = count($shopcoins_class->myCoinsRequest());
 	$tpl['user']['my_ip'] = ((getenv("REMOTE_ADDR")=="212.233.78.26"||getenv("REMOTE_ADDR")=="127.0.0.1")?1:0);
+	
+	$clientdiscount = $orderdetails_class->getClientdiscount($tpl['user']['user_id']);
+	    	    
+	if(!$shopcoinsorder) {
+	    $shopcoinsorder = $user_class->getUserCurrentOrder();
+	    $orderdetails_class->setShopcoinsorder($shopcoinsorder);
+	}
+	
+	if($shopcoinsorder){ 	        		
+		
+        $tpl['user']['product_amount'] = $_SESSION["shopcoinsorderamount"] = $orderdetails_class->getShopcoinsorderamount();
+        
+        $dataBasket = $orderdetails_class->forBasket($clientdiscount);	
+        	
+    	$tpl['user']['summ'] = $bascetsum = $_SESSION['bascetsum'] = $dataBasket["mysum"];
+
+	}
+	
+	
 } else {
 	$tpl['user']['user_id'] = 0;
 	$shopcoins_class = new model_shopcoins($cfg['db'],$tpl['user']['user_id'],$nocheck);

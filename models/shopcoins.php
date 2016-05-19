@@ -146,22 +146,22 @@ class model_shopcoins extends Model_Base
     		 $select->join(array('group'),'shopcoins.group=group.group',array('gname'=>'group.name','ggroup'=>'group.groupparent'));
         }
         if($this->user_id==352480){
-        	echo $select->__toString();
+        	//echo $select->__toString();
         }
         return $this->db->fetchRow($select);
 	}
 	public function getGroupItem($id){	
-		//if(!$dataGroup = $this->cache->load("group_".$id)){       	
+		if(!$dataGroup = $this->cache->load("group_".$id)){       	
 		    $select = $this->db->select()
 	                  ->from('group')
 	                  ->where('group.group=?',$id)
 	                  ->limit(1);  
 	        $dataGroup =  $this->db->fetchRow($select);
 	        if($this->user_id==352480){
-	        	echo $select->__toString();
+	        	//echo $select->__toString();
 	        }
-	        //$this->cache->save($dataGroup, "group_".$id);
-		//}
+	        $this->cache->save($dataGroup, "group_".$id);
+		}
 		
 		return $dataGroup;
 	}
@@ -186,35 +186,25 @@ class model_shopcoins extends Model_Base
 		$reservedForSomeUser = false;		
 		$reservedForSomeGroup =  $item['timereserved'] > time() ; // group, lower priority than personal
 		$isInRerservedGroup = null;
-		$buy_status = 0;
-		$reserved_status = 0;
 		
-		if($this->user_id && $reservedForSomeGroup && !$reservedForSomeUser) {
+		if($this->user_id && $reservedForSomeGroup){
 			$isInRerservedGroup = $this->isInRerservedGroup($id);
 		}
 
 		$reserveamount = 0;
-	    $statusshopcoins = 0;
-		$reserveuser = 0;
-		$reservealluser = 0;
-		//ввожу 			
+			
 	    //для наборов монет, цветных, банкнотов, мелочи и наборов надо проверять что зарезервировано
 		if (in_array($item["materialtype"],array(7,8,6,2,4))) {			
 			//получаем уже зарезервированные монеты
 			$result_amount = $this->getReserved($id,self::$reservetime);
 
-			foreach ($result_amount as $rows_amount){				
-				if ( $rows_amount["reserve"] > 0 && ( time() - (int) $rows_amount["reserve"] < self::$reservetime ) ) { 					
-					$reservedForSomeUser = ( $rows_amount["reserve"] > 0 && ( time() - (int) $rows_amount["reserve"] < self::$reservetime ) );
-					if ($reservealluser < $rows_amount["reserve"]) $reservealluser=$rows_amount["reserve"];
-					
-					$reserveamount++;
-					
-					if ($rows_amount["reserve"] > 0 and $rows_amount["reserveorder"] == $shopcoinsorder) {
-						$reserveamount--;
-					}
+			foreach ($result_amount as $rows_amount){			
+				$reserveamount++;				
+				if ($rows_amount["reserve"] > 0 and $rows_amount["reserveorder"] == $shopcoinsorder) {
+					$reserveamount--;
 				}
-			}			
+			}	
+					
             return $item['amount'] -$reserveamount;		
 		} else {				
 			$reservinfo = '';
@@ -244,7 +234,7 @@ class model_shopcoins extends Model_Base
 			return array('buy_status'=>9,'reserved_status'=>0);			
 		}
 		
-		if($this->user_id && $reservedForSomeGroup && !$reservedForSomeUser) {
+		if($this->user_id && $reservedForSomeGroup) {
 			$isInRerservedGroup = $this->isInRerservedGroup($id);
 		}
 		
@@ -257,25 +247,22 @@ class model_shopcoins extends Model_Base
 	    //для наборов монет, цветных, банкнотов, мелочи и наборов надо проверять что зарезервировано
 		if (in_array($item["materialtype"],array(7,8,6,2,4))) {			
 			//получаем уже зарезервированные монеты
-			$result_amount = $this->getReserved($id,self::$reservetime);
-            
-		
+			$result_amount = $this->getReserved($id,self::$reservetime);     
+			       
 			foreach ($result_amount as $rows_amount){	
-			    	
-				if ( $rows_amount["reserve"] > 0 && ( time() - (int) $rows_amount["reserve"] < self::$reservetime ) ) { 					
-					$reservedForSomeUser = ( $rows_amount["reserve"] > 0 && ( time() - (int) $rows_amount["reserve"] < self::$reservetime ) );
+			    			
+				$reservedForSomeUser = true;
+				
+				if ($reservealluser < $rows_amount["reserve"]) $reservealluser=$rows_amount["reserve"];
+				
+				$reserveamount++;
+				
+				if ($rows_amount["reserve"] > 0 and $rows_amount["reserveorder"] == $shopcoinsorder) {
+				
+					if ($reserveuser < $rows_amount["reserve"]) 
+						$reserveuser=$rows_amount["reserve"];
 					
-					if ($reservealluser < $rows_amount["reserve"]) $reservealluser=$rows_amount["reserve"];
-					
-					$reserveamount++;
-					
-					if ($rows_amount["reserve"] > 0 and $rows_amount["reserveorder"] == $shopcoinsorder) {
-					
-						if ($reserveuser < $rows_amount["reserve"]) 
-							$reserveuser=$rows_amount["reserve"];
-						
-						$statusshopcoins = 1;
-					}
+					$statusshopcoins = 1;
 				}
 			}
 			
@@ -287,7 +274,7 @@ class model_shopcoins extends Model_Base
 				$statusopt = 1;	
 			}	
 			
-			if (!$reserveuser && $reservealluser) $reserveuser=$reservealluser;
+			if (!$reserveuser && $reservealluser) $reserveuser = $reservealluser;
 					
 			     	
 			if ($statusshopcoins) {
@@ -334,18 +321,15 @@ class model_shopcoins extends Model_Base
 		}
 		       
        if ($reservedForSomeUser) {
-       	if($id=='1023035'){
-				//echo "<!--$id ".$item["amount"]." ".$reserveamount."-->";
-			}
+       	
            if($item["amount"]>$reserveamount){
               $reserved_status = 0;
            } else $reserved_status = 1;	
-				
-			if (time() - (int) $item["reserve"] >= (self::$reservetime)  || $item["reserveorder"] != $shopcoinsorder  && $item['relationcatalog']>0 && $this->user_id){
-				
+
+			if ($item["reserveorder"] != $shopcoinsorder  && $item['relationcatalog']>0 && $this->user_id){				
 			    $reserved_status = 2;
 			    if($buy_status==6&&($item["amount"]>$reserveamount)) $reserved_status = 0;
-			} elseif (time() - (int) $item["reserve"] >= (self::$reservetime)  || $item["reserveorder"] != $shopcoinsorder  && $item['relationcatalog']>0 && !$this->user_id){
+			} elseif ($item["reserveorder"] != $shopcoinsorder  && $item['relationcatalog']>0 && !$this->user_id){
 				$reserved_status = 1;
 			}
       

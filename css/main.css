@@ -2239,3 +2239,9 @@ margin: 0 23px 0 0; max-width: 50px;
 #coupon-block div{
 padding: 5px 0;
 }
+
+
+.recomended .coin_info img {
+    max-height: 122px;
+    max-width: 200px;
+}

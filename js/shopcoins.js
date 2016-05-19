@@ -1,3 +1,5 @@
+site_dir = 'http://www.numizmatik.ru/';
+
 function showOn(href,id){
      $('#MainBascet').dialog({
         modal: true,

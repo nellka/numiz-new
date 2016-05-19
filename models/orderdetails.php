@@ -440,6 +440,20 @@ and o.catalog=s.shopcoins ".($checking?"":"and s.`check`='1'")." and o.status=0;
 
 	 }
 	 
+	 public function getShopcoinsorderamount(){
+	     if($this->shopcoinsorder){
+    	     $select = $this->db->select()
+        		               ->from('order',array('count(*)'))
+        		               ->join('orderdetails','order.order=orderdetails.order',array())
+        		               ->where('order.order =?',$this->shopcoinsorder)
+        		               ->where('orderdetails.status=0 and order.check=0');
+    
+             return $this->db->fetchOne($select);
+	     }
+	     
+	     return 0;
+	 }
+	 
 	 public function getSuminsurance(){
 		$select = $this->db->select()
 			->from('order',array('sum(suminsurance)'))

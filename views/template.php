@@ -75,38 +75,38 @@
     <span>Наверх</span>
     </span>
     </a>
-</div>  
+</div>   
+<link rel="stylesheet" type="text/css" href="<?=$cfg['site_dir']?>css/jqueryui.custom.min.css" media="screen" />
+<link href="<?=$cfg['site_dir']?>css/jquery.mCustomScrollbar.min.css" rel="stylesheet" type= "text/css"/>
 
-
-<link rel=stylesheet type=text/css href='<?=$cfg['site_dir']?>css/main.css'>
-<link href='https://fonts.googleapis.com/css?family=Roboto:400italic,700,700italic,100,400,100italic' rel='stylesheet' type='text/css'>
-<link rel="stylesheet" type="text/css" href="<?=$cfg['site_dir']?>css/jqueryui.custom.css" media="screen" />
-
-<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type= "text/javascript"></script>
 <?
 if(!in_array($tpl["task"],array('login_order','registration','login','remind'))){
 ?>
-<script src="<?=$cfg['site_dir']?>js/jquery.cookie.js"></script>
+<script src="<?=$cfg['site_dir']?>js/jquery.cookie.min.js"></script>
 <script src= "<?=$cfg['site_dir']?>js/jquery.mousewheel.min.js" type= "text/javascript"></script> 
-<link href="<?=$cfg['site_dir']?>css/jquery.mCustomScrollbar.css" rel="stylesheet" type= "text/css"/>
-<script src="<?=$cfg['site_dir']?>js/jquery.easing.1.3.js" type= "text/javascript"></script>
-<script src="<?=$cfg['site_dir']?>js/jquery.mCustomScrollbar.js" type="text/javascript"></script>
+
+<!--<script src="<?=$cfg['site_dir']?>js/jquery.easing.1.3.js" type= "text/javascript"></script>-->
+<script src="<?=$cfg['site_dir']?>js/jquery.mCustomScrollbar.min.js" type="text/javascript"></script>
 <script src="<?=$cfg['site_dir']?>js/jquery.maskedinput.min.js"></script>
-<script src="<?=$cfg['site_dir']?>js/shopcoins.js"></script>
-<script type="text/javascript" src="<?=$cfg['site_dir']?>js/jquery.jcarousel.js"></script>
+<script src="<?=$cfg['site_dir']?>js/shopcoins.min.js"></script>
+<script type="text/javascript" src="<?=$cfg['site_dir']?>js/jquery.jcarousel.min.js"></script>
 <?}
 if( $tpl['is_mobile']){?>
    <script src="<?=$cfg['site_dir']?>js/jquery.ui.touch-punch.min.js"></script> 
 <?}?>
-
 <script type="text/javascript">
-$(document).ready(function() {	
+
+$(document).ready(function() {
+	console.log(5);
+	
     $('body').on("click", ".ui-widget-overlay", function() {
           $(".ui-icon.ui-icon-closethick").trigger("click");
     }); 
     
-	$(window).on('scroll', function(){	
+	$(window).on('scroll', function(){
+	//animations will be smoother
+	//window.requestAnimationFrame(animateIntro);
 		if($(document).scrollTop()>10){
 			setMini(1,true);
 			$('#toTop').show();
@@ -179,6 +179,7 @@ $(document).ready(function() {
 		$input.change();
 		return false;
 	});
+
 	$("#fb-groups #group_name").keyup(function(){
         var vl = $(this).val();
         if (vl.length >= 3) {
@@ -189,6 +190,8 @@ $(document).ready(function() {
     });
 });
 </script>
+
+
 </body>
 </html>
    
