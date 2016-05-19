@@ -268,7 +268,7 @@ function mCustomScrollbars(){
 	$(".filter-groupcondition_container_1").mCustomScrollbar({theme:"dark-thick"});	
 	
 	if($(".filter-groupmetals_container_1")) $(".filter-groupmetals_container_1").mCustomScrollbar({theme:"dark-thick"});
-	
+	if($(".filter-groupdetails_container_1")) $(".filter-groupdetails_container_1").mCustomScrollbar({theme:"dark-thick"});
 	//if($(".filter-groupnominal_container_1")) $(".filter-groupnominal_container_1").mCustomScrollbar({theme:"dark-thick"});
 	//console.log(jQuery(".filter-groupnominal_container_1"));	
 }
