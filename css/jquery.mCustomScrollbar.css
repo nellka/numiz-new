@@ -3,6 +3,8 @@
 /*#filter-groupgroup_container{position:relative; left:0;  margin:0; height:290px; }*/
 
 .filter-groupgroup_container_1{height:290px;}
+
+
 #filter-groupgroup_container .customScrollBox{position:relative; height:100%; overflow:hidden;float:left;}
 #filter-groupgroup_container .customScrollBox .container{position:relative; width:230px; top:10px; float:left;}
 #filter-groupgroup_container .customScrollBox .content{clear:both;}
@@ -51,6 +53,8 @@ ul.s_tm .filter-groupcondition_container_1{height:187px;}
 
 .filter-groupmetals_container_1{height:190px;}
 
+.filter-groupdetails_container_1{height:100px;}
+
 #filter-groupnominal_container .customScrollBox{position:relative; height:100%; overflow:hidden;float:left;}
 #filter-groupnominal_container .customScrollBox .container{position:relative; width:230px; top:10px; float:left;}
 #filter-groupnominal_container .customScrollBox .content{clear:both;}
@@ -60,6 +64,20 @@ ul.s_tm .filter-groupcondition_container_1{height:187px;}
 #filter-groupnominal_container .dragger_container{position:relative; width:13px; height:275px; float:left; margin:10px 0 0 10px; cursor:pointer; box-shadow:inset 0 0 10px #ccc; -moz-box-shadow:inset 0 0 10px #000; -webkit-box-shadow:inset 0 0 10px #000;}
 #filter-groupnominal_container .dragger{position:absolute; width:12px; height:60px; background:#367e9b; text-align:center; margin-left:1px; line-height:60px; color:#367e9b; overflow:hidden; border-left:1px solid #367e9b; border-right:1px solid #367e9b; cursor:pointer;}
 #filter-groupnominal_container .dragger_pressed{position:absolute; width:6px; height:60px; background:#367e9b; text-align:center; margin-left:1px; line-height:60px; color:#367e9b; overflow:hidden; border-left:1px solid #367e9b; border-right:1px solid #367e9b; cursor:pointer;}
+
+
+#f-details .customScrollBox{position:relative; height:100%; overflow:hidden;float:left;}
+#f-details .customScrollBox .container{position:relative; width:230px; top:10px; float:left;}
+#f-details .customScrollBox .content{clear:both;}
+#f-details .customScrollBox .content p{padding:10px 5px; margin:10px 0; color:#fff; font-size:13px; line-height:20px;}
+#f-details .customScrollBox .content p.alt{padding:10px 5px; margin:10px 0; color:#fff; font-size:17px; line-height:19px; color:#999;}
+#f-details .customScrollBox img{border:5px solid #fff;}
+#f-details .dragger_container{position:relative; width:13px; height:275px; float:left; margin:10px 0 0 10px; cursor:pointer; box-shadow:inset 0 0 10px #ccc; -moz-box-shadow:inset 0 0 10px #000; -webkit-box-shadow:inset 0 0 10px #000;}
+#f-details .dragger{position:absolute; width:12px; height:60px; background:#367e9b; text-align:center; margin-left:1px; line-height:60px; color:#367e9b; overflow:hidden; border-left:1px solid #367e9b; border-right:1px solid #367e9b; cursor:pointer;}
+#f-details .dragger_pressed{position:absolute; width:6px; height:60px; background:#367e9b; text-align:center; margin-left:1px; line-height:60px; color:#367e9b; overflow:hidden; border-left:1px solid #367e9b; border-right:1px solid #367e9b; cursor:pointer;}
+#f-details .mCustomScrollBox{
+width:260px;
+}
 
 
 /* 
