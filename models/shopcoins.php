@@ -1734,6 +1734,36 @@ class model_shopcoins extends Model_Base
 		}	       
 	}
 	
+	public function getParrentGroupsIds($group_id){
+	    $GroupArray = array();
+	    if((int)$group_id){
+	        if($this->mycoins) {
+    	       $select = $this->db->select()
+    	                      ->from(array('s'=>$this->mycoins_table_name),array('group'=>'distinct(s.group)'))	 
+    	                      ->join(array('group'),'s.group=group.group',array('gname'=>'group.name'))                    
+    	                      ->where('s.dateinsert>0 and s.group<>"790"')
+    	                       ->order('group.name asc');	   	   		
+    	   } else {
+    	       $select = $this->db->select()
+    	                      ->from(array('s'=>'shopcoins_search'),array('group'=>'distinct(s.group)'))
+    	                       ->join(array('group'),'s.group=group.group',array('gname'=>'group.name'))
+    	                       ->order('group.name asc');	   
+    	   	 	$select = $this->byAdmin($select,'s'); 
+    	   		$select=$this->setMaterialtypeSelect($select,array(),'s');
+    	   }
+	
+	        $select->where('groupparent=?',(int)$group_id);
+	        
+            $groups = $this->db->fetchAll($select);
+             
+    	    
+        	foreach ($groups as $rows_group){
+        		$GroupArray[] = $rows_group['group'];
+        	}
+        	
+	    } 
+	    return $GroupArray;
+	}
 }
 
 ?>
