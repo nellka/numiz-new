@@ -72,10 +72,6 @@ setcookie('orderby', $tpl['orderby'],  time()+ 86400 * 90,'/',$domain);
 
 $tpl['pagenum'] = request('pagenum')?request('pagenum'):1;
 
-//array(14) {["condition"]=> string(3) "VF-" ["orderby"]=> string(14) "dateinsertdesc" ["onpage"]=> string(2) "32" ["pagenum"]=> string(1) "1" ["pricestart"]=> string(4) "6709" ["priceend"]=> string(5) "71943" ["conditions"]=> array(2) { [0]=> string(3) "XF-" [1]=> string(3) "VF-" } ["metals"]=> array(1) { [0]=> string(12) "Фарфор" } ["years"]=> array(2) { [0]=> string(1) "1" [1]=> string(1) "2" } ["themes"]=> array(1) { [0]=> string(1) "4" } ["groups"]=> array(1) { [0]=> string(3) "518" } } 
-
-
-
 $theme_data = array();
 $metal_data = array();
 $year_data = array();
@@ -92,22 +88,11 @@ $searchid = request('searchid');
 
 
 
-$groups = request('groups');
+$groups = (array)request('groups');
 
 foreach ($groups as $k=>$v){
     $groups[$k] = (int)$v;
 }
-
-//убираем третий рейх
-if($groups){
-	$is_uncorrect = array_search(790,$groups);
-	
-	if($is_uncorrect!==false){
-	//var_dump($groups,$is_uncorrect);
-		unset($groups[$is_uncorrect]);
-	}
-}
-
 
 $nominals = (array)request('nominals');
 $nominal = request('nominal');
@@ -183,13 +168,9 @@ $conditions = (array)request('conditions');
 if($metals&&!is_array($metals)){
     $metals = array($metals);
 }
-if($tpl['user']['user_id']==352480){
-	var_dump($metals);
-}
 
 if ($metals) $metal_data =$metals;
-elseif($metal) {
-	
+elseif($metal) {	
 	if((int)$metal==0){
 		//для старых запросов
 		$metal = array_search($metal,$tpl['metalls']);
@@ -211,15 +192,21 @@ elseif($group) {
 $tpl['shop']['OtherMaterialData'] = array();
 
 $OtherMaterial =  array();
-if($tpl['user']['user_id']==352480){
-	echo time()." 2<br>";
-}
+
 if(count($group_data)==1){
     
     $groupData = $shopcoins_class->getGroupItem($group_data[0]);
-	if($tpl['user']['user_id']==352480){
-		echo time()." 2_1<br>";
-	}
+	//получаем дочерние элементы
+	
+	$childs = $shopcoins_class->getParrentGroupsIds($group_data[0]);
+
+	$i=1;
+	foreach ($childs as $child){
+	    $group_data[$i] = $child;
+	    $groups[$i] = $child;
+	    $i++;
+	}	
+	
 	$GroupName = $groupData["name"];
 	//$grouphref = strtolower_ru($GroupName)."_gn".$groupData['group'];
 	$arraykeyword[] = $groupData["name"];
@@ -266,8 +253,8 @@ if(count($group_data)==1){
 	    $i = 0;	
 	    $oldmaterialtype = 0;
 		foreach ($tpl['shop']['OtherMaterialData'] as &$rows){
-		    $rows['metal'] = $tpl['metalls'][$rows['metal_id']];
-		    $rows['condition'] = $tpl['conditions'][$rows['condition_id']];
+		    $rows['metal'] = isset($tpl['metalls'][$rows['metal_id']])?$tpl['metalls'][$rows['metal_id']]:'';
+		    $rows['condition'] = isset($tpl['conditions'][$rows['condition_id']])?$tpl['conditions'][$rows['condition_id']]:'';
 		    $tpl['shop']['related'][$i]['additional_title'] = '';
 			if ($oldmaterialtype != $rows["materialtype"]) {
 				$tpl['shop']['related'][$i]['additional_title'] = $MaterialTypeArray[$rows["materialtype"]];
@@ -635,8 +622,8 @@ if (sizeof($tpl['shop']['MyShowArray'])==0){
 	foreach ($tpl['shop']['MyShowArray'] as $i=>$rows) {
 		$rows = array_merge($rows,$tpl['shop']['items'][$rows["shopcoins"]]);
         $tpl['shop']['MyShowArray'][$i] = array_merge($rows,$tpl['shop']['items'][$rows["shopcoins"]]);
-	    $tpl['shop']['MyShowArray'][$i]['condition'] = $tpl['conditions'][$rows['condition_id']];
-	    $tpl['shop']['MyShowArray'][$i]['metal'] = $tpl['metalls'][$rows['metal_id']];
+	    $tpl['shop']['MyShowArray'][$i]['condition'] = isset($tpl['conditions'][$rows['condition_id']])?$tpl['conditions'][$rows['condition_id']]:'';		    
+	    $tpl['shop']['MyShowArray'][$i]['metal'] = isset($tpl['metalls'][$rows['metal_id']])?$tpl['metalls'][$rows['metal_id']]:'';
 	    $details = $details_class->getItem($rows["shopcoins"]);
 	    $tpl['shop']['MyShowArray'][$i]["details"] =  '';
 	    if($details) $tpl['shop']['MyShowArray'][$i]["details"] = $details["details"];
