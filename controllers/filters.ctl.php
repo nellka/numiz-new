@@ -175,8 +175,8 @@ if($tpl['user']['user_id']==352480){
 }
 
 if(!in_array($materialtype,array(5))){
-	
-	if(!$groups_filter = $cache->load("groups_$cache_prefix")) {  
+     $gl_prefix = $c_en?'_en':'';
+	 if(!$groups_filter = $cache->load("groups_$cache_prefix".$gl_prefix)) {  
 	    $Group = array();
 		foreach ($tpl['filters']['All_groups'] as $rows) {			
 			$Group[] = $rows["group"];
@@ -184,19 +184,20 @@ if(!in_array($materialtype,array(5))){
 		
 		if($Group){
 			//информация о группе
-			$groups_details = $shopcoins_class->getGroupsDetails($Group);
+			$groups_details = $shopcoins_class->getGroupsDetails($Group,false,$c_en);
+			
 			$GroupArray = array();
-			foreach ($groups_details as $rows){		
+			foreach ($groups_details as $rows){	
 				if ($rows["groupparent"]>0) {
 					$Group[] = $rows["groupparent"];				
 					if (!isset($GroupArray[$rows["groupparent"]])||!is_array($GroupArray[$rows["groupparent"]]))
 						$GroupArray[$rows["groupparent"]] = Array();
 				
-					$GroupArray[$rows["groupparent"]][$rows["group"]] = $rows["name"];
+					$GroupArray[$rows["groupparent"]][$rows["group"]] = $rows["name".$gl_prefix];
 				}
 			}
 			
-			$parentGroupsInfo = $shopcoins_class->getGroupsDetails($Group,true);
+			$parentGroupsInfo = $shopcoins_class->getGroupsDetails($Group,true,$c_en);
 			$i=1;
 			foreach ($parentGroupsInfo as $value){					
 		        $sub_childen_data_group = array();	   
@@ -208,7 +209,7 @@ if(!in_array($materialtype,array(5))){
 		    	}
 		    	//выносим Россию вверх	
 	    		$childen_data_group[($value["group"]==407?0:$i)] = array('filter_id' => $value["group"],
-	    	                             'name'      => $value["name"],
+	    	                             'name'      => $value["name".$gl_prefix],
 	    	                             'child'     =>$sub_childen_data_group); 
 	    	    $i++;	 
 		    }
@@ -221,13 +222,11 @@ if(!in_array($materialtype,array(5))){
 				 
 		}
 		
-		$cache->save($groups_filter, "groups_$cache_prefix");		
+		$cache->save($groups_filter, "groups_$cache_prefix".$gl_prefix);		
 	}
 	if($groups_filter) $filter_groups[] = $groups_filter;
 }
-if($tpl['user']['user_id']==352480){
-	//echo time()." f group $i<br>";
-}
+
 //фильтр по номиналам
 //if(!$tpl['filters']['nominals'] = $cache->load("nominals".implode("_",$group_data)."_$cache_prefix")) { 
     $tpl['filters']['nominals'] = $shopcoins_class->getNominals($group_data);
@@ -285,7 +284,7 @@ $filter_groups['group_details'] = array();
 
 foreach ((array)$groups as $group){
 	$groupData = $shopcoins_class->getGroupItem($group);
-	$filter_groups['group_details'][$group] = $groupData["name"];
+	$filter_groups['group_details'][$group] = $groupData["name".$gl_prefix];
 	
 }
 

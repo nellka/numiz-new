@@ -7,6 +7,7 @@ $parent= request('parent');
 $materialtype = (integer)(isset($_REQUEST['materialtype'])?$_REQUEST['materialtype']:'');
 $mini= (isset($_COOKIE['mini'])&&$_COOKIE['mini']>0)?true:false;
 $fv= (isset($_COOKIE['fv'])&&$_COOKIE['fv']>0)?true:false;
+$c_en= (isset($_COOKIE['c_en'])&&$_COOKIE['c_en']>0)?true:false;
 //номер заказа
 $shopcoinsorder = 0;
 
