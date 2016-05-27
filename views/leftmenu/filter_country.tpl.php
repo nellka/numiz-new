@@ -21,8 +21,12 @@ if($_SERVER["REDIRECT_URL"]=='/shopcoins/prodaza_banknot_i_bon.html'){
     <div class="filter-block" id='fb-groups'>
 		<div class="filter_heading">
 			<div style="float:left;"><?=$groups_filter['name']?></div>
-            <div style="float:left;padding: 0 40px;">    	
-              <a class="fc" id='group-full-show-top' href="#" onclick="full_filter('groups');return false;"></a>
+            <div style="float:left;padding: 0 0 0 40px;">  
+             <?if($c_en){?>	
+                <a class="fc" href="#" onclick="$.cookie('c_en',0);location.reload();return false;">RUS</a> | Krauser
+            <?} else {?>
+                RUS | <a class="fc" href="#" onclick="$.cookie('c_en',1);location.reload();return false;">Krauser</a>
+            <?}?>
             </div>    		
 			<div style="float:right;">    			  
 				<a class="fc" href="#" onclick="clear_filter('groups');return false;">Сбросить</a>
@@ -44,10 +48,10 @@ if($_SERVER["REDIRECT_URL"]=='/shopcoins/prodaza_banknot_i_bon.html'){
 						<?php            
 						 if (is_array($groups)&&in_array($filter['filter_id'], $groups)) { ?>
 							<input type="checkbox" name="groups[]" value="<?=$filter['filter_id']?>" checked="checked" onclick="addToFilterDetails('<?=$filter['filter_id']?>','<?=$filter['name'];?>')" />
-					   <a href="<?=$r_url?>?materialtype=<?=$materialtype?><?=$ahref?>&group=<?=$filter['filter_id']?>"> <?=$filter['name'];?></a>
+					   <a href="<?=$r_url?>?materialtype=<?=$materialtype?>&group=<?=$filter['filter_id']?>"> <?=$filter['name'];?></a>
 						<?php } else { ?>
 							<input type="checkbox" name="groups[]" value="<?=$filter['filter_id']?>" onclick="addToFilterDetails('<?=$filter['filter_id']?>','<?=$filter['name'];?>')" />
-					       <a href="<?=$r_url?>?materialtype=<?=$materialtype?><?=$ahref?>&group=<?=$filter['filter_id']?>"> <?=$filter['name'];?></a>
+					       <a href="<?=$r_url?>?materialtype=<?=$materialtype?>&group=<?=$filter['filter_id']?>"> <?=$filter['name'];?></a>
 						  <?}?>
 					</div>
 				    <?php
@@ -58,10 +62,10 @@ if($_SERVER["REDIRECT_URL"]=='/shopcoins/prodaza_banknot_i_bon.html'){
 								<?php             
 								if (is_array($groups)&&in_array($filter_child['filter_id'], $groups)) { ?>
 								    <input type="checkbox" name="groups[]" value="<?=$filter_child['filter_id']?>" checked="checked" onclick="addToFilterDetails('<?=$filter['filter_id']?>','<?=$filter_child['name'];?>')" />
-								    <a href="<?=$r_url?>?materialtype=<?=$materialtype?><?=$ahref?>&group=<?=$filter_child['filter_id']?>"> <?=$filter_child['name'];?></a>
+								    <a href="<?=$r_url?>?materialtype=<?=$materialtype?>&group=<?=$filter_child['filter_id']?>"> <?=$filter_child['name'];?></a>
 								<?php } else { ?>
 								    <input type="checkbox" name="groups[]" value="<?php echo $filter_child['filter_id']; ?>" onclick="addToFilterDetails('<?=$filter['filter_id']?>','<?=$filter_child['name'];?>')" />
-								    <a href="<?=$r_url?>?materialtype=<?=$materialtype?><?=$ahref?>&group=<?=$filter_child['filter_id']?>"> <?=$filter_child['name'];?></a>
+								    <a href="<?=$r_url?>?materialtype=<?=$materialtype?>&group=<?=$filter_child['filter_id']?>"> <?=$filter_child['name'];?></a>
 								<?php } ?>
 							</div>
 							<?php     
