@@ -5,10 +5,8 @@ require_once $cfg['path'] . '/models/order.php';
 $data_result = array();
 $data_result['error'] = null;
 
-$code1 = request('code1');
-$code2 = request('code2');
-$code3 = request('code3');
-$code4 = request('code4');
+$coupon_count = (integer)request('coupon_count');
+$coupons = array();
 
 $timenow = mktime(0, 0, 0, date("m", time()), date("d", time()), date("Y", time()));
 
@@ -44,18 +42,30 @@ $user_data =  $user_class->getUserData();
 if($user_data['vip_discoint']) {
     $discountcoupon = floor(($bascetsum-$amountbascetsum-$vipcoinssum)*$user_data['vip_discoint']/100);
 
-} else if ($code1 && $code2 && $code3 && $code4 && $tpl['user']['user_id'] && $tpl['user']['user_id']<>811 && $shopcoinsorder) {
+} else if ($coupon_count && $tpl['user']['user_id'] && $tpl['user']['user_id']<>811 && $shopcoinsorder) {
     //проверяем купон
 	//получаем данные о введенном купоне
-	$code = strtolower($code1."-".$code2."-".$code3."-".$code4);
-	if (!preg_match("/[^-0-9a-zA-Z]{19}/",$code)){
-		$couponData = $user_class->getUserCoupon(array('code'=>$code ,'type'=>1));
-		$friendCoupon = $user_class->getFriendCouponCode();
-		if($couponData&&$couponData['check'] !== 0&&$couponData['dateend']>time()) {
-			$discountcoupon += $couponData['sum'];
-		}
-	}
+	
+	for ($i=0;$i<$coupon_count;$i++){
+        $code = request('coupon'.$i);
+
+        if($code) {        	
+            if (!preg_match("/[^-0-9a-zA-Z]{19}/",$code)){
+        		$couponData = $user_class->getUserCoupon(array('code'=>$code ,'type'=>1));
+        		
+        		if($couponData){
+        		    $couponData = $couponData[0];
+        		    //var_dump($couponData['check']);
+        		    if(($couponData['check'] != 0)&&($couponData['dateend']>time())) {        		   
+            			$discountcoupon += $couponData['sum'];
+            			$coupons[] = $code;
+            		}
+        		}
+        	}
+        }
+    }
 }
+
 //echo $sql;
 /*
 $sql2 = "select coupon.* from ordercoupon, coupon where ".(sizeof($shopcoinsorder)>1?"ordercoupon.order in (".implode(",",$shopcoinsorder).")":"ordercoupon.order='".$shopcoinsorder."'")." and ordercoupon.order>0 and ordercoupon.`check`=1 and coupon.coupon=ordercoupon.coupon group by coupon.coupon order by coupon.type desc, coupon.dateinsert desc;";
@@ -181,6 +191,8 @@ $data_result['DeliveryName'] = $DeliveryName[$delivery];
 $data_result['SumName'] = $SumName[$payment];
 
 $data_result['discountcoupon'] = $discountcoupon;
+
+$data_result['coupons'] = implode("<br>",$coupons);
 $data_result['metro'] ="";
 $data_result['metroprice']="";
 

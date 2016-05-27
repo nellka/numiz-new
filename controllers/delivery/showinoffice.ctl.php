@@ -12,6 +12,8 @@ $timenow = time();
 
 $startDate = mktime(0,0,0,10,29,2007);
 
+$timenow = mktime(0, 0, 0, date("m", $timenow), date("d", $timenow), date("Y", $timenow));
+
 if (!$timelimit || $timelimit>30)
 	$timelimit = 30;
 
@@ -31,8 +33,6 @@ $data_result['DaysArray'] = $DaysData;
 
 $TimesArray = array();
 $n = 0;
-
-$timenow = mktime(0, 0, 0, date("m", $timenow), date("d", $timenow), date("Y", $timenow));
 
 for ($i = 36000; $i <= 64800; $i = $i+900){
 

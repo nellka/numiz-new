@@ -46,7 +46,8 @@ class model_user extends Model_Base
 		if($active){
 			$select->where("dateend>?",time());
 		}
-		return $this->db->fetchRow($select);
+
+		return $this->db->fetchAll($select);
 	 }
 
 	public function getUserCouponCount($data=array()){

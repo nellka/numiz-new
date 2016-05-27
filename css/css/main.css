@@ -2076,21 +2076,12 @@ float: right;
 
 .image-t {
     display: block;
-    float: right;
-    max-width: 86px;
-    overflow: hidden;
-}
-
-.series .blockshop-full {
-    padding: 10px;
-    width: 217px;
-    min-height: 100%;
+    margin: 0 0 10px;
 }
 
 .image-s > img {
     border: 1px solid #ccc;
-    margin: 0 5px 0 0;
-    max-width: 120px;
+    padding: 10px;
 }
 
 #user-order .web-form input {
@@ -2132,7 +2123,7 @@ position: relative;
 
 
 .filter-products-block .right {
-    padding: 0 10px 0 0;
+    padding: 0 10px;
 }
 
 .filter-products-block .closed {
@@ -2183,74 +2174,5 @@ padding: 0 0 10px;
 .rf-2 #metal-header-open.filter_heading,.rf-2 #fb-condition .filter_heading ,.rf-2 #fb-years_p .filter_heading{
     padding: 0;
 }
-.yc{
-margin: 0 23px 0 0; max-width: 50px;
-}
-
-.yc:last-child{
-    margin: 0;
-}
 
 
-.user_menu_href,.user_menu_href_c {
-  	background: #fff url("../images/user_up.gif") no-repeat scroll 50% 50%;
-    display: block;
-    height: 50px;
-    text-decoration: none;
-    width: 70px;
-}
-
-.user_menu_href_c{ 
-	background: #fff url("../images/user_down.gif") no-repeat scroll 50% 50%;
-}
-
-.u_submunu {
-    background: white none repeat scroll 0 0;
-    border: 1px solid #ccc;
-    list-style: outside none none;
-    padding: 10px;
-    position: absolute;
-    top: 100px;
-    z-index: 4000;
-}
-
-.u_submunu:before {    
-  content: "";
-  width: 0;
-  height: 0;
-  position: absolute;
-  bottom: 100%;
-  left: 20px;
-  border-width: 0 10px 10px 10px;
-  border-style: solid;
-  border-color: rgba(255, 204, 102, 1) transparent;
-}
-
-#u_submunu > li {
-    line-height: 30px;
-}
-.qw-form img {
-   
-    margin: 5px;
-    padding: 2px;
-}
-
-.coin_info img,.qw-form img ,.image_block  img{
- border: 1px solid #ccc;
-}
-
-.bordered_oder {
-    border: 1px solid #ccc;
-    margin: 20px 20px 0 0;
-    padding: 0 10px ;
-}
-
-#coupon-block div{
-padding: 5px 0;
-}
-
-
-.recomended .coin_info img {
-    max-height: 122px;
-    max-width: 200px;
-}

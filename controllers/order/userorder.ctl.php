@@ -140,9 +140,12 @@ $tpl['orderdetails']['coupons'] = array();
 if (!$user_data['vip_discoint']) {
 
 	$iscoup1 = $user_class->getUserCoupon(array('`check`'=>1, 'type'=>1),true);
+
 	if($iscoup1){
 		$iscoup = 1;
-		$tpl['orderdetails']['coupons'][1] = $iscoup1['code'];
+		foreach ($iscoup1 as $coup1){
+			$tpl['orderdetails']['coupons'][1][] = $coup1['code'];
+		}
 	}
 	
 	$codetmp_ = $user_class->getFriendCouponCode();

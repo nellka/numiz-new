@@ -24,7 +24,7 @@ try {
     $Mobile_Detect = new Mobile_Detect();
     $tpl['is_mobile'] = $tpl['mv'] = $Mobile_Detect->isMobile();         
      //подключаем кеш
-    /*$frontendOptions = array('lifetime' => 24*3600, // время жизни кэша - 2 часа   
+    $frontendOptions = array('lifetime' => 24*3600, // время жизни кэша - 2 часа   
        'automatic_serialization' => true);
      
     $backendOptions = array(
@@ -34,7 +34,7 @@ try {
     // получение объекта Zend_Cache_Core
     $cache = Zend_Cache::factory('Core',  'File',   $frontendOptions,  $backendOptions);
     Zend_Registry::set("cache",$cache);	
-    */ $frontendOptions = array (
+    /* $frontendOptions = array (
                       'automatic_serialization' => true,
                       'cache_id_prefix' => 'Num_',
                       'lifetime' => 1800, // infinity must be ...
@@ -55,7 +55,7 @@ try {
                         );
     $cache = Zend_Cache::factory('Core',  'Memcached',   $frontendOptions,  $backendOptions);
     
-    Zend_Registry::set("Memcached",$cache);
+    Zend_Registry::set("Memcached",$cache);*/
                         
     //будем на стадии Index проверять залогинивание
     ob_start();
@@ -97,9 +97,9 @@ try {
 	$logger->log($e->getMessage(),Zend_Log::INFO);
 	$logger->log(var_export($e->getTrace(),true),Zend_Log::INFO);
 	
-    if($tpl['user']['user_id']==352480){
-        var_dump($e);
-    }
+    //if($tpl['user']['user_id']==352480){
+        var_dump($e->getMessage());
+    //}
 	 die('Извините, произошла ошибка!');
    // die( $e->getMessage() . ' ' .
        //  $e->getTraceAsString() );

@@ -20,7 +20,7 @@ foreach ($result as $rows){
 
 
 $startDate = mktime(0,0,0,10,29,2007);
-
+$timenow = mktime(0, 0, 0, date("m", $timenow), date("d", $timenow), date("Y", $timenow));
 if (!$timelimit || $timelimit>30)
 	$timelimit = 30;
 $n=0;
@@ -30,13 +30,16 @@ for ($i=1; $i<=$timelimit; $i++)
 	
 	if( (date("w", $time)==1 || date("w", $time)==2 || date("w", $time)==3 || date("w", $time)==4 || date("w", $time)==5) AND ( $intervals === NULL OR !is_in_interval($time, $intervals))){
 		$DaysData[$n]['val'] =$time;
+		if($tpl['user']['user_id']==352480){
+			//var_dump($time,date("Y-m-d H:i", $time));
+		}
 		$DaysData[$n]['text'] = $DaysArray[date("w",$time)].":".date("Y-m-d", $time);
 		$n++;
 	}
 }
 
 $n=0;
-$timenow = mktime(0, 0, 0, date("m", $timenow), date("d", $timenow), date("Y", $timenow));
+
 for ($i = 32400; $i <= 64800; $i = $i+900){
     $TimesArray[$n]['val'] = $i;
 	$TimesArray[$n]['text'] = date("H-i", $timenow+$i);

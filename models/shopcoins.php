@@ -6,8 +6,7 @@ class model_shopcoins extends Model_Base
     public $user_id;
     public $materialtype; 
     protected $categoty_type; 
-    protected $mycoins_table_name;
-    
+
     const NEWCOINS = 1;
 	const REVALUATION = 3;
 	const SEARCH = 5;
@@ -17,7 +16,6 @@ class model_shopcoins extends Model_Base
     public function __construct($db,$user_id=0,$nocheck=0){
 	    parent::__construct($db);
 	    $this->user_id = $user_id;
-	    $this->mycoins_table_name = "mycoins_".$this->user_id."_".date('Y-m-d',time());
 	    $this->nocheck = $nocheck;
 	    $this->materialtype = 1;
 	    $this->mycoins = 0;
@@ -515,56 +513,20 @@ class model_shopcoins extends Model_Base
     	`order` as o, orderdetails as od where s.materialtype".($materialtype==1||$materialtype==8?" in(1,8)":"=$materialtype")." and s.shopcoins=od.catalog and od.order=o.order and o.check=1 and od.status=0 and o.user=".intval($cookiesuser).";";
     	*/
     	//$table_name = $this->user_id."_".date('Y-m-d',time());
-    	
-    	$table_exist = $this->getRowSql("SHOW TABLE STATUS LIKE '".$this->mycoins_table_name."';");	     	   
-    	
-        if(!$table_exist){        
-           $temp_table = "CREATE TABLE `".$this->mycoins_table_name."` (".
-             "`shopcoins` int(11) NOT NULL,".
-             "`price` int(11) NOT NULL,".
-             "`group` int(11) NOT NULL,".
-             "`year` int(4) NOT NULL DEFAULT '0',".
-             "`date` int(11) NOT NULL DEFAULT '0',".
-             "`check` int(11) NOT NULL DEFAULT '0',".
-             "`number` varchar(15) DEFAULT NULL,".
-             "`materialtype` tinyint(4) NOT NULL DEFAULT '1',".
-             "`parent` int(11) NOT NULL DEFAULT '0',".
-             "`materialtypecross` int(11) NOT NULL DEFAULT '0',".
-             "`nominal_id` int(11) NOT NULL,".
-             "`metal_id` int(4) NOT NULL DEFAULT '0',".
-             "`condition_id` int(4) NOT NULL DEFAULT '0',".
-             "`amount` int(6) NOT NULL DEFAULT '0',".
-             "`amountparent` tinyint(4) DEFAULT '1',".
-             "`datereprice` int(11) NOT NULL DEFAULT '0',".
-             "`dateinsert` int(11) NOT NULL DEFAULT '0',".
-             "`theme` bigint(64) NOT NULL DEFAULT '0',".
-             "`novelty` int(11) DEFAULT '0',".
-             "PRIMARY KEY (`shopcoins`),".
-             "KEY `shopcoins` (`shopcoins`,`group`,`nominal_id`,`year`,`date`),".
-             "KEY `group` (`group`),".
-             "KEY `metal_id` (`metal_id`),".
-             "KEY `nominal_id` (`nominal_id`),".
-             "KEY `price` (`price`),".
-             "KEY `materialtype` (`materialtype`),".
-             "KEY `materialtypecross` (`materialtypecross`),".
-             "KEY `check` (`check`),".
-             "KEY `amount` (`amount`),".
-             "KEY `amountparent` (`amountparent`),".
-             "KEY `condition_id` (`condition_id`)".
-            ")";
-            
-            $this->db->query($temp_table);    
-                
-        	//if(!$myCoins = $this->cache->load("myOrderCoins_".$this->user_id)){
+
+		$select = $this->db->select()
+			               ->from('mycoins',array('count(*)'))
+			               ->where('user =?',$this->user_id);
+    	$is_mycoins_exist = $this->db->fetchOne($select);
+
+        if(!$is_mycoins_exist){
     	 	$select = $this->db->select()
 		               ->from(array('s'=>$this->table),array('shopcoins'))
 		               ->join(array('od'=>'orderdetails'),'s.shopcoins=od.catalog',array())
 		               ->join(array('o'=>'order'),'od.order=o.order',array())
 		               ->where('o.user =?',$this->user_id)
 		               ->where('s.materialtype in (1,8)');           
-		    $myCoins = $this->db->fetchAll($select);   
-    		   //$this->cache->save($myCoins, "myOrderCoins_".$this->user_id);   
-        	//}
+		    $myCoins = $this->db->fetchAll($select);
         	
         	$shopcoins_id = array();
         	foreach ($myCoins as $v){
@@ -572,8 +534,8 @@ class model_shopcoins extends Model_Base
         	}       
         	
             if($shopcoins_id){	
-            	 $sql = "INSERT INTO  `".$this->mycoins_table_name."` 
-                SELECT shopcoins, price,  `group` , YEAR, dateinsert,  `check` , number, materialtype, parent, materialtypecross, nominal_id, metal_id, condition_id,amount,amountparent,datereprice,dateinsert,theme,novelty 
+            	 $sql = "INSERT INTO  mycoins
+                SELECT  ".$this->user_id." AS user, shopcoins, price,  `group` , YEAR, dateinsert,  `check` , number, materialtype, parent, materialtypecross, nominal_id, metal_id, condition_id,amount,amountparent,datereprice,dateinsert,theme,novelty 
                 FROM  `shopcoins` WHERE shopcoins in (".implode(",",$shopcoins_id).");";        	
                 $this->db->query($sql);   
             }     
@@ -593,14 +555,9 @@ class model_shopcoins extends Model_Base
         } elseif ($this->mycoins){
             //мои монеты
             $select = $this->db->select()
-		               ->from(array('s'=>$this->mycoins_table_name),array('count(*)'));
-		               
-           /* $myShopCoinsIDs = $this->getMyShopCoinsIDs();
-            $shopcoins_id = array();
-        	foreach ($myShopCoinsIDs as $v){
-        		$shopcoins_id[] = $v['shopcoins'];
-        	}       
-        	$select->where('shopcoins in ('.implode(",",$shopcoins_id).')');*/
+		               ->from(array('s'=>'mycoins'),array('count(*)'))
+				       ->where("s.user=?",$this->user_id);
+
         } else {
         	//получаем мои монеты
         	$select->where('materialtype = 1');
@@ -757,16 +714,11 @@ class model_shopcoins extends Model_Base
 			$select = $this->byAdmin($select,'s'); 	       
         } elseif ($this->mycoins){
             $select = $this->db->select()
-	                      ->from(array('s'=>$this->mycoins_table_name))
+	                      ->from(array('s'=>'mycoins'))
 	                      ->join(array('group'),'s.group=group.group',array('gname'=>'group.name'))
-	                      ->join(array('sn'=>'shopcoins_name'),'s.nominal_id=sn.id',array('name'=>'sn.name'));
-            //мои монеты
-            /*$myShopCoinsIDs = $this->getMyShopCoinsIDs();
-            $shopcoins_id = array();
-        	foreach ($myShopCoinsIDs as $v){
-        		$shopcoins_id[] = $v['shopcoins'];
-        	}       
-        	$select->where('shopcoins in ('.implode(",",$shopcoins_id).')');*/
+	                      ->join(array('sn'=>'shopcoins_name'),'s.nominal_id=sn.id',array('name'=>'sn.name'))
+				          ->where("s.user=?",$this->user_id);
+
         } else {
         	//получаем мои монеты
         	$select->where('materialtype = 1');
@@ -915,15 +867,11 @@ class model_shopcoins extends Model_Base
 	    
 	   if($this->mycoins) {
 	       $select = $this->db->select()
-	                      ->from(array('s'=>$this->mycoins_table_name),array('group'=>'distinct(`group`)'))	                      
+	                      ->from(array('s'=>'mycoins'),array('group'=>'distinct(`group`)'))
 	                      ->where('s.dateinsert>0 and s.group<>"790"')
-	                       ->order('group desc');	   
-	   		/*$myShopCoinsIDs = $this->getMyShopCoinsIDs();
-            $shopcoins_id = array();
-        	foreach ($myShopCoinsIDs as $v){
-        		$shopcoins_id[] = $v['shopcoins'];
-        	}       
-        	$select->where('shopcoins in ('.implode(",",$shopcoins_id).')');*/
+			              ->where("s.user=?",$this->user_id)
+	                       ->order('group desc');
+
 	   } else {
 	       $select = $this->db->select()
 	                      ->from(array('s'=>'shopcoins_search'),array('group'=>'distinct(`group`)'))
@@ -981,18 +929,13 @@ class model_shopcoins extends Model_Base
 	    	    
 	   if($this->mycoins) {
 	        $select = $this->db->select()
-	                      ->from(array('s'=>$this->mycoins_table_name),array('distinct(nominal_id)'))
+	                      ->from(array('s'=>'mycoins'),array('distinct(nominal_id)'))
 	                      ->join(array('group'),'s.group=group.group',array())
 	                      ->join('shopcoins_name', 'nominal_id=shopcoins_name.id',array('name'))
 	                      ->where("group.group in (".implode(",",$groups).")")
-	                      ->order('shopcoins_name.name asc');  
-	                       
-	   		/*$myShopCoinsIDs = $this->getMyShopCoinsIDs();
-            $shopcoins_id = array();
-        	foreach ($myShopCoinsIDs as $v){
-        		$shopcoins_id[] = $v['shopcoins'];
-        	}       
-        	$select->where('shopcoins in ('.implode(",",$shopcoins_id).')');*/
+						  ->where("s.user=?",$this->user_id)
+	                      ->order('shopcoins_name.name asc');
+
 	   } else {
 	       $select = $this->db->select()
 	                      ->from(array('s'=>'shopcoins_search'),array('distinct(nominal_id)'))
@@ -1031,16 +974,12 @@ class model_shopcoins extends Model_Base
 	                      ->order('shopcoins_condition.sortby asc') ; 
 	   if($this->mycoins) {
 	       $select = $this->db->select()
-	                      ->from(array('s'=>$this->mycoins_table_name),array('distinct(condition_id)'))
+	                      ->from(array('s'=>'mycoins'),array('distinct(condition_id)'))
 	                      ->join('shopcoins_condition', 'condition_id=shopcoins_condition.id',array('name'))
 	                      ->where('condition_id>0')
+						   ->where("s.user=?",$this->user_id)
 	                      ->order('shopcoins_condition.sortby asc') ; 
-	   		/*$myShopCoinsIDs = $this->getMyShopCoinsIDs();
-            $shopcoins_id = array();
-        	foreach ($myShopCoinsIDs as $v){
-        		$shopcoins_id[] = $v['shopcoins'];
-        	}       
-        	$select->where('shopcoins in ('.implode(",",$shopcoins_id).')');*/
+
         } elseif(!$all){
             $select=$this->setMaterialtypeSelect($select,$WhereParams,'s');      	   
         	$select = $this->byAdmin($select,'s'); 	   
@@ -1071,16 +1010,12 @@ class model_shopcoins extends Model_Base
 	                      ->order('shopcoins_metal.name asc');	                      
 	    if($this->mycoins) {
 	        $select = $this->db->select()
-	                      ->from(array('s'=>$this->mycoins_table_name),array('distinct(metal_id)'))
+	                      ->from(array('s'=>'mycoins'),array('distinct(metal_id)'))
 	                      ->join('shopcoins_metal','shopcoins_metal.id=metal_id',array("name"))
-	                      ->where('metal_id>0 and shopcoins_metal.name<>""')             
+	                      ->where('metal_id>0 and shopcoins_metal.name<>""')
+						  ->where("s.user=?",$this->user_id)
 	                      ->order('shopcoins_metal.name asc');	   
-	   		/*$myShopCoinsIDs = $this->getMyShopCoinsIDs();
-            $shopcoins_id = array();
-        	foreach ($myShopCoinsIDs as $v){
-        		$shopcoins_id[] = $v['shopcoins'];
-        	}       
-        	$select->where('shopcoins in ('.implode(",",$shopcoins_id).')');*/
+
 	   } elseif(!$all){
     	   $select=$this->setMaterialtypeSelect($select,$WhereParams,'s');
     	   $select = $this->byAdmin($select,'s');    	   
@@ -1106,16 +1041,10 @@ class model_shopcoins extends Model_Base
 	   
 	   if($this->mycoins) {
 	        $select = $this->db->select()
-	                      ->from(array('s'=>$this->mycoins_table_name),array('distinct(year)'))
-	                      ->order('year desc');  
-	                         
-	   		/*$myShopCoinsIDs = $this->getMyShopCoinsIDs();
-            $shopcoins_id = array();
-        	foreach ($myShopCoinsIDs as $v){
-        		$shopcoins_id[] = $v['shopcoins'];
-        	}       
-        	$select->where('shopcoins in ('.implode(",",$shopcoins_id).')');*/
-        	
+	                      ->from(array('s'=>'mycoins'),array('distinct(year)'))
+						  ->where("s.user=?",$this->user_id)
+	                      ->order('year desc');
+
 	   } else {
     	   $select = $this->db->select()
     	                      ->from(array('s'=>'shopcoins_search'),array('year'=>'distinct(year)'))
@@ -1155,13 +1084,9 @@ class model_shopcoins extends Model_Base
 	public function getMaxPrice($groups=array(),$nominals=array()){     
         if($this->mycoins) {
             $select = $this->db->select()
-                          ->from(array('s'=>$this->mycoins_table_name),array('max(price)'));                               
-            /*$myShopCoinsIDs = $this->getMyShopCoinsIDs();
-            $shopcoins_id = array();
-            foreach ($myShopCoinsIDs as $v){
-            	$shopcoins_id[] = $v['shopcoins'];
-            }       
-            $select->where('shopcoins in ('.implode(",",$shopcoins_id).')');   */     
+                          ->from(array('s'=>'mycoins'),array('max(price)'))
+							->where("s.user=?",$this->user_id);
+
         } else {   
             $select = $this->db->select()
                        ->from(array('s'=>'shopcoins_search'),array('max(price)'));
@@ -1183,13 +1108,9 @@ class model_shopcoins extends Model_Base
     public function getMinPrice($groups=array(),$nominals=array()){
          if($this->mycoins) {
             $select = $this->db->select()
-                          ->from(array('s'=>$this->mycoins_table_name),array('min(price)'));                               
-           /* $myShopCoinsIDs = $this->getMyShopCoinsIDs();
-            $shopcoins_id = array();
-            foreach ($myShopCoinsIDs as $v){
-            	$shopcoins_id[] = $v['shopcoins'];
-            }       
-            $select->where('shopcoins in ('.implode(",",$shopcoins_id).')');   */     
+                          ->from(array('s'=>'mycoins'),array('min(price)'))
+						   ->where("s.user=?",$this->user_id);
+
          } else {   
              $select = $this->db->select()
     		               ->from(array('s'=>'shopcoins_search'),array('min(price)'));
@@ -1212,14 +1133,10 @@ class model_shopcoins extends Model_Base
     public function getMinYear($groups=array(),$nominals=array()){
          if($this->mycoins) {
             $select = $this->db->select()
-                          ->from(array('s'=>$this->mycoins_table_name),array('min(year)'))                          
-    		               ->where('year>0');                               
-           /* $myShopCoinsIDs = $this->getMyShopCoinsIDs();
-            $shopcoins_id = array();
-            foreach ($myShopCoinsIDs as $v){
-            	$shopcoins_id[] = $v['shopcoins'];
-            }       
-            $select->where('shopcoins in ('.implode(",",$shopcoins_id).')'); */       
+                          ->from(array('s'=>'mycoins'),array('min(year)'))
+    		               ->where('year>0')
+							->where("s.user=?",$this->user_id);
+
          } else {   
              $select = $this->db->select()
     		               ->from(array('s'=>'shopcoins_search'),array('min(year)'))
@@ -1244,13 +1161,9 @@ class model_shopcoins extends Model_Base
     public function getMaxYear($groups=array(),$nominals=array()){
          if($this->mycoins) {
             $select = $this->db->select()
-                          ->from(array('s'=>$this->mycoins_table_name),array('max(year)'));                               
-            /*$myShopCoinsIDs = $this->getMyShopCoinsIDs();
-            $shopcoins_id = array();
-            foreach ($myShopCoinsIDs as $v){
-            	$shopcoins_id[] = $v['shopcoins'];
-            }       
-            $select->where('shopcoins in ('.implode(",",$shopcoins_id).')');  */      
+                          ->from(array('s'=>'mycoins'),array('max(year)'))
+						  ->where("s.user=?",$this->user_id);
+
          } else {   
              $select = $this->db->select()
     		               ->from(array('s'=>'shopcoins_search'),array('max(year)'));
@@ -1739,9 +1652,10 @@ class model_shopcoins extends Model_Base
 	    if((int)$group_id){
 	        if($this->mycoins) {
     	       $select = $this->db->select()
-    	                      ->from(array('s'=>$this->mycoins_table_name),array('group'=>'distinct(s.group)'))	 
+    	                      ->from(array('s'=>'mycoins'),array('group'=>'distinct(s.group)'))
     	                      ->join(array('group'),'s.group=group.group',array('gname'=>'group.name'))                    
     	                      ->where('s.dateinsert>0 and s.group<>"790"')
+				              ->where("s.user=?",$this->user_id)
     	                       ->order('group.name asc');	   	   		
     	   } else {
     	       $select = $this->db->select()

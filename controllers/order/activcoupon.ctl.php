@@ -6,6 +6,8 @@ $code1 = request('code1');
 $code2 = request('code2');
 $code3 = request('code3');
 $code4 = request('code4');
+$number = request('number');
+
 $dateuse = '';
 $dateout = '';
 
@@ -49,43 +51,27 @@ if ($code1 && $code2 && $code3 && $code4 && $tpl['user']['user_id'] && $tpl['use
     		
     		if(!$couponData){
     			$data_result['error'] = 'error1';
-    		} elseif($couponData['check'] == 0) {
-    			//купон уже использован
-    			$data_result['error'] = 'error5';
-    			$result_tmp = $order_class->getUseCoupon($couponData['coupon']);
-    			if ($result_tmp) {
-    				$orderin = $result_tmp['order'];
-    				$dateuse = $result_tmp['dateinsert'];
-    			}    
-    		} elseif ($couponData['dateend']<time()) {
-    			$error = "error6";
-    			$dateout = $couponData['dateend'];
-    		} elseif($friendCoupon==$code){
-    			//введен купон приведи друга
-    			$dissum = $couponData['sum'];
     		} else {
-    			$dissum = $couponData['sum'];
-    			/* не погашаем купон. Погашение будет произодить в момент заказа
-    			 * $result_tmp = $order_class->getUseCoupon($couponData['coupon']);
-    			var_dump($result_tmp);
-    			//echo $sql_tmp;
-    			if (!$result_tmp) {
-    				PostSum ($postindex, $shopcoinsorder, $clientdiscount);
-    				if ($bascetsum >0) {
-    
-    					$sql_ins = "insert into ordercoupon (`ordercoupon`,`coupon`,`order`,`dateinsert`,`check`)
-    						values (NULL, '".$rows['coupon']."','$shopcoinsorder','".time()."','1');";
-    					$result_ins = mysql_query($sql_ins);
-    				}
-    				else
-    					$error = "error7";
-    			} else {
-    				$error = "error8";
-    				$rows_tmp = mysql_fetch_array($result_tmp);
-    				$orderin = $rows_tmp['order'];
-    				$dateuse = $rows_tmp['dateinsert'];
-    			}*/
-    		} 
+    		    $couponData = $couponData[0];		
+    		
+        		if($couponData['check'] == 0) {
+        			//купон уже использован
+        			$data_result['error'] = 'error5';
+        			$result_tmp = $order_class->getUseCoupon($couponData['coupon']);
+        			if ($result_tmp) {
+        				$orderin = $result_tmp['order'];
+        				$dateuse = $result_tmp['dateinsert'];
+        			}    
+        		} elseif ($couponData['dateend']<time()) {
+        			$error = "error6";
+        			$dateout = $couponData['dateend'];
+        		} elseif($friendCoupon==$code){
+        			//введен купон приведи друга
+        			$dissum = $couponData['sum'];
+        		} else {
+        			$dissum = $couponData['sum'];    			
+        		} 
+    		}
     	} 
     } 
 } else $data_result['error'] = "error1";
@@ -93,23 +79,8 @@ if ($code1 && $code2 && $code3 && $code4 && $tpl['user']['user_id'] && $tpl['use
 $dissum_text =  "";
 
 if ($dissum) {
-	if ($couponData['type']==2) {
-		$dissum_text = "VIP " .$dissum. "%";
-	} else {
-		$dissum_text = $dissum.".00, ";
-	}
+	$dissum_text = $dissum.".00, ";
 }
-    /*
-	$sql = "select coupon.* from ordercoupon, coupon where ordercoupon.order='".$shopcoinsorder."' and ordercoupon.`check`=1 and coupon.coupon=ordercoupon.coupon group by coupon.coupon order by coupon.type desc;";
-	$result = mysql_query($sql);
-
-	while ($rows = mysql_fetch_array($result)) {
-	
-		if ($rows['type']==2)
-			$dissum .= "VIP ".$rows['sum']."%, ";
-		else
-			$dissum .= $rows['sum'].".00, ";
-	}*/
 
 
 $data_result['dissum'] = $dissum;
@@ -117,6 +88,7 @@ $data_result['dissumtext'] = $dissum_text;
 $data_result['orderin'] = $orderin;
 $data_result['dateuse'] = $dateuse?date('d-m-Y',$dateuse):"";
 $data_result['dateout'] = $dateout?date('d-m-Y',$dateout):"";
+$data_result['number'] = $number;
 
 echo json_encode($data_result);
 /*

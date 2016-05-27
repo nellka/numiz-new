@@ -788,28 +788,25 @@ $tmp = explode("#", $LastCatalog10);
 		</tr>
 		</table>";
 	}*/
-if($tpl['user']['user_id']==352480){
-	echo time()." 9<br>";
-}
-
-
 
 require $cfg['path'] . '/configs/shopcoins_keywords.php';
 
 
 $arraykeyword[] = "монеты";
-/*
-if (sizeof($arraykeyword)){
-	
-    $keyword_texts = $shopcoins_class->keywordtexts($arraykeyword);    
-	
-	while ($rows = mysql_fetch_array($result)) {
-	
-		$text = substr(trim(strip_tags($rows['text'])),0,600);
-		$strpos = strpos(strrev($text),".");
-		echo "<p class=txt> &nbsp;&nbsp;&nbsp;<strong>".$rows['name']."</strong><br> &nbsp;&nbsp;&nbsp;".substr($text,0,600-($strpos<200?$strpos:0))."</p><br>";
-	}
+$tpl['infotext'] = '';
+if ($materialtype==7){
+    $tpl['infotext'] = "Изображение предоставлено для данного типа монет. Все наборы не из обращения, но могут быть иногда банковские царапины, патина, налет и прочие дефекты хранения. В некоторых случаях может быть несовпадение года.";
+}
 
-}*/
+if ($materialtype==8){
+    $tpl['infotext'] = "Изображение предоставлено для данного типа монет приблизительно одного состояния (+/- 0.5 по шкале F VF XF UNC). Могут быть отклонения по состоянию как в большую так и в меньшую сторону. Proof в эту категорию не входит, поскольку, предполагается, что Proof - это идеальное зеркальное состояние без царапин, заляпин и т.п. Предложения типа - выберите мне полуше - будут отрезаться на корню. В некоторых случаях может быть несовпадение года.";
+}
+//$show_cookie = ( isset($_COOKIE['show_ussa']) ) ? $_COOKIE['show_ussa'] : 1;    
+if ($materialtype==12){
+    $tpl['infotext'] = "Состояние монет данного раздела от VF до XF - т.е. представлены мелочовка ходячка монет СССР, которые были в обращении. Это именно те монеты, которые мало чего стоят и основанная цена складывается за счет трудозатрат на них. Будьте внимательны при выборе. Предложения типа - выберите мне полуше - будут отрезаться на корню.";
+}
+//if($show_cookie < time() and $materialtype == 12)
+
+//setcookie("show_ussa", time()+60*60*24*30, time() + 30*24*60*60, "/shopcoins/");
 
 ?>

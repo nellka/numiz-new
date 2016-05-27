@@ -22,20 +22,16 @@ $from_ubb =  request('from_ubb');
 $deletesubscribecoins =  request('deletesubscribecoins');
 $idadmin = request('idadmin');
 
+$coupon_count = (integer)request('coupon_count');
+$coupons = array();
+
 $timenow = mktime(0, 0, 0, date("m", time()), date("d", time()), date("Y", time()));
 
 if ($delivery==2){$DeliveryName[$delivery] = "В офисе (возможность посмотреть материал до выставления)";}
 
 if($tpl['user']['user_id']==352480){
-    
-	//var_dump($meetingdate,$meetingfromtime,$meetingtotime,($meetingdate + $meetingfromtime));
-	//die();
+	//var_dump($meetingdate,$meetingfromtime,$meetingtotime,date('d.m.Y H:i',$meetingdate),date('d.m.Y H:i',$meetingdate+$meetingfromtime),date('d.m.Y H:i',($meetingdate+$meetingfromtime)));
 }
-
-$code1 = request('code1');
-$code2 = request('code2');
-$code3 = request('code3');
-$code4 = request('code4');
 
 $bonus_comment = false;
 
@@ -128,41 +124,51 @@ if(!$payment || !$userfio ||!$fio){
 	    if($user_data['vip_discoint']) {
             $discountcoupon = floor(($bascetsum-$amountbascetsum-$vipcoinssum)*$user_data['vip_discoint']/100);  
             $tpl['submitorder']['vip_discoint'] =  $user_data['vip_discoint'];  
-        } elseif ($code1 && $code2 && $code3 && $code4 && $tpl['user']['user_id'] && $tpl['user']['user_id']<>811 && $shopcoinsorder) {
+        } elseif ($coupon_count && $tpl['user']['user_id'] && $tpl['user']['user_id']<>811 && $shopcoinsorder) {
 			//получаем данные о введенном купоне
-			$code = strtolower($code1."-".$code2."-".$code3."-".$code4);
-			if (!preg_match("/[^-0-9a-zA-Z]{19}/",$code)){
-				$couponData = $user_class->getUserCoupon(array('code'=>$code,'type'=>1));
-				$friendCoupon = $user_class->getFriendCouponCode();
-				if($couponData&&$couponData['check'] !== 0&&$couponData['dateend']>time()) {
-					$data = array(
-						'coupon'=>$couponData['coupon'],
-						'order' => $shopcoinsorder,
-						'dateinsert'=>time(),
-						'check'=>1
-					);
-					$shopcoins_class->addNew('ordercoupon',$data);
-					$discountcoupon = $couponData['sum'];					
-					$data = array('check'=>0,'order'=>$shopcoinsorder);
-					$shopcoins_class->updateTableRow('coupon',$data,"`check`=1 and type=1 and coupon='".$couponData['coupon']."'");
-				}
+			for ($i=0;$i<$coupon_count;$i++){			   
+			     $code1 = request($i.'_code1');
+			     $code2 = request($i.'_code2');
+			     $code3 = request($i.'_code3');
+			     $code4 = request($i.'_code4');
+			     $code = $code1."-".$code2."-".$code3."-".$code4;
+			     
+    		     if ($code&&!preg_match("/[^-0-9a-zA-Z]{19}/",$code)){
+    				$couponData = $user_class->getUserCoupon(array('code'=>$code,'type'=>1));
+    				//$friendCoupon = $user_class->getFriendCouponCode();
+    				
+    				if($couponData&&$couponData[0]['check'] != 0&&$couponData[0]['dateend']>time()) {
+    					$data = array(
+    						'coupon'=>$couponData[0]['coupon'],
+    						'order' => $shopcoinsorder,
+    						'dateinsert'=>time(),
+    						'check'=>1
+    					);
+    					$shopcoins_class->addNew('ordercoupon',$data);
+    					$discountcoupon += $couponData[0]['sum'];	
+    					$coupons[] = $couponData[0]['coupon'];			
+    					$data = array('check'=>0,'order'=>$shopcoinsorder);
+    					$shopcoins_class->updateTableRow('coupon',$data,"`check`=1 and type=1 and coupon='".$couponData[0]['coupon']."'");
+    				}
+    			}
 			}
 		}
 		if($tpl['user']['user_id']==352480){
+		    var_dump($coupons);
         	echo time()." 5<br>";
         }
+       
 		if ($discountcoupon<0) $discountcoupon = 0;
 		
 		if ( $sum < $discountcoupon) {			
 			$discountcoupon = $sum;
 		}
+
 		$tpl['submitorder']['discountcoupon'] = $discountcoupon;
 
 		$sum = $sum - $discountcoupon;
 		$tpl['submitorder']['sum'] = $sum;
 		
-		
-
 		$FinalSum = $sum;
 		$sumEMC = 0;
 			
@@ -332,10 +338,7 @@ if(!$payment || !$userfio ||!$fio){
                 
 				$shopcoins_class->updateRow($data_update,"shopcoins='".$rows["catalog"]."'");  
 				
-				if($data_update['check']===0){
-					if($tpl['user']['user_id']==352480){
-                    	var_dump($data_update['check'],$rows["catalog"]);    	
-                    }
+				if($data_update&&$data_update['check']===0){					
 					$shopcoins_class->deteteFromTemp($rows["catalog"]);
 				}
 				
@@ -371,11 +374,16 @@ if(!$payment || !$userfio ||!$fio){
 				$CommentAdministrator = $CommentAdministrator . ' Оплата бонусными деньгами.';
 				
 			$account_number = "";
+
+			if(in_array($delivery,array(4,6,10) )){
+				$meetingdate =  $meetingfromtime = $meetingtotime = 0;
+			}
+
 			$data_order = array( 
 			                 'user'=>$tpl['user']['user_id'],
 			                 'userfio' => $userfio, 
                     		 'phone'=>$phone, 
-                    		 'adress'=>str_replace("|","/",$adress), 
+                    		 'adress'=>str_replace("|","/",$adress),
                     		 'admincheck'=>0, 
                     		 'sum'=>$sum, 
                     		 'delivery'=>$delivery, 
@@ -412,7 +420,7 @@ if(!$payment || !$userfio ||!$fio){
 				$testingsms = $sms_class->sendsms2(1,$phone,$shopcoinsorder,($FinalSum>0?$FinalSum:$sum),$textsms1);
 				$sms_class->addNewSms($tpl['user']['user_id'],$testingsms[1],$testingsms[2],$shopcoinsorder);
 			}
-			
+		
 			$order_class->updateRow(array('markadmincheck'=>3),"user='".$tpl['user']['user_id']."'  and `user`<>811 and `check`=1 and markadmincheck=2 and mark=2"); 	
 						
 			$countCoupon = $user_class->getUserCouponCount(array('`check`'=>1, 'type'=>2));

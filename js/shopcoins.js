@@ -57,7 +57,6 @@ function setMini(on,onscroll){
 		if(!onscroll) $.cookie('mini', 1);
 	} else {
 	    
-		console.log('setful');
 		$('#header-mini').hide();
 		$('#header').show();
 		$('#small-logo').show();
@@ -285,7 +284,6 @@ function sendData(name,val,p0,p1,y0,y1){
     if(name){
         $('#'+name).val(val);
     }
-    console.log($('#amount-years1').val()+','+y1+','+((+$('#amount-years1').val()==+p1) ));
     
     if(+$('#amount-price0').val()!=+p0) $('#pricestart').val($('#amount-price0').val());
     if(+$('#amount-price1').val()!=+p1) $('#priceend').val($('#amount-price1').val());
@@ -611,46 +609,55 @@ function CheckSubmitPrice (num) {
 	}
 	return false;
 }
-function checkFormCoupon() {
-	var code1 = $('#code1').val();
-	var code2 = $('#code2').val();
-	var code3 = $('#code3').val();
-	var code4 = $('#code4').val();
+function checkFormCoupon(count) {
+	
+	dissum = 0;
+	for(i=0;i<count;i++){
+		var code1 = $('#'+i+'_code1').val();
+		var code2 = $('#'+i+'_code2').val();
+		var code3 = $('#'+i+'_code3').val();
+		var code4 = $('#'+i+'_code4').val();	
 
-	if (code1.length != 4 || code2.length != 4 || code3.length != 4 || code4.length != 4 ) {
-		$('#coupon-error').text('Неверно введен код купона');
-		return;
-	}
-
-	$('#CouponInfo').html('<img src="'+site_dir+'images/wait.gif">');
-	$.ajax({
-		type: "POST",
-		url: site_dir+"/shopcoins/activcoupon.php",
-		data: {code1:code1,code2:code2,code3:code3,code4:code4},
-		dataType: "json",
-		success: function(data) {
-			if (!data.error) {
-				dissum = data.dissum;
-				$('#dissum').val(dissum);
-				$('#coupon-error').text('Купон активен. Скидка '+dissum+' руб. будет добавлена к заказу');
-				calculateOrder();
-			} else {
-				if (data.error == "error1") {
-					$('#coupon-error').text('Неверно введен код');
-				}  else if (data.error == "error3") {
-					$('#coupon-error').text('Купон не действителен, поскольку вы являетесь уже VIP-клиентом');
-				}	else if (data.error == "error5") {
-					orderin =data.orderin?data.orderin:0;
-					dateuse = data.dateuse?data.dateuse: "---";
-					$('#coupon-error').html('Купон уже был погашен. Дата погашения '+dateuse+', Заказ '+orderin+'');
-				} else if (data.error == "error6") {
-					dateout = data.dateout?data.dateout:'---';
-					$('#coupon-error').html('Время действия купона истекло. Дата истечения '+dateout);
-				}
-			}
-			$('#CouponInfo').html('<input type=\'button\'  value="Проверить купон" onclick=\'checkFormCoupon()\'>');
+		if(code1.length==0&&code2.length==0&&code3.length==0&&code4.length==0) continue;
+		
+		if (code1.length != 4 || code2.length != 4 || code3.length != 4 || code4.length != 4 ) {
+			$('#'+i+'_coupon-error').text('Неверно введен код купона');
+			//return;
+			continue;
 		}
-	});
+	
+		//$('#CouponInfo').html('<img src="'+site_dir+'images/wait.gif">');
+		$.ajax({
+			type: "POST",
+			url: site_dir+"/shopcoins/activcoupon.php",
+			data: {code1:code1,code2:code2,code3:code3,code4:code4,number:i},
+			dataType: "json",
+			success: function(data) {
+				var number = data.number;
+				
+				if (!data.error) {
+					dissum+=Number(data.dissum);	
+					$('#dissum').val(dissum);
+            		calculateOrder();				
+					$('#'+number+'_coupon-error').text('Купон активен. Скидка '+data.dissum+' руб. будет добавлена к заказу');					
+				} else {					
+					if (data.error == "error1") {
+						$('#'+number+'_coupon-error').text('Неверно введен код');
+					}  else if (data.error == "error3") {
+						$('#'+number+'_coupon-error').text('Купон не действителен, поскольку вы являетесь уже VIP-клиентом');
+					}	else if (data.error == "error5") {
+						orderin =data.orderin?data.orderin:0;
+						dateuse = data.dateuse?data.dateuse: "---";
+						$('#'+number+'_coupon-error').html('Купон уже был погашен. Дата погашения '+dateuse+', Заказ '+orderin+'');
+					} else if (data.error == "error6") {
+						dateout = data.dateout?data.dateout:'---';
+						$('#'+number+'_coupon-error').html('Время действия купона истекло. Дата истечения '+dateout);
+					}
+				}
+				//$('#CouponInfo').html('<input type=\'button\'  value="Проверить купон" onclick=\'checkFormCoupon()\'>');
+			}
+		});
+	}	
 }
 
 function ShowMetro(delivery){
@@ -929,27 +936,32 @@ function CheckFormOrher(){
 
 function calculateOrder(on){
 	var delivery = $('[name=delivery]:checked').val();
-	var code1 = $('#code1').val();
-	var code2 = $('#code2').val();
-	var code3 = $('#code3').val();
-	var code4 = $('#code4').val();
+	var coupon_count = $('#coupon_count').val();
+	var data =  {
+ 			postindex: $('#postindex').val(),
+			delivery: delivery,
+			payment: $('[name=payment]:checked').val(),
+			metro: $('#metro').val(),
+			meetingdate: $('#meetingdate').val(),
+			meetingfromtime: $('#meetingfromtime').val(),
+			meetingtotime: $('#meetingtotime').val(),
+			coupon_count:coupon_count		   
+	};
+	
+	for(i=0;i<coupon_count;i++){	    
+	    var code1 = $('#'+i+'_code1').val();
+    	var code2 = $('#'+i+'_code2').val();
+    	var code3 = $('#'+i+'_code3').val();
+    	var code4 = $('#'+i+'_code4').val();    	
+	    if(code1.length==0&&code2.length==0&&code3.length==0&&code4.length==0) continue;		    
+		if (code1.length != 4 || code2.length != 4 || code3.length != 4 || code4.length != 4 ) continue;		
+		data["coupon"+i] = code1+"-"+code2+"-"+code3+"-"+code4;		
+	}
 
 	$.ajax({
 		url: site_dir+'shopcoins/postcalculate.php',
 		type: "POST",
-		data: {
-			postindex: $('#postindex').val(),
-			'delivery': delivery,
-			'payment': $('[name=payment]:checked').val(),
-			'metro': $('#metro').val(),
-			'meetingdate': $('#meetingdate').val(),
-			'meetingfromtime': $('#meetingfromtime').val(),
-			'meetingtotime': $('#meetingtotime').val(),
-		    code1:code1,
-			code2:code2,
-			code3:code3,
-			code4:code4,
-		},
+		data: data,
 		dataType: "json",
 		success: function (data, textStatus) {
 			FinalSum = data.FinalSum;
@@ -1018,7 +1030,7 @@ function calculateOrder(on){
 			var sum = bascetsum;
 			if (data.discountcoupon){
 				$('#coupon-block-result').show();
-				$('#coupon-result').text($('#code1').val()+'-'+$('#code2').val()+'-'+$('#code3').val()+'-'+$('#code4').val());
+				$('#coupon-result').html(data.coupons);
 				$('#discountcoupon-result').text(discountcoupon);
 				//sum = eval(parseInt(bascetsum) + parseInt(discountcoupon));
 			}
