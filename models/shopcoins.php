@@ -889,16 +889,20 @@ class model_shopcoins extends Model_Base
        return $this->db->fetchAll($select);       
 	}
 	//получаем данные о группах
-	public function getGroupsDetails($ids = array(),$is_parent = false){	
+	public function getGroupsDetails($ids = array(),$is_parent = false,$en=false){	
 	    $select = $this->db->select()
-	                      ->from('group')	 
-	                      ->order('name asc');
+	                      ->from('group');
 	    if($ids) {
 	        $select->where("`group` in (".implode(",", $ids).")");
 	    } else {
 	        $select->where("`group`=0");
 	    }
 	    if($is_parent)  $select->where("groupparent='0'");
+	    
+	    if($en){
+	        $select->order('name_en asc');
+	    } else 	$select->order('name asc');
+
         return $this->db->fetchAll($select);     
 	}
 	
