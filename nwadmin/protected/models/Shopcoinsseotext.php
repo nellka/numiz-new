@@ -91,8 +91,8 @@ class Shopcoinsseotext extends CActiveRecord
 	{
 		return array(
 			'id' => 'Id',
-			'title' => 'Title',
-			'text' => 'Content',
+			'title' => 'Заголовок',
+			'text' => 'Описание',
 			'materialtype' => 'Раздел',
 			'active' => 'Status',
 			'dateinsert' => 'Create Time',

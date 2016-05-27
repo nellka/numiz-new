@@ -57,6 +57,7 @@
 
 <script>
 function Register() {
+    
 $.ajax({	
     url: '<?=$cfg['site_dir']?>user/registration.php?ajax=1', 
     type: "POST",
@@ -78,6 +79,7 @@ $.ajax({
             }
             $('#addcall-error').html(error);
         } else if(data.send_status){
+           ga("send", "event", "user", "register");
            location.reload();
         }   	      
     }

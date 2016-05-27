@@ -7,7 +7,7 @@
      <form action="<?=$cfg['site_dir']?>shopcoins/index.php" method="get"  >         
 			<input type="hidden"  value="4">    
           	<input type="text" class="search rounded" name=search id=search value="<?=$search?>" placeholder='Поиск: Например, Россия 1 рубль 1994 серебро'>
-			<input type="submit" id=globalsearch-submit name="submit" value="">             
+			<input type="submit" id=globalsearch-submit name="submit" value="" onclick='ga("send", "event", "page", "search");'>
      </form> 
 </div>
 

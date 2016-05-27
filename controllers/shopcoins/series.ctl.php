@@ -14,22 +14,26 @@ if(request('onpage')){
     $tpl['onpage'] = 24;
 }	
 
-$base_url = $cfg['site_dir']."shopcoins/series/$id";
+
 
 //setcookie('onpage', $tpl['onpage'],  time()+ 86400 * 90,'/',$cfg['domain']);
 
 //сохраняем сортировку элементов на странице в куке
+$orderby_param = '';
 if(request('orderby')){
-    $tpl['orderby'] = request('orderby');
-} elseif (isset($_COOKIE['orderby'])){
-    $tpl['orderby'] =$_COOKIE['orderby'];
+    $tpl['orderby'] = request('orderby');  
+    $orderby_param = '&orderby='.  $tpl['orderby'];
+} else {
+    $tpl['orderby'] ='yeardesc';
 }	
 
 
-if(!isset($tpl['orderby']))	$tpl['orderby'] = "dateinsertdesc";
-setcookie('orderby', $tpl['orderby'],  time()+ 86400 * 90,'/',$cfg['domain']);
+if(!isset($tpl['orderby']))	$tpl['orderby'] = "yeardesc";
+//setcookie('orderby', $tpl['orderby'],  time()+ 86400 * 90,'/',$cfg['domain']);
 
 $tpl['pagenum'] = request('pagenum')?request('pagenum'):1;
+
+$base_url = $cfg['site_dir']."shopcoins/series/$id".$orderby_param;
 
 
 require($cfg['path'].'/helpers/Paginator.php');
@@ -39,13 +43,9 @@ $details_class = new model_shopcoins_details($cfg['db']);
 $filter_groups =  array();
 $tpl['one_series'] =  array();
 
-
 $shopcoinsbyseries_class = new model_shopcoinsbyseries($cfg['db']);
 
 $mycoins = array();
-
-
-$dateinsert_orderby = "dateinsert";
 
 $OrderByArray = Array();
 
@@ -76,7 +76,6 @@ if ($tpl['orderby']=="dateinsertdesc"){
 	$OrderByArray[] = "s.name desc ";
 } 
 
-$OrderByArray[] = $dateinsert_orderby." desc";
 $OrderByArray[] = "s.price desc";
 
 

@@ -19,11 +19,15 @@ class Series extends CActiveRecord
 	const STATUS_PUBLISHED=1;
 	const STATUS_RESERVE=0;
 	
+	static $path_to_file = "/var/www/htdocs/numizmatik.ru/shopcoins/seriesimages";
+	static $http_path_to_file = "http://www.numizmatik.ru/shopcoins/seriesimages";
+	
     public static $statuses = array (
         self::STATUS_PUBLISHED => "Опубликовано",
         self::STATUS_RESERVE => 'Скрыто'
     );    
 
+       
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
@@ -40,10 +44,12 @@ class Series extends CActiveRecord
 	public function rules()
 	{
 		return array(
-			array('name, whereselect, countrygroup', 'required'),
+			array('name,whereselect,countrygroup', 'required'),
 			//array('materialtype', 'in', 'range'=>array(1,2,3)),
-			array('name,whereselect,details,image,', 'length', 'max'=>255),
+			array('name', 'length', 'max'=>255),
+			array('details,whereselect','length', 'min'=>1),
 			array('id,countrygroup,status', 'numerical', 'integerOnly'=>true),
+			array('image', 'file', 'types'=>'jpg, gif, png', 'allowEmpty' => true),
 			//array('title, text,active,group_id,nominal_id,materialtype', 'safe', 'on' => 'add,update'),
 			array('name,whereselect,details,image,id,countrygroup,status', 'safe', 'on'=>'search'),
 		);
@@ -55,7 +61,7 @@ class Series extends CActiveRecord
 	public function relations()
 	{
 		return array(
-			'group' => array(self::BELONGS_TO, 'Groups',array('countrygroup'=>'group_id')),
+			'group' => array(self::BELONGS_TO, 'Groups',array('countrygroup'=>'group')),
 		);
 	}
 

@@ -39,6 +39,7 @@ $(document).ready(function() {
     $("#callphone").mask("+9(999) 999-9999");
 });
 function AddMakeCall() {
+    ga("send", "event", "user", "send-phone");
     var error = "";
     var callfio = $('#callfio').val();
     if (!callfio || callfio.length <3){
@@ -56,7 +57,8 @@ function AddMakeCall() {
     	    type: "POST",
     	    data:{callfio: callfio, callphone: callphone,datatype:"text_html"},         
     	    dataType : "html",                   
-    	    success: function (data, textStatus) {     	        
+    	    success: function (data, textStatus) {
+                ga("send", "event", "user", "send-phone");
     	        $('#addcall').html(data);    	      
     	    }
          });    

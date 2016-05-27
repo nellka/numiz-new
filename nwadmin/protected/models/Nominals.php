@@ -28,7 +28,7 @@ class Nominals extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'nominals';
+		return 'shopcoins_name';
 	}
 
 	/**

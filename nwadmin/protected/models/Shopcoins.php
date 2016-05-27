@@ -118,8 +118,8 @@ class Shopcoins extends CActiveRecord
         $data= Yii::app()->db->createCommand()
             ->select('distinct(t.nominal_id),p.name')
             ->from('shopcoins t')
-            ->join('nominals p', 't.nominal_id=p.id')
-            ->where('materialtype=:materialtype and t.check=1 and t.group=:group', array(':materialtype'=>$materialtype,':group'=>$group_id))
+            ->join('shopcoins_name p', 't.nominal_id=p.id')
+            ->where('materialtype=:materialtype and t.group=:group', array(':materialtype'=>$materialtype,':group'=>$group_id))
             ->order('p.name asc')
             ->queryAll();       
          
@@ -130,13 +130,55 @@ class Shopcoins extends CActiveRecord
         return $nominals;
          
     }
+    
+    public function getGroupsFullList($type='shopcoins')
+	{
+	    $select =  Yii::app()->db->createCommand()
+            ->select('distinct(`group`),name')
+            ->from('group')          
+            ->order('name asc');
+        if($type){
+            $select->where("groupparent=0 and type=:type",array(":type"=>$type));   
+        } else {
+            $select->where("groupparent=0");   
+        }
+         
+	    $data = $select->queryAll();
+        
+                  
+          $groups = array('0'=>'--||--');
+          
+          foreach ($data as $row) {
+              $groups[$row["group"]] = $row["name"];
+              $select = Yii::app()->db->createCommand()
+                    ->select('group,name')
+                    ->from('group')
+                    ->order('name asc');
+                    
+              if($type) {
+                  $select->where('groupparent=:groupparent and type=:type', array(':groupparent'=>$row['group'],":type"=>$type));                  
+              } else {
+                  $select->where('groupparent=:groupparent', array(':groupparent'=>$row['group']));
+              }
+                       
+              $data_child = $select->queryAll();
+              
+              foreach ($data_child as $row_child) {
+                   $groups[$row_child["group"]] = "-  ".$row_child["name"];
+              }
+               
+          }
+
+          return $groups;
+	}
+    
 	public function getGroups($materialtype)
 	{
 		$data = Yii::app()->db->createCommand()
             ->select('distinct(t.group),p.name')
             ->from('shopcoins t')
             ->join('group p', 't.group=p.group')
-            ->where('materialtype=:materialtype and t.check=1 and groupparent=0', array(':materialtype'=>$materialtype))
+            ->where('materialtype=:materialtype  and groupparent=0', array(':materialtype'=>$materialtype))
             ->order('p.name asc')
             ->queryAll();
             
@@ -149,7 +191,7 @@ class Shopcoins extends CActiveRecord
                     ->select('distinct(t.group),p.name')
                     ->from('shopcoins t')
                     ->join('group p', 't.group=p.group')
-                    ->where('materialtype=:materialtype and t.check=1 and groupparent=:groupparent', array(':materialtype'=>$materialtype,':groupparent'=>$row['group']))
+                    ->where('materialtype=:materialtype and groupparent=:groupparent', array(':materialtype'=>$materialtype,':groupparent'=>$row['group']))
                     ->order('p.name asc')
                     ->queryAll();
               foreach ($data_child as $row_child) {

@@ -1,9 +1,7 @@
 <?
 include(START_PATH."/config.php");
 //новинки
-if($tpl['user']['user_id']==352480){
-        	//var_dump($rows["novelty"]);
-        }
+
 if ($rows["novelty"]){
     
     
@@ -96,6 +94,7 @@ if($rows["materialtype"]!=3){?>
 <? echo contentHelper::render('shopcoins/price/prices',$rows);?>
 
 <?
+
 if(!$mycoins){    
     echo contentHelper::render('shopcoins/price/buy_button',$rows);
     echo contentHelper::render('shopcoins/price/reserved',$rows);

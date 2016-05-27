@@ -78,7 +78,9 @@ ul.s_tm .filter-groupcondition_container_1{height:187px;}
 #f-details .mCustomScrollBox{
 width:260px;
 }
-
+.m-3 .mCustomScrollBox{
+width: 100%;
+}
 
 /* 
 ------------------------------------------------------------------------------------------------------------------------

@@ -197,23 +197,31 @@
 				</div>
 				<?if($tpl['orderdetails']['coupons']){?>
 					<div id="coupon-block">
-						<div class="error" id="coupon-error"></div>
+						
 						Если у Вас есть купон(ы) на скидку и Вы желаете их использовать в данном заказе, введите код в нижеприведенной форме.<br>
-						<div class="left">
-    						<strong>Код купона:</strong>
-    						<input type=text name="code1" id='code1' value="" size=4 maxlength=4 > -
-    						<input type=text name="code2" id='code2' value="" size=4 maxlength=4 > -
-    						<input type=text name="code3" id='code3' value="" size=4 maxlength=4 > -
-    						<input type=text name="code4" id='code4' value="" size=4 maxlength=4 >
-    						<input type="hidden" value="" name="dis" id="dis">
+						<div>
+						<? foreach ($tpl['orderdetails']['coupons'][1] as $i=>$coupon){?>
+							<div>
+    							<div class="error" id="<?=$i?>_coupon-error" style="text-align:left"></div>
+        						<strong>Код купона:</strong>
+        						<input type=text name="<?=$i?>_code1" id='<?=$i?>_code1' value="" size=4 maxlength=4 > -
+        						<input type=text name="<?=$i?>_code2" id='<?=$i?>_code2' value="" size=4 maxlength=4 > -
+        						<input type=text name="<?=$i?>_code3" id='<?=$i?>_code3' value="" size=4 maxlength=4 > -
+        						<input type=text name="<?=$i?>_code4" id='<?=$i?>_code4' value="" size=4 maxlength=4 >         						
+        						<input type="hidden" value="" name="<?=$i?>_dis" id="<?=$i?>_dis">
+    						</div>
+    						
+    						<?}?>  
+    						<input type="hidden" value="<?=count($tpl['orderdetails']['coupons'][1])?>" name="coupon_count" id="coupon_count">  	
+    											
     						<? if($tpl['orderdetails']['coupons']['friends']){
-    						 $codetmp = $tpl['orderdetails']['coupons']['friends'];
-    						?>
+    						 $codetmp = $tpl['orderdetails']['coupons']['friends'];    						?>
+    						
     						<br><b>Вам доступен купон на скидку по акции Приведи друга:<?=$codetmp[0]?>-<?=$codetmp[1]?>-<?=$codetmp[2]?>-<?=$codetmp[3]?></b>
     						<?}?>&nbsp;&nbsp;
                         </div>
 						<div id="CouponInfo" name="CouponInfo">
-							<input type=button class=formtxt value="Подтвердить купон" onClick="checkFormCoupon();">
+							<input type=button class=formtxt value="Проверить купон(ы)" onClick="checkFormCoupon(<?=count($tpl['orderdetails']['coupons'][1])?>);">
 						</div>
 
 					</div>

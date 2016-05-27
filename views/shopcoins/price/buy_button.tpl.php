@@ -42,17 +42,19 @@ if($rows['buy_status']==2){?>
     	<input type=text name=amount<?=$rows["shopcoins"]?> id=amount<?=$rows["shopcoins"]?> size=1 value='1'> 
 		<span class="up">+</span>
 		<div class="buy-div">
-			<a class="button25" href='#' onclick='AddAccessory(<?=$rows["shopcoins"]?>);return false;' title='Положить в корзину <?=contentHelper::setWordOn($rows["materialtype"])?> <?=$rows["name"]?>'>Купить</a>
+			<a class="button25" href='#' onclick='ga("send", "event", "shop", "basket");AddAccessory(<?=$rows["shopcoins"]?>);return false;' title='Положить в корзину <?=contentHelper::setWordOn($rows["materialtype"])?> <?=$rows["name"]?>'>Купить</a>
 		</div>
 	</div>	
 <?} elseif ($rows['buy_status']==7) {?>
 
     <div id=bascetshopcoins<?=$rows["shopcoins"]?> >
-   		<a class="button25" href='#' onclick='AddAccessory(<?=$rows["shopcoins"]?>);return false;' title='Положить в корзину <?=contentHelper::setWordOn($rows["materialtype"])?> <?=$rows["name"]?>'>Купить</a>
+   		<a class="button25" href='#' onclick='ga("send", "event", "shop", "basket");AddAccessory(<?=$rows["shopcoins"]?>);return false;' title='Положить в корзину <?=contentHelper::setWordOn($rows["materialtype"])?> <?=$rows["name"]?>'>Купить</a>
     </div>
 	</a>
 	  
 <?} elseif ($rows['buy_status']==9) {
 	echo "Нет в наличии";
+	// _gaq.push(["_trackEvent", "shop", "basket"]);
+	//ga("send", "event", "shop", "basket"]);
 }?>
 </div>

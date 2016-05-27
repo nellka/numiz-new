@@ -6,6 +6,8 @@ if($tpl['show']['error']['no_coins']){?>
     include($cfg['path'].'/views/shopcoins/item/item.tpl.php');   
 }?>
 </div>
+
+<? if(!$tpl['show']['error']['no_coins']){?>
 <div class="wraper clearfix info_coins">
 	<div style="display: inline-block;width:400px;">
 		<div id=allreviews style="vertical-align:top;width:400px;margin-top:20px;overflow:hidden;height:500px;">
@@ -64,6 +66,8 @@ if($tpl['show']['error']['no_coins']){?>
 	</div>
 </div>
 <?
+}
+
 if ($tpl['show']['rowscicle']) {?>
 <div class="triger">	
 	<div class="wraper clearfix">

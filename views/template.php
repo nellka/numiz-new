@@ -8,7 +8,7 @@
         <?php     
 
         if($tpl['module']=='shopcoins'||$tpl['module']=='order'){
-           if(in_array($tpl['task'],array('show','catalog_search','viporder'))||$tpl['module']=='order'){ ?>
+           if(in_array($tpl['task'],array('show','catalog_search','viporder','series','one_serie'))||$tpl['module']=='order'){ ?>
     			<div class="wraper clearfix">  
 			     <?php
                 if(file_exists($cfg['path'] . '/views/pagetop/'.$tpl['task'].'.tpl.php')){
@@ -77,7 +77,7 @@
     </a>
 </div>   
 <link rel="stylesheet" type="text/css" href="<?=$cfg['site_dir']?>css/jqueryui.custom.min.css" media="screen" />
-<link href="<?=$cfg['site_dir']?>css/jquery.mCustomScrollbar.min.css" rel="stylesheet" type= "text/css"/>
+<link href="<?=$cfg['site_dir']?>css/jquery.mCustomScrollbar.css" rel="stylesheet" type= "text/css"/>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type= "text/javascript"></script>
 <?
@@ -134,10 +134,12 @@ $(document).ready(function() {
       source: 'shopcoins/index.php?search=1',
       minLength:3,
       select: function (event, ui) {
-          console.log(ui.item);
             window.location = ui.item.href;
             return ui.item.label;
-        }
+        },
+		open: function( event, ui ) {
+			ga("send", "event", "page", "shortsearch");
+		}
     }).data( "autocomplete" )._renderItem = function( ul, item ) {
 
         return $( "<li class='search-ayax'></li>" )
@@ -145,16 +147,18 @@ $(document).ready(function() {
             .append( "<a href='"+item.href+"'>" + item.image+ " <span> " + item.label+ "</span></a>" )
             .appendTo( ul );
     };
+
     $('#header #search').autocomplete({
       source: 'shopcoins/index.php?search=1',
       minLength:3,
       select: function (event, ui) {
-          console.log(ui.item);
             window.location = ui.item.href;
             return ui.item.label;
-        }
+        },
+		open: function( event, ui ) {
+			ga("send", "event", "page", "shortsearch");
+		}
     }).data( "autocomplete" )._renderItem = function( ul, item ) {
-         console.log(item);
         return $( "<li class='search-ayax'></li>" )
             .data( "item.autocomplete", item )
             .append( "<a href='"+item.href+"'>" + item.image+ " <span> " + item.label+ "</span></a>" )
