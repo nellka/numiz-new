@@ -584,6 +584,11 @@ class model_shopcoins extends Model_Base
 		if (isset($WhereParams['pricestart'])) {
         	$select->where("s.`price` >= ?",floatval($WhereParams['pricestart']));
         }
+        
+        if (isset($WhereParams['bydate'])) {
+            $select = $this->getByDate($select,$WhereParams['bydate']);
+        }
+        
         if (isset($WhereParams['nominals'])) {        	
         	$select->where("s.nominal_id in (".implode(",",$WhereParams['nominals']).")");        	
         }
@@ -644,10 +649,7 @@ class model_shopcoins extends Model_Base
         if (isset($WhereParams['condition'])) {             	
         	$select->where("s.condition_id in (".implode(",",$WhereParams['condition']).")");
         }    	   
-	  
-       if($this->user_id==352480){
-        	//echo $select->__toString();
-        }
+	   
        return $this->db->fetchOne($select);       
 	}
 	public function getPopular($limit=4,$params = array()){ 
@@ -697,6 +699,15 @@ class model_shopcoins extends Model_Base
           return   $this->db->fetchAll($select);
 	}
 	
+	protected function getByDate($select,$bydate=0){
+	    if($bydate){
+	        $time_bydate = time()- $bydate*24*3600;             
+        	$select->where("s.`dateinsert` >= ?",mktime(0,0,0,date('m',$time_bydate),date('d',$time_bydate),date('Y',$time_bydate)));	       
+	    }
+	    
+	    return $select;
+	}
+
 	public function getItemsByParams($WhereParams=array(),$page=1, $items_for_page=30,$orderby='',$searchid=''){
 		foreach ($orderby as &$order){	
 			$order = str_replace('shopcoins.name','sn.name',$order);	 		
@@ -747,6 +758,11 @@ class model_shopcoins extends Model_Base
         if (isset($WhereParams['priceend'])) {        	
         	$select->where("s.`price` <=?",floatval($WhereParams['priceend']));
         }
+        
+        if (isset($WhereParams['bydate'])) {
+            $select = $this->getByDate($select,$WhereParams['bydate']);
+        }
+        
         if (isset($WhereParams['searchname'])) { 
         	$searchname = str_replace("'","",$WhereParams['searchname']);
         	$select->where('sn.name=?',$searchname);
@@ -872,7 +888,7 @@ class model_shopcoins extends Model_Base
 	
 	
 	//группы для выборки
-	public function getGroups(){	
+	public function getGroups($bydate=0){	
 	    
 	   if($this->mycoins) {
 	       $select = $this->db->select()
@@ -889,13 +905,14 @@ class model_shopcoins extends Model_Base
 	   	 	$select = $this->byAdmin($select,'s'); 
 	   		$select=$this->setMaterialtypeSelect($select,array(),'s');
 	   }
-	
-       if ($this->getCategoryType()==self::BASE ){       
-          // $select->order('group desc');
-       } 
+	   
+	   if ($bydate){
+            $select = $this->getByDate($select,$bydate);
+       }
+       
        if($this->user_id==352480){
         	echo $select->__toString();
-        }     
+       }     
        return $this->db->fetchAll($select);       
 	}
 	//получаем данные о группах
@@ -945,7 +962,7 @@ class model_shopcoins extends Model_Base
 		return  $this->db->fetchOne($select);
 	}
 	
-	public function getNominals($groups=array()){
+	public function getNominals($groups=array(),$bydate=0){
 	    if(!$groups) return array();
 	    	    
 	   if($this->mycoins) {
@@ -969,8 +986,8 @@ class model_shopcoins extends Model_Base
 	       $select = $this->byAdmin($select,'s'); 	 
 	   }
 	   
-	   if($this->user_id==352480){
-        	echo $select->__toString();
+	   if ($bydate){
+            $select = $this->getByDate($select,$bydate);
        }
        
        $result = $this->db->fetchAll($select);
@@ -985,7 +1002,7 @@ class model_shopcoins extends Model_Base
 	   return $result;    
 	}
 	
-	public function getConditions($all=false,$groups=array(),$nominals=array()){
+	public function getConditions($all=false,$groups=array(),$nominals=array(),$bydate=0){
 	    $WhereParams['group'] = true;
 	    
 		$select = $this->db->select()
@@ -1009,6 +1026,10 @@ class model_shopcoins extends Model_Base
 	    if($groups){
            $select->where("`group` in (".implode(",",$groups).")");
         } 
+        
+        if ($bydate){
+            $select = $this->getByDate($select,$bydate);
+       }
         if($nominals){	       	
             $select->where("nominal_id in (".implode(",",$nominals).")");
 	    }
@@ -1020,7 +1041,7 @@ class model_shopcoins extends Model_Base
 	}
 	
 	//получаем металы для выборки
-	public function getMetalls($all=false,$groups=array(),$nominals=array()){
+	public function getMetalls($all=false,$groups=array(),$nominals=array(),$bydate=0){
 	    
 	    $WhereParams['group'] = true;
 	    
@@ -1046,6 +1067,10 @@ class model_shopcoins extends Model_Base
            $select->where("`group` in (".implode(",",$groups).")");
        }
        
+       if ($bydate){
+            $select = $this->getByDate($select,$bydate);
+       }
+        
        if($nominals){	       	
            $select->where("nominal_id in (".implode(",",$nominals).")");
 	   }
@@ -1056,7 +1081,7 @@ class model_shopcoins extends Model_Base
 	   return $this->db->fetchAll($select);       
 	}
 	
-	public function getYears($nominals=array(),$groups=array()){
+	public function getYears($nominals=array(),$groups=array(),$bydate=0){
 	    
 	   $WhereParams['group'] = true;
 	   
@@ -1077,6 +1102,11 @@ class model_shopcoins extends Model_Base
 	   if($nominals){	       	
             $select->where("nominal_id in (".implode(",",$nominals).")");
 	   }
+	   
+	   if ($bydate){
+            $select = $this->getByDate($select,$bydate);
+       }
+       
        if($groups){
            $select->where("`group` in (".implode(",",$groups).")");
        }
@@ -1102,7 +1132,7 @@ class model_shopcoins extends Model_Base
         return $this->db->fetchAll($select);    
 	
 	}
-	public function getMaxPrice($groups=array(),$nominals=array()){     
+	public function getMaxPrice($groups=array(),$nominals=array(),$bydate=0){     
         if($this->mycoins) {
             $select = $this->db->select()
                           ->from(array('s'=>'mycoins'),array('max(price)'))
@@ -1120,13 +1150,18 @@ class model_shopcoins extends Model_Base
     	 if($nominals){	       	
              $select->where("nominal_id in (".implode(",",$nominals).")");
     	 }
+    	 
+    	 if ($bydate){
+             $select = $this->getByDate($select,$bydate);
+         }
+         
     	 if($this->user_id==352480){
         	echo $select->__toString();
         }
 	     return $this->db->fetchOne($select);
     }
     
-    public function getMinPrice($groups=array(),$nominals=array()){
+    public function getMinPrice($groups=array(),$nominals=array(),$bydate=0){
          if($this->mycoins) {
             $select = $this->db->select()
                           ->from(array('s'=>'mycoins'),array('min(price)'))
@@ -1144,14 +1179,16 @@ class model_shopcoins extends Model_Base
     	 if($nominals){	       	
               $select->where("nominal_id in (".implode(",",$nominals).")");
     	 }
-    	 
+    	 if ($bydate){
+            $select = $this->getByDate($select,$bydate);
+         }
     	 if($this->user_id==352480){
         	echo $select->__toString();
         }
 	     return $this->db->fetchOne($select);
     }
     
-    public function getMinYear($groups=array(),$nominals=array()){
+    public function getMinYear($groups=array(),$nominals=array(),$bydate=0){
          if($this->mycoins) {
             $select = $this->db->select()
                           ->from(array('s'=>'mycoins'),array('min(year)'))
@@ -1169,6 +1206,10 @@ class model_shopcoins extends Model_Base
     	 if($groups){
     	      $select->where("`group` in (".implode(",",$groups).")");
     	 }
+    	 if ($bydate){
+            $select = $this->getByDate($select,$bydate);
+         }
+         
     	 if($nominals){	       	
               $select->where("nominal_id in (".implode(",",$nominals).")");
     	 }
@@ -1179,7 +1220,7 @@ class model_shopcoins extends Model_Base
 	     return $this->db->fetchOne($select);
     }
     
-    public function getMaxYear($groups=array(),$nominals=array()){
+    public function getMaxYear($groups=array(),$nominals=array(),$bydate=0){
          if($this->mycoins) {
             $select = $this->db->select()
                           ->from(array('s'=>'mycoins'),array('max(year)'))
@@ -1191,6 +1232,11 @@ class model_shopcoins extends Model_Base
     		 $select = $this->byAdmin( $select,'s');    	
         	 $select = $this->setMaterialtypeSelect($select,array(),'s');
          }
+         
+         if ($bydate){
+            $select = $this->getByDate($select,$bydate);
+         }
+         
     	 if($groups){
     	      $select->where("`group` in (".implode(",",$groups).")");
     	 }
