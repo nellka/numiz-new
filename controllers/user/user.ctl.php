@@ -14,6 +14,7 @@ $validator = new Zend_Validate_EmailAddress();
 $mail_class = new mails();
 switch ($tpl['task']){    
     case 'registration':{
+    	
         $tpl['user']['password'] = request('password');
         $tpl['user']['email'] =request('email');
         $tpl['user']['password_repeat'] = request('password_repeat');
@@ -28,7 +29,7 @@ switch ($tpl['task']){
         $user_inttostring = request('inttostring');
         $user_inttostringm = request('inttostringm');
               //  var_dump($user_inttostring,$user_inttostringm ,$inttostring ,$tpl['user']['inttostringm']);
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){  
+        if($_SERVER['REQUEST_METHOD'] == 'POST'&&!$tpl['user']['user_id']){  
             $tpl['user']['subscr'] = request('subscr');              
             if (!$validator->isValid($tpl['user']['email'])) {
                 // email прошел валидацию
@@ -59,6 +60,9 @@ switch ($tpl['task']){
             }    
         } else {
             $tpl['user']['subscr'] = 1;
+            if($tpl['user']['user_id']) {
+	    		$tpl['user']['already_login'] = true;
+	    	}
         }
         break;
     }
@@ -69,18 +73,26 @@ switch ($tpl['task']){
             
         if($_SERVER['REQUEST_METHOD'] == 'POST'){  
          //var_dump($subsriptionMail,$_SERVER['REQUEST_METHOD']);
+           
             if (!$validator->isValid($subsriptionMail)) {
                 $tpl['user']['errors'][] = "Неверный Email";
             }  else {
-                 $data = array('email'=>$subsriptionMail,
-                               'userpassword' => $password,
-                               'userlogin'=>$subsriptionMail);                                                
-                 //регистрируем
-                 $userId = $user_class->addNewUser($data,1);      
-                 $tpl['user']['errors'][] = "Спасибо за подписку на наш ресурс!";                 
-                  //отправляется письмо о регистрации     
-                 $data['subsription'] = 1;         
-                 $mail_class->newUserLetter($data);                     
+                 $userData = $user_class->getRowByParams(array('email'=>$subsriptionMail));
+                 if(!$userData){                     
+                     $data = array('email'=>$subsriptionMail,
+                                   'userpassword' => $password,
+                                   'userlogin'=>$subsriptionMail);                                                
+                     //регистрируем
+                     $userId = $user_class->addNewUser($data,1);                                 
+                      //отправляется письмо о регистрации     
+                     $data['subsription'] = 1;  
+                     $mail_class->newUserLetter($data);    
+                 } else {
+                     $user_class->addsubscribe($userData["user"]);	
+                 } 
+                     
+                 $tpl['user']['errors'][] = "Спасибо за подписку на наш ресурс!";    
+                                   
             }    
         } 
         break;

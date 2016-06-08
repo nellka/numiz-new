@@ -24,7 +24,7 @@ if(request('orderby')){
     $tpl['orderby'] = request('orderby');  
     $orderby_param = '&orderby='.  $tpl['orderby'];
 } else {
-    $tpl['orderby'] ='yeardesc';
+    $tpl['orderby'] ='dateinsertdesc';
 }	
 
 
@@ -33,7 +33,7 @@ if(!isset($tpl['orderby']))	$tpl['orderby'] = "yeardesc";
 
 $tpl['pagenum'] = request('pagenum')?request('pagenum'):1;
 
-$base_url = $cfg['site_dir']."shopcoins/series/$id".$orderby_param;
+$base_url = $cfg['site_dir']."shopcoins/series/$id".(($tpl['onpage']!=24)?"&onpage=".$tpl['onpage']:"");
 
 
 require($cfg['path'].'/helpers/Paginator.php');
@@ -86,7 +86,7 @@ if (sizeof($OrderByArray)){
 
 if($id){
     $tpl['one_series'] = $shopcoinsbyseries_class->getSeriesDataById($id);
-
+    
     if($tpl['one_series']){
 
         $countpubs = $shopcoinsbyseries_class->getCountCoinsBySeries($tpl['one_series']["whereselect"]);
@@ -94,7 +94,7 @@ if($id){
         if($countpubs<($tpl['pagenum']-1)*$tpl['onpage']) $tpl['pagenum']=1;
         
         $tpl['paginator'] = new Paginator(array(
-            'url'        => $base_url,
+            'url'        => $base_url.$orderby_param,
             'count'      => $countpubs,
             'per_page'   => ($tpl['onpage']=='all')?$countpubs:$tpl['onpage'],
             'page'       => $tpl['pagenum'],

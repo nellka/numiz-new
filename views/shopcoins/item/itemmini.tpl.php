@@ -6,7 +6,7 @@ if ($rows["novelty"]){?>
 <?}?>
   <center>
   <a href=index.php?catalog=<?=$rows["shopcoins"]?>&page=show&materialtype=<?=$rows["materialtype"]?>>
-  <?=contentHelper::showImage("images/".$rows["image"],$rows["gname"]." | ".$rows["name"]);?></center><br>
+  <?=contentHelper::showImage("images/".$rows["image"],$rows["gname"]." | ".$rows["name"],array('alt'=>contentHelper::getAlt($rows)));?></center><br>
   </a>
   <a href=index.php?catalog=<?=$rows["shopcoins"]?>&page=show&materialtype=<?=$rows["materialtype"]?>><?=$rows['name']?></a><br>
   <b>Страна:</b> <?=$rows['gname']?><br>

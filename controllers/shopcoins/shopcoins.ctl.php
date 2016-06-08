@@ -1,11 +1,14 @@
 <?
 require($cfg['path'].'/helpers/Paginator.php');
+
+$materialtype = request('materialtype')?(int)request('materialtype'):1;
+
 require $cfg['path'] . '/configs/config_shopcoins.php';
+
+if(isset($materialsRule[request('materialtype')])) $materialtype = $materialsRule[request('materialtype')];
+
 require_once $cfg['path'] . '/models/shopcoinsdetails.php';
 $details_class = new model_shopcoins_details($cfg['db']);
-if($tpl['user']['user_id']==352480){
-	echo time()." 1<br>";
-}
 
 $mycoins = 0;
 $arraykeyword = array();
@@ -22,10 +25,10 @@ $group = (int)request('group');
 $catalognewstr = request('catalognewstr');
 
 $GroupNameMain = '';
+$GroupNameID = '';
 $GroupName = ''; 
 $metalTitle = '';
 
-$materialtype = request('materialtype')?(int)request('materialtype'):1;
 
 if(contentHelper::get_encoding($search)=='windows-1251'){
 	$search = iconv( "CP1251//TRANSLIT//IGNORE","UTF8", $search);
@@ -72,6 +75,8 @@ setcookie('orderby', $tpl['orderby'],  time()+ 86400 * 90,'/',$domain);
 
 $tpl['pagenum'] = request('pagenum')?request('pagenum'):1;
 
+$tpl['breadcrumbsMini'] = array();
+    
 $theme_data = array();
 $metal_data = array();
 $year_data = array();
@@ -122,9 +127,43 @@ $coinssearch = request('coinssearch');
 $years  = (array)request('years');
 $years_p = (array)request('years_p');
 
+if($years_p&&!is_array($years_p)){
+    $years_p = array($years_p);
+}
+
 if($materialtype==2){
     $yearsArray[3] = array('name' => 'до 1900','data'=>array(0,1900));
 }
+
+//это старые данные в виде строки
+$condition = iconv("cp1251",'utf8',request('condition'));
+//это новые данные в виде массива
+$conditions = (array)request('conditions');
+
+if($metals&&!is_array($metals)){
+    $metals = array($metals);
+}
+
+if ($metals) $metal_data = $metals;
+elseif($metal) {	
+	if((int)$metal==0){
+		//для старых запросов
+		$metal = array_search($metal,$tpl['metalls']);
+	}
+	
+	if($metal){
+		$metal_data =  array($metal);
+		$metals =  array($metal);
+	}
+}
+
+	
+if ($groups)  $group_data =$groups;
+elseif($group) {
+	$group_data =  array($group);
+	$groups =  array($group);
+}
+
 
 if(($nominals&&$groups)||($groups&&$materialtype==4)){
     $years_p_data = $years_p;
@@ -160,44 +199,16 @@ if(($nominals&&$groups)||($groups&&$materialtype==4)){
     }
 }
 
-//это старые данные в виде строки
-$condition = iconv("cp1251",'utf8',request('condition'));
-//это новые данные в виде массива
-$conditions = (array)request('conditions');
-
-if($metals&&!is_array($metals)){
-    $metals = array($metals);
-}
-
-if ($metals) $metal_data =$metals;
-elseif($metal) {	
-	if((int)$metal==0){
-		//для старых запросов
-		$metal = array_search($metal,$tpl['metalls']);
-	}
-	
-	if($metal){
-		$metal_data =  array($metal);
-		$metals =  array($metal);
-	}
-}
-
-	
-if ($groups)  $group_data =$groups;
-elseif($group) {
-	$group_data =  array($group);
-	$groups =  array($group);
-}
-
 $tpl['shop']['OtherMaterialData'] = array();
 
 $OtherMaterial =  array();
 
+$groupHref = "";
+
 if(count($group_data)==1){
-    
+    $GroupNameID = $group_data[0];
     $groupData = $shopcoins_class->getGroupItem($group_data[0]);
-	//получаем дочерние элементы
-	
+	//получаем дочерние элементы    
 	$childs = $shopcoins_class->getParrentGroupsIds($group_data[0]);
 
 	$i=1;
@@ -207,9 +218,13 @@ if(count($group_data)==1){
 	    $i++;
 	}	
 	
+	$groupHref = '?group='.$group_data[0];
+	
 	$GroupName = $groupData["name"];
 	//$grouphref = strtolower_ru($GroupName)."_gn".$groupData['group'];
 	$arraykeyword[] = $groupData["name"];
+	
+	$tpl['breadcrumbsMini'][0] = "<a href='$groupHref'>".$groupData["name"]."</a>";
 		//var_dump(mb_detect_encoding($groupData["description"]));
 	if (trim($groupData["description"])){
 		$text = substr($groupData["description"], 0, 650);
@@ -241,14 +256,9 @@ if(count($group_data)==1){
 	    $groupParentData = $shopcoins_class->getGroupItem($groupData["groupparent"]); 		
 		$GroupNameMain = $groupParentData['name'];
 	}	
-	if($tpl['user']['user_id']==352480){
-		echo time()." 2_3<br>";
-	}
-	$tpl['shop']['OtherMaterialData'] = $shopcoins_class->getOtherMaterialData($group_data[0],$materialtype);	
 	
-	if($tpl['user']['user_id']==352480){
-		echo time()." 2_4<br>";
-	}
+	$tpl['shop']['OtherMaterialData'] = $shopcoins_class->getOtherMaterialData($group_data[0],$materialtype);		
+	
 	if ($tpl['shop']['OtherMaterialData']){		
 	    $i = 0;	
 	    $oldmaterialtype = 0;
@@ -262,12 +272,7 @@ if(count($group_data)==1){
 			}
 			$i++;
 		}
-	}
-	
-}
-
-if(count($metal_data)==1){
-    $metalTitle = $tpl['metalls'][$metal_data[0]];
+	}	
 }
 
 if($groups){
@@ -290,20 +295,47 @@ elseif($condition) {
 	   $conditions =  array($condition);
 	}	
 }
-
+/*
 if ($seriess)  $series_data = $seriess;
 elseif($series) {
 	$series_data =  array($series);
 	$seriess =  array($series);
-}
+}*/
 
 if ($themes) $theme_data =$themes;
 elseif($theme) {
 	$theme_data =  array($theme);
 	$themes =  array($theme);
 }
+
+if(count($nominal_data)==1&&$nominal_data[0]){
+    $nominalTitle = $shopcoins_class->getNominal($nominal_data[0]);
+    
+    $tpl['breadcrumbsMini'][1] = "<a href='/".($groupHref?($groupHref."&nominal_id=".$nominal_data[0]):("?nominal_id=".$nominal_data[0]))."'>".$nominalTitle."</a>";
+}
+
+if(count($years_p_data)==1&&$years_p_data[0]){    
+    
+    $tpl['breadcrumbsMini'][4] = "<a href='/".($groupHref?($groupHref."&years_p=".$years_p_data[0]):("?years_p=".$years_p_data[0]))."'>".$years_p_data[0]."</a>";
+}
+
+if(count($metal_data)==1){
+    $metalTitle = $tpl['metalls'][$metal_data[0]];
+    $tpl['breadcrumbsMini'][2] = "<a href='/".($groupHref?($groupHref."&metal_id=".$metal_data[0]):"&metal_id=".$metal_data[0])."'>".$metalTitle."</a>";
+}
+
+if(count($theme_data)==1){
+
+    $tpl['breadcrumbsMini'][8] = "<a href='/".($groupHref?($groupHref."&theme=".$theme_data[0]):"&theme=".$theme_data[0])."'>".$ThemeArray[$theme_data[0]]."</a>";
+}
+if(count($condition_data)==1){
+    $conditionTitle = $tpl['conditions'][$condition_data[0]];
+    $tpl['breadcrumbsMini'][3] = "<a href='/".($groupHref?($groupHref."&condition_id=".$condition_data[0]):"&condition_id=".$condition_data[0])."'>".$conditionTitle."</a>";
+}
+
 if($tpl['user']['user_id']==352480){
 	echo time()." 3<br>";
+	var_dump($years_p_data,$tpl['breadcrumbsMini']);
 }
 
 if($mycoins) {
@@ -378,7 +410,6 @@ $addhref = ($yearstart?"&yearstart=".$yearstart:"").
 ($priceend?"&priceend=".$priceend:"").
 ($searchid?"&searchid=".$searchid:"").
 ($group?"&group=$group":"").
-($materialtype?"&materialtype=$materialtype":"").
 ($theme?"&theme=".$theme:"").
 ($condition?"&condition=".$condition:"").
 ($nocheck?"&nocheck=".$nocheck:"")
@@ -417,7 +448,8 @@ if ($searchid)
 	<br>����� ��������� ����������� ����� - ������� <a href=$script>�����</a>.</p>";
 
 if($tpl['user']['user_id']==352480){
-	echo time()." 5<br>";
+   // var_dump($_SERVER);
+	//echo time()." 5<br>";
 }
 
 $countpubs = $shopcoins_class->countallByParams($WhereParams);
@@ -430,7 +462,7 @@ if($addhref) $addhref = substr($addhref,1);
 setcookie("lhref", $cfg['site_dir']."shopcoins/index.php?".$addhref.(($tpl['pagenum']>1)?'&pagenum='.$tpl['pagenum']:''), time() + 3600, "/");
 
 $tpl['paginator'] = new Paginator(array(
-        'url'        => $cfg['site_dir']."shopcoins/index.php?".$addhref,
+        'url'        => $cfg['site_dir'].substr($_SERVER["SCRIPT_URL"],1).($addhref?("?".$addhref):""),
         'count'      => $countpubs,
         'per_page'   => ($tpl['onpage']=='all')?$countpubs:$tpl['onpage'],
         'page'       => $tpl['pagenum'],
@@ -444,7 +476,7 @@ $tpl['paginator'] = new Paginator(array(
 }*/
 
 $OrderByArray = Array();
-
+$OrderByArray[] ="novelty desc";
 /*if ($coinssearch)
 	$OrderByArray[] = " shopcoins.shopcoins=".intval($coinssearch)." desc ";*/
 
@@ -455,7 +487,7 @@ if (($materialtype==3||$materialtype==5) and $group) $OrderByArray[] = " shopcoi
 
 if ($materialtype==5) $OrderByArray[] = " shopcoins.name desc";
 
-$OrderByArray[] ="novelty desc";
+
 
 if ($tpl['orderby']=="dateinsertdesc"){
 	//$OrderByArray[] = " if (shopcoins.dateupdate > shopcoins.dateinsert, shopcoins.dateupdate, shopcoins.dateinsert) desc";
@@ -495,7 +527,10 @@ if ($search === 'revaluation') {
 if (sizeof($OrderByArray)){
 	$orderby = array_merge(array("shopcoins.check ASC"),$OrderByArray);
 }
-
+if($tpl['user']['user_id']==352480){
+	//var_dump($OrderByArray);
+	//die();
+}
 	
 /*if ($wheresearch)
 	$where = $wheresearch;
@@ -689,11 +724,10 @@ if (sizeof($tpl['shop']['MyShowArray'])==0){
 	
 }
 
-if($tpl['user']['user_id']==352480){
-	echo time()." 8<br>";
+$tpl['seo_data'] = '';
+if(!$tpl['pagenum']||$tpl['pagenum']==1){
+    $tpl['seo_data'] = $shopcoins_class->getSeo($materialtype,$group_data,$nominal_data);
 }
-
-$tpl['seo_data'] = $shopcoins_class->getSeo($materialtype,$group_data,$nominal_data);
 //записываем статистике по тому, что искали
 if ($search && $search != 'revaluation' && $search != 'newcoins'){		
     //$shopcoins_class->addSearchStatistic();	

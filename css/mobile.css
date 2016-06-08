@@ -7,6 +7,10 @@ body {
 	/* 'Roboto',*/
 }
 
+.filter_heading_ul a.blue{
+    color:#247bbd;
+}
+
 .container {
     margin: 0 auto;
     width: 415px;
@@ -17,6 +21,15 @@ body {
 	background-color:#4f5965;
 	z-index:4000;
 	height:45px;
+}
+
+.f-container .button25 {
+    color: white;
+    display: block;
+    min-width: 50px;
+    padding: 0;
+    text-decoration: none;
+    width: 25px;
 }
 
 .wraper {
@@ -257,6 +270,7 @@ text-align: right;
 }
 ul.ui-autocomplete{
 border:1px solid #ccc;
+ z-index: 5000 !important;
 }
 
 .subheader{
@@ -350,6 +364,8 @@ font-size: 20px;
     font-size: 18px;
     line-height: 32px;
     padding: 0;
+     position: relative;
+    z-index: 4010;
 }
 .menu-heading > span {
     padding: 15px;
@@ -430,19 +446,33 @@ color:#ecb34e;
     font-size: 18px;
 }
 .filter_heading{
-	background-color: #ffffff;
+	background-color: #ccc;
 
+	padding: 0 30px;
     color: black;
     font-size: 18px;
-    line-height: 25px;
+    line-height: 30px;
     height: 30px;
 
 	font-weight:bold;	
 }
+.f-details-block{
+    padding: 0 30px;
+    margin: 5px 0;
+}
+
+ul.filter_heading_ul {
+    padding: 0 30px;
+    margin: 5px 0;
+}
+.l-f{
+font-size:14px;
+}
 .filter_heading a.fc{
     color:#247bbd;
     font-size:16px;
-    line-height:12px;text-decoration:underline;
+    /*line-height:12px;*/
+    text-decoration:underline;
 }
 
 .filter_heading_ul{
@@ -462,8 +492,8 @@ color:#ecb34e;
 }
 
 .filter-block {
-    margin: 0 0 10px;
-    padding: 0 30px;
+    /*margin: 0 0 10px;*/
+    /*padding: 0 30px;*/
 }
 
 .filter-block #group_name {
@@ -484,7 +514,7 @@ color:#ecb34e;
 
 .ftl a {
     font-size: 19px;
-    text-decoration: none;
+    text-decoration: underline;
 }
 
 .new,.new_red {
@@ -1024,4 +1054,12 @@ a.reservedinfo{
 
 .marg-10 {
     margin: 10px;
+}
+
+ul .mCSB_scrollTools {
+    width: 24px;
+}
+
+ul .mCS-light-thick.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar, ul .mCS-dark-thick.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
+    width: 24px;
 }

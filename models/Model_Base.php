@@ -14,7 +14,7 @@ Abstract Class Model_Base {
 	 	$this->db->query("SET names 'utf8'");
 	 	$modelName = get_class($this);
 	 	
-	 	$this->cache = Zend_Registry::get('cache');
+	 	$this->cache = Zend_Registry::get('Memcached');
         
         $arrExp = explode('_', $modelName);
         $tableName = strtolower($arrExp[1]);

@@ -107,8 +107,8 @@ if($tpl['is_mobile']&&$fv){
 	$tpl['is_mobile'] = false;
 }
 
-if($tpl['user']['user_id']==352480){
-//var_dump($tpl);
+if($tpl['user']['user_id']==352480){  
+   //$tpl['is_mobile'] = true;
 }
 
 //var_dump($tpl);

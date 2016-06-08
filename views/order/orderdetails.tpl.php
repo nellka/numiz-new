@@ -6,10 +6,10 @@
     <?
     if($tpl['can_order']){?>
       <?if(!$tpl['user']['user_id']){?>
-    	    <a class="button25 right" onclick="showWin('<?=$cfg['site_dir']?>user/login_order.php?ajax=1',400);return false;" href="#" style="width:150px" id='of-1'>Оформить заказ</a>
+    	    <a class="button25 right" onclick="showWin('<?=$cfg['site_dir']?>user/login_order.php?ajax=1',400);return false;" href="#" id='of-1'>Оформить заказ</a>
     	<?} else {?>
         	<form action="<?=$cfg['site_dir']?>shopcoins?page=order&page2=1" method="post">
-        	<input type=submit  class="button25 right" name=submit value='Оформить заказ' style="width:150px">
+        	<input type=submit  class="button25 right" name=submit value='Оформить заказ'>
         	</form>
     	<?}?>
     <?} elseif($tpl['orderdetails']['ArrayShopcoinsInOrder']) {?>
@@ -153,23 +153,23 @@ if($sum<500){?>
 	</div>
 <?}?>
 
-<div class="clearfix">
+<div class="clearfix order-cart">
 <a href='<?=$cfg['site_dir']?>shopcoins' class="left c-b">Продолжить покупки </a>
  <div class="right">
     <?
     if($tpl['can_order']){?>
         
     	<?if(!$tpl['user']['user_id']){?>
-    	    <a class="button25 right" onclick="showWin('<?=$cfg['site_dir']?>user/login_order.php?ajax=1',400);return false;" href="#" style="width:150px" id='of-1'>Оформить заказ</a>
+    	    <a class="button25 right" onclick="showWin('<?=$cfg['site_dir']?>user/login_order.php?ajax=1',400);return false;" href="#" id='of-1'>Оформить заказ</a>
 	<?} else {?>
         	<form action="<?=$cfg['site_dir']?>shopcoins?page=order&page2=1" method="post">
-        	<input type=submit  class="button25 right" name=submit value='Оформить заказ' style="width:150px">       	
+        	<input type=submit  class="button25 right" name=submit value='Оформить заказ'>       	
         	</form>
         	
         	<? if($tpl['user']['user_id']==811){?>
         		<br><br><form action="<?=$cfg['site_dir']?>shopcoins?page=orderdetails" method="post">
         		<input type="hidden" id='viporder' name='viporder' value="1">
-        		<input type=submit  class="button25 right" name=submit value='Создать Предзаказ' style="width:150px">       	
+        		<input type=submit  class="button25 right" name=submit value='Создать Предзаказ'>       	
         		</form>
         	<?}?>
     	<?}?>

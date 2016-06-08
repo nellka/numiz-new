@@ -112,29 +112,7 @@ if (!$tpl['addinorder']['error']) {
 		
 		$sum += ($rows["orderamount"]?$rows["orderamount"]:1)*($clientdiscount==1 && $rows['clientprice']>0?round($rows['clientprice'],2):round($rows['price'],2));
 	}
-						
-	/*
-	$sql7 = "select * from coupon where `user`='$cookiesuser' and `user`<>811 and `check`=1 and `type`=2 order by dateinsert desc limit 1;";
-	$result7 = mysql_query($sql7);
-	$rows7 = @mysql_fetch_array($result7);
-	if ($rows7['type'])
-		$iscoupon = $rows7['type'];
-	else
-		$iscoupon =0;
-
-	if ($iscoupon==2) {
-
-		$sql_tmp7 = "select * from ordercoupon where coupon='".$rows7['coupon']."' and `order`='".$shopcoinsorder."';";
-		$result_tmp7 = mysql_query($sql_tmp7);
-		//echo $sql_tmp;
-		if (@mysql_num_rows($result_tmp7)==0) {
-
-			$sql_ins7 = "insert into ordercoupon (`ordercoupon`,`coupon`,`order`,`dateinsert`,`check`)
-				values (NULL, '".$rows['coupon']."','$shopcoinsorder','".time()."','1');";
-			$result_ins7 = mysql_query($sql_ins7);
-
-		}
-	}*/
+		
 	
     $postindex = 0;
 	preg_match_all('/\d{6}/', $rows_temp['adress'], $found);
@@ -178,6 +156,8 @@ if (!$tpl['addinorder']['error']) {
             
 			//делаем update единичный товаров и изменение количества у других------------------------------------------------------
 			foreach ($tpl['submitorder']['result']  as $rows){
+				$shopcoinsItem =  $shopcoins_class->getItem($rows["catalog"]);
+				
 			    $ParentArray[] = $rows["parent"];
 			    //монеты, боны, подарочные наборы
 				if ($rows["materialtype"]==1){		
@@ -207,7 +187,7 @@ if (!$tpl['addinorder']['error']) {
         		                        );  
 			    } elseif (in_array($rows["materialtype"],array(4,7,8,6,2,12))) {
 					$data_update = array(                     
-                                    'amount' => "amount-".$rows["orderamount"],                       
+                                    'amount' => ($shopcoinsItem["amount"]-$rows["orderamount"]),                       
     		                        'reserveorder'=>$shopcoinsorder, 
     		                        'dateorder' =>time()
     		                        );  
@@ -219,7 +199,7 @@ if (!$tpl['addinorder']['error']) {
 				} elseif ($rows["materialtype"]==3 || $rows["materialtype"]==5) {  
 				     //аксессуары, книги
 				     $data_update = array(                     
-                                    'amount' => "amount-".$rows["orderamount"],	                        
+                                    'amount' => ($shopcoinsItem["amount"]-$rows["orderamount"]),	                        
     		                        'dateorder' =>time()
     		                        );  
     		       if($rows["orderamount"]>=$rows["samount"]){

@@ -37,8 +37,4 @@
 </div>	  
 	  
 	   </div>
-</div>  
-<script>
-console.log(5);
-</script>
-
+</div>

@@ -1,13 +1,22 @@
 <div id='products' class="products-cls m-<?=$materialtype?>">
 <div class=ftl>
-<a href="#" onclick="showInvis('search-params-place');return false;" class="left">Фильтры</a>
+<a href="#" onclick="showInvis('search-params-place');return false;" class="left">Фильтры <span class="l-f">(страны, номиналы, года)</span></a>
 <a href="#" onclick="showInvis('sorting-place');return false;" class="right">Сортировка</a>
 </div>
-<div id='search-params-place'  class="search-params-place"></div>
+<div id='search-params-place'  class="search-params-place">
+
+<?include(DIR_TEMPLATE.'_mobile/leftmenu/filters.tpl.php');?>
+
+</div>
+
 <div id='sorting-place' class="sorting-place">
 <?include(DIR_TEMPLATE.'_mobile/shopcoins/nav_catalog.tpl.php');?>
 </div>
+<div><?=implode("/",$tpl['breadcrumbsMini'])?></div>
 <?	
+
+
+/*
 $filter_layaut =  contentHelper::render('_mobile/leftmenu/filters',array('filter_groups'=>$filter_groups,'search'=>$search,'groups'=>$groups,'nominals'=>$nominals,'tpl'=>$tpl,'years'=>$years,'years_p'=>$years_p,'metals'=>$metals,'conditions'=>$conditions,'themes'=>$themes,'materialtype'=>$materialtype,'pricestart'=>$pricestart,'priceend'=>$priceend,'yearstart'=>$yearstart,'yearend'=>$yearend,'seriess'=>$seriess));   
  
  if($filter_layaut){?>
@@ -56,7 +65,7 @@ $filter_layaut =  contentHelper::render('_mobile/leftmenu/filters',array('filter
 	    	}
          }    
       </script>     
- <?}
+ <?}*/
   
 //include(DIR_TEMPLATE.'shopcoins/onpage.tpl.php');
 
@@ -130,45 +139,11 @@ if($tpl['shop']['errors']){?>
 <script type="text/javascript" charset="utf-8">
 
  jQuery(document).ready(function() {   	
-
-     $('.d-carousel .carousel').jcarousel({
-        scroll: 1,
-        itemFallbackDimension: 75
-     }); 	
-     $("#slider-range-price").slider("destroy");
-     $( "#slider-range-price" ).slider({
-           range: true,
-           min: <?=$tpl['filter']['price']['min']?>,                            
-           max: <?=$tpl['filter']['price']['max']?>,
-           values: [ <?=(integer)$pricestart?>,  <?=$priceend?$priceend:$tpl['filter']['price']['max']?>], 
-           slide: function( event, ui ) {
-                $( "#amount-price0" ).val(ui.values[ 0 ]);
-                $( "#amount-price1" ).val(ui.values[ 1 ]);
-             },
-             stop: function(event, ui) {
-               sendData(null,null,'<?=$tpl['filter']['price']['min']?>','<?=$tpl['filter']['price']['max']?>','<?=$tpl['filter']['yearstart']?>','<?=date("Y",time())?>');
-	         }
-         });
-     $( "#amount-price0" ).val($( "#slider-range-price" ).slider( "values", 0 ));
-     $( "#amount-price1" ).val($( "#slider-range-price" ).slider( "values", 1 ));
-    <? if(isset($tpl['filter']['yearend'])){?>
-  		$( "#slider-range-years" ).slider({
-           range: true,
-           min: <?=$tpl['filter']['yearstart']?>,                            
-           max: <?=date("Y",time())?>,
-           values: [ <?=(integer)$yearstart?>,  <?=$yearend?$yearend:$tpl['filter']['yearend']?>], 
-           slide: function( event, ui ) {
-                $( "#amount-years0" ).val(ui.values[0]);
-                $( "#amount-years1" ).val(ui.values[1 ]);
-           },
-           stop: function(event, ui) {
-               sendData(null,null,'<?=$tpl['filter']['price']['min']?>','<?=$tpl['filter']['price']['max']?>','<?=$tpl['filter']['yearstart']?>','<?=date("Y",time())?>');
-           }
-         });
-         $( "#amount-years0" ).val($( "#slider-range-years" ).slider( "values", 0 ));
-     	 $( "#amount-years1" ).val($( "#slider-range-years" ).slider( "values", 1 ));
-     	 <?}?>
-  		 //jQuery("#filter-groupgroup").mCustomScrollbar("vertical",400,"easeOutCirc",1.05,"auto","yes","yes",10);
+	     $('.d-carousel .carousel').jcarousel({
+	        scroll: 1,
+	        itemFallbackDimension: 75
+	     }); 	    
+      	 //jQuery("#filter-groupgroup").mCustomScrollbar("vertical",400,"easeOutCirc",1.05,"auto","yes","yes",10);
   		 mCustomScrollbars()
 
      }
@@ -192,27 +167,23 @@ function resetSliderYear() {
  
 }
 
- function  clear_filter(filter){
+ function  clear_filter(filter,clname){
  	if(filter=='group_name'){
- 		$("#group_name").val('');
- 		$('#fb-groups .checkbox').each(function(i, elem) {			    	
-	        $(elem).show();
-	    });
-	    mCustomScrollbars();
-	    return;
- 	}
+	   if(!clname){
+		 $("#group_name").val('');
+	    }
+		$('#fb-groups .checkbox').each(function(i, elem) {			    	
+		    $(elem).show();
+		});
+		mCustomScrollbars();
+		return;
+	}
+	
     if(filter){
         jQuery('input[name="'+filter+'[]"]:checked').attr('checked',false); 
     } else {  
          jQuery('#search-params input').attr('checked',false); 
-    }
-    
-    if(filter=='years'||filter=='price'){
-          var $slider = $("#slider-range-"+filter);
-          $slider.slider('option', 'values', [$slider.slider("option", "min"),$slider.slider("option", "max")]);
-           $( "#amount-"+filter+"0" ).val($slider.slider("option", "min"));
-           $( "#amount-"+filter+"1" ).val($slider.slider("option", "max"));
-     }
+    }        
      sendData(null,null,'<?=$tpl['filter']['price']['min']?>','<?=$tpl['filter']['price']['max']?>','<?=$tpl['filter']['yearstart']?>','<?=date("Y",time())?>');
      return false;
  }
@@ -236,6 +207,9 @@ function mCustomScrollbars(){
 	//console.log(jQuery("#filter-grouptheme_container"));
 	if($("#filter-grouptheme_container")) $("#filter-grouptheme_container").mCustomScrollbar({theme:"dark-thick"});
 	if($(".filter-groupnominal_container_1")) $(".filter-groupnominal_container_1").mCustomScrollbar({theme:"dark-thick"});
+	if($(".filter-groupcondition_container_1")) $(".filter-groupcondition_container_1").mCustomScrollbar({theme:"dark-thick"});
+	if($(".filter-groupyears_p_container_1")) $(".filter-groupyears_p_container_1").mCustomScrollbar({theme:"dark-thick"});
+	
 	//console.log(jQuery(".filter-groupnominal_container_1"));
 	/*$("#mcs2_container").mCustomScrollbar(); 
 	$("#mcs3_container").mCustomScrollbar("vertical",900,"easeOutCirc",1.05,"auto","no","no",0); 

@@ -2,7 +2,9 @@
 <div class="frame-form" style="padding: 0 10px;">
 <h1 class="yell_b">Регистрация</h1>
 
-<? if($tpl['user']['send_status']){?>
+<? if($tpl['user']['already_login']){?>
+	 <div class="error" id="addcall-error">Пользователь зарегистрирован и залогинен</div>
+<?} else if($tpl['user']['send_status']){?>
     <div class="error" id="addcall-error">Пользователь успешно зарегистрирован</div>
 	<script>
 	//обновляем родительский блок элемента чтобы не перегружать страницу	

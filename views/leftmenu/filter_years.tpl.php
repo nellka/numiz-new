@@ -24,14 +24,14 @@ if($tpl['filter']['years']){
     					//подключаем отдельный вид фильтра  ?>		
     					<div class="checkbox">				
     					<input type="checkbox" name="years[]" value="<?=$filter['filter_id']?>" <?=(is_array($years)&&in_array($filter['filter_id'], $years))?"checked":""?> />                        
-    					<a href="<?=$r_url?>?materialtype=<?=$materialtype?><?=$ahref?>&years[]=<?=$filter['filter_id']?>"> <?=$filter['name'];?></a>
+    					<a href="<?=$r_url?>?<?=$ahref?>&years[]=<?=$filter['filter_id']?>"> <?=$filter['name'];?></a>
     					</div>											
     				<?} else {
     					if($i==0){echo "<div class='left yc'>";}
     					?> 
     					<div class="checkbox">           
                         <input type="checkbox" name="years_p[]" value="<?=$filter['filter_id']?>" <?=(is_array($years_p)&&in_array($filter['filter_id'], $years_p))?"checked":""?> />
-    					<a href="<?=$r_url?>?materialtype=<?=$materialtype?><?=$ahref?>&years_p=<?=$filter['filter_id']?>"> <?=$filter['name'];?></a>
+    					<a href="<?=$r_url?>?<?=$ahref?>&years_p=<?=$filter['filter_id']?>"> <?=$filter['name'];?></a>
     					</div>						
     				<?
     					$i++;

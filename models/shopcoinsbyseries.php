@@ -100,8 +100,8 @@ class model_shopcoinsbyseries extends Model_Base {
         if($items_for_page!='all'){
 	        $select->limitPage($page, $items_for_page);
 	    } 
-	    if($orderby) $select->order($orderby); 
-	    
+	    if($orderby) $select->order($orderby);
+		echo "<!--".$select->__toString()."-->";
 	    return $this->db->fetchAll($select);  
 	} 
 	

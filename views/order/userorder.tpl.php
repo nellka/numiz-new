@@ -244,11 +244,11 @@
 					<div id=acsess-error name=acsess-error></div>
 				</div>
 				<br>
-				<div>
+				<div class="order-cart">
 
 					<? if ($userstatus != 2) {
 						if ($sumlimit>=$sumallorder|| $sumlimit== 0) {?>
-							<input type="submit"  class="button25" value='Проверить заказ' style="width:150px" id="CheckFormOrder">
+							<input type="submit"  class="button25" value='Проверить заказ' id="CheckFormOrder">
 						<?} else {?>
 							<div class="error"><b>Внимание!</b> Вы привысили лимит своих невыкупленных заказов по общей сумме.<br>
 								Для выяснения обстоятельств свяжитесь с администрацией по тел. +7-903-006-00-44 или  +7-915-002-22-23. С 10-00 до 18-00 МСК (по рабочим дням).

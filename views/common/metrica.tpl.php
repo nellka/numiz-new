@@ -1,5 +1,5 @@
-<center>
 <noindex>
+<div class="center">
 <? /*
 <!--LiveInternet counter--><script type="text/javascript"><!--
 document.write("<a href='http://www.liveinternet.ru/click' "+
@@ -110,9 +110,10 @@ style="width:88px; height:31px; border:0;" alt="Яндекс.Метрика" tit
         ga('send', 'pageview');
 
     </script>
-</noindex>
+
 <?
 $time_script_end = microtime(true) - $time_script_start;
 echo $time_script_end;
 ?>
-</center>
+</div>
+</noindex>

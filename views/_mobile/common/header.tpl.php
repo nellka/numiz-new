@@ -1,3 +1,4 @@
+<center><a href="<?=$_SERVER['REQUEST_URI']?>" onclick="$.cookie('fv', 1);">Полная версия сайта</a></center>
 <div class="top-menu">        
   <div id="header" class="wraper">
 		<ul class="left cssmenu">
@@ -56,7 +57,7 @@
 <div class="search-top-module" id='searchblock'>   
      <form action="<?=$cfg['site_dir']?>shopcoins/index.php" method=get>         
 			<input type="hidden"  value="4">    
-          	<input type="text" class="search rounded" name=search id=search>
+          	<input type="text" class="search rounded" name=search id=search value="<?=$search?>">
 			<input type="submit" id=globalsearch-submit name="submit" value="">             
     </form>    
 </div>		

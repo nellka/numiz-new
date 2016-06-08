@@ -15,17 +15,17 @@ if ($rows["novelty"]){
 ?>
 <? 
 if($rows["materialtype"]==3){?>
-	<center>	
+	<div class="center">	
 		<a class="borderimage primage"  href='<?=$cfg['site_dir']?>shopcoins/<?=$rows["rehref"]?>' title='<?=$cfg['site_dir']?>/shopcoins<?=$rows['namecoins']?>' >
-			<?=contentHelper::showImage('images/'.$rows["image"],$rows['namecoins'])?>
+			<?=contentHelper::showImage('images/'.$rows["image"],$rows['namecoins'],array('alt'=>contentHelper::getAlt($rows)))?>
 		</a>
 		<a onclick="showWin('<?=$cfg['site_dir']?>shopcoins/?module=shopcoins&task=showsmall&catalog=<?=$rows["shopcoins"]?>&ajax=1',1100);return false;" href='#' style="display:none" class="qwk">Быстрый просмотр</a>
 		
-	</center>
+	</div>
 	
 	
-	<div id='info' class="info_acc">	    	
-    	<a name=coin<?=$rows["shopcoins"]?> title='<?=$rows["name"]?>'></a>
+	<div class="info_acc">	    	
+    	<!--<a name=coin<?=$rows["shopcoins"]?> title='<?=$rows["name"]?>'></a>-->
 	    <p class="ctitle"><?=$rows['namecoins']?></p>
     	<?if ($rows["gname"]){?>
     	<div class="left" style="width: 140px;">Группа:
@@ -40,33 +40,33 @@ if($rows["materialtype"]==3){?>
     	<?=($rows["year"]?"Год:&nbsp;<strong>".$rows["year"]."</strong><br>":"")?>
     </div>
 <? } elseif ($rows["materialtype"]==5){?>
-	<center>
+	<div class="center">
 	<a class="borderimage primage" href='<?=$rows["rehref"]?>' title='Подробнее о книге <?=$rows["name"]?>'>
-		<?=contentHelper::showImage('images/'.$rows["image"],$rows["name"])?>
+		<?=contentHelper::showImage('images/'.$rows["image"],$rows["name"],array('alt'=>contentHelper::getAlt($rows)))?>
 	</a>
 	<a onclick="showWin('<?=$cfg['site_dir']?>shopcoins/?module=shopcoins&task=showsmall&catalog=<?=$rows["shopcoins"]?>&ajax=1',1100);return false;" href='#' style="display:none" class="qwk">Быстрый просмотр</a>
 		
-	</center>
-	<a name=coin<?=$rows["shopcoins"]?> title='<?=$rows["name"]?>'></a><strong><?=$rows["name"]?></strong>
+	</div>
+	<!--<a name=coin<?=$rows["shopcoins"]?> title='<?=$rows["name"]?>'></a><strong><?=$rows["name"]?></strong>-->
 <?}	else {
 
 	$title = contentHelper::setHrefTitle($rows["name"],$rows["materialtype"],$rows['gname']).' - подробная информация';?>
-		<center>
+		<div class="center">
 		<a href='<?=$cfg['site_dir']?>shopcoins/<?=$rows['rehref']?>' title='<?=$title?>' class="borderimage primage">
-			<?=contentHelper::showImage('images/'.$rows["image"],'Подробная информация о '.contentHelper::setWordAbout($rows["materialtype"])." ".$rows["gname"]." ".$rows["name"])?>			
+			<?=contentHelper::showImage('images/'.$rows["image"],'Подробная информация о '.contentHelper::setWordAbout($rows["materialtype"])." ".$rows["gname"]." ".$rows["name"],array('alt'=>contentHelper::getAlt($rows)))?>			
 		</a>
 		
 		<a onclick="showWin('<?=$cfg['site_dir']?>shopcoins/?module=shopcoins&task=showsmall&catalog=<?=$rows["shopcoins"]?>&ajax=1',1100);return false;" href='#' style="display:none" class="qwk">Быстрый просмотр</a>
-		</center>		
+		</div>		
 		
 		<div class="coinname">
-		<a name=coin<?=$rows["shopcoins"]?> title='<?=contentHelper::setHrefTitle($rows["name"],$rows["materialtype"],$rows["gname"])?>'></a>
-		<strong><?=$rows['namecoins']?></strong> 
+		<!--<a name=coin<?=$rows["shopcoins"]?> title='<?=contentHelper::setHrefTitle($rows["name"],$rows["materialtype"],$rows["gname"])?>'></a>-->
+		<h2><?=$rows['namecoins']?></h2> 
 	</div>
 <?}
 
 if($rows["materialtype"]!=3){?>
-<div id='info' class="info_ext">	
+<div class="info_ext">	
 	<div>
 	<?
 	if($rows['year'] == 1990 && $materialtype==12) $rows['year'] = '1990 ЛМД';
@@ -75,7 +75,7 @@ if($rows["materialtype"]!=3){?>
 	
 	if ($rows["gname"]){?>
 	<?=in_array($rows["materialtype"],array(9,3,5))?"Группа":"Страна"?>: 
-	<a class="group_href" href=<?=$cfg['site_dir']?>shopcoins?group=<?=$rows['group']?>&materialtype=<?=$rows["materialtype"]?> title='Посмотреть <?=contentHelper::setWordThat($rows["materialtype"])?> <?=$rows["gname"]?>'>
+	<a class="group_href" href="<?=$cfg['site_dir']?>shopcoins?group=<?=$rows['group']?>&materialtype=<?=$rows["materialtype"]?>" title='Посмотреть <?=contentHelper::setWordThat($rows["materialtype"])?> <?=$rows["gname"]?>'>
 	<?=$rows["gname"]?>
 	</a>
 	<?}?>
@@ -83,7 +83,7 @@ if($rows["materialtype"]!=3){?>
 	<?=trim($rows["metal"])?"<br>Металл: <strong>".$rows["metal"]."</strong>":""?>
 	</div>
 	<div class="left">
-	<?=trim($rows["condition"])?"Состояние: <strong><font color=blue>".$rows["condition"]."</font></strong>":""?>
+	<?=trim($rows["condition"])?"Состояние: <strong><span class='blue'>".$rows["condition"]."</span></strong>":""?>
 	</div>
 	<div class="right">
 	<?=trim($rows["number"])? "Номер: <strong>".$rows["number"]."</strong>":"";?>
@@ -105,7 +105,7 @@ if(($rows['buy_status']==7||$rows['buy_status']==6)&&($minpriceoneclick<=$rows['
 }?>
 
 
-<div id=subinfo class="subinfo">
+<div class="subinfo">
 Название: <strong><?=$rows["name"]?></strong><br>
 <?
 echo ($rows["width"]&&$rows["height"]?"<br>Приблизительный размер: <strong>".$rows["width"]."*".$rows["height"]." мм.</strong>":"")."
@@ -116,7 +116,7 @@ echo ($rows["width"]&&$rows["height"]?"<br>Приблизительный раз
 if($rows['materialtype']==5){
 	if (trim($rows["accessoryProducer"])) echo "<br><b>ISBN: </b>".$rows["accessoryProducer"];
 	if ($rows["accessoryColors"])  echo "<br><b>Год выпуска: </b>".$rows["accessoryColors"];
-	if ($rows["accessorySize"])  echo "<br><b>Количество страниц: <font color=blue>".$rows["accessorySize"]."</font></b>";
+	if ($rows["accessorySize"])  echo "<br><b>Количество страниц: <span class='blue'>".$rows["accessorySize"]."</span></b>";
 } else {
 	if($rows["accessoryProducer"]) echo "<br>Производитель:<strong> ".$rows["accessoryProducer"]."</strong>";
 	if($rows["accessoryColors"]) echo "<br>Цвета:<strong> ".$rows["accessoryColors"]."</strong>";

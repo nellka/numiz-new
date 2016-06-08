@@ -2,9 +2,9 @@
 
 $r_url='';
 if($_SERVER["REDIRECT_URL"]=='/shopcoins/prodaza_banknot_i_bon.html'){
-   $r_url=$cfg['site_dir'].'shopcoins';
+   $r_url=$cfg['site_dir'].'shopcoins/banknoti';
 }
-
+$search_href = $search?"&search=$search":"";
 
 ?>
 <form id='search-params' method="POST" action="<?=$cfg['site_dir']?>shopcoins?<?=$search?"search=$search":"materialtype=$materialtype"?>" style="float:left;">
@@ -23,9 +23,9 @@ if($_SERVER["REDIRECT_URL"]=='/shopcoins/prodaza_banknot_i_bon.html'){
 			<div style="float:left;"><?=$groups_filter['name']?></div>
             <div style="float:left;padding: 0 0 0 40px;">  
              <?if($c_en){?>	
-                <a class="fc" href="#" onclick="$.cookie('c_en',0);location.reload();return false;">RUS</a> | Krauser
+                <a class="fc" href="#" onclick="$.cookie('c_en',0);location.reload();return false;">RUS</a> | Krause
             <?} else {?>
-                RUS | <a class="fc" href="#" onclick="$.cookie('c_en',1);location.reload();return false;">Krauser</a>
+                RUS | <a class="fc" href="#" onclick="$.cookie('c_en',1);location.reload();return false;">Krause</a>
             <?}?>
             </div>    		
 			<div style="float:right;">    			  
@@ -35,10 +35,10 @@ if($_SERVER["REDIRECT_URL"]=='/shopcoins/prodaza_banknot_i_bon.html'){
 
 		<div id='f-details' class="filter-groupdetails_container_<?=(count($filter_groups['group_details'])>5)?1:0?>">		
     		<?foreach ($filter_groups['group_details'] as $group_id=>$group_name){?>
-    			<div class="left" id='clear_filter_group<?=$group_id?>'><a href="#" class="filtr-g-d" onclick="clear_filter_group('<?=$group_id?>');return false;"><?=$group_name?> - X</a></div>     
+    			<div class="left" id='clear_filter_group<?=$group_id.$search_href?>'><a href="#" class="filtr-g-d" onclick="clear_filter_group('<?=$group_id?>');return false;"><?=$group_name?> - X</a></div>     
     		<?}?>
 		</div>
-		<input type="text" value="" id='group_name' placeholder='Название страны' name="group_name" size="30">
+		<input type="text" value="" id='group_name' placeholder='Введите название страны' name="group_name" size="30">
 
 		<ul class="filter_heading_ul">
 			<div id="filter-groupgroup_container" class="filter-groupgroup_container_<?=(count($filter_group['filter'])>13)?1:0?>">
@@ -48,10 +48,10 @@ if($_SERVER["REDIRECT_URL"]=='/shopcoins/prodaza_banknot_i_bon.html'){
 						<?php            
 						 if (is_array($groups)&&in_array($filter['filter_id'], $groups)) { ?>
 							<input type="checkbox" name="groups[]" value="<?=$filter['filter_id']?>" checked="checked" onclick="addToFilterDetails('<?=$filter['filter_id']?>','<?=$filter['name'];?>')" />
-					   <a href="<?=$r_url?>?materialtype=<?=$materialtype?>&group=<?=$filter['filter_id']?>"> <?=$filter['name'];?></a>
+					   <a href="<?=$r_url?>?group=<?=$filter['filter_id'].$search_href?>"> <?=$filter['name'];?></a>
 						<?php } else { ?>
 							<input type="checkbox" name="groups[]" value="<?=$filter['filter_id']?>" onclick="addToFilterDetails('<?=$filter['filter_id']?>','<?=$filter['name'];?>')" />
-					       <a href="<?=$r_url?>?materialtype=<?=$materialtype?>&group=<?=$filter['filter_id']?>"> <?=$filter['name'];?></a>
+					       <a href="<?=$r_url?>?group=<?=$filter['filter_id'].$search_href?>"> <?=$filter['name'];?></a>
 						  <?}?>
 					</div>
 				    <?php
@@ -62,10 +62,10 @@ if($_SERVER["REDIRECT_URL"]=='/shopcoins/prodaza_banknot_i_bon.html'){
 								<?php             
 								if (is_array($groups)&&in_array($filter_child['filter_id'], $groups)) { ?>
 								    <input type="checkbox" name="groups[]" value="<?=$filter_child['filter_id']?>" checked="checked" onclick="addToFilterDetails('<?=$filter['filter_id']?>','<?=$filter_child['name'];?>')" />
-								    <a href="<?=$r_url?>?materialtype=<?=$materialtype?>&group=<?=$filter_child['filter_id']?>"> <?=$filter_child['name'];?></a>
+								    <a href="<?=$r_url?>?group=<?=$filter_child['filter_id'].$search_href?>"> <?=$filter_child['name'];?></a>
 								<?php } else { ?>
 								    <input type="checkbox" name="groups[]" value="<?php echo $filter_child['filter_id']; ?>" onclick="addToFilterDetails('<?=$filter['filter_id']?>','<?=$filter_child['name'];?>')" />
-								    <a href="<?=$r_url?>?materialtype=<?=$materialtype?>&group=<?=$filter_child['filter_id']?>"> <?=$filter_child['name'];?></a>
+								    <a href="<?=$r_url?>?group=<?=$filter_child['filter_id'].$search_href?>"> <?=$filter_child['name'];?></a>
 								<?php } ?>
 							</div>
 							<?php     

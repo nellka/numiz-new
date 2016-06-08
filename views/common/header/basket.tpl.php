@@ -1,16 +1,16 @@
 <div class="basket-mini">
     <div class="basket-img">
     	<a href="<?=$cfg['site_dir']?>index.php?page=orderdetails">
-            <img src="<?=$cfg['site_dir']?>images/cart.png" border=0 alt="Показать корзину">
+            <img src="<?=$cfg['site_dir']?>images/cart.png" alt="Показать корзину">
         </a>
      </div>	
      <div class="caption">
         <p> <? if($tpl['user']['product_amount']){?>     
-        	<a href="<?=$cfg['site_dir']?>shopcoins/index.php?page=orderdetails" title="Показать корзину"><font color="Black">Корзина покупок</font>
+        	<a href="<?=$cfg['site_dir']?>shopcoins/index.php?page=orderdetails" title="Показать корзину"><span class="black">Корзина покупок</span>
         	   <span id='basket-order'><?=($shopcoinsorder&&$tpl['user']['product_amount'])?" № ".$shopcoinsorder:''?></span>
         	</a>
         	<?} else {?>
-        	    <font color="Black"><b>Корзина покупок</b></font><span id='basket-order'></span>
+        	    <span class="black"><b>Корзина покупок</b></span><span id='basket-order'></span>
         	<?}?>
 
          </p>
@@ -35,4 +35,3 @@
         <?}?>   	
     </div>
 </div>		
-<div id=MainBascet></div>

@@ -35,5 +35,7 @@ if($tpl['shop']['errors']){?>
 	        if($(this).find(".qwk")) $(this).find(".qwk").hide();
 	    }
 	});
+	
+	showInvis('searchblock');
 });
 </script>

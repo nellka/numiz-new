@@ -58,6 +58,29 @@ class mails
 		//$this->mail->send();
 	}
 	
+	public function viporderLetter($dataUser,$mytext){
+	    //письмо о заказе
+		$this->mail->addTo($dataUser['email'], $dataUser['userlogin']);
+		//$this->mail->addTo('bodka@mail.ru', 'bodka@mail.ru');
+		// $mail->setBodyText('My Nice Test Text');
+		$this->mail->setSubject("Заявка на монету в каталоге. Монетная лавка.");
+
+		$html = $this->createFullHtml($mytext);
+
+		$this->mail->setBodyHtml($html);
+		$this->mail->send();	
+		
+	}
+	
+	public function subscriptionLetter($email,$subject,$mytext){	    
+		$this->mail->addTo($email, $email);		
+		$this->mail->setSubject($subject);
+		$html = $this->createFullHtml($mytext);
+		$this->mail->setBodyHtml($html);
+		$this->mail->send();	
+		
+	}
+	
 	//формирование письма "забыли пароль"
 	public function forgetPwdLetter($dataUser){
 		$this->mail->addTo($dataUser['email'], $dataUser['userlogin']);	

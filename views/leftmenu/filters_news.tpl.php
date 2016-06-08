@@ -1,8 +1,9 @@
 <?if(isset($tpl['filter'])){?>
 
-<form id='search-news' method="POST" action="<?=$cfg['site_dir']?>news">
+<form id='search-news' method="POST" action="<?=$r_url?>">
+<input type="hidden" id='onpage' name="onpage" value="<?=$tpl['onpage']?>">
 <?
-    $ahref = $cfg['site_dir'].'news'.($text?"&text=$text":'');
+    $ahref = $r_url.($text?"&text=$text":'');
     
     $ahref_years =$ahref;
     foreach ((array)$years as $group){
@@ -39,7 +40,7 @@
 			</div>
 		</div>
         <?if($filter_group['filter_group_id']=='sp'){?>
-            <input type="text" value="<?=$text?>" id='text'  placeholder='Слово для поиска' name="text" size="30">
+            <input type="text" value="<?=$text?>" id='text'  placeholder='Слово для поиска новости' name="text" size="30">
         		<a class="right button25" onclick="$('#search-news').submit();return false" href="#" style="min-width: 25px;">OK</a>
         <?}
 
@@ -54,9 +55,9 @@
 
 		<?*/}//
 		?>
-		<!--class="filter-group<?=$filter_group['filter_group_id']?>_container_<?=(count($filter_group['filter'])>13)?1:0?>"-->
+		<!--class="filter-group<?=$filter_group['filter_group_id']?>_container_<?=(count($filter_group['filter'])>13)?1:0?>"  style=" height: auto;"-->
 		<ul class="filter_heading_ul">
-			<div id="filter-group<?=$filter_group['filter_group_id']?>_container" style=" height: auto;">			
+			<div id="filter-group<?=$filter_group['filter_group_id']?>_container">			
 			<?php 
 			foreach ($filter_group['filter'] as $filter) {?>            
 				<div class="checkbox">
@@ -72,10 +73,11 @@
 			<?php				
 			}?>  
 			</div>
+			
 		</ul> 
-		  <?if($filter_group['filter_group_id']=='group'){?> 
-		      <div style="text-align:center;padding: 10px 0 0;">    	
-    			    <a class="fc" id='group-full-show' href="#" onclick="full_filter('<?=$filter_group['filter_group_id_full']?>');return false;"></a></div>    		
+		  <?if($filter_group['filter_group_id']=='years'){?> 
+		      <div class="center">    	
+    			    <a class="fc" id='years-full-show' href="#" onclick="full_filter_years(1);return false;"></a></div>    		
     	   <?}?>
 		</div>
 	<?php 	
@@ -179,73 +181,35 @@ function mCustomScrollbars(){
 		}
 
 
+*/
 
-
-		function full_filter(name,auto,hide,setcook) {
-
-			var cookiefull = 0;
-			if($.cookie(name+'-full-show')){
-				var cookiefull = $.cookie(name+'-full-show');
-			}
-
-			if(auto){
-				//console.log(".filter-group"+name+"_container_1");
-				// console.log(name);
-				//  console.log(name);
-				if(!$(".filter-group"+name+"_container_1").length) {
-					$("#"+name+"-full-show").text("");
-					return;
-				}
-				// console.log(name+','+$(".filter-group"+name+"_container_1").height());
-				// console.log(name+','+$(".filter-group"+name+"_container_1 .mCSB_container").height());
-				if($(".filter-group"+name+"_container_1").height()>$(".filter-group"+name+"_container_1 .mCSB_container").height()){
-					$("#"+name+"-full-show").text("");
-					return;
-				}
-				//console.log(name);
-				if(cookiefull>0){
-
-					$(".filter-group"+name+"_container_1").height("auto");
-					$("#"+name+"-full-show").attr("onClick","full_filter('"+name+"',false,1,1);return false;");
-					$("#"+name+"-full-show").text("Свернуть");
-
-					//$("#"+name+"-full-show-top").attr("onClick","full_filter('"+name+"',false,1,1);return false;");
-					// $("#"+name+"-full-show-top").text("Свернуть");
-
-				} else {
-
-					// $(".filter-group"+name+"_container_1").height("290px");
-					$("#"+name+"-full-show").attr("onClick","full_filter('"+name+"',false,0,1);return false;");
-					$("#"+name+"-full-show").text("Развернуть");
-
-					//$("#"+name+"-full-show-top").attr("onClick","full_filter('"+name+"',false,0,1);return false;");
-					// $("#"+name+"-full-show-top").text("Развернуть");
-				}
+		function full_filter_years(click) {
+		    name = 'years';
+			if(click){
+			     if($('#filter-groupyears_container').height()==55){
+			        $("#filter-groupyears_container").height("auto");
+    				$("#"+name+"-full-show").text("Свернуть");
+    			} else {			    	   
+    				$("#"+name+"-full-show").text("Развернуть");
+    				$("#filter-groupyears_container").height("55");
+    			}
+    			
 			} else {
-				if(!hide){
-					$(".filter-group"+name+"_container_1").height("auto");
-					if(setcook) $.cookie(name+'-full-show', 1);
-					$("#"+name+"-full-show").attr("onClick","full_filter('"+name+"',false,1,1);return false;");
-					$("#"+name+"-full-show").text("Свернуть");
-				} else {
-					$(".filter-group"+name+"_container_1").removeAttr('style');
-					if(setcook)  $.cookie(name+'-full-show', 0);
-					$("#"+name+"-full-show").attr("onClick","full_filter('"+name+"',false,0,1);return false;");
-					$("#"+name+"-full-show").text("Развернуть");
-					$('html, body').animate({
-						scrollTop: $("#search-params").offset().top
-					}, 1000);
-				}
+			    if($('#filter-groupyears_container').height()==55){			  
+    				$("#"+name+"-full-show").text("Развернуть");
+    			} else {			    	   
+    				$("#"+name+"-full-show").text("Свернуть");
+    			}
 			}
-			//$(".filter-groupnominal_container").mCustomScrollbar("update");
-
-		}*/
+		}
 
 		$(function(){
             $('#search-news input').bind('change',function(){
                 $(".bg_shadow").show();
                 $('#search-news').submit();				
             });
+            
+            full_filter_years();
 		});
 	</script>
 

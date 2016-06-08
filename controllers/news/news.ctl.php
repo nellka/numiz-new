@@ -41,55 +41,28 @@ elseif($theme) {
 	$themes =  array($theme);
 }
 
-  /*
-  $text = '';
-  $title = '';
-  $date = date('d/m/Y');
-  $source_type = 1;
-  $source_link = '';
-  $author = '';
-  $author_email = '';
-  $mode = 'add';
-  $shopcoins = '';
+$addhref = ($text?"&text=".$text:"");
 
-  $groups = array();
-  $themes = array();
-
-
-if(isset($_GET['edit']) AND !empty($_GET['edit'])){
-  $id = $_GET['edit'];
-
-
-  $sql = "select * from news LEFT JOIN newsshopcoinsrelation on newsshopcoinsrelation.news = news.news WHERE news.news = ". $id;
-  $result = mysql_query($sql);
-  $news = mysql_fetch_all($result);
-
-  if(count($news) < 1) die('Нет новости с таким id');
-  foreach ($news as $key => $value) {
-    if($value['group'])
-        $groups[] = $value['group'];
-    if($value['theme'])
-        $themes[] = $value['theme']; 
-  }
-
-  //print_r($groups); die();
-
-  $text = $news[0]['text'];
-  $title = $news[0]['name'];
-  $date = date('d/m/Y', $news[0]['date']);
-  $source_type = $news[0]['typesource'];
-  $source_link = $news[0]['source'];
-  $author = $news[0]['author'];
-  $author_email = $news[0]['email'];
-  $shopcoins = $news[0]['shopcoins'];
-  $mode = 'edit';
-
-}   */
+foreach ((array)$groups as $g){
+    $addhref .="&groups[]=$g";
+}
+foreach ((array)$themes as $th){
+    $addhref .="&themes[]=$th";
+}
+foreach ((array)$years as $y){
+    $addhref .="&years[]=$y";
+}
            
 if ($sp) $sp_s[] = $sp;
 
 foreach ($sp_s as $key){
     if(!isset($tpl['filters']['search'][$key])) unset($sp_s[$key]);
+}
+
+if($sp_s!=array(1,2,3)){
+    foreach ((array)$sp_s as $s){
+        $addhref .="&tsp_s[]=$s";
+    }
 }
 
 if(empty($sp_s))   $sp_s = array(1,2,3);
@@ -153,6 +126,12 @@ $tpl['news']['data'] = $news_class->getItemsByParams($WhereParams,$tpl['pagenum'
 
 foreach ($tpl['news']['data'] as $key=>$rows){
     $tpl['news']['data'][$key]['img'] = $news_class->getImg($rows['news']);
+    if(!$tpl['news']['data'][$key]['img']){       
+        preg_match('#(<img\s(?>(?!src=)[^>])*?src=")(.*?)("[^>]*>)#',$rows['text'],$res);
+	    $tpl['news']['data'][$key]['img'] = $res[2];
+    }
+    
+    
     $news_text = mb_substr($rows['text'], 0, 350,'utf-8');
 
     while(substr_count($news_text,"<<<"))
@@ -164,8 +143,10 @@ foreach ($tpl['news']['data'] as $key=>$rows){
     $tpl['news']['data'][$key]['namehref'] = contentHelper::strtolower_ru($rows["name"])."_n".$rows["news"].".html";
 }
 
+if($addhref) $addhref = substr($addhref,1); 
+
 $tpl['paginator'] = new Paginator(array(
-    'url'        => $cfg['site_dir'].'/news/',
+    'url'        => $r_url.($addhref?("?".$addhref):""),
     'count'      => $countpubs,
     'per_page'   => ($tpl['onpage']=='all')?$countpubs:$tpl['onpage'],
     'page'       => $tpl['pagenum'],

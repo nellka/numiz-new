@@ -14,9 +14,6 @@ if(contentHelper::get_encoding($search)=='windows-1251'){
 	$search = iconv( "CP1251//TRANSLIT//IGNORE","UTF8", $search);
 }
 
-if($tpl['user']['user_id']==352480){
-   var_dump($search);
-}
 
 $searchArray = explode(' ',$search);
 
@@ -69,19 +66,28 @@ foreach ($words as $word){
     
     if($d&&$d[0]){
         $numbers[] = $word;
+        $strings[] = $word;
         continue;
     }   
     
     $strings[]= $word;   
 }
 
-//var_dump($search);
-$sortname = request('sortname');
-
 $tpl['pager']['sorts'] = array('dateinsert'=>'новизне',                     
                       'price'=>'по цене',
                       'year'=>'году');
 $tpl['pager']['itemsOnpage'] = array(12=>12,24=>24,48=>48);
+
+$orderby_param = '';
+if(request('orderby')){
+    $tpl['orderby'] = request('orderby');  
+    $orderby_param = '&orderby='.  $tpl['orderby'];
+}	
+
+
+//if(!isset($tpl['orderby']))	$tpl['orderby'] = "yeardesc";
+
+$tpl['pagenum'] = request('pagenum')?request('pagenum'):1;
 
 if(request('onpage')){
     $tpl['onpage'] = request('onpage');
@@ -89,18 +95,8 @@ if(request('onpage')){
     $tpl['onpage'] = 24;
 }	
 
+
 //setcookie('onpage', $tpl['onpage'],  time()+ 86400 * 90,'/',$cfg['domain']);
-
-//сохраняем сортировку элементов на странице в куке
-if(request('orderby')){
-    $tpl['orderby'] = request('orderby');
-} elseif (isset($_COOKIE['orderby'])){
-    $tpl['orderby'] =$_COOKIE['orderby'];
-}	
-if(!isset($tpl['orderby']))	$tpl['orderby'] = "dateinsertdesc";
-setcookie('orderby', $tpl['orderby'],  time()+ 86400 * 90,'/',$cfg['domain']);
-
-$tpl['pagenum'] = request('pagenum')?request('pagenum'):1;
 
 $mycoins = 0;
 $ourcoinsorder = Array();
@@ -148,6 +144,10 @@ $result_temp_name = array();
 $result_temp_metal = array();
 $result_temp_condition = array();
 $result_temp_details = array();
+
+if($tpl['user']['user_id']==352480){
+  // var_dump($digits,$strings,$numbers);
+}
 
 if (sizeof($digits)) {  
     $result_temp_name = $shopcoins_class->searchInTable('shopcoins_search_name',$digits);   
@@ -277,36 +277,56 @@ if($result_temp_name){
 }
 
 $OrderByArray = Array();
+if(!request('orderby')){    
+    $OrderByArray[] = "(coefficientcoins+coefficientgroup+coefficientnominal+coefficientyear+coefficientmetal+coefficientcondition) desc, coefficientgroup desc, coefficientcoins desc ";  
+    if (sizeof($OrderByArray))	$orderby = "order by s.`check` asc,".implode(",",$OrderByArray);
+} else {    
+    if ($tpl['orderby']=="dateinsertdesc"){
+    	$OrderByArray[] = "s.dateinsert desc";
+    	$OrderByArray[] = "s.price desc";
+    } elseif ($tpl['orderby']=="dateinsertasc"){
+    	$OrderByArray[] = " s.dateinsert asc";
+    	$OrderByArray[] = "s.price desc";
+    } elseif ($tpl['orderby']=="priceasc"){
+    	$OrderByArray[] = "s.price asc";
+    	$OrderByArray[] = "s.dateinsert desc ";
+    } elseif ($tpl['orderby']=="pricedesc"){
+    	$OrderByArray[] = "s.price desc";
+    	$OrderByArray[] = "s.dateinsert desc";
+    } elseif ($tpl['orderby']=="yearasc"){
+    	$OrderByArray[] = "s.year asc";
+    	$OrderByArray[] ="s.dateinsert desc";
+    } elseif ($tpl['orderby']=="yeardesc"){
+    	$OrderByArray[] = "s.year desc";
+    	$OrderByArray[] = "s.dateinsert desc ";
+    } elseif($materialtype==12){
+    	$OrderByArray[] = "s.year desc";
+    	$OrderByArray[] = "s.name desc ";
+    } 
+    
+    $OrderByArray[] = "s.price desc";
+    
+    if (sizeof($OrderByArray)){
+    	$orderby = "order by s.`check` asc,".implode(",",$OrderByArray);    
+    }
+	
+}
 
-/*
-if (sizeof($WhereThemesearch) || sizeof($SearchTempDigit))
-	$OrderByArray[] = " (coefficientcoins+counterthemeyear+coefficientgroup+coefficientnominal) desc, counterthemeyear desc, (coefficientcoins+coefficientgroup) desc, coefficientgroup desc, coefficientcoins desc  ";
-else
-	$OrderByArray[] = " (coefficientcoins+coefficientgroup) desc, coefficientgroup desc, coefficientcoins desc ";*/
-
-$OrderByArray[] = "(coefficientcoins+coefficientgroup+coefficientnominal+coefficientyear+coefficientmetal+coefficientcondition) desc, coefficientgroup desc, coefficientcoins desc ";
-
-if (sizeof($OrderByArray))
-	$orderby = "order by s.`check` asc,".implode(",",$OrderByArray);
 
 $positive_amount = '';
 
 
-/*$whereMaterialtype  = $materialtype?"and  shopcoins.materialtype=$materialtype or shopcoins.materialtypecross & pow(2,$materialtype)":'';*/
-$whereMaterialtype  ='';
-
 if($tpl['user']['user_id']==811){
-    $where = " where s.check>0 $whereMaterialtype ".($WhereArray?" and ($WhereArray)":"");
+    $where = " where s.check>0 ".($WhereArray?" and ($WhereArray)":"");
 } else {
-    $where = " where s.check=1 $whereMaterialtype ".($WhereArray?" and ($WhereArray)":"");
+    $where = " where s.check=1 ".($WhereArray?" and ($WhereArray)":"");
 }
-//echo $where;
+
 
 $sql_all = "select count(s.shopcoins) from shopcoins_search as s $where ".$positive_amount;
 
 if($tpl['user']['user_id']==352480){
-echo $sql_all;
-echo "<br><br>";
+//var_dump($WhereArray,$where,$sql_all);
 }
 
 $countpubs = $shopcoins_class->countByParams($sql_all);
@@ -316,9 +336,12 @@ if($countpubs<($tpl['pagenum']-1)*$tpl['onpage']) $tpl['pagenum']=1;
 //var_dump($countpubs );
 //echo "<br><br>";
 $sql = "select s.*, group.name as gname, group.groupparent ".($CounterSQL?",".$CounterSQL:"")." from shopcoins_search as s, `group` 
-$where ".$positive_amount."and s.group=group.group and s.group<>790 $orderby limit ".($tpl['pagenum']-1)*$tpl['onpage'].",".$tpl['onpage'];
+$where ".$positive_amount."and s.group=group.group  $orderby limit ".($tpl['pagenum']-1)*$tpl['onpage'].",".$tpl['onpage'];
+//s.group<>"790"
+$addhref = "?search=".$search."&pagenum=".$tpl['pagenum'];
 
-$addhref = ($materialtype?"&materialtype=$materialtype":"")."&search=".$search."&pagenum=".$tpl['pagenum'];
+$base_url = $cfg['site_dir']."shopcoins/index.php?search=".$search;
+
 if($tpl['user']['user_id']==352480){
     echo $sql;
     echo "<br><br>";
@@ -328,7 +351,7 @@ $data = $shopcoins_class->getDataSql($sql);
 
 if($addhref) $addhref = substr($addhref,1);  
 $tpl['paginator'] = new Paginator(array(
-        'url'        => $cfg['site_dir']."shopcoins/index.php?".$addhref,
+        'url'        => $cfg['site_dir']."shopcoins/index.php?search=".$search.$orderby_param,
         'count'      => $countpubs,
         'per_page'   => $tpl['onpage'],
         'page'       => $tpl['pagenum'],

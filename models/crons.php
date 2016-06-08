@@ -35,7 +35,7 @@ class crons {
         $this->db->query("TRUNCATE shopcoins_search_group;");
         
         $sql = "insert into shopcoins_search_group 
-        SELECT DISTINCT `group`.`group`, `group`.name, `group`.groupparent 
+        SELECT DISTINCT `group`.`group`, `group`.name, `group`.name_en,`group`.groupparent 
         FROM `group`, shopcoins_search WHERE shopcoins_search.`group` = `group`.`group`;";
         $this->db->query($sql);         
         
@@ -48,6 +48,48 @@ class crons {
         $this->db->query($sql);  
 	}
 	
+	function getLastSubscribesystem(){
+        $select = $this->db->select()
+		               ->from('subscribesystem')
+		               ->order('date desc')
+		               ->limit(1);
+    	return $this->db->fetchRow($select);       
+    }
+    
+	public function getRowSql($sql){
+    	return $this->db->fetchRow($sql);
+    }
+    
+    public function getDataSql($sql){
+    	return $this->db->fetchAll($sql);
+    }
+    
+    public function saveMailDb($recipient, $subject, $SendMessage, $headers)
+	{
+	    $data = array('dateinsert' => time()+600, 
+	                  'email'      => $recipient,
+	                  'subject'    => $subject,
+	                  'message'    => $SendMessage, 
+	                  'headers'    => $headers,
+	                  'priority'   => 5,
+	                  'datesend'   =>0,
+	                  'is_new_send_method'=>1);		
+	    $this->db->insert('shopcoinssender',$data);
+		return true;
+	}
+	
+	public function addSubscribesystem($newsdate,$tboarddate,$blacklistdate,$buycoinsdate,$bibliodate,$advertisedate)
+	{
+	    $data = array('date'       => time(), 
+	                  'news'      => $newsdate,
+	                  'tboard'    => $tboarddate,
+	                  'blacklist'    => $blacklistdate, 
+	                  'buycoins'    => $buycoinsdate,
+	                  'biblio'   => $bibliodate,
+	                  'advertise'   =>$advertisedate);		
+	    $this->db->insert('subscribesystem',$data);
+		return true;
+	}	
 	
 	/*
     function unlockTable(){        
@@ -55,11 +97,7 @@ class crons {
     }
     
 	//получаем количество всех записей
-    function countAll(){
-        $select = $this->db->select()
-		               ->from($this->table,array('count(*)'));
-    	return $this->db->fetchOne($select);       
-    }
+    
     public function getTableName() {
         return $this->table;
     }
@@ -107,12 +145,7 @@ class crons {
 	public function updateTableRow($table,$data,$where){
 		$this->db->update($table,$data,$where);
 	}
-    public function getRowSql($sql){
-    	return $this->db->fetchRow($sql);
-    }
-    public function getDataSql($sql){
-    	return $this->db->fetchAll($sql);
-    }
+   
     public function getRow($table,$params=array()){
         $select = $this->db->select()
 		               ->from($table);

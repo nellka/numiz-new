@@ -21,7 +21,7 @@ if ($rows["novelty"]){
 <?}	else {
 	   $title = contentHelper::setHrefTitle($rows["name"],$rows["materialtype"],$rows['gname']).' - подробная информация';?>
        <a href='<?=$rows['rehref']?>' title='<?=$title?>' class="primage">		
-			<?=contentHelper::showImage('images/'.$rows["image"],'Подробная информация о '.contentHelper::setWordAbout($rows["materialtype"])." ".$rows["gname"]." ".$rows["name"])?>			
+			<?=contentHelper::showImage('images/'.$rows["image"],'Подробная информация о '.contentHelper::setWordAbout($rows["materialtype"])." ".$rows["gname"]." ".$rows["name"],array('alt'=>contentHelper::getAlt($rows)))?>			
 		</a>		
 <?}?>
 
@@ -30,9 +30,9 @@ if ($rows["novelty"]){
 
 <div class="info_block">
     <? if($rows["materialtype"]==3){?>
-     <a name=coin<?=$rows["shopcoins"]?> title='<?=$rows["name"]?>'></a><strong><?=$rows['namecoins']?></strong>
+     <a name=coin<?=$rows["shopcoins"]?> title='<?=$rows["name"]?>'></a><h2><?=$rows['namecoins']?></h2>
     <? } elseif ($rows["materialtype"]==5){?>
-     <a name=coin<?=$rows["shopcoins"]?> title='<?=$rows["name"]?>'></a><strong><?=$rows["name"]?></strong>
+     <a name=coin<?=$rows["shopcoins"]?> title='<?=$rows["name"]?>'></a><h2><?=$rows["name"]?></h2>
     <?} else {?>
     <a name=coin<?=$rows["shopcoins"]?> title='<?=contentHelper::setHrefTitle($rows["name"],$rows["materialtype"],$rows["gname"])?>'></a>
     <?}?>

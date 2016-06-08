@@ -7,6 +7,27 @@ $tpl['breadcrumbs'][] = array(
 );
 $tpl['current_page'] = '/';
 
+if($tpl['module']=='user'&&$tpl['task']=='registration'){    
+   
+    $tpl['breadcrumbs'][] = array(
+    	'text' => 'Регистрация',
+    	'href' => '',
+    	'base_href' =>''
+    );
+        
+    $tpl['current_page'] = '';
+}
+
+if($tpl['module']=='news'){
+
+	$tpl['breadcrumbs'][] = array(
+		'text' => 'Новости',
+		'href' => '',
+		'base_href' =>''
+	);
+
+	$tpl['current_page'] = '';
+}
 
 if ($tpl['module']=='shopcoins'&&$tpl['task']=='series'){
       $tpl['breadcrumbs'][] = array(

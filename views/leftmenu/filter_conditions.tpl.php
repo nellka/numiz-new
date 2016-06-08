@@ -1,5 +1,6 @@
 <?if ($tpl['filter']['conditions']) {
     $style = '';
+    
     if(isset($tpl['filter']['theme'])) $style .="s_t";
     if(isset($tpl['filter']['metals'])&&$groups) $style .="m";
     ?>
@@ -22,7 +23,7 @@
 				foreach ($tpl['filter']['conditions']['filter'] as $filter) {?>            
 					<div class="checkbox">
                         <input type="checkbox" name="conditions[]" value="<?=$filter['filter_id']?>" <?=(is_array($conditions)&&in_array($filter['filter_id'], $conditions))?"checked":""?>/>
-					       <a href="<?=$r_url?>?materialtype=<?=$materialtype?><?=$ahref?>&conditions=<?=$filter['filter_id']?>"> <?=$filter['name'];?></a>
+					       <a href="<?=$r_url?>?<?=$ahref?>&conditions=<?=$filter['filter_id']?>"> <?=$filter['name'];?></a>
 					</div>
 				<?}?>        
     		</div>

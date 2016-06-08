@@ -176,7 +176,7 @@ if($tpl['user']['user_id']==352480){
 
 if(!in_array($materialtype,array(5))){
      $gl_prefix = $c_en?'_en':'';
-	 if(!$groups_filter = $cache->load("groups_$cache_prefix".$gl_prefix)) {  
+	 //if(!$groups_filter = $cache->load("groups_$cache_prefix".$gl_prefix)) {  
 	    $Group = array();
 		foreach ($tpl['filters']['All_groups'] as $rows) {			
 			$Group[] = $rows["group"];
@@ -207,8 +207,8 @@ if(!in_array($materialtype,array(5))){
 		    	                                          'name'      => $v);   
 		    	    }
 		    	}
-		    	//выносим Россию вверх	
-	    		$childen_data_group[($value["group"]==407?0:$i)] = array('filter_id' => $value["group"],
+		    	//выносим Россию вверх в русском списке	
+	    		$childen_data_group[(($value["group"]==407&&!$c_en)?0:$i)] = array('filter_id' => $value["group"],
 	    	                             'name'      => $value["name".$gl_prefix],
 	    	                             'child'     =>$sub_childen_data_group); 
 	    	    $i++;	 
@@ -223,7 +223,7 @@ if(!in_array($materialtype,array(5))){
 		}
 		
 		$cache->save($groups_filter, "groups_$cache_prefix".$gl_prefix);		
-	}
+	//}
 	if($groups_filter) $filter_groups[] = $groups_filter;
 }
 
@@ -288,4 +288,7 @@ foreach ((array)$groups as $group){
 	
 }
 
+if($tpl['user']['user_id']==352480){
+	//echo "<br>".time()." f end $i<br>";
+}
 ?>

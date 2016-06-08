@@ -1,4 +1,5 @@
 <?
+header("Access-Control-Allow-Origin:*");
 require $cfg['path'] . '/configs/config_shopcoins.php';
 require_once $cfg['path'] . '/models/shopcoinsdetails.php';
 
@@ -57,6 +58,7 @@ foreach ($words as $word){
     
     if($d&&$d[0]){
         $numbers[] = $word;
+        $strings[] = $word;
         continue;
     }   
     
@@ -285,10 +287,10 @@ $where = " where s.check=1 $whereMaterialtype ".($WhereArray?" and ($WhereArray)
 //echo $where;
 
 $sql = "select s.*, group.name as gname, group.groupparent ".($CounterSQL?",".$CounterSQL:"")." from shopcoins_search as s, `group` 
-$where ".$positive_amount."and s.group=group.group and s.group<>790 $orderby limit 5";
-
+$where ".$positive_amount."and s.group=group.group $orderby limit 5";
+//->where('s.group<>"790"')
 if($tpl['user']['user_id']==352480){
- echo $sql."<br><br>";
+ //echo $sql."<br><br>";
 }
 
 $data = $shopcoins_class->getDataSql($sql);
@@ -351,7 +353,7 @@ foreach ($tpl['shop']['MyShowArray'] as &$row){
     $currval['image'] = contentHelper::showImage("smallimages/".$row["image_small"],'');
     $currval['id'] = $row['shopcoins'];   
     $data_href = contentHelper::getRegHref($row);
-    $currval['href'] = 'shopcoins/'.$data_href['rehref'];
+    $currval['href'] = $cfg['site_dir'].'shopcoins/'.$data_href['rehref'];
     array_push($data, $currval);
 }
 $currval = array();

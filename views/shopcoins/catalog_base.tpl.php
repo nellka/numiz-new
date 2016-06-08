@@ -62,8 +62,13 @@ $filter_layaut =  contentHelper::render('leftmenu/filters',array('filter_groups'
       </script>
      
  <?}*/
+?>
+<div>
+  <h1 class='catalog'><?=$GroupName?></h1>
+  <?include('onpage.tpl.php');?>
+</div>
 
-include('onpage.tpl.php');
+<?
 include('nav_catalog.tpl.php');
 
 if($tpl['shop']['errors']){?>
@@ -178,7 +183,7 @@ if ($tpl['shop']['OtherMaterialData']) {	?>
 <br class="clear:both">
 <?}?>
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
 
  jQuery(document).ready(function() {    
      	$(".blockshop").on("hover", function(e) {

@@ -1,4 +1,4 @@
-<div id=prices class='center'>
+<div class='center'>
 <?
 	$price_text_old = ($rows["materialtype"]==8||$rows["materialtype"]==6)?"":"";
 	$price_text_new = ($rows["materialtype"]==8||$rows["materialtype"]==6)?"":"";

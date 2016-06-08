@@ -17,7 +17,7 @@ $ahref .= $ahref_groups;
 		<?php 
 		foreach ($tpl['filter']['nominals']['filter'] as $filter) {?>            
 			<div class="checkbox">
-				   <input type="checkbox" name="nominals[]" value="<?=$filter['filter_id']?>" <?=(is_array($nominals)&&in_array($filter['filter_id'], $nominals))?"checked":""?> /> <a href="<?=$r_url?>?materialtype=<?=$materialtype?><?=$ahref?>&nominal=<?=$filter['filter_id']?>"> <?=$filter['name'];?></a>						
+				   <input type="checkbox" name="nominals[]" value="<?=$filter['filter_id']?>" <?=(is_array($nominals)&&in_array($filter['filter_id'], $nominals))?"checked":""?> /> <a href="<?=$r_url?>?<?=$ahref?>&nominal=<?=$filter['filter_id']?>"> <?=$filter['name'];?></a>						
 			</div>
 		 <?}?> 							
 		</div>

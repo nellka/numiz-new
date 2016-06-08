@@ -1,5 +1,5 @@
 <div style="margin-top:25px;">
-<div id='item-top-menu' style='float: left; position: relative; height: 40px; z-index: 2000;overflow: hidden;'>
+<div id='item-top-menu' class="iten-top">
 <div class="menu-heading" onclick="showShopcoinsMenu();return false">
 	<a style="color:#ffffff;text-decoration:none;" href="#s" onclick="return false">
 		<span style="padding-left:17px;">Разделы магазина</span>

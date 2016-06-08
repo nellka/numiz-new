@@ -22,7 +22,7 @@ if($tpl['shop']['errors']){?>
 
 </div>
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
 
  jQuery(document).ready(function() {    
  	$(".blockshop").on("hover", function(e) {

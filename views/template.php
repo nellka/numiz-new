@@ -164,7 +164,7 @@ $(document).ready(function() {
     });    
       
     $('#header-mini #search').autocomplete({
-      source: 'shopcoins/index.php?search=1',
+      source: '<?=$cfg['site_dir']?>shopcoins/index.php?search=1',
       minLength:3,
       select: function (event, ui) {
             window.location = ui.item.href;
@@ -174,7 +174,6 @@ $(document).ready(function() {
 			ga("send", "event", "page", "shortsearch");
 		}
     }).data( "autocomplete" )._renderItem = function( ul, item ) {
-
         return $( "<li class='search-ayax'></li>" )
             .data( "item.autocomplete", item )
             .append( "<a href='"+item.href+"'>" + item.image+ " <span> " + item.label+ "</span></a>" )
@@ -182,7 +181,7 @@ $(document).ready(function() {
     };
 
     $('#header #search').autocomplete({
-      source: 'shopcoins/index.php?search=1',
+      source: '<?=$cfg['site_dir']?>shopcoins/index.php?search=1',
       minLength:3,
       select: function (event, ui) {
             window.location = ui.item.href;
@@ -192,6 +191,7 @@ $(document).ready(function() {
 			ga("send", "event", "page", "shortsearch");
 		}
     }).data( "autocomplete" )._renderItem = function( ul, item ) {
+    	console.log(item.href);
         return $( "<li class='search-ayax'></li>" )
             .data( "item.autocomplete", item )
             .append( "<a href='"+item.href+"'>" + item.image+ " <span> " + item.label+ "</span></a>" )

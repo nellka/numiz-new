@@ -4,6 +4,14 @@
 
 .filter-groupgroup_container_1{height:290px;}
 
+#search-news #filter-groupyears_container {
+    height: 55px;
+    overflow: hidden;
+}
+
+#search-news #filter-grouptheme_container{
+ height: auto;
+}
 
 #filter-groupgroup_container .customScrollBox{position:relative; height:100%; overflow:hidden;float:left;}
 #filter-groupgroup_container .customScrollBox .container{position:relative; width:230px; top:10px; float:left;}

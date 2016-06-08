@@ -24,7 +24,7 @@
 				foreach ($tpl['filter']['metals']['filter'] as $filter) {?>            
 					<div class="checkbox">
 	                    <input type="checkbox" name="metals[]" value="<?=$filter['filter_id']?>" <?=(is_array($metals)&&in_array($filter['filter_id'], $metals))?"checked":""?>/>
-					       <a href="<?=$r_url?>?materialtype=<?=$materialtype?><?=$ahref?>&metal=<?=$filter['filter_id']?>"> <?=$filter['name'];?></a>
+					       <a href="<?=$r_url?>?<?=$ahref?>&metal=<?=$filter['filter_id']?>"> <?=$filter['name'];?></a>
 					</div>
 				<?}?>        
 			</div>   

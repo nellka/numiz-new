@@ -40,12 +40,10 @@ $(document).ready(function() {
       source: 'shopcoins/index.php?search=1',
       minLength:3,
       select: function (event, ui) {
-          console.log(ui.item);
             window.location = ui.item.href;
             return ui.item.label;
         }
     }).data( "autocomplete" )._renderItem = function( ul, item ) {
-         console.log(item);
         return $( "<li class='search-ayax'></li>" )
             .data( "item.autocomplete", item )
             .append( "<a href='"+item.href+"'>" + item.image+ " <span> " + item.label+ "</span></a>" )
@@ -100,6 +98,15 @@ $(document).ready(function() {
 		$input.change();
 		return false;
 	});
+	
+	$("#fb-groups #group_name").keyup(function(){
+        var vl = $(this).val();
+        if (vl.length >= 3) {
+            fgroup();                 
+        } else {            
+            clear_filter('group_name',1);
+        }
+    });
 });
 </script>
 

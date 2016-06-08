@@ -8,6 +8,7 @@ if($tpl['show']['error']['no_coins']){?>
 </div>
 
 <? if(!$tpl['show']['error']['no_coins']){?>
+<noindex>
 <div class="wraper clearfix info_coins">
 	<div style="display: inline-block;width:400px;">
 		<div id=allreviews style="vertical-align:top;width:400px;margin-top:20px;overflow:hidden;height:500px;">
@@ -65,6 +66,7 @@ if($tpl['show']['error']['no_coins']){?>
 	
 	</div>
 </div>
+</noindex>
 <?
 }
 
@@ -407,9 +409,8 @@ echo "</center><br >";
 
 //отзывы
 ?>
+<noindex>
 <div class="wraper clearfix" style="clear: both;">
-
-
 <div style="float:left;width:980px;border:1px solid #cccccc;margin-top:50px;padding:20px;">
 	<div style="float:left;width:45%;padding:10px;">
 		<h5  style="margin-top:0px;">Доставка:</h5>
@@ -549,5 +550,6 @@ echo "</center><br >";
 	</div>
 </div>
 </div>
+</noindex>
 <?
 }?>

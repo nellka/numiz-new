@@ -12,23 +12,23 @@ if ($rows["novelty"]){?>
 <?
 if($rows["materialtype"]==3){?>
 		<a class="borderimage"  href='<?=$cfg['site_dir']?>shopcoins/<?=$rows["rehref"]?>' title='<?=$cfg['site_dir']?>/shopcoins<?=$rows['namecoins']?>' >
-			<?=contentHelper::showImage('images/'.$rows["image"],$rows['namecoins'])?>
+			<?=contentHelper::showImage('images/'.$rows["image"],$rows['namecoins'],array('alt'=>contentHelper::getAlt($rows)))?>
 		</a>
 
 <? } elseif ($rows["materialtype"]==5){?>
 	<a class="borderimage" href='<?=$rows["rehref"]?>' title='Подробнее о книге <?=$rows["name"]?>'>
-		<?=contentHelper::showImage('images/'.$rows["image"],$rows["name"])?>
+		<?=contentHelper::showImage('images/'.$rows["image"],$rows["name"],array('alt'=>contentHelper::getAlt($rows)))?>
 	</a>	
 <?}	else {
 
 	$title = contentHelper::setHrefTitle($rows["name"],$rows["materialtype"],$rows['gname']).' - подробная информация';?>
 		<a href='<?=$cfg['site_dir']?>shopcoins/<?=$rows['rehref']?>' title='<?=$title?>' class="borderimage">
-			<?=contentHelper::showImage('images/'.$rows["image"],'Подробная информация о '.contentHelper::setWordAbout($rows["materialtype"])." ".$rows["gname"]." ".$rows["name"])?>			
+			<?=contentHelper::showImage('images/'.$rows["image"],'Подробная информация о '.contentHelper::setWordAbout($rows["materialtype"])." ".$rows["gname"]." ".$rows["name"],array('alt'=>contentHelper::getAlt($rows)))?>			
 		</a>
 	
 <?}?>
 	
-<div id='info'>
+<div class='info'>
 	<a title='<?=contentHelper::setHrefTitle($rows["name"],$rows["materialtype"],$rows["gname"])?>'><?=$rows['name']?></a>
 	
 	<?
@@ -38,14 +38,14 @@ if($rows["materialtype"]==3){?>
 	
 	if ($rows["gname"]){?>
 	<?=in_array($rows["materialtype"],array(9,3,5))?"Группа":"Страна"?>: <?=$rows["gname"]?>
-	</a><br>
+	<br>
 	<?}
 	if($rows["year"]){
 	?>
 	Год:&nbsp;<strong><?=$rows["year"]?></strong><br>
 	<?}?>
 	Металл: <strong><?=$rows["metal"]?></strong><br>
-	Состояние: <strong><font color=blue><?=$rows["condition"]?></font></strong>
+	Состояние: <strong><span class='blue'><?=$rows["condition"]?></span></strong>
 
 </div>
 

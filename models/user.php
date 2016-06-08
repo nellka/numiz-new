@@ -169,6 +169,11 @@ class model_user extends Model_Base
 	 public function getIdentity(){
 	     return $this->user_id;
 	 }
+	 
+	 public function setIdentity($user_id){
+	     return $this->user_id = $user_id;
+	 }
+	 
 	  public function getUsername(){
 	     return $this->username;
 	 }

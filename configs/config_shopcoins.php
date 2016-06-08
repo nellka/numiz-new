@@ -4,6 +4,19 @@ $bigsumcoupondis = 5;
 $smallsumcoupon = 2000;
 $smallsumcoupondis = 3;
 
+$materialsRule = array('moneti'=>1,
+                       'nabori_monet'=>7,
+                       'meloch'=>8,
+                       'cvetnie_moneti'=>6,
+                       'banknoti'=>2,
+                       'aksessuary'=>3,
+                       'podarochnye_nabory'=>4,
+                       'baraholka'=>11,
+                       'loty_dlya_nachinayushchih'=>9,
+                       'notgeldy'=>10,
+                       'moneti_sssr'=>12,
+                       'knigi'=>5);
+
 //обязательно добавить в config на сервере
 $MetroArray = Array (
 				1 => "Новослободская", 

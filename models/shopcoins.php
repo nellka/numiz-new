@@ -57,30 +57,39 @@ class model_shopcoins extends Model_Base
 	}
 		
 	public function showedWith($id,$rows99){
+		$rows99['details'] = '';
 		$select  =  $this->db->select()
                   ->from('shopcoins_details',array('details'))                  
                   ->where('catalog=?',$rows99['shopcoins']);
-		$rows99['details'] = $this->db->fetchOne($select);;
-        
+		$details = $this->db->fetchOne($select);
+		if($details){
+			$rows99['details'] = $details;
+			$rows99['details'] = str_replace('\\', '',$rows99['details'] );
+		}
         $select = $this->db->select()
-	                      ->from('shopcoins',array('*',
-                                    'pgroup'=>"if(shopcoins.group=".$rows99['group'].",10,0)",
-                                    'pname' =>"if(shopcoins.name='".$rows99['name']."',2,0)",
-                                    'pmetal_id'=>"if(shopcoins.metal_id='".$rows99['metal_id']."',3,0)",
-                                    'pyear' =>"if(abs(shopcoins.year-".intval($rows99['year']).")<=10,4,0)",
+	                      ->from(array('s'=>'shopcoins'),array('*',
+                                    'pgroup'=>"if(s.group=".$rows99['group'].",10,0)",
+                                    'pname' =>"if(s.nominal_id='".$rows99['nominal_id']."',2,0)",
+                                    'pmetal_id'=>"if(s.metal_id='".$rows99['metal_id']."',3,0)",
+                                    'pyear' =>"if(abs(s.year-".intval($rows99['year']).")<=10,4,0)",
                                     'pdetails'=>"if((shopcoins_details.details='".$rows99['details']."' and trim(shopcoins_details.details)<>''),1,0)",
-                                    "ptheme"=>"if(shopcoins.theme & ".$rows99['theme'].",1,0)", 
-                                    "pmaterialtype"=>"if(shopcoins.materialtype='".$rows99['materialtype']."',2,0)",
-                                    "concat(shopcoins.name,shopcoins.group)"))
-	                      ->join(array('group'),'shopcoins.group=group.group',array('gname'=>'group.name'))
-	                      ->join(array('shopcoins_details'),'shopcoins.shopcoins=shopcoins_details.catalog')
-	                      ->where("shopcoins.check=1 and shopcoins.shopcoins<>?",$id)
-	                      ->where("shopcoins.parent<>?",$rows99['parent'])
-	                      ->where("shopcoins.price>=?",intval($rows99['price']/3))
-	                      ->where("shopcoins.price<=?",intval($rows99['price']*3))
-	                      ->group('shopcoins.parent')
+                                    "ptheme"=>"if(s.theme & ".$rows99['theme'].",1,0)",
+                                    "pmaterialtype"=>"if(s.materialtype='".$rows99['materialtype']."',2,0)",
+                                    //"concat(s.name,s.group)"
+						  ))
+	                      ->join(array('group'),'s.group=group.group',array('gname'=>'group.name'))
+	                      ->join(array('shopcoins_details'),'s.shopcoins=shopcoins_details.catalog')
+	                      ->where("s.check=1 and s.shopcoins<>?",$id)
+	                      ->where("s.parent<>?",$rows99['parent'])
+	                      ->where("s.price>=?",intval($rows99['price']/3))
+	                      ->where("s.price<=?",intval($rows99['price']*3))
+	                      ->group('s.parent')
 	                      ->order('(pgroup+pname+pyear++pmetal_id+pdetails+ptheme+pmaterialtype) desc')
-	                      ->limit(3);  	
+	                      ->limit(3);
+		if($this->user_id==352480){
+			//var_dump($rows99);
+			//echo $select->__toString();
+		}
 	   return $this->db->fetchAll($select);
 	}
 	public function is_already_described($coin_id){
@@ -476,7 +485,7 @@ class model_shopcoins extends Model_Base
     	        $select->where("$alias.materialtype=? ",$this->materialtype); 
     	   }
 		}
-		$select->where("$alias.group<>790"); 
+		//$select->where("$alias.group<>790"); 
 		return $select;
     }
 
@@ -868,7 +877,8 @@ class model_shopcoins extends Model_Base
 	   if($this->mycoins) {
 	       $select = $this->db->select()
 	                      ->from(array('s'=>'mycoins'),array('group'=>'distinct(`group`)'))
-	                      ->where('s.dateinsert>0 and s.group<>"790"')
+	                      ->where('s.dateinsert>0')
+	                     // ->where('s.group<>"790"')
 			              ->where("s.user=?",$this->user_id)
 	                       ->order('group desc');
 
@@ -926,6 +936,13 @@ class model_shopcoins extends Model_Base
 	   }  
 	    
 	   return  $select;    
+	}
+	
+	public function getNominal($id){
+		$select = $this->db->select()
+	                      ->from('shopcoins_name',array('name'))	                    
+	                      ->where("id =?",$id);
+		return  $this->db->fetchOne($select);
 	}
 	
 	public function getNominals($groups=array()){
@@ -1381,10 +1398,10 @@ class model_shopcoins extends Model_Base
  	 	             ->from(array('g'=>'shopcoins_search_group'),array('distinct(g.name)','g.group','g.groupparent'));  
 
  		if($SearchTempStr){
- 			$select->where("g.name like '%".implode("%' or g.name like '%",$SearchTempStr)."%'");
+ 			$select->where("(g.name like '%".implode("%' or g.name like '%",$SearchTempStr)."%') or (g.name_en like '%".implode("%' or g.name_en like '%",$SearchTempStr)."%')");
  		}
  		if($this->user_id==352480){
-        	echo $select->__toString();
+        	//echo $select->__toString();
         }
  		//echo $select->__toString();
  		//$this->db->query("SET names 'utf8'");
@@ -1398,7 +1415,7 @@ class model_shopcoins extends Model_Base
  			$select->where("name like '%".implode("%' or name like '%",$SearchTempStr)."%'");
  		} 	
  		if($this->user_id==352480){
-        	echo $select->__toString();
+        	//echo $select->__toString();
         }
  		$ids = array();	
  		foreach ($this->db->fetchAll($select) as $row){
@@ -1414,7 +1431,7 @@ class model_shopcoins extends Model_Base
  			$select->where("name like '%".implode("%' or name like '%",$SearchTempStr)."%'");
  		} 	
 		if($this->user_id==352480){
-        	echo $select->__toString();
+        	//echo $select->__toString();
         }
  		$data = array();
  		foreach ($this->db->fetchAll($select) as $row){
@@ -1658,7 +1675,8 @@ class model_shopcoins extends Model_Base
     	       $select = $this->db->select()
     	                      ->from(array('s'=>'mycoins'),array('group'=>'distinct(s.group)'))
     	                      ->join(array('group'),'s.group=group.group',array('gname'=>'group.name'))                    
-    	                      ->where('s.dateinsert>0 and s.group<>"790"')
+    	                      ->where('s.dateinsert>0')
+    	                      //->where('s.group<>"790"')
 				              ->where("s.user=?",$this->user_id)
     	                       ->order('group.name asc');	   	   		
     	   } else {
