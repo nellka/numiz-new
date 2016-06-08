@@ -4,6 +4,12 @@ $bigsumcoupondis = 5;
 $smallsumcoupon = 2000;
 $smallsumcoupondis = 3;
 
+$byDates = array(0 => "За все время",
+                 1 => "За последний 1 день",
+                 2 => "За последние 2 дня",
+                 3 => "За последние 3 дня",
+                 7 => "За последние 7 дней");
+
 $materialsRule = array('moneti'=>1,
                        'nabori_monet'=>7,
                        'meloch'=>8,
