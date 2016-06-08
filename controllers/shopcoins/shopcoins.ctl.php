@@ -13,6 +13,10 @@ $details_class = new model_shopcoins_details($cfg['db']);
 $mycoins = 0;
 $arraykeyword = array();
 
+$bydate = $tpl['user']['user_id']?(int)request('bydate'):0;
+
+if(!isset($byDates[$bydate])) $bydate = 0;
+
 if(isset($_REQUEST['mycoins_php'])){
     $mycoins = 1;
 } else $mycoins = request('mycoins');
@@ -372,8 +376,7 @@ if($coinssearch) $WhereParams['coinssearch'] = $coinssearch;
 if($nominal_data)  $WhereParams['nominals'] = $nominal_data;
 if($series_data)  $WhereParams['series'] = $series_data;
 if($catalognewstr) $WhereParams['catalognewstr'] = $catalognewstr;
-
-
+if($bydate&&$tpl['user']['user_id']) $WhereParams['bydate'] = $bydate;
 
 if(contentHelper::get_encoding($searchname)=='windows-1251'){
 	$searchname = iconv( "CP1251//TRANSLIT//IGNORE","UTF8", $searchname);	
@@ -412,7 +415,8 @@ $addhref = ($yearstart?"&yearstart=".$yearstart:"").
 ($group?"&group=$group":"").
 ($theme?"&theme=".$theme:"").
 ($condition?"&condition=".$condition:"").
-($nocheck?"&nocheck=".$nocheck:"")
+($nocheck?"&nocheck=".$nocheck:"").
+($bydate?"&bydate=".$bydate:"")
 .($searchname?"&searchname=".urlencode($searchname):"");
 
 
@@ -462,7 +466,7 @@ if($addhref) $addhref = substr($addhref,1);
 setcookie("lhref", $cfg['site_dir']."shopcoins/index.php?".$addhref.(($tpl['pagenum']>1)?'&pagenum='.$tpl['pagenum']:''), time() + 3600, "/");
 
 $tpl['paginator'] = new Paginator(array(
-        'url'        => $cfg['site_dir'].substr($_SERVER["SCRIPT_URL"],1).($addhref?("?".$addhref):""),
+        'url'        => $cfg['site_dir'].substr($_SERVER["SCRIPT_NAME"],1).($addhref?("?".$addhref):""),
         'count'      => $countpubs,
         'per_page'   => ($tpl['onpage']=='all')?$countpubs:$tpl['onpage'],
         'page'       => $tpl['pagenum'],
@@ -600,6 +604,8 @@ if($tpl['user']['user_id']==352480){
 $ArrayParent = Array();
 $tpl['shop']['MyShowArray'] = Array();
 $tpl['shop']['ArrayParent'] = Array();
+$tpl['shop']['ArrayShopcoins'] = $itemsShopcoins = Array();
+
 $tpl['shop']['items'] = Array();
 if($data){
 	foreach ($data as $rows){
