@@ -21,7 +21,7 @@
      +7-903-006-00-44 (Москва)<br>
      +7-812-925-53-22 (Санкт-Петербург)
      </p>
-     <a id="showcalllink" rel='showcalllink' class="button24" onclick="showWin('<?=$cfg['site_dir']?>addcall.php?ajax=1',500);return false;" href="#">Заказать обратный звонок</a>   
+     <a id="showcalllink" class="button24" onclick="showWin('<?=$cfg['site_dir']?>addcall.php?ajax=1',500);return false;" href="#">Заказать обратный звонок</a>   
     </div>
     <div class="search-top-module">   
          <form action="<?=$cfg['site_dir']?>shopcoins/index.php" method=get id='globalsearch-form'>          

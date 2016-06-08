@@ -288,7 +288,4 @@ foreach ((array)$groups as $group){
 	
 }
 
-if($tpl['user']['user_id']==352480){
-	//echo "<br>".time()." f end $i<br>";
-}
 ?>

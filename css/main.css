@@ -6,6 +6,9 @@ body {
 	font-family:Arial,Tahoma, sans-serif;		
 	/* 'Roboto',*/
 }
+.content {
+    position: relative;
+}
 .container{
 background: #ffffff;
 }
@@ -13,10 +16,13 @@ background: #ffffff;
 float:left;
 text-align: left;
 }
-
+.blue{color:blue;}
+.black{color:black;}
 a.reservedinfo{
     color: #666666;
 }
+
+img { border: 0; }
 
 input.error, .web-form input.error, textarea.error{
     border: 2px solid red;
@@ -25,7 +31,15 @@ select.error {
     border: 2px solid red;
     color:black;
 }
-
+#subheader-body .coinname h2,.search-div h2 {
+    font-size: 12px;
+    margin: 0;
+}
+h1.catalog{
+    float: left;
+    font-size: 22px;
+    margin: 0;
+}
 .right{
 float:right;
 }
@@ -66,7 +80,7 @@ float:right;
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: 211;
+    z-index: 2011;
 }
 
 /*.clearfix:before,
@@ -643,6 +657,19 @@ padding: 0 0 5px 0;
 width:100%;
 }
 
+#registration_form {
+    /*margin: 0 auto;*/
+    max-width: 450px;    
+}
+
+#registration_form .web-form {
+    clear: none;
+    display: inline-block;
+    margin-bottom: 0;
+
+}
+
+
 
 #registration_form  .web-form input{width: 180px;}
 .web-form {margin-bottom:10px;}
@@ -695,7 +722,7 @@ width: 175px;
 }
 
 #registration_form .frame-form form{
-    line-height: 40px;
+    line-height: 30px;
 }
 .remember_pwd {
     float: right;
@@ -733,10 +760,15 @@ float:right;
 text-align:left;
 padding: 10px 0 0;
 }
+
 #basket .caption span{
-    color: #247bbd;
+   /* color: #247bbd;*/
     font-weight: bold;
 }
+#inordersum{
+color: #247bbd;
+}
+
 .triger{
  background:#eeeeee none repeat scroll 0 0;
 }
@@ -846,6 +878,7 @@ leftmenu
     -webkit-box-shadow: 0 8px 6px -6px #ccc;
     -moz-box-shadow: 0 8px 6px -6px #ccc;
     box-shadow: 0 8px 6px -6px #ccc;
+    z-index:10;
 }
 
 .menu-sidebar ul {
@@ -1206,6 +1239,7 @@ a.button24:active { background: linear-gradient(#f59500, #f5ae00) #f59500; }
     min-width: 90px;
     cursor: pointer;
 }
+
 .button7,.button7:hover {
     color:red;
     background: #f1aeae none repeat scroll 0 0;
@@ -1222,7 +1256,19 @@ a.button24:active { background: linear-gradient(#f59500, #f5ae00) #f59500; }
     background: #b9b5b4 none repeat scroll 0 0;
 }
 
-.button25:hover {  color: white; cursor:pointer;}
+/*.button25:hover {  color: white; }*/
+
+
+.order-cart .button25 {
+    padding: 8px;
+    width: 200px;
+}
+
+.button25:hover {
+ background: #ecb34e;
+ color:black;
+ cursor:pointer;
+}
 
 .button26 { background: #999999 none repeat scroll 0 0;}
 .button26:hover { background: #eee none repeat scroll 0 0;}
@@ -1342,7 +1388,7 @@ a.button24:active { background: linear-gradient(#f59500, #f5ae00) #f59500; }
     z-index: 1;
 }
 
-.submenu .itemmenu #info{
+.submenu .itemmenu .info{
 	padding: 5px 0;
 }
 .submenu .itemmenu .new, .submenu .itemmenu .new_red{
@@ -2254,3 +2300,114 @@ padding: 5px 0;
     max-height: 122px;
     max-width: 200px;
 }
+
+
+.item-top,.item-top-smenu{
+float: left; 
+position: relative; 
+height: 40px;
+z-index: 200;
+overflow: hidden;
+}
+
+.item-top-smenu{
+ height: 32px; 
+ margin: 0 20px 0 0;  
+}
+.paginator{
+    margin: 0px; padding: 0px; line-height: 40px;
+}
+.page_n{
+    padding-right:3px;padding-left:3px;
+}
+/*news*/
+.news-cls .blockshop{
+    margin: 4px 0 4px 4px;
+    width: 235px;
+    height: 327px;
+}
+
+.news-cls .blockshop-full{
+    padding: 10px;
+    width: 215px;
+    min-height: 320px;
+}
+.news-cls h1 {
+    font-size: 22px;
+    margin: 0 0 10px;
+}
+.news-cls div.coinname {
+    height: auto;
+    overflow: hidden;
+    padding: 10px 0px;
+    text-align: justify;
+}
+.gray{
+    color:gray;
+}
+
+.news-cls div.subinfo {
+    height: 140px;
+    margin: 10px 0;
+    overflow: hidden;
+    text-align: justify;
+}
+.news-cls .onpage {
+    text-align: right;
+    margin: 0 0 5px;
+}
+.news-cls .pager{
+    padding: 5px 10px;
+}
+.news-cls .paginator{
+    line-height: 15px;
+    margin: 0;
+    padding: 0 0 0;
+}
+
+.news-img img{
+max-width:300px
+}
+.news-img img.img_hover{
+max-width:1000px
+}
+
+
+.news-img {
+    float: left;
+    padding: 10px;
+}
+/*
+.news-img:last-of-type{
+float: none
+}
+*/
+.news-one {
+    border: 1px solid #ccc;
+    padding: 15px;
+}
+.news-one .sep {
+    display: table;
+    width: 500px;
+}
+
+#content-news .box-heading {
+    display: block;
+    float: none;
+    height: 32px;
+    margin: 10px 0 0;
+    padding: 0;
+    width: 280px;
+}
+#content-news input[type=text] {
+width:200px;
+}
+
+#content-news .box-heading .left {
+    padding: 0 17px;
+}
+
+#content-news .box-heading .right {
+    padding: 0 10px 0 0;
+}
+/*end news*/

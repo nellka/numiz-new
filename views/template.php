@@ -1,10 +1,11 @@
 <?php include $cfg['path'] . '/views/common/header/head.tpl.php'; ?>
 <div class="bg_shadow"></div>
+
 <div id="page" class="container">
     <?php include $cfg['path'] . '/views/common/header.tpl.php'; ?>   
    
         
-    <div class="clearfix" id='content-<?=$tpl['module']?>'>
+    <div class="clearfix content" id='content-<?=$tpl['module']?>'>
         <?php     
 
         if($tpl['module']=='shopcoins'||$tpl['module']=='order'){
@@ -30,7 +31,16 @@
 				</div> 
 		    </div>         
        <? }
-       }  else if($static_page){?>
+       }  else if($static_page&&in_array($tpl['module'],array('pokupka_monet_v_magazine'))){?>
+			<div class="clearfix">  
+			     <?php
+                if(file_exists($cfg['path'] . '/views/pagetop/'.$tpl['task'].'.tpl.php')){
+			         include $cfg['path'] . '/views/pagetop/'.$tpl['task'].'.tpl.php'; 
+                } else include $cfg['path'] . '/views/pagetop/top.tpl.php'; 
+                ?>
+			    </div> 
+			<? include $cfg['path'] . '/views/static_pages/' . $tpl['module'] . '.tpl.php'; ?>		        
+       <? } else if($static_page){?>
 			 <div class="subheader">
 			<div class="wraper clearfix">
 			        <div id='leftmemu'>
@@ -42,11 +52,33 @@
 			        </div>
 			    </div> 
 		    </div>         
-       <? } else {   ?>  
+       <?} else if($tpl['module']=='user'){?>
+			 <div class="subheader">
+			<div class="wraper clearfix">
+			        <div id='leftmemu'>
+			         <?php include $cfg['path'] . '/views/leftmenu/leftmenu_index.tpl.php'; ?>
+			        </div>
+			        <div id='subheader-body'>
+			            <?php include $cfg['path'] . '/views/common/breadcrumb.tpl.php';  
+			            require($cfg['path'] . '/views/' . $tpl['module'] . '.tpl.php'); ?>            
+			        </div>
+			    </div> 
+		    </div>         
+       <? } else if($tpl['module']=='news') {   ?>
+			<div class="wraper clearfix">
+				<div id='leftmemu'>
+					<?php include $cfg['path'] . '/views/leftmenu/leftmenu_news.tpl.php'; ?>
+				</div>
+				<div id='subheader-body'>
+					<?php include $cfg['path'] . '/views/common/breadcrumb.tpl.php';
+					require($cfg['path'] . '/views/' . $tpl['module'] . '.tpl.php'); ?>
+				</div>
+			</div>
+		<?}        else {   ?>
         	  <div class="subheader">
 		       <div class="wraper clearfix">
 		            <div id='leftmemu'>
-		             <?php include $cfg['path'] . '/views/leftmenu/leftmenu_'.$tpl['module'].'.tpl.php'; ?>
+		             <?php include $cfg['path'] . '/views/leftmenu/leftmenu_index.tpl.php'; ?>
 		            </div>
 		            <div id='subheader-body'>
 		                <?php include $cfg['path'] . '/views/common/breadcrumb.tpl.php'; ?> 
@@ -57,9 +89,11 @@
 		            </div>
 		        </div>
 		    </div>
-    <?     
-            include $cfg['path'] . '/views/' . $tpl['module'] . '.tpl.php';             
-        }        
+		    <div class="wraper clearfix">
+             <?     
+            include $cfg['path'] . '/views/' . $tpl['module'] . '.tpl.php'; ?>
+            </div>            
+        <?}        
         ?> 
     </div>       
     
@@ -76,12 +110,13 @@
     </span>
     </a>
 </div>   
-<link rel="stylesheet" type="text/css" href="<?=$cfg['site_dir']?>css/jqueryui.custom.min.css" media="screen" />
-<link href="<?=$cfg['site_dir']?>css/jquery.mCustomScrollbar.css" rel="stylesheet" type= "text/css"/>
+</div> 
+<link rel="stylesheet" type="text/css" href="<?=$cfg['site_dir']?>css/jqueryui.custom.min.css" media="screen"  property=''/>
+<link rel="stylesheet" type= "text/css" href="<?=$cfg['site_dir']?>css/jquery.mCustomScrollbar.css" media='all' property=''/>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type= "text/javascript"></script>
 <?
-if(!in_array($tpl["task"],array('login_order','registration','login','remind'))){
+if(!in_array($tpl["task"],array('login_order','login','remind'))){
 ?>
 <script src="<?=$cfg['site_dir']?>js/jquery.cookie.min.js"></script>
 <script src= "<?=$cfg['site_dir']?>js/jquery.mousewheel.min.js" type= "text/javascript"></script> 
@@ -98,8 +133,6 @@ if( $tpl['is_mobile']){?>
 <script type="text/javascript">
 
 $(document).ready(function() {
-	console.log(5);
-	
     $('body').on("click", ".ui-widget-overlay", function() {
           $(".ui-icon.ui-icon-closethick").trigger("click");
     }); 

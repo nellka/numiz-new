@@ -1,26 +1,55 @@
 <?
-require('Zend/Db.php');
-require('Zend/Registry.php');
+require_once('Zend/Db.php');
 
-Abstract Class Model_Base {
+class crons {
  
     protected $db;
-    protected $table;
-    private $dataResult;
-    protected  $cache;
+  
     function __construct($db){
         $db['driver_options']  = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES "utf8"');
 		$this->db = Zend_Db::factory('PDO_MYSQL', $db);
-	 	$this->db->query("SET names 'utf8'");
-	 	$modelName = get_class($this);
-	 	
-	 	$this->cache = Zend_Registry::get('cache');
-        
-        $arrExp = explode('_', $modelName);
-        $tableName = strtolower($arrExp[1]);
-        $this->table = $tableName;        
+	 	$this->db->query("SET names 'utf8'");	 	
 	}   
 	
+	public function dropMycoinsTable(){
+	     $sql = "delete from `mycoins`";
+	     $this->db->query($sql);  
+	}
+	
+	public function createTempTable(){
+	    $this->db->query("TRUNCATE shopcoins_search;");
+               
+        $sql = "INSERT INTO  `shopcoins_search` 
+        SELECT shopcoins, price,  `group` , YEAR, dateinsert,  `check` , number, materialtype, parent, materialtypecross, nominal_id, metal_id, condition_id,amount,amountparent,datereprice,dateinsert,theme,novelty 
+        FROM  `shopcoins` WHERE (`check` =1 OR  `check` >=4);";
+        $this->db->query($sql);        
+        
+        $this->db->query("TRUNCATE shopcoins_search_name;");
+        
+        $sql = "INSERT INTO `shopcoins_search_name` 
+        SELECT DISTINCT id, name 
+        FROM shopcoins_name, shopcoins_search 
+        WHERE shopcoins_search.nominal_id = shopcoins_name.id;";
+        $this->db->query($sql);  
+        
+        $this->db->query("TRUNCATE shopcoins_search_group;");
+        
+        $sql = "insert into shopcoins_search_group 
+        SELECT DISTINCT `group`.`group`, `group`.name, `group`.groupparent 
+        FROM `group`, shopcoins_search WHERE shopcoins_search.`group` = `group`.`group`;";
+        $this->db->query($sql);         
+        
+        $this->db->query("TRUNCATE shopcoins_search_details;");
+        
+        $sql = "INSERT INTO shopcoins_search_details
+        SELECT catalog, details 
+        FROM shopcoins_details, shopcoins_search 
+        WHERE shopcoins_search.shopcoins = shopcoins_details.catalog;";
+        $this->db->query($sql);  
+	}
+	
+	
+	/*
     function unlockTable(){        
     	$this->db->getConnection()->exec('UNLOCK TABLES;');   
     }
@@ -37,11 +66,6 @@ Abstract Class Model_Base {
    
     public function addNewRecord($inserarray) {
 		$this->db->insert($this->table,$inserarray);         
-        return $this->db->lastInsertId($this->table);
-    }
-    
-    public function insertNewRecord($table,$inserarray) {
-		$this->db->insert($table,$inserarray);         
         return $this->db->lastInsertId($this->table);
     }
     
@@ -76,16 +100,7 @@ Abstract Class Model_Base {
 		}             
     	return $this->db->fetchAll($select);       
     }
-    
-    /*public function countAllByParams($params=array()){
-        $select = $this->db->select()
-		               ->from($this->table,array('count(*)'));
-		foreach ($params as $key=>$value) {
-		    $select->where("$key=?",$value) ;
-		}             
-    	return $this->db->fetchOne($select);       
-    }*/
-    
+      
     public function updateRow($data,$where){
         $this->db->update($this->table,$data,$where);
     }
