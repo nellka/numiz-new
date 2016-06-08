@@ -17,7 +17,12 @@ $search_href = $search?"&search=$search":"";
 <input type="hidden" id='yearstart' name='yearstart' value='<?=$yearstart?>'>
 <input type="hidden" id='yearend' name='yearend' value='<?=$yearend?>'>
 <input type="hidden" id='mycoins' name='mycoins' value='<?=$mycoins?>'>
-<?if(isset($groups_filter)&&$groups_filter){?>		
+<input type="hidden" id='bydate' name='bydate' value='<?=$bydate?>'>
+<?
+
+if($tpl['user']['user_id']) include("filter_bydates.tpl.php");
+
+if(isset($groups_filter)&&$groups_filter){?>
     <div class="filter-block" id='fb-groups'>
 		<div class="filter_heading">
 			<div style="float:left;"><?=$groups_filter['name']?></div>
