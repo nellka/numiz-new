@@ -1,6 +1,9 @@
 <?
 header('Content-type: text/html; charset=utf-8');
+
 try {
+
+
     session_start();
     require dirname(__FILE__) . '/config.php';        
     $time_script_start = microtime(true);
@@ -100,6 +103,8 @@ try {
     //if($tpl['user']['user_id']==352480){
         var_dump($e->getMessage());
     //}
+    $sql = "show variables like '%char%';";
+var_dump($shopcoins_class->getDataSql($sql));
 	 die('Извините, произошла ошибка!');
    // die( $e->getMessage() . ' ' .
        //  $e->getTraceAsString() );

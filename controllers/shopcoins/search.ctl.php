@@ -6,7 +6,8 @@ require $cfg['path'] . '/configs/config_shopcoins.php';
 require_once $cfg['path'] . '/models/shopcoinsdetails.php';
 $details_class = new model_shopcoins_details($cfg['db']);
 
-//$serach_class = new search($cfg['db'],$tpl['user']['user_id'],$nocheck);
+require_once $cfg['path'] . '/models/stats.php';
+$stats_class = new stats($cfg['db'],$tpl['user']['user_id'],session_id());
  
 $search = request('search');
 
@@ -14,6 +15,7 @@ if(contentHelper::get_encoding($search)=='windows-1251'){
 	$search = iconv( "CP1251//TRANSLIT//IGNORE","UTF8", $search);
 }
 
+$stats_class->saveSearch($search);
 
 $searchArray = explode(' ',$search);
 

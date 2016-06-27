@@ -1609,9 +1609,9 @@ class model_shopcoins extends Model_Base
  		if($SearchTempStr){
  			$select->where("name like '%".implode("%' or name like '%",$SearchTempStr)."%'");
  		} 	
-		if($this->user_id==352480){
-        	//echo $select->__toString();
-        }
+		//if($this->user_id==352480){
+        	echo $select->__toString();
+        //}
  		$data = array();
  		foreach ($this->db->fetchAll($select) as $row){
  		    $data[$row['id']] = $row['name'];

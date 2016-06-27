@@ -12,6 +12,12 @@ require $cfg['path'] . '/configs/config_shopcoins.php';
 $tpl['show_short'] = false;
 $tpl['show_short_button'] = false;
 
+$data_filter = array();
+
+require_once $cfg['path'] . '/models/stats.php';
+$stats_class = new stats($cfg['db'],$tpl['user']['user_id'],session_id());
+
+
 if(in_array($_SERVER['REMOTE_ADDR'],$admin_ips)&&$tpl['user']['user_id']){
 	$tpl['show_short_button'] = true;
 	//var_dump($_COOKIE['sshort']);
@@ -70,9 +76,11 @@ if ($search == 'newcoins'||$materialtype=='newcoins') {
 $r_url='';
 if($_SERVER["REDIRECT_URL"]=='/shopcoins/prodaza_banknot_i_bon.html'){
    $r_url=$cfg['site_dir'].'shopcoins/banknoti';
+   $data_filter['materialtype'] = 'banknoti';
 } else {
     //$r_url = str_replace("/index.php",'',$_SERVER["REDIRECT_SCRIPT_URI"]);
     $r_url = $cfg['site_dir'].'shopcoins/'.$materialIDsRule[$materialtype];
+    $data_filter['materialtype'] = $materialIDsRule[$materialtype];
     if($search) $r_url .= '/'.$search;
     $r_url = str_replace('shopcoins//','shopcoins/',$r_url);
 }
@@ -261,6 +269,7 @@ $groupMain = 0;
 
 if(count($group_data)==1){
     $groupMain = $GroupNameID = $group_data[0];
+    $data_filter['group_id'] = $groupMain;
     $groupData = $shopcoins_class->getGroupItem($group_data[0]);
 	//получаем дочерние элементы    
 	$childs = $shopcoins_class->getParrentGroupsIds($group_data[0]);
@@ -434,7 +443,7 @@ $nominalMainTitle = '';
 
 if(count($nominal_data)==1&&$nominal_data[0]){
     $nominalMain = $nominal_data[0];
-    
+    $data_filter['nominal_id'] = $nominalMain;
     $nominalMainTitle = $shopcoins_class->getNominal($nominal_data[0]);
     
     $tpl['breadcrumbs'][] = array(
@@ -452,6 +461,7 @@ if(count($nominal_data)==1&&$nominal_data[0]){
 
 
 if(count($years_p)==1&&$years_p[0]){    
+    $data_filter['year'] = $years_p[0];
     $tpl['breadcrumbs'][] = array(
     	'text' => $years_p[0],
     	'href' => $r_url.($groupHref?$groupHref:'').'/y_ysp'.$years_p[0],
@@ -469,6 +479,7 @@ $metalMainTitle = '';
 
 if(count($metal_data)==1){
     $metalMain = $metal_data[0];
+    $data_filter['metal_id'] = $metalMain;
     $metalMainTitle = $tpl['metalls'][$metalMain];
     
     $tpl['breadcrumbs'][] = array(
@@ -491,7 +502,8 @@ $themeMain = 0;
 $themeMainTitle = '';
 
 if(count($theme_data)==1){
-    $themeMain = $theme_data[0];    
+    $themeMain = $theme_data[0]; 
+    $data_filter['theme_id'] = $themeMain;   
     $themeMainTitle = $ThemeArray[$theme_data[0]];   
     $r_url_paginator .= contentHelper::themeUrl($themeMainTitle,$themeMain);    
 } else {
@@ -505,7 +517,8 @@ $conditionMain = 0;
 $conditionMainTitle = '';
 
 if(count($condition_data)==1){
-    $conditionMain = $condition_data[0];    
+    $conditionMain = $condition_data[0]; 
+    $data_filter['condition_id'] = $conditionMain;   
     $conditionMainTitle = $tpl['conditions'][$conditionMain];   
     $r_url_paginator .= contentHelper::conditionUrl($conditionMainTitle,$conditionMain);    
 } else {    
@@ -515,10 +528,6 @@ if(count($condition_data)==1){
 }
 
 
-if ($searchid)
-	$MainText .= "<p class=txt><b><font color=red>��������� ������������. �������� ������� ������������ ������.</font></b>
-	<br>����� ��������� ����������� ����� - ������� <a href=$script>�����</a>.</p>";
-
 if($tpl['user']['user_id']==352480){
     //var_dump($addhref);
 	//echo time()." 5<br>";
@@ -526,7 +535,9 @@ if($tpl['user']['user_id']==352480){
 
 $countpubs = $shopcoins_class->countallByParams($WhereParams);
 if($tpl['user']['user_id']==352480){
-	//echo time()." 6<br>";
+    echo"<br>";
+	var_dump($data_filter);
+	echo"<br>";
 }
 
 if($addhref) $addhref = substr($addhref,1);  
@@ -799,68 +810,9 @@ if($ids){
     }
   
     $tpl['catalog']['lastViews'] = $d_order;
-    //foreach ()
-   // var_dump($last_products);
 }
 
-/*
-$tmp = explode("#", $LastCatalog10);
-		$k = 0;
-		for ($i=0; $i<sizeof($tmp); $i++)
-		{
-			$tmp1 = explode("|", $tmp[$i]);
-			if ($tmp1[0])
-			{
-				if ($catalog != $tmp1[0])
-				{
-					
-					$mtype = $tmp1[3];
-			
-					if ($mtype==1)
-						$rehref = "Монета ";
-					elseif ($mtype==8)
-						$rehref = "Монета ";
-					elseif ($mtype==7)
-						$rehref = "Набор монет ";
-					elseif ($mtype==2)
-						$rehref = "Банкнота ";
-					elseif ($mtype==4)
-						$rehref = "Набор монет ";
-					elseif ($mtype==5)
-						$rehref = "Книга ";
-					else 
-						$rehref = "";
-						
-					if ($tmp1[1])
-						$rehref .= $tmp1[1]." ";
-					$rehref .= $rows['name'];
-					if ($tmp1[4])
-						$rehref .= " ".$tmp1[4]; 
-					if ($tmp1[5])
-						$rehref .= " ".$tmp1[5];
-					if ($tmp1[6])
-						$rehref .= " ".$tmp1[6];
-						
-					$rehref = strtolower_ru($rehref)."_c".$tmp1[0]."_m".$tmp1[3].".html";
-					
-					echo ($k!=0?"<tr><td colspan=4><hr class=divider size=1>":"<form action=# method=post>")."
-					
-					<tr>
-					<td id=imagel$k><div id=lastcatalogis".$tmp1[0]."> ".($arraystatuslast[$tmp1[0]]==1?"<input type=checkbox id=shopcoinslast$k name=shopcoinslast$k checked=checked value=".$tmp1[0].">":"<input type=checkbox disabled=disabled id=shopcoinslast$k name=shopcoinslast$k value=0>")."</div></td>
-					<td valign=top><div id=showl$k></div><img src=smallimages/".$tmp1[6]." width=80 border=1 style='border-color:black' alt='Монета ".$tmp1[1]." ".$tmp1[4]." стоимость ".intval($tmp1[5])." р.' onMouseOver=\"ShowMainCoins('l$k','<img src=images/".$tmp1[7]." border=1>','".htmlspecialchars($arraydetails[$tmp1[0]])."');\" onMouseOut=\"NotShowMainCoina('l$k');\"></td>
-					<td width=2></td>
-					<td valign=top><a href=index.php?page=show&group=".$tmp1[2]."&materialtype=".$tmp1[3]."&catalog=".$tmp1[0]." class=star title='Монета ".$tmp1[1]." ".$tmp1[4]." цена ".intval($tmp1[5])." р. найти'>".$tmp1[1]."<br>".$tmp1[4]."<br><font color=red>".intval($tmp1[5])." р.</font></a></td>
-					</tr>
-					";
-					$k++;
-				}
-			}
-		}
-		
-		echo "<tr bgcolor=#dddddd height=20><td colspan=4 align=center><img src=../images/corz1.gif border=0 style=\"cursor:pointer\" onclick=\"javascript:AddBascetLast();\" title=\"Положить все отмеченные монеты из списка в корзину\"></td></tr></table></form></td>
-		</tr>
-		</table>";
-	}*/
+$stats_class->saveFilter($data_filter);
 
 require $cfg['path'] . '/configs/shopcoins_keywords.php';
 

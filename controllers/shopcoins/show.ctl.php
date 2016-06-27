@@ -5,6 +5,10 @@ require_once $cfg['path'] . '/configs/config_shopcoins.php';
 require_once $cfg['path'] . '/models/shopcoinsdetails.php';
 $details_class = new model_shopcoins_details($cfg['db']);
 
+require_once $cfg['path'] . '/models/stats.php';
+$stats_class = new stats($cfg['db'],$tpl['user']['user_id'],session_id());
+ 
+
 $catalogshopcoinsrelation_class = new model_catalogshopcoinsrelation($cfg['db']);
 //var_dump($_SERVER);
 
@@ -88,6 +92,7 @@ $tpl['show']['error'] = false;
 //показываем количество страниц
 
 if ($catalog){	
+    $stats_class->saveCoins($catalog);
     //стартовая инфа о монете независимо от родитея
     $rows_main = $shopcoins_class ->getItem($catalog,true);
 
