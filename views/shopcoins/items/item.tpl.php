@@ -27,9 +27,11 @@ if($rows["materialtype"]==3){?>
 	<div class="info_acc">	    	
     	<!--<a name=coin<?=$rows["shopcoins"]?> title='<?=$rows["name"]?>'></a>-->
 	    <p class="ctitle"><?=$rows['namecoins']?></p>
-    	<?if ($rows["gname"]){?>
-    	<div class="left" style="width: 140px;">Группа:
-        	<a class="group_href" style="width: 90px;" href=<?=$cfg['site_dir']?>shopcoins?group=<?=$rows['group']?>&materialtype=<?=$rows["materialtype"]?> title='Посмотреть <?=contentHelper::setWordThat($rows["materialtype"])?> <?=$rows["gname"]?>'>
+    	<?if ($rows["gname"]){
+    	    $r_gr_url = $cfg['site_dir'].'shopcoins/'.$materialIDsRule[$rows["materialtype"]].contentHelper::groupUrl($rows["gname"],$rows['group']);
+    	    
+    	    ?>
+    	<div class="left" style="width: 140px;">Группа: <a class="group_href" style="width: 90px;" href="<?=$r_gr_url?>" title='Посмотреть <?=contentHelper::setWordThat($rows["materialtype"])?> <?=$rows["gname"]?>' alt='Посмотреть <?=contentHelper::setWordThat($rows["materialtype"])?> <?=$rows["gname"]?>'>
         	<?=$rows["gname"]?>
         	</a>
     	</div>
@@ -73,9 +75,11 @@ if($rows["materialtype"]!=3){?>
 	if($rows['year'] == 1991 && $materialtype==12) $rows['year'] = '1991 ЛМД';
 	if($rows['year'] == 1992 && $materialtype==12) $rows['year'] = '1991 ММД';
 	
-	if ($rows["gname"]){?>
-	<?=in_array($rows["materialtype"],array(9,3,5))?"Группа":"Страна"?>: 
-	<a class="group_href" href="<?=$cfg['site_dir']?>shopcoins?group=<?=$rows['group']?>&materialtype=<?=$rows["materialtype"]?>" title='Посмотреть <?=contentHelper::setWordThat($rows["materialtype"])?> <?=$rows["gname"]?>'>
+	if ($rows["gname"]){
+	    
+	    $r_gr_url = $cfg['site_dir'].'shopcoins/'.$materialIDsRule[$rows["materialtype"]].contentHelper::groupUrl($rows["gname"],$rows['group']);
+	    ?>
+	<?=in_array($rows["materialtype"],array(9,3,5))?"Группа":"Страна"?>:<a class="group_href" href="<?=$r_gr_url?>" title='Посмотреть <?=contentHelper::setWordThat($rows["materialtype"])?> <?=$rows["gname"]?>' alt='Посмотреть <?=contentHelper::setWordThat($rows["materialtype"])?> <?=$rows["gname"]?>'>
 	<?=$rows["gname"]?>
 	</a>
 	<?}?>

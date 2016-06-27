@@ -5,12 +5,13 @@ $mail_text .= 'Номер вашего заказа:<font color="red">'.$shopcoi
 $mail_text .= '<br><br>Вы можете связаться с менеджером по адресу <a href=mailto:administrator@numizmatik.ru>administrator@numizmatik.ru</a> в рабочие дни или по телефону 8-800-333-14-77 (бесплатный звонок по России) (<b><font color=red>+3 GMT MSK</font></b>).';
 $mail_text .= '</td></tr></table>';
 $mail_text .= '<table border="0" cellpadding="0" cellspacing="0" width="650" style="border:1px solid #cccccc;border-collapse:collapse;margin-top:20px;">';
-$mail_text .= '<tr><td  style="border:1px solid #cccccc;padding:10px;">Наименование</td><td style="border:1px solid #cccccc;padding:10px;">Группа (страна)</td><td style="border:1px solid #cccccc;padding:10px;">Год</td><td style="border:1px solid #cccccc;padding:10px;">Номер</td><td  style="border:1px solid #cccccc;padding:10px;">Цена</td><td  style="border:1px solid #cccccc;padding:10px;">Количество</td><td style="border:1px solid #cccccc;padding:10px;" >Сумма</td></tr>' ;
+$mail_text .= '<tr><td  style="border:1px solid #cccccc;padding:10px;"></td><td  style="border:1px solid #cccccc;padding:10px;">Наименование</td><td style="border:1px solid #cccccc;padding:10px;">Группа (страна)</td><td style="border:1px solid #cccccc;padding:10px;">Год</td><td style="border:1px solid #cccccc;padding:10px;">Номер</td><td  style="border:1px solid #cccccc;padding:10px;">Цена</td><td  style="border:1px solid #cccccc;padding:10px;">Количество</td><td style="border:1px solid #cccccc;padding:10px;" >Сумма</td></tr>' ;
 foreach ( $tpl['submitorder']['result'] as $rows){
 	if ($rows['title_materialtype']){
 		$mail_text .= '<td colspan="7" style="border:1px solid #cccccc; background-color:#eeeeee;padding:10px;font-size:14px;font-weight:bold;">'.$MaterialTypeArray[$rows["materialtype"]].'</td></tr>';
 	}
 	$mail_text .= '<tr>';
+	$mail_text .= '<td  style="border:1px solid #cccccc;padding:10px;"><img style="max-width:100px;border:1px solid #cccccc;" src="http://www.numizmatik.ru/shopcoins/images/'.$rows["image_small"].'"/></td>';
 	$mail_text .= '<td  style="border:1px solid #cccccc;padding:10px;"><a href='.$cfg['site_dir'].'shopcoins/show.php?catalog='.$rows["catalog"].' target=_blank>'.$rows["name"].'</a></td>';
 	$mail_text .= '<td  style="border:1px solid #cccccc;padding:10px;">'.$rows["gname"].'</td>';
 	$mail_text .= '<td  style="border:1px solid #cccccc;padding:10px;">'.$rows["year"].'</td>';

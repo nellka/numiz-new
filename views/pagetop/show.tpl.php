@@ -10,12 +10,12 @@
     
 <div  class="breadcrumb right">
 
-<?if($tpl['show']['previos']){
+<?/*if($tpl['show']['previos']){
 	?> <a style="text-decoration:none;color:#000000;" href="<?=$cfg['site_dir']?>shopcoins/<?=$tpl['show']['previos']["rehref"]?>">< Предыдущий</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <?}
 if($tpl['show']['next']){?>
  <a style="text-decoration:none;color:#000000;" href="<?=$cfg['site_dir']?>shopcoins/<?=$tpl['show']['next']["rehref"]?>">Следующий ></a>
- <?}?>
+ <?}*/?>
 </div>		
 
 </div >

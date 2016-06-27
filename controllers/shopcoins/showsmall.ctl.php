@@ -1,7 +1,7 @@
 <?
-require($cfg['path'].'/helpers/Paginator.php');
-require($cfg['path'].'/models/catalogshopcoinsrelation.php');
-require $cfg['path'] . '/configs/config_shopcoins.php';
+require_once($cfg['path'].'/helpers/Paginator.php');
+require_once($cfg['path'].'/models/catalogshopcoinsrelation.php');
+require_once $cfg['path'] . '/configs/config_shopcoins.php';
 require_once $cfg['path'] . '/models/shopcoinsdetails.php';
 $details_class = new model_shopcoins_details($cfg['db']);
 

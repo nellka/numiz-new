@@ -158,6 +158,7 @@ class model_user extends Model_Base
 	//добавляем нового пользователя и подписываем на новости если надо
 	 public function addNewUser($data,$is_subsrib = false){
 	     $userId =$this->addNewRecord($data);
+	     $this->addNewForumUser($data);
 	     //добавляем подписку	 
 	     if($is_subsrib){
 	         $this->addsubscribe($userId);	                 
@@ -165,6 +166,27 @@ class model_user extends Model_Base
 	     return true;
 	     //отправляем письмо о регистрации	     
 	 }
+	 public function addNewForumUser($User){
+	 	$salt = $this->fetch_user_salt();   
+        $datebithday  = '';               
+	 	$data = array('username' => $User['email'], 
+	 				  'password' => $this->hash_password($User['userpassword'], $salt), 
+	 				  'salt'     => $salt,
+	 				  'email'    => $User['email'], 
+	 				  'usergroupid' => 2,
+	 				  'joindate'    => time(),
+	 				  'birthday'    => date('m-d-Y',$datebithday),
+	 				  'birthday_search' => date('m-d-Y',$datebithday),
+	 				  'options'	 =>	 4509205,
+	 				  'timezoneoffset'=>3); 
+        $this->db->insert('vbull_user',$data); 
+        
+        $insert_id  = $this->db->lastInsertId('vbull_user');					
+		$data = array('userid' => $insert_id); 
+        $this->db->insert('vbull_userfield',$data);         	
+		$this->db->insert('vbull_usertextfield',$data); 			
+	 }
+	 
 	 
 	 public function getIdentity(){
 	     return $this->user_id;
@@ -361,9 +383,10 @@ class model_user extends Model_Base
     
     public function logout(){
     	$domains = array('.numizmatik.ru','numizmatik.ru','.www.numizmatik.ru','www.numizmatik.ru','');
+    	setcookie("sshort","0", time()-3600, "/shopcoins/"); 
     	foreach ($domains as $domain){
 	    	//$domain = $_SERVER["HTTP_HOST"];
-	    	setcookie("cookiesfio","1", time()-3600, "/");        		
+	    	setcookie("cookiesfio","1", time()-3600, "/");       	       		
 			setcookie("cookiesuserlogin", "1", time()-3600, "/");
 			setcookie("cookiesuserpassword", "1", time()-3600, "/");
 			setcookie("cookiesuser", "1", time()-3600, "/");	
@@ -400,4 +423,28 @@ class model_user extends Model_Base
 		unset($_SESSION['cookiesuser']);
     }
     
+    protected function hash_password($password, $salt) {
+		// if the password is not already an md5, md5 it now	
+		if ($password == ''){}
+		else if (!$this->verify_md5($password)){
+			$password = md5($password);
+		}
+		
+		return md5($password.$salt);	
+	}
+	
+	protected function verify_md5(&$md5) {
+	
+		return (preg_match('#^[a-f0-9]{32}$#', $md5) ? true : false);	
+	}
+	
+	protected function fetch_user_salt($length = 3) {	
+		$salt = '';		
+		for ($i = 0; $i < $length; $i++ ){		
+			$salt .= chr(rand(33, 126));		
+		}
+				
+		return $salt;	
+	}
+
 }

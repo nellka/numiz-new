@@ -145,10 +145,6 @@ $result_temp_metal = array();
 $result_temp_condition = array();
 $result_temp_details = array();
 
-if($tpl['user']['user_id']==352480){
-  // var_dump($digits,$strings,$numbers);
-}
-
 if (sizeof($digits)) {  
     $result_temp_name = $shopcoins_class->searchInTable('shopcoins_search_name',$digits);   
 }
@@ -171,6 +167,7 @@ if (sizeof($strings)) {
         $result_temp_details[$key] = $row;
     }    
 }
+
 
 if (sizeof($strings)) {  
    $result_temp_metal = $shopcoins_class->searchTable('shopcoins_metal',$strings);

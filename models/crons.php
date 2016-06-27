@@ -64,14 +64,14 @@ class crons {
     	return $this->db->fetchAll($sql);
     }
     
-    public function saveMailDb($recipient, $subject, $SendMessage, $headers)
+    public function saveMailDb($recipient, $subject, $SendMessage, $headers='',$priority=5)
 	{
 	    $data = array('dateinsert' => time()+600, 
 	                  'email'      => $recipient,
 	                  'subject'    => $subject,
 	                  'message'    => $SendMessage, 
 	                  'headers'    => $headers,
-	                  'priority'   => 5,
+	                  'priority'   => $priority,
 	                  'datesend'   =>0,
 	                  'is_new_send_method'=>1);		
 	    $this->db->insert('shopcoinssender',$data);
@@ -90,7 +90,42 @@ class crons {
 	    $this->db->insert('subscribesystem',$data);
 		return true;
 	}	
-	
+	public function addRecord($table,$inserarray) {
+		$this->db->insert($table,$inserarray);         
+        return $this->db->lastInsertId($table);
+    }
+    public function updateRecord($table,$inserarray,$where) {
+		$this->db->update($table,$inserarray,$where);         
+        return true;
+    }
+    
+    public function writeMessagePost($user, $message) {
+
+    	$message = str_replace("Не сочтите это письмо рекламой.
+    Вас беспокоит администратор Клуба Нумизмат Мандра Богдан.","",$message);
+    	
+    	$data = array('user'      => $user, 
+	                  'message'   => $message,
+	                  'datepost'    => time(),
+	                  'dateread'    => 0, 
+	                  'check'    => 0);		
+	    $this->db->insert('messageusers',$data);   	
+    	
+    	if (file_exists($_SERVER["DOCUMENT_ROOT"]."/messageusers/".$user.".php")) 
+    		include $_SERVER["DOCUMENT_ROOT"]."/messageusers/".$user.".php";
+    	else 
+    		$messageuser='';
+    	
+    	$messageusertemp = '<?php $messageuser="'.$message.'<br><br>'.$messageuser.'"; ?>';
+    	
+    	$fp=fopen($_SERVER["DOCUMENT_ROOT"]."/messageusers/".$user.".php" ,"w");
+    	if ($fp){
+    		fwrite($fp,$messageusertemp);
+    		fclose($fp);
+    	}
+    	return true;    
+    }
+
 	/*
     function unlockTable(){        
     	$this->db->getConnection()->exec('UNLOCK TABLES;');   

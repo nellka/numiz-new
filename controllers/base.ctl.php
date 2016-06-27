@@ -108,6 +108,7 @@ if($tpl['is_mobile']&&$fv){
 }
 
 if($tpl['user']['user_id']==352480){  
+	//var_dump($_SERVER['REMOTE_ADDR']);
    //$tpl['is_mobile'] = true;
 }
 
@@ -122,8 +123,9 @@ if ($blockend < time()&& $tpl['user']['user_id']) {
 include_once($cfg['path'] ."/configs/keywordsAdmin.php");
 
 //include $_SERVER["DOCUMENT_ROOT"]."/keywords.php";
-
-if (in_array($_SERVER["HTTP_USER_AGENT"],$black_user_agent_list[0])
+if($tpl['module']=='cron'){
+    
+} elseif (in_array($_SERVER["HTTP_USER_AGENT"],$black_user_agent_list[0])
 || substr_count($_SERVER["HTTP_USER_AGENT"],"coona")
 || substr_count($_SERVER["HTTP_USER_AGENT"],"Rufus")
 || substr_count($_SERVER["HTTP_USER_AGENT"],"Wget")
@@ -162,11 +164,6 @@ if(!$tpl['conditions'] = $cache->load("conditions")) {
         $tpl['conditions'][$row['condition_id']] = $row['name'];
     }
     $cache->save($tpl['conditions'], "conditions");	 
-}
-
-if($tpl['user']['user_id']==352480){
-   // var_dump($tpl);
-   // die();
 }
 
 require $cfg['path'] . '/controllers/topmenu.ctl.php';

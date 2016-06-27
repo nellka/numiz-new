@@ -1,3 +1,4 @@
+<div class="mainItemPhoto">
 <?
   if ($rows_main["novelty"]){?>
     <div class="new">Новинка</div>
@@ -7,17 +8,18 @@
 <?php 
  }
 ?>
-
-<div class="mainItemPhoto">
         <?include($cfg['path'].'/views/shopcoins/item/imageBig.tpl.php');?>
 </div>
 <div  class="detailsItem">
    <div style="width:200px;display: inline-block;">
         <h1><?=$rows_main["name"]?></h1>       
      <?
-	if ($rows_main["gname"]){?>
+	if ($rows_main["gname"]){
+	    $r_gr_url = $cfg['site_dir'].'shopcoins/'.$materialIDsRule[$rows_main["materialtype"]].contentHelper::groupUrl($rows_main["gname"],$rows_main['group']);
+	    
+	    ?>
 	<?=in_array($rows_main["materialtype"],array(9,3,5))?"Группа":"Страна"?>: 
-	<a href=<?=$cfg['site_dir']?>/shopcoins?group=<?=$rows_main['group']?>&materialtype=<?=$rows_main["materialtype"]?> title='Посмотреть <?=contentHelper::setWordThat($rows_main["materialtype"])?> <?=$rows_main["gname"]?>'>
+	<a href="<?=$r_gr_url?>" title='Посмотреть <?=contentHelper::setWordThat($rows_main["materialtype"])?> <?=$rows_main["gname"]?>'>
 	<strong><font color=blue><?=$rows_main["gname"]?></font></strong>
 	</a><br>
 	<?}?>
@@ -28,7 +30,24 @@
 
     
     <div id=subinfo>
-Название: <strong><?=$rows_main["name"]?></strong><br>
+Название: <strong>
+
+<?
+//if($rows_main["materialtype"]==1){
+    
+    $r_gr_url = $cfg['site_dir'].'shopcoins/'.$materialIDsRule[$rows_main["materialtype"]];
+    if($rows_main['group'])$r_gr_url .= contentHelper::groupUrl($rows_main["gname"],$rows_main['group']);
+    $r_gr_url .= contentHelper::nominalUrl($rows_main["name"],$rows_main['nominal_id']);
+    
+    ?>
+    <a href="<?=$r_gr_url?>" title="Посмотреть <?=$rows_main["name"]?>  <?=$rows_main["gname"]?>" alt="Посмотреть <?=$rows_main["name"]?>  <?=$rows_main["gname"]?>">
+    <?=$rows_main["name"]?>
+    </a>
+<?//} else echo $rows_main["name"];
+
+?>
+
+</strong><br>
 Номер: <strong><?=$rows_main["number"]?></strong><br>
 <?
 echo ($rows_main["width"]&&$rows_main["height"]?"<br>Приблизительный размер: <strong>".$rows_main["width"]."*".$rows_main["height"]." мм.</strong>":"")."
@@ -82,8 +101,10 @@ if(($rows_main['buy_status']==7||$rows_main['buy_status']==6)&&($minpriceoneclic
 		echo contentHelper::render('shopcoins/price/buy_button',$rows_main);
 		?>
 	</div>
-	<div style="font-size:18px !important;font-weight:bold;margin-right:40px;margin-top:15px;">
+	<div style="font-size:18px !important;font-weight:bold;margin-right:10px;margin-top:15px;">
 	<?php
+	//var_dump($rows_main['materiaaltype']);
+	if($rows_main['materialtype']==1) echo	'<div style="font-size:12px">Стоимость монеты</div>';
 	echo contentHelper::render('shopcoins/price/prices',$rows_main);
 	?>
 	</div>

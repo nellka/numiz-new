@@ -23,7 +23,7 @@
 				foreach ($tpl['filter']['conditions']['filter'] as $filter) {?>            
 					<div class="checkbox">
                         <input type="checkbox" name="conditions[]" value="<?=$filter['filter_id']?>" <?=(is_array($conditions)&&in_array($filter['filter_id'], $conditions))?"checked":""?>/>
-					       <a href="<?=$r_url?>?<?=$ahref?>&conditions=<?=$filter['filter_id']?>"> <?=$filter['name'];?></a>
+					       <a href="<?=$r_url?><?=contentHelper::conditionUrl($filter['name'],$filter['filter_id'])?><?=$ahref?>"> <?=$filter['name'];?></a>
 					</div>
 				<?}?>        
     		</div>

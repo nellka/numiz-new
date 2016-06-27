@@ -19,6 +19,8 @@
 </div>
 <br>
 <?
+
+
 if($tpl['orderdetails']['ArrayShopcoinsInOrder']){?>
 <form action=<?=$cfg['site_dir']?>shopcoins?page=orderdetails method=post id=order-form>
 <div class="cart-info">
@@ -38,7 +40,9 @@ if($tpl['orderdetails']['ArrayShopcoinsInOrder']){?>
 </thead>
 <?
 $i=0;
-foreach ($tpl['orderdetails']['ArrayShopcoinsInOrder'] as 	$rows ){	
+foreach ($tpl['orderdetails']['ArrayShopcoinsInOrder'] as 	$rows ){
+    $rows['shopcoins'] = $rows['catalog'];
+    $names = contentHelper::getRegHref($rows);
 	if ($rows["title_materialtype"]) {?>
 		<tr><td colspan=9 class=h-cat><?=$rows["title_materialtype"]?></td></tr>		
 	<?}?>	
@@ -78,10 +82,10 @@ foreach ($tpl['orderdetails']['ArrayShopcoinsInOrder'] as 	$rows ){
         }*/?>
 	   </td>
 	   <td class=tboard>
-	       <a href="<?=$cfg['site_dir']?>shopcoins?catalog=<?=$rows["catalog"]?>&page=show&materialtype=<?=$rows["materialtype"]?>" target=_blank><?=$rows["name"]?></a>
+	       <a href="<?=$names["rehref"]?>" target=_blank><?=$rows["name"]?></a>
 	   </td>
 	   <td class=tboard>
-	       <a href="<?=$cfg['site_dir']?>shopcoins?group=<?=$rows["group"]?>&materialtype=<?=$rows["materialtype"]?>">
+	       <a href="<?=$cfg['site_dir'].'shopcoins/'.$materialIDsRule[$rows["materialtype"]].contentHelper::groupUrl($rows["gname"],$rows['group'])?>">
 	       <?=$rows["gname"]?>
 	       </a>
 	   </td>
@@ -111,7 +115,7 @@ if($rows["amountAll"]>1){?>
 ?>
 	</td>
 	<td class=tboard><?=$rows["price"]*$rows["oamount"]?> рублей</td>
-	<td class=tboard><a href=<?=$cfg['site_dir']?>shopcoins?page=orderdetails&pageinfo=delete&shopcoins=<?=$rows["catalog"]?> title='Удалить из корзины'><img src="<?=$cfg['site_dir']?>images/delete-item.png"></a></td>
+	<td class=tboard><a href=<?=$cfg['site_dir']?>shopcoins/index.php?page=orderdetails&pageinfo=delete&shopcoins=<?=$rows["catalog"]?> title='Удалить из корзины'><img src="<?=$cfg['site_dir']?>images/delete-item.png"></a></td>
 	</tr>
 	<?
 	$i++;
@@ -167,10 +171,19 @@ if($sum<500){?>
         	</form>
         	
         	<? if($tpl['user']['user_id']==811){?>
-        		<br><br><form action="<?=$cfg['site_dir']?>shopcoins?page=orderdetails" method="post">
+        		<div style="display: table; padding: 10px 0; width: 460px;">
+        		  <form action="<?=$cfg['site_dir']?>shopcoins?page=orderdetails" method="post">
         		<input type="hidden" id='viporder' name='viporder' value="1">
-        		<input type=submit  class="button25 right" name=submit value='Создать Предзаказ'>       	
+        		<input type=submit  class="button25 right" name=submit value='Создать Предзаказ'>   
+        		<select name=idadmin id=idadmin style="height: 35px;margin: 0 5px;">
+        			<option value=0> Создал предзаказ </option>
+        			<?
+        			foreach ($tpl['orderdetails']['admins'] as $rowst) {?>			
+        				<option value="<?=$rowst['TimeTableUser']?>"><?=$rowst['Fio']?></option>
+        			<?}?> 
+        			</select>   	
         		</form>
+        		</div>
         	<?}?>
     	<?}?>
     <?} elseif($tpl['orderdetails']['ArrayShopcoinsInOrder']) { ?>

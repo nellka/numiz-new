@@ -1063,3 +1063,147 @@ ul .mCSB_scrollTools {
 ul .mCS-light-thick.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar, ul .mCS-dark-thick.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
     width: 24px;
 }
+
+
+body {
+    background-color: #fff;
+}
+body {
+    font-family: "San Francisco",Helvetica,Arial,sans-serif;
+    font-size: 13px;
+}
+body {
+    font-family: Arial,Tahoma,Verdana,sans-serif;
+    font-size: 13px;
+}
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+body, html {
+    height: 100%;
+    margin: 0;
+    position: relative;
+}
+.news-cls .onpage {
+    display: none;
+}
+
+.news-cls .paginator{
+margin:0
+}
+
+.paginator{
+    margin: 0px; padding: 0px; line-height: 50px;
+}
+.paginator a:first-child{
+margin: 7px 0 7px 0;
+}
+.paginator a, .paginator span.active {
+    display: block;
+    float: left;
+    font-size: 18px;
+    font-weight: normal;
+    height: 35px;
+    line-height: 35px;
+    margin: 7px 0 7px 5px;
+    text-align: center;
+    text-decoration: none;
+    width: 35px;
+    color: #333;
+}
+
+.paginator span.active {
+    background-color: #ecb34e;
+    cursor: default;
+    border-radius: 19px;
+    position: relative;
+}
+
+.paginator a:hover{
+border-radius: 18px;
+background-color: #ccc;
+
+}
+
+.page_n{
+    padding-right:3px;padding-left:3px;
+}
+body {
+    background-color: #fff;
+}
+body {
+    font-family: "San Francisco",Helvetica,Arial,sans-serif;
+    font-size: 13px;
+}
+body {
+    font-family: Arial,Tahoma,Verdana,sans-serif;
+    font-size: 13px;
+}
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+body, html {
+    height: 100%;
+    margin: 0;
+    position: relative;
+}
+.news-img img {
+    max-width: 390px;
+}
+
+.news-cls .paginator a {
+    margin: 0 5px;
+}
+.news-img .image_block {
+    float: none;
+    text-align: center;
+    width: 100%;
+}
+.news-cls .blockshop {
+    margin: 10px 0;
+}
+.news-cls div.coinname {
+    height: auto;
+    overflow: hidden;
+    padding: 10px 0px;
+    /* text-align: justify; */
+}
+.news-cls div.subinfo {
+ 	margin: 10px 0 0;
+    text-align: justify;
+}
+.news-cls .blockshop-full .left{
+float:none;
+}
+.gray {
+    color: gray;
+}
+
+
+.news-cls h1 {
+    font-size: 20px;
+}
+
+
+.filters {
+    font-size: 20px;
+    padding: 10px 0;
+    position: relative;
+    text-decoration: underline;
+}
+
+.filters .search-params-place{
+	top:0;
+}
+#news div h1 {
+    display: none;
+}
+#news.news-one div h1 {
+display:block
+}

@@ -1,5 +1,5 @@
 <?
-$ahref .= $ahref_groups;
+$ahref = $ahref_groups;
 ?>
 <div class="filter-block" id='fb-nominals'>
 	<div class="filter_heading">
@@ -17,7 +17,7 @@ $ahref .= $ahref_groups;
 		<?php 
 		foreach ($tpl['filter']['nominals']['filter'] as $filter) {?>            
 			<div class="checkbox">
-				   <input type="checkbox" name="nominals[]" value="<?=$filter['filter_id']?>" <?=(is_array($nominals)&&in_array($filter['filter_id'], $nominals))?"checked":""?> /> <a href="<?=$r_url?>?<?=$ahref?>&nominal=<?=$filter['filter_id']?>"> <?=$filter['name'];?></a>						
+				   <input type="checkbox" name="nominals[]" value="<?=$filter['filter_id']?>" <?=(is_array($nominals)&&in_array($filter['filter_id'], $nominals))?"checked":""?> /> <a href="<?=$r_url?><?=contentHelper::nominalUrl($filter['name'],$filter['filter_id'])?><?=$ahref_groups?>"> <?=$filter['name'];?></a>						
 			</div>
 		 <?}?> 							
 		</div>

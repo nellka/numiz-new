@@ -9,15 +9,20 @@ class model_shopcoinsvipclientanswer extends Model_Base {
         return $this->db->fetchOne($select)+1;
 	}
 	
-	public function addInOrder($viporder_id,$cid){
+	public function addInOrder($viporder_id,$cid,$admin_id=0){
 		$data = array(
                     'user_id' => 0, 
 	                'viporder' => $viporder_id, 
 	                'shopcoins' => $cid, 
-	                'dateinsert' => time());
+	                'dateinsert' => time(),
+	                'admin_id'   =>$admin_id);
 		$this->db->insert($this->table,$data);
 	}
-	
+	//удаляем записи двухнедельной давности
+	public function clear(){
+		return $this->db->delete($this->table,'dateinsert < ( unix_timestamp(now()) -14 *3600 *24)');
+	}
+
 	public function getCoins($id){
 		 $select = $this->db->select()
                   ->from($this->table)
@@ -26,6 +31,20 @@ class model_shopcoinsvipclientanswer extends Model_Base {
                   ->where('viporder=?',$id)
                   ->order('shopcoins.dateinsert desc');
         return $this->db->fetchAll($select);
+	}
+	
+	public function getAdminInCoins($ids=array()){
+	    $idadmin = 0;
+	    
+	    if(!empty($ids)){
+	         $select = $this->db->select()
+                  ->from($this->table,array('admin_id'))
+                  ->where('shopcoins in('.implode(',',$ids).')')
+                  ->order('admin_id desc');
+             $idadmin = (int) $this->db->fetchOne($select);             
+	    }
+	    
+	    return $idadmin;
 	}
 	
 }

@@ -3,7 +3,7 @@ if ($materialtype==1 || $materialtype==12){
 	if($rows_main['year'] == 1990 && $materialtype==12) $rows_main['year'] = '1990 ЛМД';
 	if($rows_main['year'] == 1991 && $materialtype==12) $rows_main['year'] = '1991 ЛМД';
 	if($rows_main['year'] == 1992 && $materialtype==12) $rows_main['year'] = '1991 ММД';
-	$title = "Монет".($parent?"ы":"а")." ".($rows_main["ggroup"]==407 && !substr_count($rows_main["gname"],"Россия") && !substr_count($rows_main["gname"],"СССР")?" Россия ":"").$rows_main["gname"]." | ".$rows_main["name"].($rows_main["metal"]?" ".$rows_main["metal"]." ":"").($rows_main["year"]?" - ".$rows_main["year"]." год":"");
+	$title = "Купить монету ".($rows_main["ggroup"]==407 && !substr_count($rows_main["gname"],"Россия") && !substr_count($rows_main["gname"],"СССР")?" Россия ":"").$rows_main["gname"]." ".$rows_main["name"].($rows_main["metal"]?" ".$rows_main["metal"]." ":"").($rows_main["year"]?" - ".$rows_main["year"]." год":"");
 }
 elseif ($materialtype==10 )
 {

@@ -12,7 +12,7 @@
 <div id='sorting-place' class="sorting-place">
 <?include(DIR_TEMPLATE.'_mobile/shopcoins/nav_catalog.tpl.php');?>
 </div>
-<div><?=implode("/",$tpl['breadcrumbsMini'])?></div>
+<div><?php //include $cfg['path'] . '/views/common/breadcrumb.tpl.php'; ?> </div>
 <?	
 
 

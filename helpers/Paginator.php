@@ -48,8 +48,16 @@ class Paginator
     public function setBaseUrl($url) 
         { $this->baseUrl = $url; }
     
-    public function getBaseUrl() 
-        { return $this->baseUrl; }
+    public function getBaseUrl($prefix=true) 
+    { 
+        if(!$prefix) return $this->baseUrl;
+        
+        if(strpos($this->baseUrl,'?')!==false){
+            return $this->baseUrl.'&'; 
+        }
+        return $this->baseUrl.'?'; 
+    
+    }
     
     public function setResultsPerPage($value) { 
         
@@ -151,24 +159,26 @@ class Paginator
             if ( $pages[0] != 1 ) {
     
                 $refs[] = "<a class='normal_ref_color' href='{$this->getBaseUrl()}page=" . 
-                      ($pages[0] - 1) . "'>&lt;пред</a>";
+                      ($pages[0] - 1) . "'>&lt;</a>";
             }
     
             foreach ($pages as $page) {
     
                 if ($this->isCurrentPage($page)) {
-                    $refs[] = "<span>{$page}</span>";
+                    $refs[] = "<span class=active>{$page}</span>";
                 } else {
-                    $refs[] = "<a class='normal_ref_color' href='{$this->getBaseUrl()}&pagenum={$page}'>$page</a>";
+                    $refs[] = "<a class='normal_ref_color' href='{$this->getBaseUrl()}pagenum={$page}'>$page</a>";
                 }
             }
     
             if ( $pages[ count($pages) - 1 ] != $this->getLastPage() ) {
     
-                $refs[] = "<a class='normal_ref_color' href='{$this->getBaseUrl()}&pagenum=" . 
+                $refs[] = "<a class='normal_ref_color' href='{$this->getBaseUrl()}pagenum=" . 
                       ($pages[count($pages) - 1] + 1) . "'>&gt;</a>";
             }
-            print '<p style="margin: 0px; padding: 0px; line-height: 40px;">Страницы: ' . implode('<span style="padding-right:3px;padding-left:3px;"></span>', $refs) . '</p>';
+            //Страницы: 
+            print '<p class="paginator">' . implode('', $refs) . '</p>';
+            //print '<p class="paginator">' . implode('<span class="page_n"></span>', $refs) . '</p>';
         }
     }
     
@@ -180,8 +190,8 @@ class Paginator
     
             if ( $pages[0] != 1 ) {
     
-                $refs[] = "<a class='normal_ref_color' href='{$this->getBaseUrl()}_pp" . 
-                      ($pages[0] - 1) . ".html'>&lt;пред</a>";
+                $refs[] = "<a class='normal_ref_color' href='{$this->getBaseUrl(false)}_pp" . 
+                      ($pages[0] - 1) . ".html'>&lt;</a>";
             }
     
             foreach ($pages as $page) {
@@ -189,13 +199,13 @@ class Paginator
                 if ($this->isCurrentPage($page)) {
                     $refs[] = "<span>{$page}</span>";
                 } else {
-                    $refs[] = "<a class='normal_ref_color' href='{$this->getBaseUrl()}_pp{$page}.html'>$page</a>";
+                    $refs[] = "<a class='normal_ref_color' href='{$this->getBaseUrl(false)}_pp{$page}.html'>$page</a>";
                 }
             }
     
             if ( $pages[ count($pages) - 1 ] != $this->getLastPage() ) {
     
-                $refs[] = "<a class='normal_ref_color' href='{$this->getBaseUrl()}_pp" . 
+                $refs[] = "<a class='normal_ref_color' href='{$this->getBaseUrl(false)}_pp" . 
                       ($pages[count($pages) - 1] + 1) . ".html'>&gt;</a>";
             }
             print '<p>Страницы: ' . implode('<span style="padding-right:3px;padding-left:3px;"></span>', $refs) . '</p>';

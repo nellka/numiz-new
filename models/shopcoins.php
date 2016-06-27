@@ -16,11 +16,108 @@ class model_shopcoins extends Model_Base
     public function __construct($db,$user_id=0,$nocheck=0){
 	    parent::__construct($db);
 	    $this->user_id = $user_id;
+	    $this->shortshow = 0;
 	    $this->nocheck = $nocheck;
 	    $this->materialtype = 1;
 	    $this->mycoins = 0;
 	    $this->categoty_type = self::BASE;
 	    $this->arraynewcoins = Array(1=>date('Y')-2,2=>date('Y')-1,3=>date('Y'));
+	}
+	
+	public function getShortShow(){       
+        return $this->shortshow;
+	}
+	
+	public function setShortShow($s){       
+        $this->shortshow = $s;
+        if($s){
+
+            $this->db->delete('myfullcoinslist','dateinsert<'.(time()-3600));            
+            $select  =  $this->db->select()
+                  ->from('myfullcoinslist',array('count(user_id)'))                  
+                  ->where('user_id=?',$this->user_id);
+		    $count = $this->db->fetchOne($select);
+		    //если нет записей, то получаем все купленные ранее		    
+		    if(!$count){		        
+		        try{
+    		        $this->getMyShopCoinsIDs();
+    		        $select = $this->db->select()
+    			               ->from('mycoins',array('shopcoins'))
+    			               ->joinLeft(array('c'=>'catalogshopcoinsrelation'),'c.shopcoins = mycoins.shopcoins',array('catalog'))
+    			               ->where('user =?',$this->user_id);
+        	         $mycoins = $this->db->fetchAll($select);
+        	         $ids = array();
+        	         $catalogIds = array();
+        	         //echo mktime(true)."<br>";
+        	         
+        	         foreach ($mycoins as $coins){    	            
+        	             $ids[] = $coins['shopcoins'];
+        	             if($coins['catalog']&&!in_array($coins['catalog'],$catalogIds)){
+        	                 $catalogIds[] = $coins['catalog'];
+        	                
+        	             }    	              
+        	         }      	        
+        	         
+        	         $l = 500;
+        	         while (count($catalogIds)>0) {
+        	            //echo mktime(true)."<br>";
+        	         	$output =  array_slice($catalogIds, 0, $l);  
+        	         	$catalogIds = array_slice($catalogIds, $l);  
+        	         	
+        	         	$select = $this->db->select()
+            			               ->from(array('c'=>'catalogshopcoinsrelation'),array('shopcoins'))
+            			               ->join(array('s'=>'shopcoins_search'),'s.shopcoins=c.shopcoins',array())
+            			               ->where('catalog in('.implode(',',$output).')');
+            			               
+    			         $shopcoins = $this->db->fetchAll($select); 
+    			        
+    			         //echo mktime(true)." - start foreach<br>";
+    			         $new_ids = array_map(function($val){return $val['shopcoins'];},$shopcoins);
+    			         $ids = array_merge($ids, $new_ids);
+    			        /*foreach ($shopcoins as $coin) {
+        		              if(!in_array($coin['shopcoins'],$ids)){
+        		                  $ids[] = $coin['shopcoins'];
+        		           *   }			              
+    			        }*/
+        	         	
+        	         	//echo mktime(true)." - end foreach<br>";
+        	         }	  	         
+        	         
+        	         $time = time();   
+        	         $added = array();  
+        	         
+        	         $i = 0;
+    
+    	            $sqltop = 'insert into myfullcoinslist values '  ; 
+    	            $sql = array();
+    	            //echo mktime(true)." - end foreach<br>";     
+    	          	foreach ($ids as $key=>$id){		       	    
+    		       	     if(!in_array($id,$added)){
+    		       	         $added[] = $id;
+        		       	     /*$data = array('user_id'    => $this->user_id,
+        		       	                   'shopcoins'  => $id,
+        		       	                   'dateinsert' =>$time);
+        		       	     $this->db->insert('myfullcoinslist',$data);*/
+    		       	         $sql[] ="(".$this->user_id.",$id,$time) "; 		       	         
+    		       	         $i++;
+    		       	         if($i>5000){ 
+    		       	             $result_sql = $sqltop.implode(",",$sql);
+                                 $this->db->query($result_sql);
+    		       	             $sql = array();  
+    		       	             $i=0;   	             
+    		       	         }    		       	     
+    		       	     } 
+        	         }
+        	         if($sql){
+                        $result_sql = $sqltop.implode(",",$sql);
+                        $this->db->query($result_sql);
+        	         }	
+		        } catch (Exception $e)	{
+		            var_dump($e->getMessage());
+		            die();
+		        }       	 
+		    }		
+        }
 	}
 	
 	public function getMycoins(){       
@@ -126,7 +223,7 @@ class model_shopcoins extends Model_Base
         return $this->db->fetchAll($select);              
 	}
 	
-	public  function getRelatedByGroup($id,$name,$item_id){
+	public  function getRelatedByGroup($id,$name='',$item_id=0){
 		/*$sql_pi = "select shopcoins.*,g.name as gname from shopcoins, `group` as g where shopcoins.`check`=1 and shopcoins.`group` = `g`.`group` 
 		and shopcoins.`group` = '".$rows_main['group']."' and trim(shopcoins.`name`) = trim('".$rows_main['name']."') limit 10;";
 		*/
@@ -134,12 +231,14 @@ class model_shopcoins extends Model_Base
 	    $select = $this->db->select()
                   ->from('shopcoins')
                   ->join(array('group'),'shopcoins.group=group.group',array('gname'=>'group.name','ggroup'=>'group.groupparent'))
-                  ->where('shopcoins.group=?',$id)
-                  ->where('shopcoins.shopcoins<>?',$item_id)
-                   ->where('trim(shopcoins.`name`) =?',trim($name))
+                  ->where('shopcoins.group=?',$id)                
                   ->where('shopcoins.`check`=1')
-                  ->limit(10);  
-                  
+                  ->limit(10)
+                  ->order(array('year desc', 'dateinsert desc'));  
+        if($item_id)  $select->where('shopcoins.shopcoins<>?',$item_id); 
+          
+        if($name)  $select->where('trim(shopcoins.`name`) =?',trim($name)); 
+          
         return $this->db->fetchAll($select);              
 	}
 	
@@ -157,6 +256,26 @@ class model_shopcoins extends Model_Base
         }
         return $this->db->fetchRow($select);
 	}
+	
+	public function getCompareItem($id,$data,$by_year=true){		
+	    if(!(int)$id) return false;      	
+	    $select = $this->db->select()
+                  ->from('shopcoins')
+                  ->where('shopcoins.shopcoins<>?',$id)
+                  ->where('shopcoins.group=?',$data['group'])
+                  ->where('shopcoins.nominal_id=?',$data['nominal_id'])
+                  ->where('shopcoins.check= 1')
+                  ->limit(5)  
+    	          ->join(array('group'),'shopcoins.group=group.group',array('gname'=>'group.name','ggroup'=>'group.groupparent'))
+    	          ->order('price asc');
+       
+        if($by_year&&$data['year']){
+               $select->where('shopcoins.year=?',$data['year']) ;  
+        }
+        
+        return $this->db->fetchAll($select);
+	}
+	
 	public function getGroupItem($id){	
 		if(!$dataGroup = $this->cache->load("group_".$id)){       	
 		    $select = $this->db->select()
@@ -558,9 +677,11 @@ class model_shopcoins extends Model_Base
 	    $searchname = '';
 	    $select = $this->db->select()
 		               ->from(array('s'=>'shopcoins_search'),array('count(*)'));
-        if(!isset($WhereParams['catalognewstr'])&&!$this->mycoins){
+        
+		if(!isset($WhereParams['catalognewstr'])&&!$this->mycoins){
 			$select = $this->setMaterialtypeSelect($select,$WhereParams,'s');
-			$select = $this->byAdmin($select,'s'); 	       
+			$select = $this->byAdmin($select,'s'); 	 
+			$select = $this->byShortShow($select,'s');   
         } elseif ($this->mycoins){
             //мои монеты
             $select = $this->db->select()
@@ -649,7 +770,9 @@ class model_shopcoins extends Model_Base
         if (isset($WhereParams['condition'])) {             	
         	$select->where("s.condition_id in (".implode(",",$WhereParams['condition']).")");
         }    	   
-	   
+	   if($this->user_id==352480){
+        	echo $select->__toString();
+        }	
        return $this->db->fetchOne($select);       
 	}
 	public function getPopular($limit=4,$params = array()){ 
@@ -701,7 +824,7 @@ class model_shopcoins extends Model_Base
 	
 	protected function getByDate($select,$bydate=0){
 	    if($bydate){
-	        $time_bydate = time()- $bydate*24*3600;             
+	        $time_bydate = time()- ($bydate-0)*24*3600;             
         	$select->where("s.`dateinsert` >= ?",mktime(0,0,0,date('m',$time_bydate),date('d',$time_bydate),date('Y',$time_bydate)));	       
 	    }
 	    
@@ -731,7 +854,8 @@ class model_shopcoins extends Model_Base
 	                      ->join(array('sn'=>'shopcoins_name'),'s.nominal_id=sn.id',array('name'=>'sn.name'));
 	                      
 			$select = $this->setMaterialtypeSelect($select,$WhereParams,'s');
-			$select = $this->byAdmin($select,'s'); 	       
+			$select = $this->byAdmin($select,'s'); 	
+			$select = $this->byShortShow($select,'s');         
         } elseif ($this->mycoins){
             $select = $this->db->select()
 	                      ->from(array('s'=>'mycoins'))
@@ -911,7 +1035,7 @@ class model_shopcoins extends Model_Base
        }
        
        if($this->user_id==352480){
-        	echo $select->__toString();
+        	//echo $select->__toString();
        }     
        return $this->db->fetchAll($select);       
 	}
@@ -941,8 +1065,10 @@ class model_shopcoins extends Model_Base
         return $this->db->fetchAll($select);     
 	}
 	
-	protected function byAdmin($select,$alias='shopcoins'){
-	    if($this->user_id==811||$this->user_id==352480) {
+	protected function byAdmin($select,$alias='shopcoins'){		
+		if($this->shortshow){
+			$select->where("$alias.check=1 or ($alias.check>3 and $alias.check<20)");
+		} elseif($this->user_id==811||$this->user_id==352480) {
 	       if(!$this->nocheck){
 	           $select->where("$alias.check=1 or ($alias.check>3 and $alias.check<20)");
 	       } else {
@@ -954,6 +1080,16 @@ class model_shopcoins extends Model_Base
 	    
 	   return  $select;    
 	}
+	
+	protected function byShortShow($select,$alias='shopcoins'){
+	    //$select->where("$alias.check=1 or ($alias.check>3 and $alias.check<20)");
+	    if($this->shortshow){
+	        $select->joinLeft(array('mf'=>'myfullcoinslist'),"$alias.shopcoins=mf.shopcoins and mf.user_id=".$this->user_id,array());
+	        $select->where('mf.shopcoins IS NULL');
+	    }	
+	    return $select;
+	}
+
 	
 	public function getNominal($id){
 		$select = $this->db->select()
@@ -1035,7 +1171,7 @@ class model_shopcoins extends Model_Base
 	    }
     	    
 	    if($this->user_id==352480){
-        	echo $select->__toString();
+        	//echo $select->__toString();
         }
 	   	return $this->db->fetchAll($select);    
 	}
@@ -1073,11 +1209,8 @@ class model_shopcoins extends Model_Base
         
        if($nominals){	       	
            $select->where("nominal_id in (".implode(",",$nominals).")");
-	   }
+	   }	   
 	   
-	   if($this->user_id==352480){
-        	echo $select->__toString();
-        }	
 	   return $this->db->fetchAll($select);       
 	}
 	
@@ -1156,7 +1289,7 @@ class model_shopcoins extends Model_Base
          }
          
     	 if($this->user_id==352480){
-        	echo $select->__toString();
+        	//echo $select->__toString();
         }
 	     return $this->db->fetchOne($select);
     }
@@ -1183,7 +1316,7 @@ class model_shopcoins extends Model_Base
             $select = $this->getByDate($select,$bydate);
          }
     	 if($this->user_id==352480){
-        	echo $select->__toString();
+        	//echo $select->__toString();
         }
 	     return $this->db->fetchOne($select);
     }
@@ -1215,7 +1348,7 @@ class model_shopcoins extends Model_Base
     	 }
     	 
     	 if($this->user_id==352480){
-        	echo $select->__toString();
+        	//echo $select->__toString();
         }
 	     return $this->db->fetchOne($select);
     }
@@ -1245,7 +1378,7 @@ class model_shopcoins extends Model_Base
     	 }
     	 
     	 if($this->user_id==352480){
-        	echo $select->__toString();
+        	//echo $select->__toString();
         }
 	     return $this->db->fetchOne($select);
     }

@@ -9,12 +9,12 @@
             <li><a href='http://www.numizmatik.ru/shopcoins/notgeldy' onmouseover="showMenuDescription(10);" title='Нотгельды стоимость(цены) весь мир' class=topmenu>Нотгельды </a></li>
             <li><a href='http://www.numizmatik.ru/shopcoins/nabori_monet' onmouseover="showMenuDescription(7);" title='Наборы монет стоимость(цены) весь мир' class=topmenu>Наборы монет</a></li>
              <li><a href='http://www.numizmatik.ru/shopcoins/loty_dlya_nachinayushchih' onmouseover="showMenuDescription(9);" title='Лоты монет для начинающих нумизматов' class=topmenu>Лоты монет для начинающих нумизматов</a></li>
-            <li><a href='http://www.numizmatik.ru/shopcoins/index.php?search=newcoins' onmouseover="showMenuDescription('newcoins');" title='Новинки <?=(date('Y',time())-1)?>-<?=date('Y',time())?>' class=topmenu>Новинки <?=(date('Y',time())-1)?>-<?=date('Y',time())?></a></li>
+            <li><a href='http://www.numizmatik.ru/shopcoins/newcoins' onmouseover="showMenuDescription('newcoins');" title='Новинки <?=(date('Y',time())-1)?>-<?=date('Y',time())?>' class=topmenu>Новинки <?=(date('Y',time())-1)?>-<?=date('Y',time())?></a></li>
             <li><a href='http://www.numizmatik.ru/shopcoins/banknoti' onmouseover="showMenuDescription(2);" title='Банкноты стоимость(цены) весь мир' class=topmenu>Боны</a></li>
             <li><a href='http://www.numizmatik.ru/shopcoins/aksessuary' onmouseover="showMenuDescription(3);" title='Аксессуары для коллекционеров цены' class=topmenu>Аксессуары для монет</a></li>
             <li><a href='http://www.numizmatik.ru/shopcoins/podarochnye_nabory' onmouseover="showMenuDescription(4);" title='Подарочные наборы монет  стоимость(цены) весь мир' class=topmenu>Подарочные наборы</a></li>
             <li><a href='http://www.numizmatik.ru/shopcoins/knigi' onmouseover="showMenuDescription(5);" title='Книги о нумизматике бонистике цены' class=topmenu>Книги о монетах</a>
-            <li><a href='http://www.numizmatik.ru/shopcoins/index.php?search=revaluation' onmouseover="showMenuDescription('revaluation');" title='Распродажа монет' class=topmenu>Распродажа монет</a></li>    
+            <li><a href='http://www.numizmatik.ru/shopcoins/revaluation' onmouseover="showMenuDescription('revaluation');" title='Распродажа монет' class=topmenu>Распродажа монет</a></li>    
             <li><a href='http://www.numizmatik.ru/shopcoins/baraholka' onmouseover="showMenuDescription('11');" title='Барахолка' class=topmenu>Барахолка</a></li>     
              <? if($tpl['user']['user_id']){?>
              <li><a href='http://www.numizmatik.ru/shopcoins/mycoins.php' onmouseover="showMenuDescription('0');" title='Монеты из ваших заказов в интернет-магазине монет' class="topmenu"><span class="error">Монеты из ваших заказов</span></a></li> 

@@ -81,7 +81,9 @@ class Shopcoins extends CActiveRecord
 	public function relations()
 	{		
 		return array(
-			
+			'groups' => array(self::BELONGS_TO, 'Groups',array('group_id'=>'group')),
+			'metal' => array(self::BELONGS_TO, 'Metalls',array('metal_id'=>'id')),
+			'nominal' => array(self::BELONGS_TO, 'Nominals',array('nominal_id'=>'id')),
 		);
 	}
 

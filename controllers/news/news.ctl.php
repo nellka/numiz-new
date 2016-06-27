@@ -131,13 +131,20 @@ foreach ($tpl['news']['data'] as $key=>$rows){
 	    $tpl['news']['data'][$key]['img'] = $res[2];
     }
     
+    $news_text = $rows['text'];
+    $news_text = str_replace("</h1>","</h1>. ",$news_text); 
+    if($tpl['user']['user_id']==352480){
+       // var_dump(strip_tags($rows['text']));
+      
+    }    
+    $news_text = strip_tags($news_text);
     
-    $news_text = mb_substr($rows['text'], 0, 350,'utf-8');
-
     while(substr_count($news_text,"<<<"))
     {
-        $text=mb_substr($news_text,0,strpos($news_text,"<<<")).substr(strstr($news_text,">>>"),3,'utf-8');
+        $news_text=mb_substr($news_text,0,strpos($news_text,"<<<")).substr(strstr($news_text,">>>"),3,'utf-8');
     }
+    
+    $news_text = mb_substr($news_text, 0, 320,'utf-8').'...';    
 
     $tpl['news']['data'][$key]['text'] = strip_tags($news_text);
     $tpl['news']['data'][$key]['namehref'] = contentHelper::strtolower_ru($rows["name"])."_n".$rows["news"].".html";

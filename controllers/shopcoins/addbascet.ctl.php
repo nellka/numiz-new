@@ -1,4 +1,6 @@
 <?
+header("Access-Control-Allow-Origin:*");
+header('Pragma: no-cache');
 require $cfg['path'] . '/configs/config_shopcoins.php';
 
 require_once $cfg['path'] . '/models/helpshopcoinsorder.php';
@@ -11,6 +13,9 @@ $onephone = request('onephone');
 $amount = (integer) request('amount');
 $basket_type = request('basket_type');
 
+if($tpl['user']['user_id']==352480){
+    //var_dump($shopcoinsorder);
+}
 
 $erroramount = "";
 if (!$amount) $amount = 1;
@@ -74,10 +79,12 @@ if(!$rows){
 			if ($tpl['user']['user_id'] != 811 || $rows["check"]>0) {
 				$shopcoinsorder =0;
 				//удаляем cookies - заказ уже был сделан, либо недоделан до конца
-				setcookie("shopcoinsorder", 0, time(), "/shopcoins/", $domain);
-				setcookie("shopcoinsorder", 0, time(), "/shopcoins/");
-				setcookie("shopcoinsorder", 0, time(), "/shopcoins/", ".shopcoins.numizmatik.ru");
-				setcookie("shopcoinsorder", 0, time(), "/");
+				setcookie("shopcoinsorder", 0, time(), "/", ".numizmatik.ru");
+				//setcookie("shopcoinsorder", 0, time(), "/shopcoins/", $domain);
+				//setcookie("shopcoinsorder", 0, time(), "/shopcoins/");
+				//setcookie("shopcoinsorder", 0, time(), "/shopcoins/", ".shopcoins.numizmatik.ru");
+				//setcookie("shopcoinsorder", 0, time(), "/");
+				
 				if(isset($_SESSION['shopcoinsorder']))unset($_SESSION['shopcoinsorder']);
 			}
 		}	else $_SESSION['shopcoinsorder'] = $shopcoinsorder;
@@ -94,10 +101,12 @@ if(!$rows){
          	if($tpl['user']['user_id']) $data_order['user'] = $tpl['user']['user_id'];
         	$shopcoinsorder = $order_class->addNewRecord($data_order);			
 			
-			setcookie("shopcoinsorder", $shopcoinsorder, time() + $reservetime, "/shopcoins/", $domain);
-			setcookie("shopcoinsorder", $shopcoinsorder, time() + $reservetime, "/shopcoins/");
-			setcookie("shopcoinsorder", $shopcoinsorder, time() + $reservetime, "/shopcoins/", ".shopcoins.numizmatik.ru");
-			setcookie("shopcoinsorder", $shopcoinsorder, time() + $reservetime, "/");
+			setcookie("shopcoinsorder", $shopcoinsorder, time() + $reservetime, "/", ".numizmatik.ru");
+			//setcookie("shopcoinsorder", $shopcoinsorder, time() + $reservetime, "/shopcoins/", $domain);
+			//setcookie("shopcoinsorder", $shopcoinsorder, time() + $reservetime, "/shopcoins/");
+			//setcookie("shopcoinsorder", $shopcoinsorder, time() + $reservetime, "/shopcoins/", ".shopcoins.numizmatik.ru");
+			//setcookie("shopcoinsorder", $shopcoinsorder, time() + $reservetime, "/");
+			
 						
 			$_SESSION['shopcoinsorder'] = $shopcoinsorder;
 			$orderdetails_class->setShopcoinsorder($shopcoinsorder);

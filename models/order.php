@@ -259,7 +259,7 @@ class model_order extends Model_Base
 	 }
 	 
 	 public function OrderSumDetails($clientdiscount){
-	   $sql = "select o.*, o.amount as oamount, s.number, s.name, s.year, s.materialtype, if(o.amount>=s.amount5 and s.price5>0,s.price5,
+	   $sql = "select o.*, o.amount as oamount, s.number, s.name, s.image_small, s.year, s.materialtype, if(o.amount>=s.amount5 and s.price5>0,s.price5,
 					if 
 					(o.amount>=s.amount4 and s.price4>0,s.price4,
 						if

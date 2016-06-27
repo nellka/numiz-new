@@ -1,31 +1,38 @@
 <? 
-$r_url='';
-if($_SERVER["REDIRECT_URL"]=='/shopcoins/prodaza_banknot_i_bon.html'){
-   $r_url=$cfg['site_dir'].'shopcoins';
-}
-
-
 
 if(isset($filter_groups)&&$filter_groups){
     $minifed_f = isset($_COOKIE['minifed_f'])?$_COOKIE['minifed_f']:0;
 
     $ahref = $nocheck?"&nocheck=$nocheck":'';
     $ahref .= $search?"&search=$search":'';
+    $ahref .= $bydate?"&bydate=$bydate":'';
     $ahref_groups = $ahref;
+    
     $ahref_years_p ='';
     $ahref_years ='';
     $ahref_nominals ='';
-    foreach ((array)$groups as $group){
-    	$ahref_groups .='&groups[]='.$group;
+    
+    if($groupMain){
+        $ahref_groups .=contentHelper::groupUrl($GroupName,$groupMain);
+    } else {
+        foreach ((array)$groups as $group){
+        	$ahref_groups .='&groups[]='.$group;
+        }
     }
+    
     foreach ((array)$years_p as $year_p){
     	$ahref_years_p .='&years_p[]='.$year_p;
     }
     foreach ((array)$years as $year){
     	$ahref_years .='&years[]='.$year;
     }
-    foreach ((array)$nominals as $nominal){
-    	$ahref_nominals .='&nominals[]='.$nominal;
+    
+    if($nominalMain){
+        $ahref_nominals = contentHelper::nominalUrl($nominalMainTitle,$nominalMain);
+    } else {
+        foreach ((array)$nominals as $nominal){
+        	$ahref_nominals .='&nominals[]='.$nominal;
+        }
     }
 
     if($materialtype!=3||($materialtype==3&&$tpl['filter']['nominals'])){

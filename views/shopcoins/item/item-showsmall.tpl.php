@@ -15,9 +15,11 @@
    <div style="width:200px;display: inline-block;">
         <h1><?=$rows_main["name"]?></h1>       
      <?
-	if ($rows_main["gname"]){?>
+	if ($rows_main["gname"]){
+	    $r_gr_url = $cfg['site_dir'].'shopcoins/'.$materialIDsRule[$rows_main["materialtype"]].contentHelper::groupUrl($rows_main["gname"],$rows_main['group']);
+	    ?>
 	<?=in_array($rows_main["materialtype"],array(9,3,5))?"Группа":"Страна"?>: 
-	<a href=<?=$cfg['site_dir']?>/shopcoins?group=<?=$rows_main['group']?>&materialtype=<?=$rows_main["materialtype"]?> title='Посмотреть <?=contentHelper::setWordThat($rows_main["materialtype"])?> <?=$rows_main["gname"]?>'>
+	<a href="<?=$r_gr_url?>" title='Посмотреть <?=contentHelper::setWordThat($rows_main["materialtype"])?> <?=$rows_main["gname"]?>' alt='Посмотреть <?=contentHelper::setWordThat($rows_main["materialtype"])?> <?=$rows_main["gname"]?>'>
 	<strong><font color=blue><?=$rows_main["gname"]?></font></strong>
 	</a><br>
 	<?}?>

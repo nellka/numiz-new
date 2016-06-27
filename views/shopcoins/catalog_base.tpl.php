@@ -11,58 +11,10 @@
 if($tpl['infotext']){?>    
     <div class="filter-products-block"><?=$tpl['infotext']?></div>
 <?}
-/*
-$filter_layaut =  contentHelper::render('leftmenu/filters',array('filter_groups'=>$filter_groups,'search'=>$search,'groups'=>$groups,'nominals'=>$nominals,'tpl'=>$tpl,'years'=>$years,'years_p'=>$years_p,'metals'=>$metals,'conditions'=>$conditions,'themes'=>$themes,'materialtype'=>$materialtype,'pricestart'=>$pricestart,'priceend'=>$priceend,'yearstart'=>$yearstart,'yearend'=>$yearend,'seriess'=>$seriess,'nocheck'=>$nocheck));   
- 
- if($filter_layaut){?>
-     <script>
-        if(!$('#search-params').length){
-        	$('<?=escapeJavaScriptText($filter_layaut)?>').insertAfter('#hidden-shopcoins-menu');
-        } else {
-        	var last_node = '#yearend';
-        	if($('#fb-groups').length) var last_node = '#fb-groups';
-        //console.log($('#search-params'));
-        //if($('#search-params')) $('#search-params').remove();    
-	        var fform = $('<?=escapeJavaScriptText($filter_layaut)?>');
-	        if(fform.find('#fb-groups #f-details').html()){
-	        	$('#f-details').html(fform.find('#fb-groups #f-details').html());
-	        }
-	        if($('#fb-nominals')) $('#fb-nominals').remove();   	
-	    	var nominals = fform.find('#fb-nominals');
-	    	if(nominals.html()){
-	    		$('<div id="fb-nominals" class="filter-block">'+nominals.html()+'</div>').insertAfter(last_node);
-	    		last_node = '#fb-nominals';
-	    	}
-	    	
-	    	if($('#fb-seriess')) $('#fb-seriess').remove();
-	    	var seriess = fform.find('#fb-seriess');
-	    	if(seriess.html()){
-	    		$('<div id="fb-seriess" class="filter-block">'+seriess.html()+'</div>').insertAfter(last_node);
-	    		last_node = '#fb-seriess';
-	    	}
-	    	if($('#fb-years_p')) $('#fb-years_p').remove();
-	    	if($('#fb-years')) $('#fb-years').remove();
-	    	
-	    	var years_p = fform.find('#fb-years_p');
-	    	var years = fform.find('#fb-years');	    	
-	    	if(years_p.html()){
-	    		$('<div id="fb-years_p" class="filter-block">'+years_p.html()+'</div>').insertAfter(last_node);
-	    		last_node = '#fb-years_p';
-	    	} else if(years.html()){
-	    		$('<div id="fb-years" class="filter-block">'+years.html()+'</div>').insertAfter(last_node);
-	    		last_node = '#fb-years';
-	    	}       
-            if($('#filter-price')) $('#filter-price').remove();
-	    	var filter_price = fform.find('#filter-price');
-	    	if(filter_price.html()){
-	    		$('<div id="filter-price" class="filter-block">'+filter_price.html()+'</div>').insertAfter(last_node);
-	    		last_node = '#filter-price';
-	    	}
-         }    	
-      </script>
-     
- <?}*/
-?>
+
+if($tpl['show_short_button']){?>
+	<div class="center"><input type="button" value="<?=$tpl['show_short']?"Показать все":"Не показывать купленные ранее"?>" onclick="setSshot()"/></div>
+<?}?>
 <div>
   <h1 class='catalog'><?=$GroupName?></h1>
   <?include('onpage.tpl.php');?>
@@ -237,6 +189,7 @@ function resetSliderYear() {
 	if(filter=='groups'){
 		 $("#group_name").val('');
 		 $('#f-details').html('');
+		 $('#f-details').removeClass('filter-groupdetails_container_1').addClass('filter-groupdetails_container_0');
 		 $('#fb-groups .checkbox').each(function(i, elem) {			    	
 		    $(elem).show();
 		});
@@ -371,4 +324,15 @@ function full_filter(name,auto,hide,setcook) {
         full_filter('condition',true);   
         full_filter('years_p',true);               
     });
+    
+    function setSshot(){
+    	console.log($.cookie('sshort'));
+    	if($.cookie('sshort')&&$.cookie('sshort')>0){
+			$.cookie('sshort',0);
+		} else {
+			console.log('set sshort');
+			$.cookie('sshort',1);
+		}
+		window.location.reload();
+    }
 </script>

@@ -56,6 +56,16 @@ class model_news extends Model_Base
         return  $this->db->fetchAll($select);
     }
     
+    public function getGroup($id){
+        if((int)$id){
+             $select = $this->db->select()
+                            ->from(array('s'=>'newsshopcoinsrelation'),array())
+                            ->join(array('group'),'s.group = group.group',array('group','name'));                            
+            $select->where("news=?",$id);
+            return $this->db->fetchRow($select);
+        }
+    }
+    
     private function byWhereParams($select, $WhereParams=array()){
         //var_dump($WhereParams);
         $join = false;

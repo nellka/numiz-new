@@ -4,6 +4,8 @@ $bigsumcoupondis = 5;
 $smallsumcoupon = 2000;
 $smallsumcoupondis = 3;
 
+$admin_ips = array('81.5.87.137','81.5.72.48','83.167.125.157');
+
 $byDates = array(0 => "За все время",
                  1 => "За последний 1 день",
                  2 => "За последние 2 дня",
@@ -21,8 +23,24 @@ $materialsRule = array('moneti'=>1,
                        'loty_dlya_nachinayushchih'=>9,
                        'notgeldy'=>10,
                        'moneti_sssr'=>12,
-                       'knigi'=>5);
+                       'knigi'=>5,
+                       'newcoins'=>'newcoins',
+                       'revaluation'=>'revaluation');
 
+$materialIDsRule = array(1=>'moneti',
+                       7=>'nabori_monet',
+                       8=>'meloch',
+                       6=>'cvetnie_moneti',
+                       2=>'banknoti',
+                       3=>'aksessuary',
+                       4=>'podarochnye_nabory',
+                       11=>'baraholka',
+                       9=>'loty_dlya_nachinayushchih',
+                       10=>'notgeldy',
+                       12=>'moneti_sssr',
+                       5=>'knigi',
+                       'newcoins'=>'newcoins',
+                       'revaluation'=>'revaluation');
 //обязательно добавить в config на сервере
 $MetroArray = Array (
 				1 => "Новослободская", 

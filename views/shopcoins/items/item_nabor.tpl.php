@@ -39,8 +39,10 @@ if ($rows["novelty"]){
 	<strong><?=$rows['namecoins']?></strong> 
 	<div id='info'>	
 		<?		
-		if ($rows["gname"]){?>
-		Страна: <a href=<?=$cfg['site_dir']?>/shopcoins?group=<?=$rows['group']?>&materialtype=<?=$rows["materialtype"]?> title='Посмотреть <?=contentHelper::setWordThat($rows["materialtype"])?> <?=$rows["gname"]?>'>
+		if ($rows["gname"]){
+		    $r_gr_url = $cfg['site_dir'].'shopcoins/'.$materialIDsRule[$rows["materialtype"]].contentHelper::groupUrl($rows["gname"],$rows['group']);
+		    ?>
+		Страна: <a href="<?=$r_gr_url?>" title='Посмотреть <?=contentHelper::setWordThat($rows["materialtype"])?> <?=$rows["gname"]?>' alt='Посмотреть <?=contentHelper::setWordThat($rows["materialtype"])?> <?=$rows["gname"]?>'>
 		<?=$rows["gname"]?>
 		</a><br>
 		<?}?>

@@ -3,23 +3,6 @@ require_once("new/config.php");
 require_once("new/models/mails.php");
 $mail_class = new mails();	
 
-foreach($test_data as $row){		
-	$insert_array["email"] = $row["email"];
-	$insert_array["subject"] = $row["subject"];
-	$insert_array["message"] = $row["message"];
-	$insert_array["headers"] = $row["headers"];
-	$insert_array["is_new_send_method"]  = $row["is_new_send_method"];
-	$insert_array["is_send"] = 1;
-	if($insert_array["is_new_send_method"]){
-	    
-	    $mail_class->subscriptionLetter($row["email"],$row["subject"],$row["message"]);
-	    
-	} else {
-	  //mysql_insert_array('to_send', $insert_array);
-	      mail($row["email"], $row["subject"], $row["message"], $row["headers"]);
-	}
-}
-
 if(isset($_GET['gate_pass']) AND $_GET['gate_pass'] == '1020304050' AND isset($_POST['data'])){
 	
 	// $handle =  mysql_connect('localhost', 'tester', '1020304050'  ) or die( 'Could not open connection to server' );
@@ -27,13 +10,13 @@ if(isset($_GET['gate_pass']) AND $_GET['gate_pass'] == '1020304050' AND isset($_
 	// mysql_query("SET NAMES 'cp1251'");
 	// mysql_query("SET CHARACTER SET 'cp1251'");
 	
-	
-	
+	$data = unserialize(urldecode($_POST['data']));
+
 	if(!isset($data['status'])) die('Error!');
 	
 	$insert_array = array();
 	foreach($data['data'] as $row){
-		
+	   
 		$insert_array["email"] = $row["email"];
 		$insert_array["subject"] = $row["subject"];
 		$insert_array["message"] = $row["message"];
@@ -41,7 +24,7 @@ if(isset($_GET['gate_pass']) AND $_GET['gate_pass'] == '1020304050' AND isset($_
 		$insert_array["is_new_send_method"]  = $row["is_new_send_method"];
 		$insert_array["is_send"] = 1;
 		if($insert_array["is_new_send_method"]){
-		    $mail_class->subscriptionLetter($row["email"],$row["subject"],$row["message"]);
+		    $mail_class->subscriptionLetter($row["email"],iconv("cp1251","utf-8",$row["subject"]),iconv("cp1251","utf-8",$row["message"]));
 		} else {
 		     mail($row["email"], $row["subject"], $row["message"], $row["headers"]);
 		}

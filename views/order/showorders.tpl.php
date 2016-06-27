@@ -87,11 +87,12 @@
 			}?>
 			</td>
 			<td class=tboard>
-			<form action='' method=post target=_blank name=ttform>
+			<!--<form action='' method=post target=_blank name=ttform>
 			<input type=hidden name=order value='<?=$rows["order"]?>'>
 			<input type=hidden name=action value='showorderhtml'>
 			<input type=submit  class=button26 name=submit value='Отчет' class=formtxt>			
-			</form>
+			</form>-->
+			<a href="http://www.numizmatik.ru/shopcoins/order.php?action=showorderhtml&order=<?=$rows["order"]?>" target="_blank" class="ohr">Отчет</a>
 			</td>
 			</tr>
 		<?}?>

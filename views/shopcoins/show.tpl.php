@@ -11,7 +11,7 @@ if($tpl['show']['error']['no_coins']){?>
 <noindex>
 <div class="wraper clearfix info_coins">
 	<div style="display: inline-block;width:400px;">
-		<div id=allreviews style="vertical-align:top;width:400px;margin-top:20px;overflow:hidden;height:500px;">
+		<div id=allreviews style="vertical-align:top;width:400px;overflow:hidden;height:500px;">
 			<a name=showreview></a>
 			<h5 style="margin-top:0px;">Отзывы покупателей</h5>
 			<div id=reviewsdiv >
@@ -37,8 +37,8 @@ if($tpl['show']['error']['no_coins']){?>
 		<br>
 		<center><a href="">Показать еще</a></center>
 	</div>
-	<div style="display: inline-block;vertical-align:top;width:500px;margin-left:100px;margin-top:20px;">
-	<h5  style="margin-top:0px;">Гарантия:</h5>
+	<div style="display: inline-block;vertical-align:top;width:500px;margin-left:100px;">
+	<h5  style="margin-top:0px;">Гарантии (подлинности монет):</h5>
 		<b>Гарантии на нумизматический материал (монеты, банкноты).</b>
 			<br><br>
 			После поступления материала в наш офис, каждая монета просматривается мной  для выяснения ее подлинности.<br>

@@ -26,6 +26,17 @@ $tpl['news']['data']['text'] = preg_replace_callback('#(<img\s(?>(?!src=)[^>])*?
 $tpl['news']['data']['text'] = str_replace('</div><div class="sep"></div><div class="news-img">','</div><div class="news-img">',$tpl['news']['data']['text']);
 $keywords = $tpl['news']['data']['keywords'];
 
+$tpl['news']['data']["group"] = 0;
+
+$main_group = $news_class->getGroup($id); 
+
+if($main_group){
+    $tpl['news']['data']["group"] = $main_group['group'];
+    $tpl['news']['data']["group_title"] = $main_group['name'];
+}  
+$source =  parse_url($tpl['news']['data']['source']);
+if($source&&$source['host'])  $tpl['news']['data']['source'] = "http://".$source['host'];
+   
 /*var_dump(preg_match('#(<img\s(?>(?!src=)[^>])*?src=")(.*?)("[^>]*>)#',$tpl['news']['data']['text'],$res),$res);
 
 $name = $rows["name"];
@@ -84,5 +95,25 @@ function data_to_img($match){
 $tpl['news']['byTheme'] = $news_class->getNewsByKeywords($keywords,$id);
 
 $tpl['news']['byBiblio'] = $news_class->getBiblioByKeywords($keywords,$id);
+
+$tpl['news']['show_relation'] = array();
+$itemsShopcoins = array();
+
+$shopcoins_name = '';
+$shopcoins_id = 0;
+    
+if($tpl['news']['data']["shopcoins"]) $itemsShopcoins = $shopcoins_class->findByIds(explode(',',$tpl['news']['data']["shopcoins"]));
+
+foreach ($itemsShopcoins as $item){
+   $tpl['news']['show_relation'][] = $item;
+   $shopcoins_name = $item['name'];
+   $shopcoins_id = $item['shopcoins'];
+}
+if ($tpl['news']['data']["group"]) { 
+    $relations = $shopcoins_class->getRelatedByGroup($tpl['news']['data']["group"],$shopcoins_name,$shopcoins_id);	
+    foreach ($relations as $item){
+       $tpl['news']['show_relation'][] = $item;
+    }
+}
 
 require_once 'filters.ctl.php';

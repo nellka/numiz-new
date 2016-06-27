@@ -347,10 +347,10 @@ foreach ($tpl['shop']['MyShowArray'] as &$row){
 		
 	if($row['price']) $rehref .= " <font color=red>".ceil($row['price'])." руб.</font>";	
 	
-			
+	$image = contentHelper::showImage("smallimages/".$row["image_small"],'');;	
 	$currval = array();
     $currval['label'] =  TRIM($rehref)?trim($rehref):$row['name'];
-    $currval['image'] = contentHelper::showImage("smallimages/".$row["image_small"],'');
+    $currval['image'] = $image?$image:'';
     $currval['id'] = $row['shopcoins'];   
     $data_href = contentHelper::getRegHref($row);
     $currval['href'] = $cfg['site_dir'].'shopcoins/'.$data_href['rehref'];

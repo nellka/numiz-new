@@ -31,7 +31,7 @@ if($tpl['filter']['years']){
     					?> 
     					<div class="checkbox">           
                         <input type="checkbox" name="years_p[]" value="<?=$filter['filter_id']?>" <?=(is_array($years_p)&&in_array($filter['filter_id'], $years_p))?"checked":""?> />
-    					<a href="<?=$r_url?>?<?=$ahref?>&years_p=<?=$filter['filter_id']?>"> <?=$filter['name'];?></a>
+    					<a href="<?=$r_url?>/y_ysp<?=$filter['filter_id']?><?=$ahref?>"> <?=$filter['name'];?></a>
     					</div>						
     				<?
     					$i++;

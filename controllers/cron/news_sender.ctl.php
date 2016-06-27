@@ -10,6 +10,7 @@ $mail_class = new mails();
 //include $DOCUMENT_ROOT."/funct.php";
 
 $Message = Array();
+$Emails = Array();
 
 $templatetopic["news"] = "
 <table border=0 cellpadding=0 cellspacing=0 width=650>
@@ -93,6 +94,7 @@ $template["advertise"] = "
 $rows_info = $cron_class->getLastSubscribesystem();
 
 $newsdate = $rows_info["news"];
+//var_dump(date('d.m.Y H:i',$newsdate),$rows_info);
 $tboarddate = $rows_info["tboard"];
 $blacklistdate = $rows_info["blacklist"];
 $buycoinsdate = $rows_info["buycoins"];
@@ -100,9 +102,10 @@ $bibliodate = $rows_info["biblio"];
 $advertisedate = $rows_info["advertise"];
 
 
-$sql = "select * from news where date > '$newsdate' and `check`=1 order by date desc limit 10;";
-
+$sql = "select * from news where dateinsert > '$newsdate' and `check`=1 order by date desc limit 10;";
+echo $sql;
 $result = $cron_class->getDataSql($sql);
+var_dump(count($result));
 
 if (count($result) > 3){
 	foreach ($result as $rows){
@@ -274,6 +277,12 @@ if ($Message["news"]
 	$result = $cron_class->getDataSql($sql);
 	
 	foreach ($result as $rows){
+	    if(!trim($rows["email"])) continue;
+	    
+	    if(in_array($rows["email"],$Emails)) continue;
+	    
+	    $Emails[] = $rows["email"];
+	    
 		$mailmessage = "";
 
 		if ($rows["typemail"]==1 and $rows["email"]) {
@@ -306,7 +315,7 @@ if ($Message["news"]
 			//несколькими письмами
 			if ($rows["news"] and $Message["news"])	{
 				$mailmessage = $templatetopic["news"].$Message["news"];
-				$subject = "Клуб Нумизмат | Новости";
+				$subject = "Новости Нумизматики | Клуб Нумизмат";
 				$mailmessage = MakeMessage ($rows["mailkey"], $mailmessage);
 				$cron_class->saveMailDb($rows["email"], $subject, $mailmessage, $headers);
 				echo "<br>".$rows["email"];

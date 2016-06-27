@@ -10,13 +10,13 @@
             <li><a href='<?=$cfg['site_dir']?>shopcoins/aksessuary' title='Аксессуары для коллекционеров цены' class=topmenu>Аксессуары для монет</a></li>
             <li><a href='<?=$cfg['site_dir']?>shopcoins/banknoti' title='Банкноты стоимость(цены) весь мир' class=topmenu>Боны</a></li>
             <li><a href='<?=$cfg['site_dir']?>shopcoins/podarochnye_nabory' title='Подарочные наборы монет  стоимость(цены) весь мир' class=topmenu>Подарочные наборы</a></li>
-            <li><a href='<?=$cfg['site_dir']?>shopcoins/baraholka' title='Барахолка' class="topmenu <?=(isset($materialtype)&&!$search&&$materialtype==11)?'active':''?>">Барахолка</a></li>
+            <li><a href='<?=$cfg['site_dir']?>shopcoins/baraholka' title='Барахолка' class="topmenu <?=(isset($materialtype)&&$materialtype==11)?'active':''?>">Барахолка</a></li>
             <li><a href='<?=$cfg['site_dir']?>shopcoins/loty_dlya_nachinayushchih' title='Лоты монет для начинающих нумизматов' class=topmenu>Лоты монет для начинающих нумизматов</a></li>
             <li><a href='<?=$cfg['site_dir']?>shopcoins/notgeldy' title='Нотгельды стоимость(цены) весь мир' class=topmenu>Нотгельды </a></li>
             <li><a href='<?=$cfg['site_dir']?>shopcoins/moneti_sssr' title='Дешевые монеты СССР цены и стоимость покупки и продажи смотреть' class="topmenu "> Монеты СССР</a></li>
             <li><a href='<?=$cfg['site_dir']?>shopcoins/knigi' title='Книги о нумизматике бонистике цены' class=topmenu>Книги о монетах</a>
-            <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?search=revaluation' title='Распродажа монет' class=topmenu>Распродажа монет</a></li>
-            <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?search=newcoins' title='Новинки 2013-2015' class=topmenu>Новинки 2015-2015</a></li>
+            <li><a href='<?=$cfg['site_dir']?>shopcoins/revaluation' title='Распродажа монет' class=topmenu>Распродажа монет</a></li>
+            <li><a href='<?=$cfg['site_dir']?>shopcoins/newcoins' title='Новинки 2013-2015' class=topmenu>Новинки 2015-2015</a></li>
             <li><a href='<?=$cfg['site_dir']?>shopcoins/series' title='Серии монет'>Серии монет</a></li>
          </ul>
    </li>

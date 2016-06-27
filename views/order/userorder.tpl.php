@@ -93,7 +93,7 @@
 				<option value="<?=$rowst['TimeTableUser']?>"><?=$rowst['Fio']?></option>
 			<?}?>
 			</select>	<br><br>		
-		<?}	else echo "<input type=hidden name=idadmin value=0>";		
+		<?}	else echo "<input type=hidden name=idadmin value='".$idadmin."'>";		
 		?>
 			
 			<input type="submit"  class="button25" value='Подтвердить заказ и перейти к оплате' style="width:350px" onclick="$('.bg_shadow').show();">

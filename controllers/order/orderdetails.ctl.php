@@ -22,9 +22,17 @@ $amount = request("amount");
 
 $viporder_id = 0;
 
-$viporder= request("viporder");
+$viporder = request("viporder");
+$idadmin = request("idadmin");
+$tpl['orderdetails']['admins'] = array();
+
 if($tpl['user']['user_id']!=811){
 	$viporder = 0;
+	$idadmin = 0;
+	
+} else {
+    $sqlt = "select * from TimeTableUser where 	`check`=1 order by Fio;";
+	$tpl['orderdetails']['admins'] = $shopcoins_class->getDataSql($sqlt);    
 }
 
 $ourcoinsorder = array();
@@ -92,7 +100,7 @@ if($viporder){
 	$viporderCoinsIds = array();
 	
 	foreach ($orderdetails as 	$row ){	
-		$viporder_class->addInOrder($viporder_id,$row["catalog"]);	
+		$viporder_class->addInOrder($viporder_id,$row["catalog"],$idadmin);	
 		$viporderCoinsIds[]	 = $row["catalog"];			
 	}
 	

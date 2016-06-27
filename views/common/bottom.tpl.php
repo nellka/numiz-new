@@ -44,7 +44,7 @@
     <div class="col-5">
         <h5>Магазин монет</h5>
         <a title="Монеты стоимость(цены) весь мир" href="http://www.numizmatik.ru/shopcoins/">Монеты</a><br>
-        <a title="Распродажа монет" href="http://www.numizmatik.ru/shopcoins/index.php?search=revaluation">Распродажа монет</a><br>
+        <a title="Распродажа монет" href="http://www.numizmatik.ru/shopcoins/revaluation">Распродажа монет</a><br>
         <a title="Способы оплаты и доставки монет, банкнот, аксессуаров, книг по нумизматике" href="http://www.numizmatik.ru/shopcoins/delivery.php">Оплата и доставка</a><br>
         <a title="Покупка-скупка монет, коллекций монет. " href="http://www.numizmatik.ru/gde-prodat-monety">Покупка/скупка монет</a><br>
         <a title="Оценка стоимости(цены) монет(ы)" href="<?=$cfg['site_dir']?>ocenka-stoimost-monet">Оценка стоимости монет</a><br>

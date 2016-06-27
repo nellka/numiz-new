@@ -9,6 +9,10 @@ body {
 .content {
     position: relative;
 }
+
+a.ohr:visited{
+color:grey
+}
 .container{
 background: #ffffff;
 }
@@ -16,6 +20,14 @@ background: #ffffff;
 float:left;
 text-align: left;
 }
+
+.filter_heading_ul .b-d-block a {
+    display: block;
+    line-height: 20px;
+    text-decoration: none;
+}
+.filter_heading_ul .b-d-block a.blue{color:#247bbd}
+
 .blue{color:blue;}
 .black{color:black;}
 a.reservedinfo{
@@ -94,7 +106,9 @@ float:right;
 
 ul.ui-autocomplete{
 border:1px solid #ccc;
+z-index:210 !important;
 }
+
 .clearfix:before,
 .clearfix:after {
   content: '.';
@@ -1136,9 +1150,11 @@ width:250px
 }
 
 .main_context {
-
-	width:725px;
-	font-size:13px;
+    width: 725px;
+    font-size: 13px;
+    border: 1px solid #eee;
+    padding: 10px;
+	
 }
 blockquote {
         -webkit-border-radius: 6px;
@@ -1249,13 +1265,17 @@ a.button24:active { background: linear-gradient(#f59500, #f5ae00) #f59500; }
     color:black;
     background: #ebb44f none repeat scroll 0 0;
 }
-
+button11:hover {
+background: grey none repeat scroll 0 0;
+}
 .button6,.button6:hover {
     color:black;
     float:left;
     background: #b9b5b4 none repeat scroll 0 0;
 }
-
+.button6:hover {
+background: #ccc none repeat scroll 0 0;
+}
 /*.button25:hover {  color: white; }*/
 
 
@@ -1290,7 +1310,7 @@ a.button24:active { background: linear-gradient(#f59500, #f5ae00) #f59500; }
 }
 
 .sort {
-    line-height: 40px;
+    line-height: 50px;
     float: left;
 }
 
@@ -1638,12 +1658,12 @@ div.fancybox-showcalllink{left: 820px !important;top: 165px !important;}*/
 }
 
 .raiting {position:relative; height:16px; cursor:pointer; width:83px;} /* Блок рейтинга*/
-#raiting_blank, #raiting_votes, #raiting_hover {height:16px; position:absolute}
-#raiting_blank { background:url(../images/ratings.png); width:83px; } /* "Чистые" звездочки */
-#raiting_votes {background:url(../images/ratings.png) 0 -16px} /*  Закрашенные звездочки */ 
-#raiting_hover {background:url(../images/ratings.png) 0 -32px; display:none}  /*  звездочки при голосовании */ 
-#raiting_info {margin-left:100px}
-#raiting_info img{vertical-align:middle; margin:0 5px; display:none}
+#raiting_blank, #raiting_votes, #raiting_hover,.raiting_blank, .raiting_votes, .raiting_hover {height:16px; position:absolute}
+#raiting_blank,.raiting_blank { background:url(../images/ratings.png); width:83px; } /* "Чистые" звездочки */
+#raiting_votes,.raiting_votes  {background:url(../images/ratings.png) 0 -16px} /*  Закрашенные звездочки */ 
+#raiting_hover,.raiting_hover {background:url(../images/ratings.png) 0 -32px; display:none}  /*  звездочки при голосовании */ 
+#raiting_info,.raiting_info {margin-left:100px}
+#raiting_info img,.raiting_info img{vertical-align:middle; margin:0 5px; display:none}
 
 
 .amount {
@@ -1651,9 +1671,14 @@ div.fancybox-showcalllink{left: 820px !important;top: 165px !important;}*/
 	text-align:right;
 	padding: 5px 0;
 }
+.detailsItem .amount_padding div{
+width:110px !important;
+}
+
 .amount_padding div{
 width:100px !important;
 }
+
 .amount span {
 	display:inline-block;
 	width:20px;
@@ -1876,7 +1901,7 @@ text-align: center;
 .d-carousel .jcarousel-next-horizontal,
 .d-carousel-show .jcarousel-next-horizontal {
 	position: absolute;
-	top: 105px;
+	top: 135px;
 	right: 0;
 	margin-right: 0px;
 	width: 15px;
@@ -1900,7 +1925,7 @@ text-align: center;
 .d-carousel .jcarousel-prev-horizontal,
 .d-carousel-show .jcarousel-prev-horizontal {
 	position: absolute;
-	top: 105px;
+	top: 135px;
 	left: 0;
 	/*margin-left: 3px;*/
 	width: 15px;
@@ -1927,7 +1952,10 @@ text-align: center;
     /*margin: 0 -55px;*/
     padding: 0 10px;
 }
-
+.products-cls .triger-carusel {
+    background: #ebb44f none repeat scroll 0 0;
+}
+   
 .new,.new_red {
     background-color: green;
     color: #ffffff;
@@ -1967,7 +1995,7 @@ text-align: center;
     height: 15px;
     overflow: hidden;
     white-space: nowrap;
-    width: 170px;
+    width: 180px;
 }
 .filtr-g-d {
     border-bottom: 1px dashed gray;
@@ -2020,11 +2048,16 @@ color:#666666;
     display: block;
     margin: 5px 0 10px;
     padding: 5px 3px;
-    width: 120px;
+    width: 220px;
 }
 
 .mainItemPhoto{
-width:600px;display: inline-block;vertical-align:top;margin-top:10px; float: left;
+width:600px;
+display: inline-block;
+vertical-align:top;
+margin-top:10px; 
+float: left;
+position: relative;
 }
 .detailsItem{
 width: 370px;
@@ -2285,6 +2318,11 @@ margin: 0 23px 0 0; max-width: 50px;
  border: 1px solid #ccc;
 }
 
+.m-4 .coin_info .center {
+    width: auto;
+    text-align: center;
+}
+
 .bordered_oder {
     border: 1px solid #ccc;
     margin: 20px 20px 0 0;
@@ -2315,8 +2353,40 @@ overflow: hidden;
  margin: 0 20px 0 0;  
 }
 .paginator{
-    margin: 0px; padding: 0px; line-height: 40px;
+    margin: 0px; padding: 0px; line-height: 50px;
 }
+.paginator a:first-child{
+margin: 7px 0 7px 0;
+}
+.paginator a, .paginator span.active {
+    display: block;
+    float: left;
+    font-size: 18px;
+    font-weight: normal;
+    height: 35px;
+    line-height: 35px;
+    margin: 7px 0 7px 5px;
+    text-align: center;
+    text-decoration: none;
+    width: 32px;
+    color: #333;
+}
+.paginator span.active {
+width: 35px;
+}
+.paginator span.active {
+    background-color: #ecb34e;
+    cursor: default;
+    border-radius: 19px;
+    position: relative;
+}
+
+.paginator a:hover{
+border-radius: 18px;
+background-color: #ccc;
+
+}
+
 .page_n{
     padding-right:3px;padding-left:3px;
 }
@@ -2324,30 +2394,31 @@ overflow: hidden;
 .news-cls .blockshop{
     margin: 4px 0 4px 4px;
     width: 235px;
-    height: 327px;
+    height: 322px;
 }
 
 .news-cls .blockshop-full{
-    padding: 10px;
-    width: 215px;
+    padding: 5px;
+    width: 225px;
     min-height: 320px;
 }
 .news-cls h1 {
+    float: left;
     font-size: 22px;
-    margin: 0 0 10px;
+    margin: 0;
 }
 .news-cls div.coinname {
     height: auto;
     overflow: hidden;
     padding: 10px 0px;
-    text-align: justify;
+    /*text-align: justify;*/
 }
 .gray{
     color:gray;
 }
 
 .news-cls div.subinfo {
-    height: 140px;
+    height: 150px;
     margin: 10px 0;
     overflow: hidden;
     text-align: justify;
@@ -2410,4 +2481,54 @@ width:200px;
 #content-news .box-heading .right {
     padding: 0 10px 0 0;
 }
+
+.table{
+display:table;
+}
+
+.table-row{
+display:table-row
+}
+
+.table-cell{
+display:table-cell
+}
+.table div div  div{
+display:block
+}
+
+.sha div div {
+   padding: 0 0 0 23px;
+    width: 500px;
+}
+.sha h5 {
+    float: left;
+    margin: 0 15px 0 0;
+     font-size: 17px;
+}
+
+.sha .box-heading {
+    margin: 10px 0 0;
+    width: 1030px;
+    float: none;
+}
+
+#reviewsdiv > div {
+    padding: 0;
+    width: auto;
+}
+
+.sha {
+    margin: 10px 0 0;
+    width: 1045px;
+}
+
+.sha .table-cell div{
+padding: 10px 0;
+}
+.sha .box-heading a {
+    display: block;
+    font-size: 13px;
+}
+
 /*end news*/

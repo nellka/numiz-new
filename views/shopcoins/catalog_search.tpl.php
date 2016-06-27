@@ -1,7 +1,7 @@
 <div id='products'>
 <div id='pager' class="pager_s">
 	<div id='order' class="orderby" style="padding-left:5px;">
-			<div style="float:left;line-height:40px">
+			<div class=sort>
 			Товаров на странице:
 			 <?foreach ($tpl['pager']['itemsOnpage'] as $k=>$v){
 			 	

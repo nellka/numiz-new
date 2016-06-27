@@ -7,19 +7,19 @@
 				
 					<ul id="shopMenu" >
 						<div  class="shadoweffect shadowblock">
-					   <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=1' title='Монеты стоимость(цены) весь мир'>Монеты</a></li>
-					   <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=8' title='Дешевые монеты стоимость(цены) весь мир' >Мелочь </a></li>
-					   <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=11' title='Барахолка'>Барахолка</a></li>  
-					   <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=6' title='Цветные монеты'>Цветные монеты </a></li>
-					   <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=2' title='Банкноты стоимость(цены) весь мир'>Боны</a></li>
-					   <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=7' title='Наборы монет стоимость(цены) весь мир'>Наборы монет</a></li>
-					   <li><a href='<?=$cfg['site_dir']?>shopcoins/?materialtype=4' title='Подарочные наборы монет  стоимость(цены) весь мир'>Подарочные наборы</a></li>
-					   <li><a href='<?=$cfg['site_dir']?>shopcoins/?materialtype=3' title='Аксессуары для коллекционеров цены'>Аксессуары для монет</a></li>
-					   <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=9' title='Лоты монет для начинающих нумизматов' >Лоты монет для начинающих нумизматов</a></li>
-					   <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=10' title='Нотгельды стоимость(цены) весь мир'>Нотгельды </a></li>
-					   <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?materialtype=5' title='Книги о нумизматике бонистике цены'>Книги о монетах</a>
-					   <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?search=newcoins' title='Новинки 2013-2015'>Новинки 2015-2015</a></li>
-					   <li><a href='<?=$cfg['site_dir']?>shopcoins/index.php?search=revaluation' title='Распродажа монет'>Распродажа монет</a></li> 
+					   <li><a href='<?=$cfg['site_dir']?>shopcoins/moneti' title='Монеты стоимость(цены) весь мир'>Монеты</a></li>
+					   <li><a href='<?=$cfg['site_dir']?>shopcoins/meloch' title='Дешевые монеты стоимость(цены) весь мир' >Мелочь </a></li>
+					   <li><a href='<?=$cfg['site_dir']?>shopcoins/baraholka' title='Барахолка'>Барахолка</a></li>  
+					   <li><a href='<?=$cfg['site_dir']?>shopcoins/cvetnie_moneti' title='Цветные монеты'>Цветные монеты </a></li>
+					   <li><a href='<?=$cfg['site_dir']?>shopcoins/banknoti' title='Банкноты стоимость(цены) весь мир'>Боны</a></li>
+					   <li><a href='<?=$cfg['site_dir']?>shopcoins/nabori_monet' title='Наборы монет стоимость(цены) весь мир'>Наборы монет</a></li>
+					   <li><a href='<?=$cfg['site_dir']?>shopcoins/podarochnye_nabory' title='Подарочные наборы монет  стоимость(цены) весь мир'>Подарочные наборы</a></li>
+					   <li><a href='<?=$cfg['site_dir']?>shopcoins/aksessuary' title='Аксессуары для коллекционеров цены'>Аксессуары для монет</a></li>
+					   <li><a href='<?=$cfg['site_dir']?>shopcoins/loty_dlya_nachinayushchih' title='Лоты монет для начинающих нумизматов' >Лоты монет для начинающих нумизматов</a></li>
+					   <li><a href='<?=$cfg['site_dir']?>shopcoins/notgeldy' title='Нотгельды стоимость(цены) весь мир'>Нотгельды </a></li>
+					   <li><a href='<?=$cfg['site_dir']?>shopcoins/knigi' title='Книги о нумизматике бонистике цены'>Книги о монетах</a>
+					   <li><a href='<?=$cfg['site_dir']?>shopcoins/newcoins' title='Новинки 2013-2015'>Новинки 2015-2015</a></li>
+					   <li><a href='<?=$cfg['site_dir']?>shopcoins/revaluation' title='Распродажа монет'>Распродажа монет</a></li> 
 						</div>
 					</ul>	
 

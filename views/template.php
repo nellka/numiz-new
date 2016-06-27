@@ -1,4 +1,10 @@
-<?php include $cfg['path'] . '/views/common/header/head.tpl.php'; ?>
+<?php include $cfg['path'] . '/views/common/header/head.tpl.php';
+
+if($tpl['user']['user_id']==352480){  
+	//var_dump($tpl['module']);
+   //$tpl['is_mobile'] = true;
+}
+?>
 <div class="bg_shadow"></div>
 
 <div id="page" class="container">
@@ -9,7 +15,7 @@
         <?php     
 
         if($tpl['module']=='shopcoins'||$tpl['module']=='order'){
-           if(in_array($tpl['task'],array('show','catalog_search','viporder','series','one_serie'))||$tpl['module']=='order'){ ?>
+           if(in_array($tpl['task'],array('show','showa','catalog_search','viporder','series','one_serie'))||$tpl['module']=='order'){ ?>
     			<div class="wraper clearfix">  
 			     <?php
                 if(file_exists($cfg['path'] . '/views/pagetop/'.$tpl['task'].'.tpl.php')){
@@ -124,7 +130,7 @@ if(!in_array($tpl["task"],array('login_order','login','remind'))){
 <!--<script src="<?=$cfg['site_dir']?>js/jquery.easing.1.3.js" type= "text/javascript"></script>-->
 <script src="<?=$cfg['site_dir']?>js/jquery.mCustomScrollbar.min.js" type="text/javascript"></script>
 <script src="<?=$cfg['site_dir']?>js/jquery.maskedinput.min.js"></script>
-<script src="<?=$cfg['site_dir']?>js/shopcoins.min.js"></script>
+<script src="<?=$cfg['site_dir']?>js/shopcoins.js?t=3"></script>
 <script type="text/javascript" src="<?=$cfg['site_dir']?>js/jquery.jcarousel.min.js"></script>
 <?}
 if( $tpl['is_mobile']){?>

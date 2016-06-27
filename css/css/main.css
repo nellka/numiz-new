@@ -1232,11 +1232,14 @@ a.button24:active { background: linear-gradient(#f59500, #f5ae00) #f59500; }
 .pager, .pager_s {
 	background: #eeeeee none repeat scroll 0 0;
     display: table-cell;
-    margin: 10px;
+    margin: 0;
     /*padding: 10px 0 0 5px;*/
     width: 722px;
 }
- .pager_s{width:1000px}
+.pager{
+margin: 0;
+}
+ .pager_s{width:1000px;margin: 10px;}
 .orderby{
 	/*float:left;*/
 	width:710px;

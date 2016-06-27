@@ -338,7 +338,10 @@ if(!$payment || !$userfio ||!$fio){
                 
 				$shopcoins_class->updateRow($data_update,"shopcoins='".$rows["catalog"]."'");  
 				
-				if($data_update&&$data_update['check']===0){					
+				if($data_update&&$data_update['check']===0){	
+					$writer_coins = new Zend_Log_Writer_Stream($log_order);
+					$logger_coins    = new Zend_Log($writer_coins);		
+					$logger_coins->log($_SERVER['REMOTE_ADDR']. ' '.'bye '.$rows["catalog"].', user:'.$tpl['user']['user_id'].', order:'.$shopcoinsorder,Zend_Log::INFO); 		
 					$shopcoins_class->deteteFromTemp($rows["catalog"]);
 				}
 				

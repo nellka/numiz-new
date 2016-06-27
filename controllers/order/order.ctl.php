@@ -147,135 +147,138 @@ if (!$tpl['user']['user_id']){
 		//монеты
 			
 		$tpl['order'] = $order_class->getAdminOrderDetails($order);
-		//if (preg_match ('/^[a-zA-Z0-9 \\._\\-]/',$names))
-		if (!preg_match("/^\-{0,1}[0-9]{1,}$/", $tpl['order']["city"])) {
-		    $city = $tpl['order']["city"];
+		if($tpl['order']['user']!=$tpl['user']['user_id']){
+			$tpl['error'] = "Информация о заказе недоступна";
 		} else {
-		    $city = $city_array[$tpl['order']["city"]];
-		}
-		
-		$admincheck = $tpl['order']["admincheck"];
-		$adress_recipient = $city.", ".str_replace("\n", " ", $tpl['order']["adress"]);
-		$fio_recipient = $tpl['order']["fio"];
-		$type = $tpl['order']["type"];
-		//$postindex = 
-		$checking = 1;
-		//if (!$postindex) 
-			$postindex = intval(substr(trim($tpl['order']['adress']),0,6));
-		$shopcoinsorder = $tpl['order']['order'];
-		//PostSum ($postindex, $shopcoinsorder,$clientdiscount);
-		$clientdiscount = $orderdetails_class->getClientdiscount($tpl['user']['user_id']);
-        $bastet_details = $orderdetails_class->PostSum($postindex, $clientdiscount, $order);
-		$bascetsum = $bastet_details['bascetsum'];
-		$bascetpostweight = $bastet_details['bascetpostweight'];	
-		$PostAllPrice = $bastet_details['PostAllPrice'];	
-		//получаем скидку по купону
-        $discountcoupon = 0;	
-		//монеты
-		if ($type =="shopcoins"){	
+			//if (preg_match ('/^[a-zA-Z0-9 \\._\\-]/',$names))
+			if (!preg_match("/^\-{0,1}[0-9]{1,}$/", $tpl['order']["city"])) {
+			    $city = $tpl['order']["city"];
+			} else {
+			    $city = $city_array[$tpl['order']["city"]];
+			}
 			
-			$tpl['order_results'] = $order_class->OrderShopcoinsDetails($clientdiscount,$order);
-			
-			$sum = 0;
-			$what = "";
-			$k=0;
-			$oldmaterialtype = 0;		
+			$admincheck = $tpl['order']["admincheck"];
+			$adress_recipient = $city.", ".str_replace("\n", " ", $tpl['order']["adress"]);
+			$fio_recipient = $tpl['order']["fio"];
+			$type = $tpl['order']["type"];
+			//$postindex = 
+			$checking = 1;
+			//if (!$postindex) 
+				$postindex = intval(substr(trim($tpl['order']['adress']),0,6));
+			$shopcoinsorder = $tpl['order']['order'];
+			//PostSum ($postindex, $shopcoinsorder,$clientdiscount);
+			$clientdiscount = $orderdetails_class->getClientdiscount($tpl['user']['user_id']);
+	        $bastet_details = $orderdetails_class->PostSum($postindex, $clientdiscount, $order);
+			$bascetsum = $bastet_details['bascetsum'];
+			$bascetpostweight = $bastet_details['bascetpostweight'];	
+			$PostAllPrice = $bastet_details['PostAllPrice'];	
+			//получаем скидку по купону
+	        $discountcoupon = 0;	
+			//монеты
+			if ($type =="shopcoins"){	
 				
-			foreach ($tpl['order_results'] as $rows){		
-			   $tpl['order_results'][$k]['title'] = ''	;
-			   $tpl['order_results'][$k]['condition'] = $tpl['conditions'][$rows['condition_id']];
-	           $tpl['order_results'][$k]['metal'] = $tpl['metalls'][$rows['metal_id']];
-	    
-				if ($oldmaterialtype != $rows["materialtype"]) {				
-					$tpl['order_results'][$k]['title'] = $MaterialTypeArray[$rows["materialtype"]];					
+				$tpl['order_results'] = $order_class->OrderShopcoinsDetails($clientdiscount,$order);
+				
+				$sum = 0;
+				$what = "";
+				$k=0;
+				$oldmaterialtype = 0;		
+					
+				foreach ($tpl['order_results'] as $rows){		
+				   $tpl['order_results'][$k]['title'] = ''	;
+				   $tpl['order_results'][$k]['condition'] = $tpl['conditions'][$rows['condition_id']];
+		           $tpl['order_results'][$k]['metal'] = $tpl['metalls'][$rows['metal_id']];
+		    
+					if ($oldmaterialtype != $rows["materialtype"]) {				
+						$tpl['order_results'][$k]['title'] = $MaterialTypeArray[$rows["materialtype"]];					
+					}
+					 $oldmaterialtype = 	$rows["materialtype"];
+					
+					$what .= $rows["name"].", ";
+					//$temp = GetImageSize($DOCUMENT_ROOT."/shopcoins/images/".$rows["image"]);
+					//$imagewidth = $temp[0];				
+					$sum += $rows["amount"]*$rows["price"];
+					$k++;
 				}
-				 $oldmaterialtype = 	$rows["materialtype"];
+				$tpl['order']['sum'] = $sum;	 
+				$what = substr($what, 0, -2);			
+			} elseif ($type=="Book") {
+				$BookImagesFolder = $in."book/images";
+				//сначала о пользователе			
+				//содержимое заказа
+				echo "<br><b class=txt>Содержимое заказа:</b>";
+				echo "<table border=0 cellpadding=3 cellspacing=1>
+				<tr bgcolor=#ffcc66>
+				<td class=tboard><b>Изображение</b></td>
+				<td class=tboard><b>Описание</b></td>
+				<td class=tboard><b>Цена</b></td>
+				<td class=tboard><b>Количество</b></td>
+				</tr>";
+				$sql = "select o.*, c.*
+				 from `orderdetails` as o left join Book as c 
+				on o.catalog = c.BookID where o.order='".$order."' and o.typeorder=1 and o.status=0 order by o.orderdetails;";
+				$result = mysql_query($sql);
+				$sum = 0;
+				$what = "";
+				while (	$rows = mysql_fetch_array($result))
+				{
+					echo "<tr bgcolor=#EBE4D4 valign=top>
+					<td class=tboard width=300><a href=".$server_name."/book/index.php?catalog=".$rows["Book"]."&PaymentOrder=$PaymentOrder&type=$type target=_blank>".$rows["BookName"]."</a>
+					<br><img src=$BookImagesFolder/".$rows["BookImage"].">
+					</td><td class=tboard valign=top>";
+					if ($rows["BookDetails"]) echo "<br><b>Подробнее: </b>".str_replace("\n", "<br>", $rows["BookDetails"]);
+					echo "</td><td class=tboard>".round($rows["BookPrice"], 2)." руб.</td>
+					<td class=tboard align=center>".$rows["amount"]."</td>";
+					$sum += $rows["amount"]*$rows["BookPrice"];
+					echo "</tr>";
+					$what .= $rows["BookName"];
+					if ($rows["amount"]>1)
+						$what .= "(".$rows["amount"]." шт.)";
+					$what .= ", ";
+				}
+				echo "<tr><td>&nbsp;</td><td class=tboard align=right><b>Итого:</b></td><td class=tboard>".round((1-$discount)*$sum, 2)." руб.</td><td class=tboard>&nbsp;</td></tr>";
+				echo "</table>";
+			} elseif ($type=="Album") {
+				$AlbumImagesFolder = $in."album/images";
 				
-				$what .= $rows["name"].", ";
-				//$temp = GetImageSize($DOCUMENT_ROOT."/shopcoins/images/".$rows["image"]);
-				//$imagewidth = $temp[0];				
-				$sum += $rows["amount"]*$rows["price"];
-				$k++;
+				//содержимое заказа
+				echo "<br><b class=txt>Содержимое заказа:</b>";
+				echo "<table border=0 cellpadding=3 cellspacing=1>
+				<tr bgcolor=#ffcc66>
+				<td class=tboard><b>Изображение</b></td>
+				<td class=tboard><b>Описание</b></td>
+				<td class=tboard><b>Цена</b></td>
+				<td class=tboard><b>Количество</b></td>
+				</tr>";
+				$sql = "select o.*, 
+				c.*
+				 from `orderdetails` as o left join Album as c 
+				on o.catalog = c.AlbumID where o.order='".$order."' and o.typeorder=1 and o.status=0 order by o.orderdetails;";
+				$result = mysql_query($sql);
+				$sum = 0;
+				$what = "";
+				while (	$rows = mysql_fetch_array($result))
+				{
+					echo "<tr bgcolor=#EBE4D4 valign=top>
+					<td class=tboard width=300><a href=".$server_name."/album/index.php?catalog=".$rows["Album"]."&PaymentOrder=$PaymentOrder&type=$type target=_blank>".$rows["AlbumName"]."</a>
+					<br><img src=$AlbumImagesFolder/".$rows["AlbumImage"].">
+					</td><td class=tboard valign=top>";
+					if ($rows["AlbumDetails"]) echo "<br><b>Подробнее: </b>".str_replace("\n", "<br>", $rows["AlbumDetails"]);
+					echo "</td><td class=tboard>".round($rows["AlbumPrice"], 2)." руб.</td>
+					<td class=tboard align=center>".$rows["amount"]."</td>";
+					$sum += $rows["amount"]*$rows["AlbumPrice"];
+					echo "</tr>";
+					$what .= $rows["AlbumName"];
+					if ($rows["amount"]>1)
+						$what .= "(".$rows["amount"]." шт.)";
+					$what .= ", ";
+				}
+				echo "<tr><td>&nbsp;</td><td class=tboard align=right><b>Итого:</b></td><td class=tboard>".round((1-$discount)*$sum, 2)." руб.</td><td class=tboard>&nbsp;</td></tr>";
+				echo "</table>";
 			}
-			$tpl['order']['sum'] = $sum;	 
-			$what = substr($what, 0, -2);			
-		} elseif ($type=="Book") {
-			$BookImagesFolder = $in."book/images";
-			//сначала о пользователе			
-			//содержимое заказа
-			echo "<br><b class=txt>Содержимое заказа:</b>";
-			echo "<table border=0 cellpadding=3 cellspacing=1>
-			<tr bgcolor=#ffcc66>
-			<td class=tboard><b>Изображение</b></td>
-			<td class=tboard><b>Описание</b></td>
-			<td class=tboard><b>Цена</b></td>
-			<td class=tboard><b>Количество</b></td>
-			</tr>";
-			$sql = "select o.*, c.*
-			 from `orderdetails` as o left join Book as c 
-			on o.catalog = c.BookID where o.order='".$order."' and o.typeorder=1 and o.status=0 order by o.orderdetails;";
-			$result = mysql_query($sql);
-			$sum = 0;
-			$what = "";
-			while (	$rows = mysql_fetch_array($result))
-			{
-				echo "<tr bgcolor=#EBE4D4 valign=top>
-				<td class=tboard width=300><a href=".$server_name."/book/index.php?catalog=".$rows["Book"]."&PaymentOrder=$PaymentOrder&type=$type target=_blank>".$rows["BookName"]."</a>
-				<br><img src=$BookImagesFolder/".$rows["BookImage"].">
-				</td><td class=tboard valign=top>";
-				if ($rows["BookDetails"]) echo "<br><b>Подробнее: </b>".str_replace("\n", "<br>", $rows["BookDetails"]);
-				echo "</td><td class=tboard>".round($rows["BookPrice"], 2)." руб.</td>
-				<td class=tboard align=center>".$rows["amount"]."</td>";
-				$sum += $rows["amount"]*$rows["BookPrice"];
-				echo "</tr>";
-				$what .= $rows["BookName"];
-				if ($rows["amount"]>1)
-					$what .= "(".$rows["amount"]." шт.)";
-				$what .= ", ";
-			}
-			echo "<tr><td>&nbsp;</td><td class=tboard align=right><b>Итого:</b></td><td class=tboard>".round((1-$discount)*$sum, 2)." руб.</td><td class=tboard>&nbsp;</td></tr>";
-			echo "</table>";
-		} elseif ($type=="Album") {
-			$AlbumImagesFolder = $in."album/images";
-			
-			//содержимое заказа
-			echo "<br><b class=txt>Содержимое заказа:</b>";
-			echo "<table border=0 cellpadding=3 cellspacing=1>
-			<tr bgcolor=#ffcc66>
-			<td class=tboard><b>Изображение</b></td>
-			<td class=tboard><b>Описание</b></td>
-			<td class=tboard><b>Цена</b></td>
-			<td class=tboard><b>Количество</b></td>
-			</tr>";
-			$sql = "select o.*, 
-			c.*
-			 from `orderdetails` as o left join Album as c 
-			on o.catalog = c.AlbumID where o.order='".$order."' and o.typeorder=1 and o.status=0 order by o.orderdetails;";
-			$result = mysql_query($sql);
-			$sum = 0;
-			$what = "";
-			while (	$rows = mysql_fetch_array($result))
-			{
-				echo "<tr bgcolor=#EBE4D4 valign=top>
-				<td class=tboard width=300><a href=".$server_name."/album/index.php?catalog=".$rows["Album"]."&PaymentOrder=$PaymentOrder&type=$type target=_blank>".$rows["AlbumName"]."</a>
-				<br><img src=$AlbumImagesFolder/".$rows["AlbumImage"].">
-				</td><td class=tboard valign=top>";
-				if ($rows["AlbumDetails"]) echo "<br><b>Подробнее: </b>".str_replace("\n", "<br>", $rows["AlbumDetails"]);
-				echo "</td><td class=tboard>".round($rows["AlbumPrice"], 2)." руб.</td>
-				<td class=tboard align=center>".$rows["amount"]."</td>";
-				$sum += $rows["amount"]*$rows["AlbumPrice"];
-				echo "</tr>";
-				$what .= $rows["AlbumName"];
-				if ($rows["amount"]>1)
-					$what .= "(".$rows["amount"]." шт.)";
-				$what .= ", ";
-			}
-			echo "<tr><td>&nbsp;</td><td class=tboard align=right><b>Итого:</b></td><td class=tboard>".round((1-$discount)*$sum, 2)." руб.</td><td class=tboard>&nbsp;</td></tr>";
-			echo "</table>";
 		}
-		
 		$tpl["datatype"]='text_html';
-		$tpl['module'] = $tpl['module'].'/'.$tpl['task'];
+		//$tpl['module'] = $tpl['module'].'/'.$tpl['task'];
 
 	} 
 }

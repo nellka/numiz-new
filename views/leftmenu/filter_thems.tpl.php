@@ -25,8 +25,8 @@ if (isset($tpl['filter']['theme'])) {
 				<?php 
 				foreach ($tpl['filter']['theme']['filter'] as $filter) {?>            
 					<div class="checkbox">
-                        <input type="checkbox" name="theme[]" value="<?=$filter['filter_id']?>" <?=(is_array($themes)&&in_array($filter['filter_id'], $theme))?"checked":""?>/>
-					       <a href="<?=$r_url?>?<?=$ahref?>&theme=<?=$filter['filter_id']?>"> <?=$filter['name'];?></a>
+                        <input type="checkbox" name="themes[]" value="<?=$filter['filter_id']?>" <?=(is_array($themes)&&in_array($filter['filter_id'], $themes))?"checked":""?>/>
+					       <a href="<?=$r_url?><?=contentHelper::themeUrl($filter['name'],$filter['filter_id'])?><?=$ahref?>"> <?=$filter['name'];?></a>
 					</div>
 				<?}?>        
     		</div>

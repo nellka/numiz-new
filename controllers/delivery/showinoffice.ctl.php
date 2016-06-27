@@ -22,11 +22,11 @@ $n = 0;
 
 for ($i=1; $i<=$timelimit; $i++) {
 	$time = $timenow+$i*86400;
-	if (date("w", $time) != 0){	
+	//if (date("w", $time) != 0){	
 		$DaysData[$n]['val'] =$time;
 		$DaysData[$n]['text'] = $DaysArray[date("w",$time)].":".date("Y-m-d", $time);
 		$n++;
-	}	
+	//}	
 }
 
 $data_result['DaysArray'] = $DaysData;

@@ -9,6 +9,7 @@ $details_class = new model_shopcoins_details($cfg['db']);
 //способ доставки
 
 $delivery = request('delivery');
+$idadmin = 0;
 $payment = request('payment');
 if(!$payment) $payment =2;
 if (!$delivery) $delivery = 2;
@@ -95,11 +96,6 @@ if (!$adress&&trim($user_data["adress"])){
 }
 
 $tpl['orderdetails']['admins'] = array();
-
-if($tpl['user']['my_ip']||$tpl['user']['user_id']==811){	
-	$sqlt = "select * from TimeTableUser where 	`check`=1 order by Fio;";
-	$tpl['orderdetails']['admins'] = $shopcoins_class->getDataSql($sqlt);	
-}
 
 $tpl['orderdetails']['alreadyBye'] = array();
 
@@ -188,8 +184,12 @@ $oldmaterialtype = 0;
 $tpl['orderdetails']['ArrayShopcoinsInOrder'] = array();
 $tpl['orderdetails']['ArrayGroupShopcoins'] = array();
 
+$ids_in_order = array();
+
 $i=0;
 foreach ($orderdetails as 	$rows ){
+    $ids_in_order[] = $rows['catalog'];
+    
     $details = $details_class->getItem($rows['catalog']);
 	$rows["details"] =  '';
 	if($details) $rows["details"] = $details["details"];
@@ -212,6 +212,20 @@ foreach ($orderdetails as 	$rows ){
 	}
 	$i++;
 }
+
+if($tpl['user']['my_ip']||$tpl['user']['user_id']==811){	
+	$sqlt = "select * from TimeTableUser where 	`check`=1 order by Fio;";
+	$tpl['orderdetails']['admins'] = $shopcoins_class->getDataSql($sqlt);	
+} else {
+    
+    //проверяем, что монеты из предзаказа
+    if($tpl['user']['user_id']==352480){
+       require_once $cfg['path'] . '/models/viporder.php';
+       $viporder_class = new model_shopcoinsvipclientanswer($cfg['db']);
+       $idadmin = $viporder_class->getAdminInCoins($ids_in_order);
+    }
+}
+
 $can_pay_from_balance = false;
 if($bascetsum <= 3000&& $user_class->is_user_has_premissons() && $tpl['user']['balance'] >= $bascetsum){
     $can_pay_from_balance = true;

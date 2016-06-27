@@ -132,7 +132,15 @@ function showWin(href,width){
 } 
 //рейтинг товара
 function initRaiting(id,total_reiting){
+
     var star_widht = total_reiting*17 ;
+    
+    if(star_widht){
+    	$('#raiting_star'+id+' #raiting #raiting_hover').show(); 
+    	$('#raiting_star'+id+' #raiting #raiting_hover').width(star_widht); 
+    }
+    
+    
     $('#raiting_star'+id+' #raiting').hover(function() {
             $('#raiting_star'+id+' #raiting_votes,#raiting_star'+id+' #raiting_hover').toggle();
         },
@@ -142,12 +150,20 @@ function initRaiting(id,total_reiting){
     var margin_doc = $('#raiting_star'+id+' #raiting').offset();
     $('#raiting_star'+id+' #raiting').mousemove(function(e){
         var widht_votes = e.pageX - margin_doc.left;
+        
         if (widht_votes == 0) widht_votes =1 ;
-        user_votes = Math.ceil(widht_votes/17);  
+       
+        user_votes = Math.round(widht_votes/17);  
         //user_votes должна задаваться без var, т.к. в этом случае она будет глобальной и мы сможем к ней обратиться из другой ф-ции (нужна будет при клике на оценке.
         $('#raiting_star'+id+' #raiting #raiting_hover').width(user_votes*17);
     });
+    
+    $('#raiting_star'+id+' #raiting').mouseout(function(e){
+        $('#raiting_star'+id+' #raiting #raiting_hover').show(); 
+    	$('#raiting_star'+id+' #raiting #raiting_hover').width(star_widht); 
+    });
     // отправка
+    //console.log($('#raiting_star'+id+' #raiting'));
     $('#raiting_star'+id+' #raiting').click(function(){
          $.ajax({	
     	    url: 'addmark.php', 
@@ -316,21 +332,23 @@ function sendData(name,val,p0,p1,y0,y1){
     //$('form#search-params').submit();
 }
 
-function AddAccessory(id,materialtype){		
-	var str;
-	var amount = $('#amount'+id).val();
+function AddAccessory(id){		
+	var amount = 0;
+	if($('#amount'+id).length){
+		var amount = $('#amount'+id).val();
+	}
 	if(amount <=0) amount = 1;
     $.ajax({	
-	    url: site_dir+'shopcoins/addbascet.php', 
+	    url: site_dir+'shopcoins/addbascet.php?r='+ Math.random(), 
 	    type: "POST",
-	    data:{'shopcoinsorder':"<?=$shopcoinsorder?>",'shopcoins':id,'amount':amount,'materialtype':materialtype,'datatype':'json'},         
+	    data:{'shopcoins':id,'amount':amount,'datatype':'json'},         
 	    dataType : "json",                   
-	    success: function (data, textStatus) { 	    	
+	    success: function (data, textStatus) { 	  
 	        ShowSmallBascet(id,data);	        
 	    }
 	});
 	
-	return false;		
+	return true;		
 }
 
 var klicklast = 0;
@@ -753,7 +771,8 @@ function ShowMetro(delivery){
 }
 
 function ShowPayment(delivery){
-	bascetsum = $('#bascetsum').val();
+	var bascetsum = $('#bascetsum').val();
+	//console.log(bascetsum);
 	$('#payment1').prop("disabled",true);
 	$('#payment2').prop("disabled",true);
 	$('#payment3').prop("disabled",true);
@@ -959,7 +978,7 @@ function calculateOrder(on){
 	}
 
 	$.ajax({
-		url: site_dir+'shopcoins/postcalculate.php',
+		url: site_dir+'shopcoins/postcalculate.php?r='+Math.random(),
 		type: "POST",
 		data: data,
 		dataType: "json",
@@ -973,13 +992,13 @@ function calculateOrder(on){
 
 			$('#user-compare-block').show();
 			$('#user-order').hide();
-
-			errorvalue =data.error;
-			bascetamount = data.bascetamount;
-			bascetsum = data.bascetsum;
-			bascetweight = data.bascetweight;
-			discountcoupon = data.discountcoupon;
-			SumName = data.SumName;
+console.log(data);
+			var errorvalue =data.error;
+			var bascetamount = data.bascetamount;
+			var bascetsum = data.bascetsum;
+			var bascetweight = data.bascetweight;
+			var discountcoupon = data.discountcoupon;
+			var SumName = data.SumName;
 
 
 			payment = $('[name=payment]').val();
@@ -989,13 +1008,13 @@ function calculateOrder(on){
 			$('#phone-result').text($('#phone').val());
 			$('#delivery-result').text(data.DeliveryName);
 
-			metrovalue = data.metro;
+			var metrovalue = data.metro;
 			if (metrovalue){
 				$('#metro-block-result').show();
 				$('#metro-result').text(metrovalue);
 			}
 
-			meetingdatevalue = data.meetingdate;
+			var meetingdatevalue = data.meetingdate;
 			if (meetingdatevalue){
 			    $('#meetingdate-block-result').show();
 				$('#meetingdate-result').text(meetingdatevalue);
@@ -1003,12 +1022,12 @@ function calculateOrder(on){
 			     $('#meetingdate-block-result').hide();
 			}
 
-			meetingfromtimevalue = data.meetingfromtime;
+			var meetingfromtimevalue = data.meetingfromtime;
 			if (meetingfromtimevalue) {
 				$('#meetingfromtime-block-result').show();
 				$('#meetingfromtime-result').text(meetingfromtimevalue);
 			}
-			meetingtotimevalue = data.meetingtotime;
+			var meetingtotimevalue = data.meetingtotime;
 			if (meetingtotimevalue) {
 				$('#meetingfromtime-block-result').show();
 				$('#meetingtotime-result').text(meetingtotimevalue);

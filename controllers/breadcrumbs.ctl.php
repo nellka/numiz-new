@@ -1,11 +1,11 @@
 <? //немного костыльный модуль, так как четкой иерархии страниц и меню пока нет
 
-$tpl['breadcrumbs'][] = array(
+/*$tpl['breadcrumbs'][] = array(
 	'text' => 'Главная',
 	'href' => $cfg['site_dir'],
 	'base_href' =>'/'
 );
-$tpl['current_page'] = '/';
+$tpl['current_page'] = '/';*/
 
 if($tpl['module']=='user'&&$tpl['task']=='registration'){    
    
@@ -16,12 +16,94 @@ if($tpl['module']=='user'&&$tpl['task']=='registration'){
     );
         
     $tpl['current_page'] = '';
+} elseif ($tpl['module']=='shopcoins'&&$tpl['task']=='show'){
+    $tpl['breadcrumbs'][] = array(
+    	'text' => 'Магазин монет',
+    	'href' => $cfg['site_dir'].'shopcoins',
+    	'base_href' =>'shopcoins'
+    );
+    
+    $tpl['breadcrumbs'][] = array(
+    	'text' => contentHelper::$menu[$materialtype],
+    	'href' => $cfg['site_dir']."shopcoins/index.php?materialtype=$materialtype",
+    	'base_href' =>"shopcoins/index.php?materialtype=$materialtype"
+    );
+    
+    if($rows_main["gname"]&&$rows_main["group"]){
+         $tpl['breadcrumbs'][] = array(
+        	'text' => $rows_main["gname"],
+        	'href' => $cfg['site_dir']."shopcoins/index.php?materialtype=$materialtype&group=".$rows_main["group"],
+        	'base_href' =>"shopcoins/index.php?materialtype=$materialtype&group=".$rows_main["group"]
+        );
+    }
+    $tpl['breadcrumbs'][] = array(
+    	'text' => $rows_main["name"],
+    	'href' => '',
+    	'base_href' =>''
+    );
+    
+    $tpl['current_page'] = '';
+    
+}elseif ($tpl['module']=='shopcoins'&&$tpl['task']=='showa'){
+    $tpl['breadcrumbs'][] = array(
+    	'text' => 'Магазин монет',
+    	'href' => $cfg['site_dir'].'shopcoins',
+    	'base_href' =>'shopcoins'
+    );
+    
+    $tpl['breadcrumbs'][] = array(
+    	'text' => contentHelper::$menu[$materialtype],
+    	'href' => $cfg['site_dir']."shopcoins/index.php?materialtype=$materialtype",
+    	'base_href' =>"shopcoins/index.php?materialtype=$materialtype"
+    );
+    
+    if($rows_main["gname"]&&$rows_main["group"]){
+         $tpl['breadcrumbs'][] = array(
+        	'text' => $rows_main["gname"],
+        	'href' => $cfg['site_dir']."shopcoins/index.php?materialtype=$materialtype&group=".$rows_main["group"],
+        	'base_href' =>"shopcoins/index.php?materialtype=$materialtype&group=".$rows_main["group"]
+        );
+    }
+    $tpl['breadcrumbs'][] = array(
+    	'text' => $rows_main["name"],
+    	'href' => '',
+    	'base_href' =>''
+    );
+    
+    $tpl['current_page'] = '';
+    
 }
 
-if($tpl['module']=='news'){
+
+if ($tpl['module']=='news'&&$tpl['task']=='show'){
+    
+    $tpl['breadcrumbs'][] = array(
+		'text' => 'Новости нумизматики',
+		'href' => $r_url,
+		'base_href' =>$r_url
+	);
+	
+   
+    if($tpl['news']['data']['group']){
+         $tpl['breadcrumbs'][] = array(
+        	'text' => $tpl['news']['data']['group_title'],
+        	'href' => $r_url.'?group='.$tpl['news']['data']['group'],
+        	'base_href' =>$r_url.'?group='.$tpl['news']['data']['group']
+        );
+    }
+    
+    $tpl['breadcrumbs'][] = array(
+    	'text' => $tpl['news']['data']["name"],
+    	'href' => '',
+    	'base_href' =>''
+    );
+    
+    $tpl['current_page'] = '';
+    
+} elseif($tpl['module']=='news'){
 
 	$tpl['breadcrumbs'][] = array(
-		'text' => 'Новости',
+		'text' => 'Новости нумизматики',
 		'href' => '',
 		'base_href' =>''
 	);
@@ -31,7 +113,7 @@ if($tpl['module']=='news'){
 
 if ($tpl['module']=='shopcoins'&&$tpl['task']=='series'){
       $tpl['breadcrumbs'][] = array(
-    	'text' => 'Магазин',
+    	'text' => 'Магазин монет',
     	'href' => $cfg['site_dir'].'shopcoins',
     	'base_href' =>$cfg['site_dir'].'shopcoins'
     );
@@ -46,7 +128,7 @@ if ($tpl['module']=='shopcoins'&&$tpl['task']=='series'){
     
 } else if($tpl['module']=='shopcoins'&&$tpl['task']=='one_serie'){
       $tpl['breadcrumbs'][] = array(
-    	'text' => 'Магазин',
+    	'text' => 'Магазин монет',
     	'href' => $cfg['site_dir'].'shopcoins',
     	'base_href' =>'shopcoins'
     );
@@ -68,7 +150,7 @@ if ($tpl['module']=='shopcoins'&&$tpl['task']=='series'){
 
 if ($tpl['module']=='shopcoins'&&$tpl['task']=='viporder'){
       $tpl['breadcrumbs'][] = array(
-    	'text' => 'Магазин',
+    	'text' => 'Магазин монет',
     	'href' => $cfg['site_dir'].'shopcoins',
     	'base_href' =>'shopcoins'
     );
@@ -81,7 +163,7 @@ if ($tpl['module']=='shopcoins'&&$tpl['task']=='viporder'){
     $tpl['current_page'] = '';
 } elseif($tpl['module']=='order'&&$tpl['task']=='showorders'){
      $tpl['breadcrumbs'][] = array(
-    	'text' => 'Магазин',
+    	'text' => 'Магазин монет',
     	'href' => $cfg['site_dir'].'shopcoins',
     	'base_href' =>'shopcoins'
     );
@@ -96,7 +178,7 @@ if ($tpl['module']=='shopcoins'&&$tpl['task']=='viporder'){
     
 } elseif($tpl['module']=='order'&&($tpl['task']=='userorder'||$tpl['task']=='submitorder')){
      $tpl['breadcrumbs'][] = array(
-    	'text' => 'Магазин',
+    	'text' => 'Магазин монет',
     	'href' => $cfg['site_dir'].'shopcoins',
     	'base_href' =>'shopcoins'
     );
@@ -109,9 +191,9 @@ if ($tpl['module']=='shopcoins'&&$tpl['task']=='viporder'){
     
     $tpl['current_page'] = '';
     
-}elseif ($tpl['module']=='shopcoins'&&$tpl['task']=='show'){
+} /*elseif ($tpl['module']=='shopcoins'&&$tpl['task']=='show'){
     $tpl['breadcrumbs'][] = array(
-    	'text' => 'Магазин',
+    	'text' => 'Магазин монет',
     	'href' => $cfg['site_dir'].'shopcoins',
     	'base_href' =>'shopcoins'
     );
@@ -138,31 +220,10 @@ if ($tpl['module']=='shopcoins'&&$tpl['task']=='viporder'){
     $tpl['current_page'] = '';
     
 } elseif ($tpl['module']=='shopcoins'&&$tpl['task']=='catalog_base'){
+      
+} */elseif ($tpl['module']=='order'&&$tpl['task']=='orderdetails'){
       $tpl['breadcrumbs'][] = array(
-    	'text' => 'Магазин',
-    	'href' => $cfg['site_dir'].'shopcoins',
-    	'base_href' =>'shopcoins'
-    );
-    if($search=='newcoins'){
-       $tpl['breadcrumbs'][] = array(
-        	'text' => "Новинки",
-        	'href' => "",
-        	'base_href' =>""    );
-    } elseif($search=='revaluation'){
-        $tpl['breadcrumbs'][] = array(
-        	'text' => "Распродажа монет",
-        	'href' => "",
-        	'base_href' =>""    );
-    } else {
-        $tpl['breadcrumbs'][] = array(
-        	'text' => contentHelper::$menu[$materialtype],
-        	'href' => "",
-        	'base_href' =>""    );
-    }
-    $tpl['current_page'] = '';
-} elseif ($tpl['module']=='order'&&$tpl['task']=='orderdetails'){
-      $tpl['breadcrumbs'][] = array(
-    	'text' => 'Магазин',
+    	'text' => 'Магазин монет',
     	'href' => $cfg['site_dir'].'shopcoins',
     	'base_href' =>'shopcoins'
     );
@@ -176,7 +237,7 @@ if ($tpl['module']=='shopcoins'&&$tpl['task']=='viporder'){
     $tpl['current_page'] = '';
 } elseif ($tpl['module']=='shopcoins'&&$tpl['task']=='catalog_search'){
       $tpl['breadcrumbs'][] = array(
-    	'text' => 'Магазин',
+    	'text' => 'Магазин монет',
     	'href' => $cfg['site_dir'].'shopcoins',
     	'base_href' =>'shopcoins'
     );
@@ -201,7 +262,7 @@ if($_SERVER['REQUEST_URI']=='/new/ocenka-stoimost-monet'){
 
 if($_SERVER['REQUEST_URI']=='/new/shopcoins/delivery.php'){
 	$tpl['breadcrumbs'][] = array(
-    	'text' => 'Магазин',
+    	'text' => 'Магазин монет',
     	'href' => $cfg['site_dir'].'shopcoins',
     	'base_href' =>'shopcoins'
     );
@@ -215,7 +276,7 @@ if($_SERVER['REQUEST_URI']=='/new/shopcoins/delivery.php'){
 
 if($_SERVER['REQUEST_URI']=='/new/shopcoins/how.php'){
 	$tpl['breadcrumbs'][] = array(
-    	'text' => 'Магазин',
+    	'text' => 'Магазин монет',
     	'href' => $cfg['site_dir'].'shopcoins',
     	'base_href' =>'shopcoins'
     );
@@ -229,7 +290,7 @@ if($_SERVER['REQUEST_URI']=='/new/shopcoins/how.php'){
 
 if($_SERVER['REQUEST_URI']=='/new/shopcoins/shopcoinsrules.php'){
 	$tpl['breadcrumbs'][] = array(
-    	'text' => 'Магазин',
+    	'text' => 'Магазин монет',
     	'href' => $cfg['site_dir'].'shopcoins',
     	'base_href' =>'shopcoins'
     );
@@ -243,7 +304,7 @@ if($_SERVER['REQUEST_URI']=='/new/shopcoins/shopcoinsrules.php'){
 
 if($_SERVER['REQUEST_URI']=='/new/shopcoins/shopcoinshelp.php'){
 	$tpl['breadcrumbs'][] = array(
-    	'text' => 'Магазин',
+    	'text' => 'Магазин монет',
     	'href' => $cfg['site_dir'].'shopcoins',
     	'base_href' =>'shopcoins'
     );
@@ -257,7 +318,7 @@ if($_SERVER['REQUEST_URI']=='/new/shopcoins/shopcoinshelp.php'){
 
 if($_SERVER['REQUEST_URI']=='/new/about.php'){
 	$tpl['breadcrumbs'][] = array(
-    	'text' => 'Магазин',
+    	'text' => 'Магазин монет',
     	'href' => $cfg['site_dir'].'shopcoins',
     	'base_href' =>'shopcoins'
     );
@@ -272,7 +333,7 @@ if($_SERVER['REQUEST_URI']=='/new/about.php'){
 
 if($_SERVER['REQUEST_URI']=='/new/shopinfo.php'){
 	$tpl['breadcrumbs'][] = array(
-    	'text' => 'Магазин',
+    	'text' => 'Магазин монет',
     	'href' => $cfg['site_dir'].'shopcoins',
     	'base_href' =>'shopcoins'
     );
@@ -286,7 +347,7 @@ if($_SERVER['REQUEST_URI']=='/new/shopinfo.php'){
 
 if($_SERVER['REQUEST_URI']=='/new/garantii-podlinosti-monet'){
 	$tpl['breadcrumbs'][] = array(
-    	'text' => 'Магазин',
+    	'text' => 'Магазин монет',
     	'href' => $cfg['site_dir'].'shopcoins',
     	'base_href' =>'shopcoins'
     );
@@ -299,6 +360,5 @@ if($_SERVER['REQUEST_URI']=='/new/garantii-podlinosti-monet'){
     $tpl['current_page'] = 'garantii-podlinosti-monet';
     
 }
-
 
 ?>

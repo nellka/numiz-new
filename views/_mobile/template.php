@@ -157,11 +157,16 @@ $(document).ready(function() {
 		    </div>         
        <? } else { ?>  
 	       <div class="clearfix">		            
-	            <div id='subheader-body'>
-	                <?php include $cfg['path'] . '/views/common/breadcrumb.tpl.php'; ?> 
-	            </div>
+	           
 	            <? 
-	             if($tpl['is_mobile']&&file_exists($cfg['path'].'/views/_mobile/'.$tpl['module'].'.tpl.php')){
+	            if(file_exists($cfg['path'] . '/views/_mobile/pagetop/'.$tpl['module'].'.tpl.php')){
+			         include $cfg['path'] . '/views/_mobile/pagetop/'.$tpl['module'].'.tpl.php'; 
+                } else {?>
+                	 <div id='subheader-body'>
+		                <?php include $cfg['path'] . '/views/common/breadcrumb.tpl.php'; ?> 
+		            </div>
+                <?}
+	            if($tpl['is_mobile']&&file_exists($cfg['path'].'/views/_mobile/'.$tpl['module'].'.tpl.php')){
 			        require_once $cfg['path'] .  '/views/_mobile/'.$tpl['module'].'.tpl.php';
 			    } else {
 			        require_once $cfg['path'] .  '/views/'.$tpl['module'].'.tpl.php';

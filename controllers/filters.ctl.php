@@ -270,7 +270,7 @@ if($tpl['user']['user_id']==352480){
 	//echo time()." f series $i<br>";
 }
 
-$filter_groups[] = $tpl['filter']['bydate'] = array('name'=>'Фильтры по даже','filter_group_id'=>'bydate','filter_group_id_full'=>'bydate','filter'=>$childen_data_bydate);
+//$filter_groups[] = $tpl['filter']['bydate'] = array('name'=>'Поступления по дате','filter_group_id'=>'bydate','filter_group_id_full'=>'bydate','filter'=>$childen_data_bydate);
 
 if( $childen_data_nominals) {    
     $filter_groups[] = $tpl['filter']['nominals'] = array('name'=>'Номиналы','filter_group_id'=>'nominal','filter_group_id_full'=>'nominals','filter'=>$childen_data_nominals,'materialtype'=>$materialtype);

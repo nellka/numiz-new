@@ -7,7 +7,7 @@
 <meta name="Description" content="<?=isset( $tpl[$tpl['module']]['_Description'])?$tpl[$tpl['module']]['_Description']:$tpl['base']['_Description']?>">
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<link rel=stylesheet type=text/css href='<?=$cfg['site_dir']?>css/main.css?n=4' media='all' property=''>
+<link rel=stylesheet type=text/css href='<?=$cfg['site_dir']?>css/main.css?n=9' media='all' property=''>
 
 <link rel="SHORTCUT ICON" href="<?=$cfg['site_dir']?>favicon.ico" media='all' property=''>
 <meta name="viewport" content="width=1200" />
