@@ -138,9 +138,9 @@ if($sum<500){?>
 
 <div class="right marg-10">Итого(без суммы доставки): <b><?=$sum?> рублей</b> <br>
 
-<? if($tpl['user']['user_id']&&$tpl['user']['user_data']['vip_discoint']){?>
-    Ваша скидка как VIP-клиента: <b><?=$tpl['user']['user_data']['vip_discoint']?> %</b> <br>
-    Итого c учетом скидки (без суммы доставки): <b><?=($sum-floor($sum*$tpl['user']['user_data']['vip_discoint']/100))?> рублей</b> <br>
+<? if($tpl['user']['vip_discoint']){?>
+    Ваша скидка как VIP-клиента: <b><?=$tpl['user']['vip_discoint']?> %</b> <br>
+    Итого c учетом скидки (без суммы доставки): <b><?=($sum-floor($sum*$tpl['user']['vip_discoint']/100))?> рублей</b> <br>
 <?}?>
 
 <!--<a class="button25 right" style="width:100px" onclick="$('#order-form').submit()">Пересчитать</a>-->

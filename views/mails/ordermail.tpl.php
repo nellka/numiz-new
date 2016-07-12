@@ -27,7 +27,7 @@ $mail_text .= '</table>';
 $mail_text .= '<table border="0" cellpadding="0" cellspacing="0" width="650" style="margin-top:20px;">';
 $mail_text .= '<tr><td width="50%"></td><td align="left" style="font-size:14px;font-weight:bold;line-height:24px;">';
 if ($tpl['submitorder']['discountcoupon']) {
-    if($user_data['vip_discoint']) {
+    if($tpl['user']['vip_discoint']) {
 	   $mail_text .= 'Сумма заказа: <font color="red">'.($tpl['submitorder']['sum']+$tpl['submitorder']['discountcoupon']).' руб.</font><br>';
 	   $mail_text .='Скидка как VIP-клиент:<font color="red"> '.$tpl['submitorder']['vip_discoint'].' %</font><br>';
 	   $mail_text .='Размер скидки: <font color="red">'.$tpl['submitorder']['discountcoupon'].' руб.</font><br>';

@@ -81,14 +81,24 @@
                 </ul>
             </div>      
       </li>
-      <li class="top"><a href="http://www.numizmatik.ru/ocenka-stoimost-monet"><span>Аукцион</span></a>
-      <div id="menu7"  class="submenu">          
-            <ul>          
-                <li><a href='http://www.numizmatik.ru/auction/' title='Аукцион монет России, Германии, США и других стран' class=topmenu>Аукцион монет</a></li>
-                <li><a href='http://www.numizmatik.ru/auction/about.php' title='Правила аукциона ионет' class=topmenu>Правила аукциона</a></li>
-            </ul>
-         </div>
-      </li>      
+   <li class="top"><a href="http://www.numizmatik.ru/ocenka-stoimost-monet"><span>Полезное</span></a>
+      <div id="menu10"  class="submenu">          
+            <ul>         
+             <li><a href='http://www.numizmatik.ru/biblio/' title='Нумизматическая библиотека - интересные для любого коллекционера статьи, обзоры и аналитические материалы' class=topmenu>Библиотека нумизмата</a> </li>
+             <li><a href='http://www.numizmatik.ru/collector/' title='Клуб Нумизмат Найдите коллекционеров в своем городе, узнайте кто еще интересуется монетами на вашу тематику' class=topmenu>Клуб Нумизмат</a> </li>
+             <li><a href='http://www.numizmatik.ru/advertise/' title='Объявления от коллекционеров по покупке/продаже/обмену монет' class=topmenu>Объявления пользователей</a> </li>
+             <li><a href='http://www.numizmatik.ru/buycoins/' title='Нужна редкая монета, которую долго не можете найти? Оставьте у нас свою заявку.' class=topmenu>Нужны монеты</a> </li>
+             <li><a href='http://www.numizmatik.ru/pricecoins/' title='Динамический ценник на монеты СССР и России' class=topmenu>Ценник на монеты</a> </li>
+             <li><a href='http://www.numizmatik.ru/price/' title='Цены на монеты' class=topmenu>Стоимость монет</a> </li>
+             <li><a href='http://www.numizmatik.ru/chat/' title='Нумизматический чат' class=topmenu>Нумизматический чат</a> </li>
+             <li><a href='http://www.numizmatik.ru/classificator/' title='Распознавание монет' class=topmenu>Распознавание монет</a> </li>
+             <li><a href='http://www.numizmatik.ru/russiancoins/' title='Юбилейные монеты России' class=topmenu>Юбилейные монеты</a> </li>
+             <li><a href='http://www.numizmatik.ru/moneti' title='Из истории происхождения монет' class=topmenu>Монета, история</a> </li>
+             <li><a href='http://www.numizmatik.ru/subscribe/' title='Подписка на поступления монет, банкнот, аксессуаров, новости нумизматики, форум нумизматов' class=topmenu>Подписка</a> </li>
+             <li><a href='http://www.numizmatik.ru/game/' title='Игровой раздел Клуба Нумизмат' class=topmenu>Игровой раздел</a> </li>
+             </ul>
+      	</div>
+      </li>
       <li class="top"><a href="http://www.numizmatik.ru/ocenka-stoimost-monet"><span>Форумы</span></a>      
       <div id="menu8"  class="submenu">          
             <ul>          
@@ -112,24 +122,15 @@
           </ul>
        </div>
      </li>
-     <li class="top"><a href="http://www.numizmatik.ru/ocenka-stoimost-monet"><span>Полезное</span></a>
-      <div id="menu10"  class="submenu">          
-            <ul>         
-             <li><a href='biblio/' title='Нумизматическая библиотека - интересные для любого коллекционера статьи, обзоры и аналитические материалы' class=topmenu>Библиотека нумизмата</a> </li>
-             <li><a href='collector/' title='Клуб Нумизмат Найдите коллекционеров в своем городе, узнайте кто еще интересуется монетами на вашу тематику' class=topmenu>Клуб Нумизмат</a> </li>
-             <li><a href='advertise/' title='Объявления от коллекционеров по покупке/продаже/обмену монет' class=topmenu>Объявления пользователей</a> </li>
-             <li><a href='buycoins/' title='Нужна редкая монета, которую долго не можете найти? Оставьте у нас свою заявку.' class=topmenu>Нужны монеты</a> </li>
-             <li><a href='pricecoins/' title='Динамический ценник на монеты СССР и России' class=topmenu>Ценник на монеты</a> </li>
-             <li><a href='price/' title='Цены на монеты' class=topmenu>Стоимость монет</a> </li>
-             <li><a href='chat/' title='Нумизматический чат' class=topmenu>Нумизматический чат</a> </li>
-             <li><a href='classificator/' title='Распознавание монет' class=topmenu>Распознавание монет</a> </li>
-             <li><a href='russiancoins/' title='Юбилейные монеты России' class=topmenu>Юбилейные монеты</a> </li>
-             <li><a href='moneti' title='Из истории происхождения монет' class=topmenu>Монета, история</a> </li>
-             <li><a href='subscribe/' title='Подписка на поступления монет, банкнот, аксессуаров, новости нумизматики, форум нумизматов' class=topmenu>Подписка</a> </li>
-             <li><a href='game/' title='Игровой раздел Клуба Нумизмат' class=topmenu>Игровой раздел</a> </li>
-             </ul>
-      	</div>
-      </li>
+     <li class="top"><a href="http://www.numizmatik.ru/ocenka-stoimost-monet"><span>Аукцион</span></a>
+      <div id="menu7"  class="submenu">          
+            <ul>          
+                <li><a href='http://www.numizmatik.ru/auction/' title='Аукцион монет России, Германии, США и других стран' class=topmenu>Аукцион монет</a></li>
+                <li><a href='http://www.numizmatik.ru/auction/about.php' title='Правила аукциона ионет' class=topmenu>Правила аукциона</a></li>
+            </ul>
+         </div>
+      </li>      
+     
       
        <li class="top"><a href="http://www.numizmatik.ru/ocenka-stoimost-monet"><span>Контакты</span></a>       
           <div id="menu11"  class="submenu">          

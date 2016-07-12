@@ -15,7 +15,7 @@ $year = (integer)request('year');
 $metal = (integer)request('metal');
 $condition = (integer)request('condition');
 $details = strip_tags(request('details')); //
-	
+
 if(isset($_REQUEST['modal']) AND isset($_GET['coin']) AND !empty($_GET['coin'])){
 	die('modal');
 }
@@ -36,13 +36,17 @@ if($coin_id &&$group&&$name&&$year&&!$data_result['error']){
 		$data_result['error'] = 'Мы не принимаем монеты из этой страны';
 	} else {
 		if(!$data_result['error']){
-			$data = array('price' => 'price'+1, 
+			$nominal_id = $shopcoins_class->getNominalId($name);
+
+			$data = array('price' => $coin['price']+1, 
 						  'group' => $group_id, 
 						  'year' => $year, 
-						  'metal'=> isset($metallArray[$metal])?$metallArray[$metal]:$metallArray[15], 
-						  'condition' => isset($conditionArray[$condition])?$conditionArray[$condition]:"", 
-						  'details' => $details,  
-						  'name' => $name);
+						  'metal_id'=> $metal, 
+						  'condition_id' => $condition, 
+						  'name' => $name,
+						  'nominal_id'=>$nominal_id);
+  
+			$shopcoins_class->setDetails($coin_id, $details);  
 	        $shopcoins_class->setCoinDescription($data,$coin_id);			
 			$user_class->add_user_describe_log($coin_id);
 			$user_class->addUserBalance();

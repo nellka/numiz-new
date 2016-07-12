@@ -1,4 +1,4 @@
-<center><a href="<?=$_SERVER['REQUEST_URI']?>" onclick="$.cookie('fv', 1);">Полная версия сайта</a></center>
+<center><a href="<?=$_SERVER['REQUEST_URI']?>" onclick="$.cookie('fv', 1);" class="full">Полная версия сайта</a></center>
 <div class="top-menu">        
   <div id="header" class="wraper">
 		<ul class="left cssmenu">
@@ -32,6 +32,11 @@
 			<li>
 				<a href='<?=$cfg['site_dir']?>/shopcoins/delivery.php' class="car decoratnone">
 					<img src="<?=$cfg['site_dir']?>images/mobile/auto.jpg">
+				</a>
+			</li>
+            <li>
+				<a href='<?=$cfg['site_dir']?>shopinfo.php' class="decoratnone">
+					<img src="<?=$cfg['site_dir']?>images/mobile/geolocation.gif">
 				</a>
 			</li>
 
@@ -91,12 +96,12 @@
 			</td>
 			<td class="fontsize12">
 				<div id="contact-top-module">  
-					<p><b>Москва</b>, ул. Тверская 12 стр. 8<br>
+					<p><a href="http://www.numizmatik.ru/shopinfo.php" class="black"><b>Москва</b>, ул. Тверская 12 стр. 8</a><br>
 				</div>       
 				<div id="contact-top-phone" class="contact-top-phone">
 					 +7 (800) 333-14-77 <br>
 					 +7 (903) 006-00-44 <br>
-					 +7 (812) 925-53-22    
+					 +7 (915) 001-22-23   
 				</div> 
 			</td>
 		</tr>
@@ -108,7 +113,7 @@
 	<a class="abold" href="<?=$cfg['site_dir']?>ocenka-stoimost-monet">Оценка </a> и 
     <a  class="abold" href="http://www.numizmatik.ru/gde-prodat-monety">Скупка монет</a> <br>
    
-	В Москве и Санкт-Петербурге
+	<a href="http://www.numizmatik.ru/shopinfo.php" class="black">В Москве и Санкт-Петербурге</a>
 	</center>
 </div>
    

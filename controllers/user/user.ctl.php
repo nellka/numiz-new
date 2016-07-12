@@ -121,16 +121,16 @@ switch ($tpl['task']){
 	        $tpl['user']['password'] = request('password');
 	        $tpl['user']['username'] =request('username');
 	        $tpl['user']['remember_me'] = request('remember_me');
-	        if($_SERVER['REQUEST_METHOD'] == 'POST'){
-	        	//var_dump($tpl['user']['username'],$tpl['user']['password']);
-	        	//die();
+	        if($_SERVER['REQUEST_METHOD'] == 'POST'){     	
+	        	
 	            $is_logined = $user_class->loginUser($tpl['user']['username'],$tpl['user']['password']);
 	            if(!$is_logined) {
 	            	$tpl['user']['errors'][] = "Неверные логин/пароль";           
 	            } else {
 	            	$tpl['user']['send_status'] = true;
+	            	$user_class->loginUsForForum($tpl['user']['username'],$tpl['user']['password']);
 	            	$user_base_data = $user_class->getUserBaseData();
-					$tpl['user'] = array_merge($tpl['user'],$user_base_data);
+					$tpl['user'] = array_merge($tpl['user'],$user_base_data);					
 	            }
 	        } 
     	}

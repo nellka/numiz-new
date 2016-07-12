@@ -6,6 +6,7 @@ class model_user extends Model_Base
     public $user_id;    
     public $username;    
 	public $orderusernow;
+	protected $session_int;
 	
 	static $ArrayForCode = array ("0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f","g","h","j","k","l",
 	"m","n","o","p","q","r","v","u","w","i","x","y","z");
@@ -23,6 +24,120 @@ class model_user extends Model_Base
 		               'user_id'=> $this->user_id);
          $this->db->insert('user_describe_log',$data); 
 	}
+	
+	protected function setSessionInt(){
+		if($this->user_id) return 0;
+ 
+		$select  =  $this->db->select()
+                  ->from('user_sessions',array('id'))
+                  ->where('session_id=?',$this->getSession());
+        $session_int = $this->db->fetchOne($select);
+        if($session_int) {
+        	$this->session_int = $session_int;
+        	return ;
+        }
+        $data = array('session_id' => $this->session_id,
+                      'dateinsert' => time());  
+              
+        $this->db->insert('user_sessions',$data);   
+        $this->session_int = $this->db->lastInsertId('user_sessions');
+        return ;
+	}
+	
+	public function getStat(){
+		
+		$coinscount =  0;
+		$searchcount = 0;
+		$filterscount = 0;
+		
+		if($this->user_id){  
+			$coinscount = $this->cache->load("coinscount_user_".$this->user_id);
+
+			if(!$coinscount){
+				
+				 $select = $this->db->select()
+		               ->from('shopcoins_view_shopcoins',array("count(id)"))
+		               ->where('user_id =?',$this->user_id);
+		    	$coinscount = (integer)$this->db->fetchOne($select);  
+		    	
+		    	$this->cache->save($coinscount, "coinscount_user_".$this->user_id);    
+			}
+			
+			$searchcount = $this->cache->load("searchcount_user_".$this->user_id);
+
+			if(!$searchcount){
+				
+				 $select = $this->db->select()
+		               ->from('shopcoins_view_search',array("count(id)"))
+		               ->where('user_id =?',$this->user_id);
+		    	$searchcount = (integer)$this->db->fetchOne($select);  
+		    	
+		    	$this->cache->save($searchcount, "searchcount_user_".$this->user_id);    
+			}
+			
+			$filterscount = $this->cache->load("filterscount_user_".$this->user_id);
+			
+			if(!$filterscount){
+				
+				 $select = $this->db->select()
+		               ->from('shopcoins_view_filter',array("count(id)"))
+		               ->where('user_id =?',$this->user_id);
+		    	$filterscount = (integer)$this->db->fetchOne($select);  
+		    	
+		    	$this->cache->save($filterscount, "filterscount_user_".$this->user_id);    
+			}
+		} elseif(!$this->user_id) {
+			$this->setSessionInt();
+			
+			$coinscount = $this->cache->load("coinscount_ses_".$this->getSession());
+
+			if(!$coinscount){
+				
+				 $select = $this->db->select()
+		               ->from('shopcoins_view_shopcoins',array("count(id)"))
+		               ->where('session_id =?',$this->session_int);
+		    	$coinscount = (integer)$this->db->fetchOne($select);  
+		    	
+		    	$this->cache->save($coinscount, "coinscount_ses_".$this->getSession());    
+			}
+			
+			$searchcount = $this->cache->load("searchcount_ses_".$this->getSession());
+
+			if(!$searchcount){
+				
+				 $select = $this->db->select()
+		               ->from('shopcoins_view_search',array("count(id)"))
+		               ->where('session_id =?',$this->session_int);
+		    	$searchcount = (integer)$this->db->fetchOne($select);  
+		    	
+		    	$this->cache->save($searchcount, "searchcount_ses_".$this->getSession());    
+			}
+			
+			$filterscount = $this->cache->load("filterscount_ses_".$this->getSession());
+			
+			if(!$filterscount){
+				
+				 $select = $this->db->select()
+		               ->from('shopcoins_view_filter',array("count(id)"))
+		               ->where('session_id =?',$this->session_int);
+		    	$filterscount = (integer)$this->db->fetchOne($select);  
+		    	
+		    	$this->cache->save($filterscount, "filterscount_ses_".$this->getSession());    
+			}
+		}
+		
+		$fullcount = $coinscount+$searchcount+$filterscount;		
+		
+		return array('fullcount'=>$fullcount,
+		             'coinscount'=> $coinscount,
+		             'searchcount' => $searchcount,
+		             'filterscount' => $filterscount);
+		 /*$data = array('coin_id'=>$coin_id,
+		               'event_date' =>time(),
+		               'user_id'=> $this->user_id);
+         $this->db->insert('user_describe_log',$data); */
+	}
+	
 	/*public function getUserCouponType(){	   
 	      $select = $this->db->select()
 		               ->from('coupon',array('type'))
@@ -71,19 +186,22 @@ class model_user extends Model_Base
 	}
 	
     public function decrementUserBalance($how_much){
-	    $data = array('user_id' => $this->user_id, 'balance' => 'balance' - intval($how_much));
+        $balance = $this->getUserBalance();
+        
+	    $data = array('user_id' => $this->user_id, 'balance' => ($balance - intval($how_much)));
 		$this->db->update('user_bonus_balance',$data,"balance >= 0 and user_id = ".$this->user_id);    	
     }
 
 	public function addUserBalance(){
 		 $select = $this->db->select()
-		               ->from('user_bonus_balance',array('user_id'))
-		               ->where('user_id =?',$this->user_id);		               
-		if (!$this->db->fetchOne($select)) {
+		               ->from('user_bonus_balance',array('user_id','balance'))
+		               ->where('user_id =?',$this->user_id);	
+		$dataBalance  = $this->db->fetchRow($select);             
+		if (!$dataBalance) {
 			$data = array('user_id' => $this->user_id, 'balance' => 1);
 			$this->db->insert('user_bonus_balance',$data);
 		} else{
-			$data = array('user_id' => $this->user_id, 'balance' => 'balance' + 1);
+			$data = array('user_id' => $this->user_id, 'balance' => $dataBalance['balance'] + 1);
 			$this->db->update('user_bonus_balance',$data,"user_id = ".$this->user_id);
 		}
 	}
@@ -196,6 +314,14 @@ class model_user extends Model_Base
 	     return $this->user_id = $user_id;
 	 }
 	 
+	  public function getSession(){
+	     return $this->session_id;
+	 }
+	 
+	 public function setSession(){
+	     return $this->session_id = session_id();
+	 }
+	 
 	  public function getUsername(){
 	     return $this->username;
 	 }
@@ -234,9 +360,9 @@ class model_user extends Model_Base
 	     if($this->user_id == 336844) return TRUE;
 		 $sql = "SELECT 1 FROM `order` WHERE order.check = 1 and order.user =".$this->user_id." having COUNT(1) >= 5";
     	
-    	 return $this->db->fetchRow($sql)?true:FALSE;
-    
+    	 return $this->db->fetchRow($sql)?true:FALSE;    
     }
+    
     //если пользователь залогинен и запрещено делать заказы, то проверяем те заказы, которые были
     public 	function setOrderusernow(){
     	 $select = $this->db->select()
@@ -289,6 +415,232 @@ class model_user extends Model_Base
         return 0;
     }
 
+	protected function request_uri() {
+
+		if (isset($_SERVER['REQUEST_URI'])) {
+			$uri = $_SERVER['REQUEST_URI'];
+		}
+		else {
+			if (isset($_SERVER['argv'])) {
+				$uri = $_SERVER['SCRIPT_NAME'] . '?' . $_SERVER['argv'][0];
+			}
+			elseif (isset($_SERVER['QUERY_STRING'])) {
+				$uri = $_SERVER['SCRIPT_NAME'] . '?' . $_SERVER['QUERY_STRING'];
+			}
+			else {
+				$uri = $_SERVER['SCRIPT_NAME'];
+			}
+		}
+		// Prevent multiple slashes to avoid cross site requests via the FAPI.
+		$uri = '/' . ltrim($uri, '/');
+
+		return $uri;
+	}
+
+	public function set_login_cookies($email) {
+		//$userid
+		// Load required vB user data.
+		$select =  $select = $this->db->select()
+			->from('vbull_user')
+			->where('username =?',$email)
+			->limit(1);
+		$vbuser = $this->db->fetchRow($select);
+
+		if(!$vbuser){
+			$select =  $select = $this->db->select()
+				->from('vbull_user')
+				->where('email =?',$email)
+				->limit(1);
+			$vbuser = $this->db->fetchRow($select);
+		}
+
+		//$vbuser = db_fetch_array(drupalvb_db_query("SELECT userid, password, salt FROM {user} WHERE userid = %d", $userid));
+		if (!$vbuser) {
+			return FALSE;
+		}
+
+		//$vb_config = drupalvb_get('config');
+		//$vb_options = drupalvb_get('options');
+
+		//$cookie_prefix = (isset($vb_config['Misc']['cookieprefix']) ? $vb_config['Misc']['cookieprefix'] : 'bb');
+		$cookie_prefix = 'bb';
+		$cookie_path = '/';
+		$now = time();
+// вот наша волшебная переменная
+//  $expire = $now + (@ini_get('session.cookie_lifetime') ? ini_get('session.cookie_lifetime') : 60 * 60 * 24 * 365);
+// сделал для пробы вот так
+// $expire = 60 * 60 * 24 * 365;
+// а надо вот так
+		$expire =  $now +  60 * 60 * 24 * 365;
+
+		//$vb_cookie_domain = (!empty($vb_options['cookiedomain']) ? $vb_options['cookiedomain'] : $GLOBALS['cookie_domain']);
+		$vb_cookie_domain = "www.numizmatik.ru";
+		// Per RFC 2109, cookie domains must contain at least one dot other than the
+		// first. For hosts such as 'localhost' or IP Addresses we don't set a cookie domain.
+		// @see conf_init()
+		/*if (!(count(explode('.', $vb_cookie_domain)) > 2 && !is_numeric(str_replace('.', '', $vb_cookie_domain)))) {
+			$vb_cookie_domain = '';
+		}*/
+
+		// Clear out old session (if available).
+		if (!empty($_COOKIE[$cookie_prefix .'sessionhash'])) {
+			$this->db->delete('vbull_session',"sessionhash = '".$_COOKIE[$cookie_prefix .'sessionhash']."'");
+			//drupalvb_db_query("DELETE FROM {session} WHERE sessionhash = '%s'", $_COOKIE[$cookie_prefix .'sessionhash']);
+		}
+
+		// Setup user session.
+		//$ip = implode('.', array_slice(explode('.', drupalvb_get_ip()), 0, 4 - $vb_options['ipcheck']));
+		$ip = implode('.', array_slice(explode('.', $_SERVER['REMOTE_ADDR']), 0, 4 - 1));
+		$idhash = md5($_SERVER['HTTP_USER_AGENT'] . $ip);
+
+		//$sessionhash = md5($now . $this->request_uri() . $idhash . $_SERVER['REMOTE_ADDR'] . $this->fetch_user_salt(6));
+		$sessionhash = $idhash;
+			//drupalvb_db_query("REPLACE INTO {session} (sessionhash, userid, host, idhash, lastactivity, location, useragent, loggedin) VALUES ('%s', %d, '%s', '%s', %d, '%s', '%s', %d)", $sessionhash, $vbuser['userid'], substr($_SERVER['REMOTE_ADDR'], 0, 15), $idhash, $now, '/forum/', $_SERVER['HTTP_USER_AGENT'], 2);
+
+		$sql = "REPLACE INTO vbull_session (sessionhash, userid, host, idhash, lastactivity, location, useragent, loggedin) VALUES ('$sessionhash', '".$vbuser['userid']."', '".substr($_SERVER['REMOTE_ADDR'], 0, 15)."', '$idhash', '".$now."', '/forum/', '".$_SERVER['HTTP_USER_AGENT']."', 2)";
+		$this->db->query($sql);
+		// Setup cookies.
+		setcookie($cookie_prefix .'sessionhash', $sessionhash, $expire, $cookie_path, $vb_cookie_domain);
+		setcookie($cookie_prefix .'lastvisit', $now, $expire, $cookie_path, $vb_cookie_domain);
+		setcookie($cookie_prefix .'lastactivity', $now, $expire, $cookie_path, $vb_cookie_domain);
+		setcookie($cookie_prefix .'userid', $vbuser['userid'], $expire, $cookie_path, $vb_cookie_domain);
+		//setcookie($cookie_prefix .'password', md5($vbuser['password'] . variable_get('drupalvb_license', '')), $expire, $cookie_path, $vb_cookie_domain);
+		setcookie($cookie_prefix .'password', md5($vbuser['password']), $expire, $cookie_path, $vb_cookie_domain);
+		return TRUE;
+	}
+
+	protected function curl_open($url,$post,$referer,$cook){
+		var_dump($cook);
+	        $ch = curl_init();
+	        curl_setopt($ch, CURLOPT_URL, $url);
+		    curl_setopt ($ch, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");
+
+	        //curl_setopt($ch, CURLOPT_COOKIEJAR, "/");
+		   // curl_setopt($ch, CURLOPT_COOKIEFILE, "/");
+		    curl_setopt ($ch, CURLOPT_TIMEOUT, '10');
+	        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+	        curl_setopt($ch, CURLOPT_POST,1);
+		    curl_setopt($ch, CURLOPT_POSTFIELDS,$post);
+		    curl_setopt($ch, CURLOPT_HEADER, 1);
+	        curl_setopt($ch, CURLOPT_REFERER, $referer);
+			if (strlen($cook)>0){
+				//curl_setopt($ch, CURLOPT_COOKIE, $cook);
+			}
+
+
+
+		//curl_setopt($ch, CURLOPT_COOKIEJAR, "/tmp/codecall_$user.txt");
+		//curl_setopt($ch, CURLOPT_COOKIEFILE, "/tmp/codecall_$user.txt");
+
+
+
+		//curl_setopt ($ch, CURLOPT_FOLLOWLOCATION, FALSE); // follow redirects
+		//curl_setopt ($ch, CURLOPT_MAXREDIRS, 0); // limit redirections to four
+	        $get_row_urlink = curl_exec($ch);
+var_dump(curl_error($ch));
+	        curl_close($ch);
+	    return $get_row_urlink;
+	}
+
+
+    //проверяем, что пользователь залогинен
+	public function loginUsForForum($email,$userpassword){
+		//if($email=='serg-nsa@yandex.ru'){
+			$this->set_login_cookies($email);
+		//}
+			/*$forum_url = "www.numizmatik.ru/forum";
+
+
+                $header = $this->curl_open('http://'.$forum_url.'/newthread.php?do=newthread&f=20','1','index.php',$cook);
+                //echo $header;
+
+                preg_match("/bblastvisit=(.+?);/",$header,$cookie);
+                $cook='bblastvisit='.$cookie[1].';bblastactivity=0';
+                setcookie('blastvisit',$cookie[1],'/')
+                //echo '<br><br> cook1 '.$cook.'<br><br>';
+
+
+                preg_match("/class=\"panel\">(.+?)class=\"smallfont\"/is",$header,$out);
+                preg_match_all("/name=\"(.*?)\"\s+value=\"(.*?)\"/i",$out[1],$dootp);
+                //print_r($dootp);
+
+                for($r=0;$r<count($dootp[1]);$r++){
+                    if($dootp[1][$r]=='url'){
+                        $dannie_dootp1 .= $dootp[1][$r].'='.preg_replace("/&/i",'%26',$dootp[2][$r]).'&';
+                    } else {
+                        $dannie_dootp1 .= $dootp[1][$r].'='.$dootp[2][$r].'&';
+                    }
+                }
+                echo "\n\n   ".$dannie_dootp1."\n\n";
+
+                //Это делается для того, чтобы получить "bbsessionhash"
+
+
+                $header = $this->curl_open('http://'.$forum_url.'/login.php?do=login',$dannie_dootp1.'vb_login_username='.$email.'&vb_login_password='.$userpassword,$forum_url.'/index.php',$cook);
+    //var_dump($header);
+
+                preg_match("/bbsessionhash=(.+?);/",$header,$cookie_session);
+                var_dump($cookie_session);
+                $cook='bblastvisit='.$cookie[1].';bblastactivity=0;bbsessionhash='.$cookie_session[1].'';
+                echo "\n\n".' cook2 '.$cook."\n\n";
+
+                // Теперь, имея все куки и зная значения всех скрытых полей формы, пытаюсь //авторизоваться
+                $params = $dannie_dootp1.'vb_login_username='.$email.'&vb_login_password='.$userpassword;
+                $params= "vb_login_username=" . $email . "&vb_login_password=" .
+            //"&login_btn=%C2%F5%EE%E4" .
+            "&s=".
+            "&securitytoken=guest" .
+            "&do=Login" .
+            "&vb_login_md5password=".md5($userpassword).
+            "&vb_login_md5password_utf=".md5($userpassword);
+                //"&cookieuser=1" .
+                //vb_login_username=serg-nsa%40yandex.ru&vb_login_password=&s=&securitytoken=guest&do=login&vb_login_md5password=d0f5f67034b419ae11e2fdcee9f4a8e1&vb_login_md5password_utf=d0f5f67034b419ae11e2fdcee9f4a8e1
+                echo $params;
+                $header = $this->curl_open('http://'.$forum_url.'/login.php?do=login',$params,"http://www.numizmatik.ru/forum/index.php",$cook);
+    var_dump($header);
+                die();
+            */
+/*
+		$ch = ""; // reset value
+		$ch = curl_init();
+		curl_setopt ($ch, CURLOPT_URL,  "http://www.numizmatik.ru/forum/login.php?do=login") ; // target site
+		curl_setopt($ch, CURLOPT_COOKIEJAR, "cookie.txt"); 
+		curl_setopt($ch, CURLOPT_COOKIEFILE, "cookie.txt");
+		curl_setopt ($ch, CURLOPT_REFERER, "http://www.numizmatik.ru/forum/login.php?do=login");
+		curl_setopt ($ch, CURLOPT_TIMEOUT, 10); // timeout
+		curl_setopt ($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.1) Gecko/20061204 Firefox/2.0.0.1");
+		
+		curl_setopt ($ch, CURLOPT_FOLLOWLOCATION, FALSE); // follow redirects
+		curl_setopt ($ch, CURLOPT_MAXREDIRS, 0); // limit redirections to four
+		curl_setopt ($ch, CURLOPT_RETURNTRANSFER, TRUE); // return in string
+		
+		curl_setopt ($ch, CURLOPT_POST, 1);
+		curl_setopt ($ch, CURLOPT_POSTFIELDS, $postfields);
+		
+		$postfields = "vb_login_username=" . $email . "&vb_login_password=" . $userpassword .
+		//"&login_btn=%C2%F5%EE%E4" .
+		"&cookieuser=1" .
+		"&s=".
+		"&securitytoken=guest" .
+		"&do=login" .
+		"&vb_login_md5password=".
+		//md5($userpassword).
+		"&vb_login_md5password_utf="
+		//md5($userpassword)
+		;
+		
+		curl_setopt ($ch, CURLOPT_POST, 1); 
+		$result = curl_exec($ch); 
+		
+		if($email=='serg-nsa@yandex.ru'){
+			var_dump($ch,$result,$postfields,curl_error($ch), curl_errno($ch)); 
+			die(); 
+		}
+		curl_close($ch);
+		return;*/
+	}
+	
 	//проверяем, что пользователь залогинен
 	public function loginUser($email,$userpassword){
 	   if ($email &&$userpassword){
@@ -362,6 +714,9 @@ class model_user extends Model_Base
 	}
 	
 	public function is_logged_in(){
+		
+		$this->setSession();
+		
 	    $cookiesuserlogin = 0;
 	    $cookiesuserpassword = 0;
 	    // who writes like this ?

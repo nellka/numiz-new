@@ -84,21 +84,20 @@ if($tpl['user']['user_id']==352480){
         	  <div class="subheader">
 		       <div class="wraper clearfix">
 		            <div id='leftmemu'>
-		             <?php include $cfg['path'] . '/views/leftmenu/leftmenu_index.tpl.php'; ?>
+		             <?php include $cfg['path'] . '/views/leftmenu/leftmenu_index'.(($tpl['module']=='index')?'main':'').'.tpl.php'; ?>
 		            </div>
 		            <div id='subheader-body'>
-		                <?php include $cfg['path'] . '/views/common/breadcrumb.tpl.php'; ?> 
-		                <h2> Магазин монет клуба Нумизмат </h2>  
-		                <div id='slider'>                
+		                <?php include $cfg['path'] . '/views/common/breadcrumb.tpl.php'; ?> 		                
+		                <div id='slider' class="bordered">
+							<h1 class="main"><a href='<?=$cfg['site_dir']?>shopcoins/moneti' class="black"> Магазин монет клуба Нумизмат </a></h1>
 		                    <?php include $cfg['path'] . '/views/common/header/slider.tpl.php'; ?>                          
 		                </div>
+		                 <div>
+			             <? include $cfg['path'] . '/views/' . $tpl['module'] . '.tpl.php'; ?>
+			            </div>        
 		            </div>
 		        </div>
-		    </div>
-		    <div class="wraper clearfix">
-             <?     
-            include $cfg['path'] . '/views/' . $tpl['module'] . '.tpl.php'; ?>
-            </div>            
+		    </div>		       
         <?}        
         ?> 
     </div>       

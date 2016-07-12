@@ -775,9 +775,10 @@ class model_shopcoins extends Model_Base
         }	
        return $this->db->fetchOne($select);       
 	}
+	
 	public function getPopular($limit=4,$params = array()){ 
 	   $select = $this->db->select()
-                      ->from('shopcoins')
+                      ->from(array('shopcoins'=>'shopcoins_search'))
                       ->join(array('group'),'shopcoins.group=group.group',array('gname'=>'group.name'))
                       ->where("shopcoins.check=1")
                       ->order('rand()')
@@ -787,13 +788,29 @@ class model_shopcoins extends Model_Base
        		$select->where("$key=?",$value);
        }
        return $this->db->fetchAll($select);
-	}  
-	public function getNew($limit=4){ 
+	} 
+	 
+	public function getSale($limit=4,$params = array()){ 
 	   $select = $this->db->select()
-                      ->from('shopcoins')
+                      ->from(array('shopcoins'=>'shopcoins_search'))
                       ->join(array('group'),'shopcoins.group=group.group',array('gname'=>'group.name'))
                       ->where("shopcoins.check=1")
-                      ->order('shopcoins desc')
+                      ->where("shopcoins.datereprice>0 and shopcoins.dateinsert>0")
+                      ->order('rand()')
+                      ->limit($limit);
+                      
+       foreach ($params as $key=>$value){
+       		$select->where("$key=?",$value);
+       }
+       return $this->db->fetchAll($select);
+	}  
+	
+	public function getNew($limit=4){ 
+	   $select = $this->db->select()
+                      ->from(array('shopcoins'=>'shopcoins_search'))
+                      ->join(array('group'),'shopcoins.group=group.group',array('gname'=>'group.name'))
+                      ->where("shopcoins.check=1")
+                      ->order(array('novelty desc','shopcoins desc'))
                       ->limit($limit);
        return $this->db->fetchAll($select);
 	}  
@@ -1089,7 +1106,30 @@ class model_shopcoins extends Model_Base
 	    }	
 	    return $select;
 	}
+	
+	public function setDetails($id,$details){
+		$data = array('catalog'=>$id,
+                      'details'=>$details);
+        $this->db->insert('shopcoins_details',$data);  
+        return true;
+	}
 
+	public function getNominalId($title){
+		$title = trim($title);
+		if(!$title) return 0;
+		
+		$select = $this->db->select()
+	                      ->from('shopcoins_name',array('id'))	                    
+	                      ->where("name =?",$title);
+	    $nominal_id =  $this->db->fetchOne($select); 
+	    
+	    if(!$nominal_id)    {
+	    	 $data = array('name'=>$title);
+             $this->db->insert('shopcoins_name',$data);
+             $nominal_id = $this->db->lastInsertId('shopcoins_name');
+	    }        
+		return  $nominal_id;
+	}
 	
 	public function getNominal($id){
 		$select = $this->db->select()
@@ -1609,9 +1649,9 @@ class model_shopcoins extends Model_Base
  		if($SearchTempStr){
  			$select->where("name like '%".implode("%' or name like '%",$SearchTempStr)."%'");
  		} 	
-		//if($this->user_id==352480){
-        	echo $select->__toString();
-        //}
+		if($this->user_id==352480){
+        	//echo $select->__toString();
+        }
  		$data = array();
  		foreach ($this->db->fetchAll($select) as $row){
  		    $data[$row['id']] = $row['name'];

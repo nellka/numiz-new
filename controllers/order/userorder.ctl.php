@@ -43,6 +43,14 @@ $orderdetails_class = new model_orderdetails($cfg['db'],$shopcoinsorder);
 //
 $user_data =  $user_class->getUserData();
 
+$tpl['user']['vip_discoint'] = 0;
+
+if($tpl['user']['user_id']){
+	if($user_data['vip_discoint']&&(!$user_data['vip_discoint_date_end']||$user_data['vip_discoint_date_end']>time())){
+		$tpl['user']['vip_discoint'] = $user_data['vip_discoint'];
+	}
+}
+
 $sumallorder= 1;
 $sum_allorder = $order_class->getSumOfOrder();
 if($sum_allorder&&intval($sum_allorder["sumallorder"])>0){
@@ -133,7 +141,7 @@ if ($tpl['myOrders']) {
 
 $tpl['orderdetails']['coupons'] = array();
 
-if (!$user_data['vip_discoint']) {
+if (!$tpl['user']['vip_discoint']) {
 
 	$iscoup1 = $user_class->getUserCoupon(array('`check`'=>1, 'type'=>1),true);
 

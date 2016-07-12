@@ -80,7 +80,7 @@
 		</table>
 		<?  
 		if ($tpl['submitorder']['discountcoupon']) {
-        	if($user_data['vip_discoint']) {?>
+        	if($tpl['user']['vip_discoint']) {?>
         	    <p><b>Сумма заказа: </b><font color="red"> <?=($tpl['submitorder']['sum']+$tpl['submitorder']['discountcoupon'])?> руб.</font></p>
         	    <p><b>Скидка как VIP-клиент: </b><font color="red"> <?=$tpl['submitorder']['vip_discoint']?> %</font></p>
         	    <p><b>Размер скидки: </b><font color="red"> <?=$tpl['submitorder']['discountcoupon']?> руб.</font></p>

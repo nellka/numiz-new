@@ -23,6 +23,7 @@
         <?}?> 
         
         <br>
+        <div class="short_top_user">
         <span id=inorderamount>
         <? if($tpl['user']['product_amount']){?>        
             <a href='<?=$cfg['site_dir']?>shopcoins/index.php?page=orderdetails'>
@@ -31,10 +32,14 @@
         <?} else {?>
             <?=$tpl['user']['product_amount']?> товаров
         <?}?>        
-        </span> / <span id=inordersum><?=ceil($tpl['user']['summ'])?></span> рублей
+        </span> / <span id=inordersum><?=ceil($tpl['user']['summ'])?></span> р.
+        <?if($tpl['user']['balance']){?>
+    	    <img src='<?=$cfg['site_dir']?>images/balance.gif'><?=$tpl['user']['balance']?> р.
+    	<?}?>
+    	</div>
         <?
         if($tpl['user']['user_id']){?>
-           <br> <a href="<?=$cfg['site_dir']?>shopcoins/?catalognewstr=1&savesearch=1" class="error">Монеты по заявкам (<?=$tpl['user']['catalogamount']?>)</a>
+          <a href="<?=$cfg['site_dir']?>shopcoins/?catalognewstr=1&savesearch=1" class="error">Монеты по заявкам (<?=$tpl['user']['catalogamount']?>)</a>
         <?}?>
     </div>
     

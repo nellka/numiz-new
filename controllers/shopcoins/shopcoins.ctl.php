@@ -2,8 +2,8 @@
    
 $tpl['current_page'] = '';
     
-require($cfg['path'].'/helpers/Paginator.php');
-
+require_once($cfg['path'].'/helpers/Paginator.php');
+require_once($cfg['path'].'/helpers/urlBuilder.php');
 
 $materialtype = request('materialtype')?(int)request('materialtype'):1;
 
@@ -80,7 +80,9 @@ if($_SERVER["REDIRECT_URL"]=='/shopcoins/prodaza_banknot_i_bon.html'){
 } else {
     //$r_url = str_replace("/index.php",'',$_SERVER["REDIRECT_SCRIPT_URI"]);
     $r_url = $cfg['site_dir'].'shopcoins/'.$materialIDsRule[$materialtype];
-    $data_filter['materialtype'] = $materialIDsRule[$materialtype];
+    
+    $data_filter['materialtype'] = $materialtype;
+    
     if($search) $r_url .= '/'.$search;
     $r_url = str_replace('shopcoins//','shopcoins/',$r_url);
 }
@@ -534,14 +536,18 @@ if($tpl['user']['user_id']==352480){
 }
 
 $countpubs = $shopcoins_class->countallByParams($WhereParams);
-if($tpl['user']['user_id']==352480){
-    echo"<br>";
-	var_dump($data_filter);
-	echo"<br>";
+
+if($tpl['user']['user_id']==352480){   
 }
 
-if($addhref) $addhref = substr($addhref,1);  
+if($addhref) $addhref = substr($addhref,1); 
+ 
+$data_filter_old = urlBuild::parseUrl($_COOKIE['lhref'],$materialsRule);
 
+if($tpl['pagenum']==1&&(count(array_diff($data_filter,$data_filter_old))||count(array_diff($data_filter_old,$data_filter)))){
+    $stats_class->saveFilter($data_filter);
+    
+}
 
 setcookie("lhref", $r_url_paginator."/?".$addhref.(($tpl['pagenum']>1)?'&pagenum='.$tpl['pagenum']:''), time() + 3600, "/");
 
@@ -551,7 +557,8 @@ $tpl['paginator'] = new Paginator(array(
         'per_page'   => ($tpl['onpage']=='all')?$countpubs:$tpl['onpage'],
         'page'       => $tpl['pagenum'],
         'border'     =>3));
-    
+        
+   
 /*if (!$page){  
 	if($materialtype == 12){
 		require_once('build_table/build_table.php');
@@ -785,14 +792,14 @@ if ($search && $search != 'revaluation' && $search != 'newcoins'){
 $tmp = explode("#", $LastCatalog10);
 $k = 0;
 $ids = array();
-for ($i=0; $i<sizeof($tmp); $i++)
-{
+for ($i=0; $i<sizeof($tmp); $i++) {
 	$tmp1 = explode("|", $tmp[$i]);
 	if($tmp1[0]){
-	   $ids[] = $tmp1[0];
+	   $ids[] = (int)$tmp1[0];
 	}
 	
-}	//var_dump($ids);
+}	
+
 $tpl['catalog']['lastViews'] = array();		
 if($ids){
     $last_products = $shopcoins_class->getLastProducts($ids);
@@ -812,7 +819,6 @@ if($ids){
     $tpl['catalog']['lastViews'] = $d_order;
 }
 
-$stats_class->saveFilter($data_filter);
 
 require $cfg['path'] . '/configs/shopcoins_keywords.php';
 

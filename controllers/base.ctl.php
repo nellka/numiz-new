@@ -3,6 +3,8 @@
 //require $cfg['path'] . '/helpers/cookiesWork.php';
 
 require_once $cfg['path'] . '/models/orderdetails.php';
+require_once $cfg['path'] . '/models/stats.php';
+require_once ($cfg['path'].'/helpers/urlBuilder.php');
 
 if(request('logout')){
 
@@ -84,13 +86,21 @@ if ($tpl['user']['is_logined']){
 
 	}
 	
-	
 } else {
 	$tpl['user']['user_id'] = 0;
 	$shopcoins_class = new model_shopcoins($cfg['db'],$tpl['user']['user_id'],$nocheck);
 }
 
+$stats_class = new stats($cfg['db'],$tpl['user']['user_id'],session_id());
+
 $tpl['user']['showfullgrouplist'] = false;
+
+$u_statistic = $user_class->getStat();
+
+$tpl['user']['fullcount'] = $u_statistic['fullcount'];
+$tpl['user']['coinscount'] = $u_statistic['coinscount'];
+$tpl['user']['searchcount'] = $u_statistic['searchcount'];
+$tpl['user']['filterscount'] = $u_statistic['filterscount'];
 
 if(!isset($_COOKIE['groups-full-show'])&&$tpl['user']['user_id']) {
 	$tpl['user']['showfullgrouplist'] = true;
@@ -109,7 +119,7 @@ if($tpl['is_mobile']&&$fv){
 
 if($tpl['user']['user_id']==352480){  
 	//var_dump($_SERVER['REMOTE_ADDR']);
-   //$tpl['is_mobile'] = true;
+  // $tpl['is_mobile'] = true;
 }
 
 //var_dump($tpl);

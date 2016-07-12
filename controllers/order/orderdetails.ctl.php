@@ -12,8 +12,13 @@ $orderdetails_class = new model_orderdetails($cfg['db'],$shopcoinsorder);
 
 $tpl['user']['user_data'] = array();
 
+$tpl['user']['vip_discoint'] = 0;
+
 if($tpl['user']['user_id']){
     $tpl['user']['user_data'] = $user_class->getUserData();
+	if($tpl['user']['user_data']['vip_discoint']&&(!$tpl['user']['user_data']['vip_discoint_date_end']||$tpl['user']['user_data']['vip_discoint_date_end']>time())){
+		$tpl['user']['vip_discoint'] = $tpl['user']['user_data']['vip_discoint'];
+	}
 }
 
 $shopcoins = intval(request("shopcoins"));

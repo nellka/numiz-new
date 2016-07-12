@@ -220,7 +220,7 @@ text-align: right;
     top: 45px;
 	left:-2px;
     width: 415px;
-    z-index: 1000;
+    z-index: 5000;
 }
 
 .cssmenu .shadoweffect li a,.shadoweffect li a {
@@ -429,7 +429,7 @@ color:#ecb34e;
     -moz-box-shadow: 0 8px 6px -6px #ccc;
     box-shadow: 0 8px 6px -6px #ccc;
 	padding-left:17px;
-	background-color:#ffffff;
+	background-color:#ebe4d4;
 }
 
 .box-heading{
@@ -764,7 +764,11 @@ width:25px;
 
 
 h1 {
+   font-size: 25px;
     margin: 0 0 15px;
+}
+.justify {
+    text-align: justify;
 }
 
 .h-cat,.h-cat-title {
@@ -1206,4 +1210,203 @@ float:none;
 }
 #news.news-one div h1 {
 display:block
+}
+
+a.full{
+font-size: 20px;
+    line-height: 35px;
+}
+.main-top {
+    background: gray none repeat scroll 0 0;
+    margin: 0 0 0 -18px;
+    padding: 0 18px;
+    background: gray url("../images/mobile/er-d-b.png") no-repeat scroll 350px 8px;
+}
+.red{
+color: red;
+}
+.menu-sidebar_static a span.red {
+    padding: 0;
+}
+
+#hidden-shopcoins-stat,.coin_division_block{
+display: table;
+}
+.coin_division{
+	background: #eeeeee none repeat scroll 0 0;
+    float: left;
+    height: 180px;
+    margin: 0 0 10px 10px;
+    padding: 10px 7px;
+    width: 217px;
+}
+
+.coin_division,.coin_division_last {
+    background: #eeeeee none repeat scroll 0 0;
+    float: left;
+    height: 240px;
+    margin: 5px;
+    padding: 10px 7px;
+    width: 170px;
+}
+.coin_division_last {
+    height: 200px;
+    width: 365px;
+}
+.club_news {
+    background: #ffffff none repeat scroll 0 0;
+    float: left;
+    height: 250px;
+    margin: 0;
+    overflow: hidden;
+    padding: 10px 5px;
+    width: 160px;
+}
+.club_news a.borderimage {
+    height: 105px;
+}
+
+.club_news .borderimage img {
+    max-height: 85px;
+    max-width: 140px;
+}
+
+
+.mtabs ul {
+    background-color: #ebe4d4;
+}
+.mtabs .ui-tabs-panel {
+    height: 650px;
+    padding: 5px 0 20px 13px;
+}
+
+#hidden-shopcoins-stat .ui-widget-content {
+    background-color: #ebe4d4;
+    padding: 10px 0 10px 6px
+}
+
+.coin_info-mini {
+    background: #fff none repeat scroll 0 0;
+    height: 260px;
+    margin:  0 10px 10px 0;
+    padding: 10px;
+    position: relative;
+    width: 155px;
+}
+.coin_info-mini .qwk, .d-carousel .qwk, .d-carousel-show .qwk {
+    margin: 3px;
+    padding: 0;
+    width: 140px;
+}
+.qwk {
+    border: 1px solid #ccc;
+    display: block;
+    margin: 5px 0 10px;
+    padding: 5px 3px;
+    width: 220px;
+}
+.logo a , .abold a.black{
+    color: black;
+    text-decoration: none;
+}
+img {
+    max-width: 370px;
+}
+iframe {
+    max-width: 380px;
+}
+.coin_info-mini .buy-div{
+width: 155px;
+text-align: center;
+}
+
+.coin_info-mini .oneclick_notifications {
+    text-align: center;
+    width: 155px;
+}
+.coin_info-mini .oneclick_notifications a,.ui-widget-content .tab_coins a  {
+    color: #247bbd;
+}
+.coin_info-mini .amount {
+    padding: 5px 0;
+    text-align: center;
+}
+.coin_info-mini .borderimage>img {
+    max-height: 80px;
+    max-width: 130px;
+}
+.p-10 {
+    padding: 10px 0;
+}
+.bordered {
+    border: 1px solid #ccc;
+    margin: 10px 0;
+    padding: 10px;
+}
+.coin_info-mini .button25 {
+    color: white;
+}
+.tab_coins .info-block {
+    height: 95px;
+    overflow: hidden;
+}
+
+.coin_info-mini .b-am {
+    display: none;
+}
+
+ .mtabs.ui-tabs ul li {
+    background: #ebe4d4 none repeat scroll 0 0;
+    border: 1px solid #ccc!important;
+    border-radius: 0;
+    color: #555;
+    cursor: pointer;
+    display: block;
+    float: left;
+    margin: 0;
+    padding: 5px;
+    position: relative;
+    text-align: center;    
+}
+
+.mtabs.ui-tabs .ui-tabs-nav li.ui-tabs-selected {
+  margin: 0;
+    padding: 5px;
+}
+
+
+.mtabs ul li.ui-state-active {
+    background: #ecb34e none repeat scroll 0 0;
+    font-weight: bold;
+    color: #fff;
+}
+.mtabs ul li.ui-state-active a{
+    color: #fff;
+}
+
+.sub-text {
+    line-height: 10px;
+    padding: 10px 5px 0;
+    vertical-align: middle;
+}
+
+.sub img {
+    height: 40px;
+    vertical-align: middle;
+}
+
+
+.sub {
+    display: inline-block;
+    float: left;
+    font-size: 10px;
+    font-weight: bold;
+    height: 80px;
+    padding: 10px 0 0;
+    text-align: center;
+    width: 180px;
+}
+
+.clearfix {
+   clear:both
 }

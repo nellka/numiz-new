@@ -6,10 +6,29 @@ body {
 	font-family:Arial,Tahoma, sans-serif;		
 	/* 'Roboto',*/
 }
+h1.main {
+    margin: 0;
+}
+.black{
+color:black;
+}
+
+.p-10{
+padding: 10px 0;
+}
 .content {
     position: relative;
 }
-
+.white{
+    color: white;
+}
+.mw{
+font-weight:normal
+}
+.mw:hover{
+color: white;
+font-weight:normal
+}
 a.ohr:visited{
 color:grey
 }
@@ -57,6 +76,17 @@ float:right;
 }
 .main_context > ul {
     padding: 0 30px;
+}
+
+.description .formitem {  
+    margin: 5px;
+    width: 55px;
+}
+
+
+.description > h5 {
+    font-size: 14px;
+    margin: 10px 0;
 }
 
 .bordered {
@@ -471,9 +501,25 @@ height: 290px;}*/
 .tboard .amount {
     width: 75px;
 }
-#basket .user_details p{
+
+#basket .user_details p {
+    line-height: 20px;
     margin: 0 0 5px;
 }
+
+.short_top_user > img {
+    margin: 0 2px 0 0;
+}
+
+.short_top_user {
+    height: 20px;
+    overflow: hidden;
+}
+#user_top_block img {
+    margin: 0 5px;
+    vertical-align: middle;
+}
+
 #contact-top-module p {
     margin: 0 0 9px;
     padding: 0 0 0 5px;
@@ -859,7 +905,20 @@ color: #247bbd;
 /*
 leftmenu
 */
-
+.menu-sidebar.top a {
+    background: #EBE4D4;
+    padding: 0 0 0 15px;
+}
+.menu-sidebar.top span {
+    padding: 0;
+}
+.red{
+color:red
+}
+.menu-sidebar.top {
+    margin: 0 0 5px;
+    padding: 0;
+}
 .menu-heading {
 
     background: #ecb34e url("../images/cat-top.png") no-repeat scroll 250px 8px;
@@ -878,7 +937,7 @@ leftmenu
     padding: 15px;
 }
 .menu-sidebar_static{
-  width: 260px;
+  width: 278px;
 }
 .menu-sidebar a span {
     padding: 15px;
@@ -913,8 +972,13 @@ box-shadow:  6px #ccc;
     text-decoration: none;
     background: transparent url("../images/strel-gray.png") no-repeat scroll 250px 50%;
 }
+
+.menu-sidebar.top a:hover{
+	background: none;
+}
+ 
 .menu-sidebar a:hover,.menu-sidebar a.active{
-color:#ecb34e;
+	color:#ecb34e;
     background: transparent url("../images/strel-yellow.png") no-repeat scroll 250px 50%;
 }
 .main_img_big img {
@@ -937,12 +1001,12 @@ padding:0;
     border-left: 1px solid #ccc;
     border-right: 1px solid #ccc;
     margin: 0;
-    padding: 5px 15;  
+    /*padding: 5px 15; */ 
     -webkit-box-shadow: 0 8px 6px -6px #ccc;
     -moz-box-shadow: 0 8px 6px -6px #ccc;
     box-shadow: 0 8px 6px -6px #ccc;
-	padding-left:17px;
-	background-color:#ffffff;
+	padding:0;
+	background-color:#ebe4d4;
 }
 
 .filter-block {
@@ -975,7 +1039,8 @@ box-shadow:  6px #ccc;
 }
 .menu-sidebar_static a {
     color: black;
-   /* display: block;*/
+    display: inline-block;
+    padding: 0 0 0 17px;
     font-size: 14px;
     line-height: 26px;
     text-decoration: none;
@@ -989,8 +1054,12 @@ float:left
 float:none
 }*/
 
+.menu-sidebar_static li:hover{
+background: white;
+}
 .menu-sidebar_static a:hover,.menu-sidebar a.active,#shop_menu a.active{
 color:#ecb34e; 
+/*: white;*/
 }
 
 
@@ -1017,7 +1086,7 @@ position:relative;
 }
 #subheader-body {
     margin-left: 300px;
-    padding: 15px 0 0;
+    /*padding: 15px 0 0;*/
 }
 #leftmemu {
     float: left;
@@ -1534,23 +1603,48 @@ div.fancybox-showcalllink{left: 820px !important;top: 165px !important;}*/
 	background:#ffffff;
 }
 .club_news{
-	float:left;
-	width:230px;
-	padding-left:15px;
-	padding-top:10px;
-	padding-bottom:10px;
-	margin-right:10px;
-	background:#ffffff;
+	background: #ffffff none repeat scroll 0 0;
+    float: left;
+    margin: 0;
+    padding: 10px 5px;
+    width: 150px;
+     height: 255px;
 }
 .coin_division{
-	float:left;
-	width:317px;
-	padding-left:7px;
-	padding-right:7px;
-	padding-top:10px;
-	padding-bottom:10px;
-	margin-right:10px;
-	background:#eeeeee;
+	background: #eeeeee none repeat scroll 0 0;
+    float: left;
+    height: 180px;
+    margin: 0 0 10px 10px;
+    padding: 10px 7px;
+    width: 217px;
+}
+.fm > h3 {
+    margin: 5px 0;
+}
+.coin_division_block .triger-carusel{
+height: 280px;
+}
+
+.club_news a.borderimage {
+    height: 105px;
+}
+
+.club_news .borderimage img {
+    max-height: 85px;
+    max-width: 140px;
+}
+
+
+.coin_division a img {
+    padding-right: 10px;
+}
+
+.coin_division_block .d-carousel .jcarousel-item {
+    width: 163px;
+}
+
+.coin_division_block h3 {
+    font-size: 16px;
 }
 /* Стили для табов-вкладок */
 .tabs_block {
@@ -1569,7 +1663,8 @@ div.fancybox-showcalllink{left: 820px !important;top: 165px !important;}*/
 	margin-right:20px;
     padding: 0;
     list-style: none;
-    float:left;
+    /*float:left;*/
+    display: table;
 }
 /* список вкладок */
 .tabs li.current {
@@ -1695,6 +1790,11 @@ width:100px !important;
 	width:20px;
 	text-align:center;
 }
+
+.filter-block .amount input {   
+    padding: 1px 0;
+}
+
 span.extdown{
 		background:#ffffff;
 	display:inline-block;
@@ -1869,6 +1969,15 @@ text-align: center;
 	width: 190px;
 	height: 280px;
 }
+
+.nnews.coin_division_block .triger-carusel {
+    height: 300px;
+}
+
+.nnews .d-carousel .jcarousel-container-horizontal, .nnews .d-carousel-show .jcarousel-container-horizontal{
+    height: 300px;
+}
+
 .d-carousel .jcarousel-container-horizontal,
 .d-carousel-show .jcarousel-container-horizontal {
 	height: 275px;
@@ -2023,6 +2132,7 @@ overflow: hidden;
 
 .menu-sidebar_static a.active {
     color: #ecb34e;
+    /*background: white;*/
 }
 .showitem{
 border: 1px solid rgb(204, 204, 204); 
@@ -2137,7 +2247,9 @@ float: right;
 .ui-dialog #orderForm {
     width: 370px;
 }
-
+.justify {
+text-align: justify;
+}
 .series-grid {
     display: block;
     float: left;
@@ -2531,4 +2643,276 @@ padding: 10px 0;
     font-size: 13px;
 }
 
+.stabs{
+    color: black;
+    height: 375px;
+    left: 300px;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: -5px;
+    width: 725px;
+    z-index: 1000;
+}
+.stabs::before {
+   content: ''; 
+    position: absolute;
+    left: -15px; 
+    top: 5px;
+    border: 12px solid transparent;
+    border-left: 12px solid #ecb34e;
+}
+
+#hidden-shopcoins-stat .ui-tabs {
+    position: absolute;
+    padding: 0;
+}
+#hidden-shopcoins-stat .mtabs.ui-tabs {
+    position: relative;
+}
+#hidden-shopcoins-stat .ui-widget-content{
+    background-color: #ebe4d4;
+}
+
+
+.coin_info-mini {    
+    background: #fff none repeat scroll 0 0;
+    margin: 0 5px 0 0;
+    padding: 10px;
+    position: relative;
+    width: 150px;
+    height: 280px;
+}
+.coin_info-mini .qwk,.d-carousel .qwk, .d-carousel-show .qwk{
+    margin: 3px;
+    padding: 0;
+    width: 140px;
+}
+.coin_info-mini a.borderimage {
+    display: block;
+    height: 90px;
+}
+.coin_info-mini .borderimage > img {
+    max-height: 80px;
+    max-width: 130px;
+}
+
+.coin_info-mini .amount .buy-div {
+    text-align: center;
+    width: 90px;
+    float: right;
+}
+
+.tab_coins .info-block {
+    height: 95px;
+    overflow: hidden;
+}
+.tab_search .left{
+    width:350px;
+}
+
+.coin_info-mini > br {
+    line-height: 1px;
+}
+.coin_info-mini .amount {
+    display: table;
+    margin: 0 -5px;
+    padding: 5px 0 0;
+    text-align: center;
+    width: 165px;
+}
+
+.coin_info-mini .button25, .coin_info-mini .button26, .coin_info-mini .button27, .coin_info-mini .button6, .coin_info-mini .button7, .coin_info-mini .button77, .coin_info-mini .button11{
+	min-width: 65px;
+}
+
+#hidden-shopcoins-stat .ui-tabs-panel .pages {
+    width: auto;
+    line-height: 50px;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    top: 35px;
+}
+
+#hidden-shopcoins-stat .ui-tabs .ui-tabs-nav li,
+.mtabs ul li
+{
+    background: #ebe4d4 none repeat scroll 0 0;
+    border: 1px solid #ccc !important;
+    border-radius: 0;
+    color: #555;
+    cursor: pointer;
+    display: block;
+    float: left;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    text-align: center;
+    width: 239px;
+}
+.acs{
+ width:180px;
+}
+#hidden-shopcoins-stat #mtabs .ui-tabs-nav li,.mtabs ul li{
+    width: auto;
+}
+#hidden-shopcoins-stat .ui-tabs .ui-tabs-nav li a,
+.mtabs ul li a{
+    display: block;
+    padding: 0.5em 1em;
+    font-size: 16px;
+    text-decoration: none;
+    float: none;
+}
+
+#hidden-shopcoins-stat .ui-tabs .ui-tabs-nav li.ui-state-active, #hidden-shopcoins-stat .ui-widget-content .ui-state-active,
+#hidden-shopcoins-stat .ui-widget-header .ui-state-active,
+.mtabs ul li.active
+{
+    background: #ecb34e;
+    font-weight: bold;
+}
+
+#hidden-shopcoins-stat .ui-state-active a, 
+#hidden-shopcoins-stat .ui-state-active a:link,
+ #hidden-shopcoins-stat.ui-state-active a:visited,
+.mtabs ul li.active a
+ {
+    color: #fff;
+    text-decoration: none;
+    float: none;
+}
+
+
+#hidden-shopcoins-stat  .ui-widget-header
+{
+ background:#ebe4d4;
+}
+
+#hidden-shopcoins-stat .ui-state-hover a,#hidden-shopcoins-stat .ui-state-hover a:hover {
+    text-decoration: none;
+    background: #ecb34e;
+}
+
+.s-header {
+    height: 35px;
+}
+
+#hidden-shopcoins-stat .ui-tabs .ui-tabs-nav,
+.mtabs.ui-tabs .ui-tabs-nav,
+.mtabs ul
+{
+    margin: 0;
+    padding: 0;
+}
+#hidden-shopcoins-stat .ui-tabs-panel {	
+	display: block;
+    font-size: 12px;
+    line-height: 18px;
+    height: 340px;
+    padding:10px;
+    z-index: 2;
+}
+
+#hidden-shopcoins-stat .ui-tabs-panel .tab-coins {		
+    font-size: 12px;
+    line-height: 18px;
+}
+
+.coin_info-mini  .oneclick_notifications {
+    padding: 0;
+    text-align: center;
+    width: 150px;
+}
+
+#hidden-shopcoins-stat .ui-widget-content a {
+    color: #247bbd;
+}
+
+#hidden-shopcoins-stat .ui-widget-content .coin_info-mini a.button25, 
+#hidden-shopcoins-stat .ui-widget-content.coin_info-mini a.button26, 
+#hidden-shopcoins-stat .ui-widget-content.coin_info-mini a.button27, 
+#hidden-shopcoins-stat .ui-widget-content.coin_info-mini a.button6, 
+#hidden-shopcoins-stat .ui-widget-content.coin_info-mini a.button7, 
+#hidden-shopcoins-stat .ui-widget-content.coin_info-mini a.button77, 
+#hidden-shopcoins-stat .ui-widget-content.coin_info-mini a.button11 {
+    color: white;
+}
+
+/*
+.stabs label {
+	border-bottom: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    color: #555;
+    cursor: pointer;
+    display: block;
+    float: left;
+    position: relative;
+    text-align: center;
+    width: 240px;
+}
+
+.stabs input {
+	position: absolute;
+	left: -9999px;
+}
+
+#tab_1:checked  ~ #tab_l1,
+#tab_2:checked  ~ #tab_l2,
+#tab_3:checked  ~ #tab_l3 {
+	background: #ecb34e none repeat scroll 0 0;
+    z-index: 3;
+}
+
+
+
+.tabs_cont > div {
+	position: absolute;
+	left: -9999px;
+	top: 0;
+	opacity: 0;
+	-moz-transition: opacity .5s ease-in-out;
+	-webkit-transition: opacity .5s ease-in-out;
+	transition: opacity .5s ease-in-out;
+}
+#tab_1:checked ~ .tabs_cont #tab_c1,
+#tab_2:checked ~ .tabs_cont #tab_c2,
+#tab_3:checked ~ .tabs_cont #tab_c3 {
+	position: static;
+	left: 0;
+	opacity: 1;
+}
+
 /*end news*/
+.mtabs ul{
+display: table;
+height: 32px;
+background: white none repeat scroll 0 0;    
+}
+.mtabs.ui-tabs .ui-tabs-nav li{
+border:0px;
+}
+
+
+#hidden-shopcoins-stat .mtabs .ui-tabs-panel{
+    height: 330px;
+    padding: 5px 0 20px 13px;
+}
+#hidden-shopcoins-stat .mtabs .ui-tabs-nav li a ,
+.mtabs ul li a
+{
+    font-size: 14px;
+    padding: 10px 12px;
+}
+
+.mtabs.ui-tabs .ui-tabs-panel {
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+    border-width: 0;
+    display: table;
+    padding: 10px 0 10px 10px;
+}
+.mtabs.ui-widget-content {
+    background: #ebe4d4;
+}

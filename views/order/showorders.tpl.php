@@ -39,7 +39,7 @@
 				[ <a href='sbrf.php?NUMBER=<?=$rows["order"]?>&FIO=<?=urlencode($rows["userfio"])?>&ADRESS=<?=urlencode($rows["adress"])?>&SUM=<?=($rows["FinalSum"]-$row['dissert'])?>' target='_blank'>Распечатать квитанцию</a> ]
 			<?}
 			
-			/*if (!$rows["SendPost"] && !$rows["ReceiptMoney"] && !$rows["SendPostBanderoleNumber"] && $rows["ParentOrder"]==0 && (($rows['payment'] !=1 && $rows['payment'] !=2 && ($rows['delivery']==4 || $rows['delivery']==6)) || (($rows['delivery']==10 || $rows['delivery']==2) && ($ipmyshop==$_SERVER['REMOTE_ADDR'] || $_SERVER['REMOTE_ADDR']=="127.0.0.1"))))*/ 
+			if (!$rows["SendPost"] && !$rows["ReceiptMoney"] && !$rows["SendPostBanderoleNumber"] && $rows["ParentOrder"]==0 && (($rows['payment'] !=1 && $rows['payment'] !=2 && ($rows['delivery']==4 || $rows['delivery']==6)) || (($rows['delivery']==10 || $rows['delivery']==2) && ($ipmyshop==$_SERVER['REMOTE_ADDR'])))) 
 			{	?>	
 				
 				<form action='<?=$urlrobokassa?>/Index.aspx' method=POST>

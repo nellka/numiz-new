@@ -44,8 +44,8 @@
    <li><a href='<?=$cfg['site_dir']?>shopcoins/series' title='Серии монет'>Серии монет</a></li>     
              
  </ul>   
-  </div> 
-   <?  
+  </div>
+    <? include('stat_shopcoins.tpl.php');
    //подключаем фильтры для магазина
     if($tpl['task']=='catalog_base')  include('filter_country.tpl.php');
 ?>
@@ -53,9 +53,13 @@
    <script> 
    $('#hidden-shopcoins-menu').click(function (e) {
          if ($(e.target).prop('id') == "hidden-shopcoins-menu"||$(e.target).prop('id') == "hidden-shopcoins-span") {
-            //$(this).hide();
             showMainLeftMenu('left_menu_shop');return false;
         }
+    });
+     $('#hidden-shopcoins-stat').click(function (e) {           
+         if ($(e.target).prop('id') == "hidden-shopcoins-stat") {    
+            showMainLeftMenu('stat_shop');return false;
+         }
     });
     
     $('#hidden-by-date-filter').click(function (e) {

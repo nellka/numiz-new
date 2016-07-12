@@ -36,11 +36,13 @@ if($rows['buy_status']==2){?>
 	  <div id=bascetshopcoins<?=$rows["shopcoins"]?>><a class="button7" href="#" onclick="return false;" title='Уже в вашей корзине'>Корзина</div>
 	</a>
 <?} else if ($rows['buy_status']==6){?>			
-	<div id=bascetshopcoins<?=$rows["shopcoins"]?>>		
+	<div id=bascetshopcoins<?=$rows["shopcoins"]?>>
+		<div class="b-am left">
 		<input type="hidden" value="<?=$rows['amountall']?>" id='amountall<?=$rows["shopcoins"]?>'>			
     	<span class="down">-</span>
     	<input type=text name=amount<?=$rows["shopcoins"]?> id=amount<?=$rows["shopcoins"]?> size=1 value='1'> 
 		<span class="up">+</span>
+		</div>
 		<div class="buy-div">
 			<a class="button25" href='#' onclick='AddAccessory(<?=$rows["shopcoins"]?>);ga("send", "event", "shop", "basket");return false;' title='Положить в корзину <?=contentHelper::setWordOn($rows["materialtype"])?> <?=$rows["name"]?>'>Купить</a>
 		</div>

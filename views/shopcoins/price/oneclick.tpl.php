@@ -1,6 +1,6 @@
-<div  id="oneshopcoins<?=$rows["shopcoins"]?>" style="position:relative; text-align:right;" class="oneclick_notifications">
+<div  id="oneshopcoins<?=$rows["shopcoins"]?>" style="position:relative;" class="oneclick_notifications right ">
 	<a href='#coinone<?=$rows["shopcoins"]?>' onclick="ShowOneClick(<?=$rows["shopcoins"]?>);return false;">
-	Купить <?=($rows["materialtype"]==1)?"монету ":""?>в один клик</a>
+	Купить <?=(!isset($rows["is_mini"])&&$rows["materialtype"]==1)?"монету ":""?>в один клик</a>
 	<!--<a name='coinone<?=$rows["shopcoins"]?>' ></a>-->	 	
 	 
 	  <div class="messages" id='messages<?=$rows["shopcoins"]?>' style='display:none;'>

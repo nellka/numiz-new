@@ -19,6 +19,7 @@ $postindex = request('postindex');
 $adress = request('adress');
 $OtherInformation = request('OtherInformation');
 $from_ubb =  request('from_ubb');
+
 $deletesubscribecoins =  request('deletesubscribecoins');
 $idadmin = request('idadmin');
 
@@ -27,10 +28,11 @@ $coupons = array();
 
 $timenow = mktime(0, 0, 0, date("m", time()), date("d", time()), date("Y", time()));
 
+$tpl['user']['vip_discoint'] = 0;
+
 if ($delivery==2){$DeliveryName[$delivery] = "В офисе (возможность посмотреть материал до выставления)";}
 
 if($tpl['user']['user_id']==352480){
-	//var_dump($meetingdate,$meetingfromtime,$meetingtotime,date('d.m.Y H:i',$meetingdate),date('d.m.Y H:i',$meetingdate+$meetingfromtime),date('d.m.Y H:i',($meetingdate+$meetingfromtime)));
 }
 
 $bonus_comment = false;
@@ -46,7 +48,13 @@ if(!$payment || !$userfio ||!$fio){
     $catalogshopcoinsrelation_class = new model_catalogshopcoinsrelation($cfg['db']);
 
 	$user_data =  $user_class->getUserData();
-					
+
+	if($tpl['user']['user_id']){
+		if($user_data['vip_discoint']&&(!$user_data['vip_discoint_date_end']||$user_data['vip_discoint_date_end']>time())){
+			$tpl['user']['vip_discoint'] = $user_data['vip_discoint'];
+		}
+	}
+
 	$userstatus = (integer) $user_data['userstatus'];
 	
 	$userstatus = $user_data['userstatus'];
@@ -121,9 +129,9 @@ if(!$payment || !$userfio ||!$fio){
 		if ($sum>=1000) $needcallingorder2 = 1;
 		$tpl['submitorder']['vip_discoint'] =0;
 		
-	    if($user_data['vip_discoint']) {
-            $discountcoupon = floor(($bascetsum-$amountbascetsum-$vipcoinssum)*$user_data['vip_discoint']/100);  
-            $tpl['submitorder']['vip_discoint'] =  $user_data['vip_discoint'];  
+	    if($tpl['user']['vip_discoint']) {
+            $discountcoupon = floor(($bascetsum-$amountbascetsum-$vipcoinssum)*$tpl['user']['vip_discoint']/100);
+            $tpl['submitorder']['vip_discoint'] =  $tpl['user']['vip_discoint'];
         } elseif ($coupon_count && $tpl['user']['user_id'] && $tpl['user']['user_id']<>811 && $shopcoinsorder) {
 			//получаем данные о введенном купоне
 			for ($i=0;$i<$coupon_count;$i++){			   
@@ -194,7 +202,7 @@ if(!$payment || !$userfio ||!$fio){
 			if($from_ubb && $sum <= 3000 AND $user_class->is_user_has_premissons() AND $tpl['user']['balance'] >= $sum){
 				$payment = 2;
 				$FinalSum = $FinalSum - $sum;
-				$user_class->decrement_user_balance($sum);
+				$user_class->decrementUserBalance($sum);
 				$user_class->addOrderBonusLog($shopcoinsorder,$sum);
 				$bonus_comment = TRUE;
 			}			
@@ -205,7 +213,7 @@ if(!$payment || !$userfio ||!$fio){
 			if($from_ubb && $sum <= 3000 AND $user_class->is_user_has_premissons() AND $tpl['user']['balance'] >= $sum){
 				$payment = 2;
 				$FinalSum = $FinalSum - $sum;
-				$user_class->decrement_user_balance($sum);
+				$user_class->decrementUserBalance($sum);
 				$user_class->addOrderBonusLog($shopcoinsorder,$sum);
 				$bonus_comment = TRUE;
 			}		
@@ -213,8 +221,8 @@ if(!$payment || !$userfio ||!$fio){
 			if($from_ubb && $sum <= 3000 AND $user_class->is_user_has_premissons() AND $tpl['user']['balance'] >= $sum){			
 				$payment = 2;
 				$FinalSum = $FinalSum - $sum;
-				decrement_user_balance($sum);
-				user_order_bonus_log($shopcoinsorder,$sum);
+				$user_class->decrementUserBalance($sum);
+				$user_class->addOrderBonusLog($shopcoinsorder,$sum);
 				$bonus_comment = TRUE;
 			}			
 		}
@@ -428,16 +436,13 @@ if(!$payment || !$userfio ||!$fio){
 						
 			$countCoupon = $user_class->getUserCouponCount(array('`check`'=>1, 'type'=>2));
 			
-			if($tpl['user']['user_id']==352480){
-            	var_dump($countCoupon);
-            }
             
 			if ($countCoupon==0) {				
 				$couponup = 0;
-				if (($sum-$sumamountprice - $vipcoinssum)>$bigsumcoupon && !$user_data['vip_discoint'] && $tpl['user']['user_id']!=811) {				
+				if (($sum-$sumamountprice - $vipcoinssum)>$bigsumcoupon && !$tpl['user']['vip_discoint'] && $tpl['user']['user_id']!=811) {
 					$dis = ceil(($sum-$sumamountprice - $vipcoinssum)*$bigsumcoupondis/100);
 					$couponup=1;
-				} elseif (($sum-$sumamountprice - $vipcoinssum)>$smallsumcoupon && !$user_data['vip_discoint'] && $tpl['user']['user_id']!=811) {				
+				} elseif (($sum-$sumamountprice - $vipcoinssum)>$smallsumcoupon && !$tpl['user']['vip_discoint'] && $tpl['user']['user_id']!=811) {
 					$dis = ceil(($sum-$sumamountprice - $vipcoinssum)*$smallsumcoupondis/100);
 					$couponup=1;
 				}

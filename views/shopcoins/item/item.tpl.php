@@ -132,5 +132,73 @@ if (trim($rows_main["details"]))
 	$text = str_replace(" монетам ","<strong> монетам </strong>",$text);
 	echo "<br>Описание: ".str_replace("\n","<br>",$text)."";
 }?>
+
+	
+<?	if($tpl['show']['described'])	{ ?>
+<br class="clear:both">
+<div class="description">
+	<h5>Опишите монету и получите 1 рубль на бонус-счет</h5>
+	
+	<form action=/detailcoins/addcomment.php name=mainform id="send_descr" method=post style="width:500px;">
+	  <script>
+		 $(function() {    
+    var availableTags = <?=json_encode($groupselect_v2)?>;
+        $('#group2').autocomplete({
+          source: availableTags,
+          select: function (event, ui) {
+            $('#id_group2').val(ui.item.id);            
+            AddNominal();
+            return ui.item.label;
+        }
+        });
+    });
+  </script>
+
+ 
+<div class="ui-widget">
+  <label for="group2"><p class="formitem"><b>Страна:</b></p> </label>
+  <input id="group2" name=group2 size=40>
+  <input type="hidden" id="id_group2" name=id_group2 size=80>
+</div>
+
+		<input type=hidden id=coins name=coin value="<?=$catalog?>">		
+
+		<div class="ui-widget" >
+  <label for="name2""><p class="formitem"><b>Номинал:</b></p> </label>
+  <input id="name2"" size=40 name="name2">
+</div>
+<div class="ui-widget">
+ <label for="year2"><p class="formitem"><b>Год: </b></p> </label>
+<input class=formtxt id="year2" name="year" required size=6/> 
+
+<p class="formitem"><b>Металл: </b></p>
+		<select name=metal id="metal2" class=formtxt >
+		<option value=0>Выберите</option>
+		<?
+        foreach ($tpl['metalls'] as $key=>$value){
+           if(!$key||!$value) continue;?>
+            <option value=<?=$key?>><?=$value?></option>
+        <?}?>
+		</select>
+</div>
+<div class="ui-widget">
+		<a name=metal></a><p class="formitem"><b>Состояние: </b></p>
+		<select name=condition id=condition2 class=formtxt >
+		  <option value=0>Выберите</option>
+		  <?
+		  foreach ($tpl['conditions'] as $key=>$value){
+           if(!$key||!$value) continue;?>
+            <option value=<?=$key?>><?=$value?></option>
+        <?}?>		
+		 </select>
+</div>
+		<textarea id="details2" class="formtxt" rows="3" cols="43" name="details" placeholder="Описание монеты"></textarea>
+		<input type="button" name=submit onclick="CheckSubmitPrice(0);" value="Сохранить описание" class="button25" >		
+</form>
+</div>
+<?}
+
+//отзывы
+?>
 </div>
 </div>

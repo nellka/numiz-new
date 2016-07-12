@@ -41,7 +41,7 @@
 		
 		 <div class="center bacgroundgray abold">
 			<br>		 
-			<center><a href="<?=$_SERVER['REQUEST_URI']?>" onclick="$.cookie('fv', 1);">Полная версия сайта</a></center>
+			<center><a href="<?=$_SERVER['REQUEST_URI']?>" onclick="$.cookie('fv', 1);" class="full">Полная версия сайта</a></center>
 			<br>
 		 </div>
 		

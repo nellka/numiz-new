@@ -38,9 +38,19 @@ $discountcoupon = 0;
 
 $sumEMC = 0;
 
+
+$tpl['user']['vip_discoint'] = 0;
+
 $user_data =  $user_class->getUserData();
+
+if($tpl['user']['user_id']){
+	if($user_data['vip_discoint']&&(!$user_data['vip_discoint_date_end']||$user_data['vip_discoint_date_end']>time())){
+		$tpl['user']['vip_discoint'] = $user_data['vip_discoint'];
+	}
+}
+
 if($user_data['vip_discoint']) {
-    $discountcoupon = floor(($bascetsum-$amountbascetsum-$vipcoinssum)*$user_data['vip_discoint']/100);
+    $discountcoupon = floor(($bascetsum-$amountbascetsum-$vipcoinssum)*$tpl['user']['vip_discoint']/100);
 
 } else if ($coupon_count && $tpl['user']['user_id'] && $tpl['user']['user_id']<>811 && $shopcoinsorder) {
     //проверяем купон

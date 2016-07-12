@@ -25,14 +25,16 @@ if($tpl['module']=='user'&&$tpl['task']=='registration'){
     
     $tpl['breadcrumbs'][] = array(
     	'text' => contentHelper::$menu[$materialtype],
-    	'href' => $cfg['site_dir']."shopcoins/index.php?materialtype=$materialtype",
-    	'base_href' =>"shopcoins/index.php?materialtype=$materialtype"
+    	//'href' => $cfg['site_dir']."shopcoins/index.php?materialtype=$materialtype",
+		'href' => urlBuild::makePrettyOfferUrl(array('materialtype'=>$materialtype),$materialIDsRule,$ThemeArray,$tpl,$shopcoins_class),
+    	'base_href' =>urlBuild::makePrettyOfferUrl(array('materialtype'=>$materialtype),$materialIDsRule,$ThemeArray,$tpl,$shopcoins_class)
     );
     
     if($rows_main["gname"]&&$rows_main["group"]){
          $tpl['breadcrumbs'][] = array(
         	'text' => $rows_main["gname"],
-        	'href' => $cfg['site_dir']."shopcoins/index.php?materialtype=$materialtype&group=".$rows_main["group"],
+        	//'href' => $cfg['site_dir']."shopcoins/index.php?materialtype=$materialtype&group=".$rows_main["group"],
+			'href' =>urlBuild::makePrettyOfferUrl(array('materialtype'=>$materialtype,'group_id'=>$rows_main["group"]),$materialIDsRule,$ThemeArray,$tpl,$shopcoins_class),
         	'base_href' =>"shopcoins/index.php?materialtype=$materialtype&group=".$rows_main["group"]
         );
     }

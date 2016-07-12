@@ -111,8 +111,8 @@
 			
 			<div id='coupon-block-result' style="display:none">
 			<?
-			if($user_data['vip_discoint']){?>
-			    <b>Скидка как VIP- клиента:</b> <font color="red"> <?=$user_data['vip_discoint']?> %<span id=coupon-result style="display:none"></font></span><br>
+			if($tpl['user']['vip_discoint']){?>
+			    <b>Скидка как VIP- клиента:</b> <font color="red"> <?=$tpl['user']['vip_discoint']?> %<span id=coupon-result style="display:none"></font></span><br>
 			    <b>Размер скидки:</b> <font color="red"><span id=discountcoupon-result></span> р.</font><br>
 			<?} else {?>
 			    <b>Скидочный купон:</b> <font color="red"> <span id=coupon-result></font></span><br>
@@ -294,11 +294,11 @@
 				<br>
 				Сумма заказа:<font color="red"> <b><?=$bascetsum?></b></font><br>
 				
-				<? if($tpl['user']['user_id']&&$user_data['vip_discoint']){?>
-               <br> Ваша скидка как VIP-клиента: <b><?=$user_data['vip_discoint']?> %</b> <br>
-                <br>Итого c учетом скидки (без суммы доставки): <b><?=($bascetsum-floor($user_data['vip_discoint']*$bascetsum/100))?> рублей</b> <br>
+				<? if($tpl['user']['vip_discoint']){?>
+               <br> Ваша скидка как VIP-клиента: <b><?=$tpl['user']['vip_discoint']?> %</b> <br>
+                <br>Итого c учетом скидки (без суммы доставки): <b><?=($bascetsum-floor($tpl['user']['vip_discoint']*$bascetsum/100))?> рублей</b> <br>
                 <?}?>
-				<br><font color="red">Итоговая цена с учетом скидок и доставки: <b><span id="price-sum"><?=($bascetsum-floor($bascetsum*$user_data['vip_discoint']/100))?></span> руб.</b></font></div>
+				<br><font color="red">Итоговая цена с учетом скидок и доставки: <b><span id="price-sum"><?=($bascetsum-floor($bascetsum*$tpl['user']['vip_discoint']/100))?></span> руб.</b></font></div>
 				<br>
 				<div>
 					<input type="checkbox" id="acsess" name=acsess><label for="acsess">Нажимая кнопку "Проверить заказ" я подтверждаю свою дееспособность, даю согласие на обработку своих персональных данных.</label>

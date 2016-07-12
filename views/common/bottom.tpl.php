@@ -1,5 +1,5 @@
  <div class="clearfix">
-       <?php include $cfg['path'] . '/views/common/small-logo.tpl.php';?>
+      <noindex> <?php include $cfg['path'] . '/views/common/small-logo.tpl.php';?> </noindex>
  </div>
  <div class="triger clearfix" id='subsription'>
     <div class="wraper center" id='subsription-form' style="background-color:#eeeeee">    

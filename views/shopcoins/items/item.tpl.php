@@ -75,18 +75,22 @@ if($rows["materialtype"]!=3){?>
 	if($rows['year'] == 1991 && $materialtype==12) $rows['year'] = '1991 ЛМД';
 	if($rows['year'] == 1992 && $materialtype==12) $rows['year'] = '1991 ММД';
 	
-	if ($rows["gname"]){
-	    
+	if ($rows["gname"]){	    
 	    $r_gr_url = $cfg['site_dir'].'shopcoins/'.$materialIDsRule[$rows["materialtype"]].contentHelper::groupUrl($rows["gname"],$rows['group']);
 	    ?>
 	<?=in_array($rows["materialtype"],array(9,3,5))?"Группа":"Страна"?>:<a class="group_href" href="<?=$r_gr_url?>" title='Посмотреть <?=contentHelper::setWordThat($rows["materialtype"])?> <?=$rows["gname"]?>' alt='Посмотреть <?=contentHelper::setWordThat($rows["materialtype"])?> <?=$rows["gname"]?>'>
 	<?=$rows["gname"]?>
 	</a>
-	<?}?>
+	<?}
+	?>
 	<?=$rows["year"]?"<br>Год:&nbsp;<strong>".$rows["year"]."</strong>":""?>
 	<?=trim($rows["metal"])?"<br>Металл: <strong>".$rows["metal"]."</strong>":""?>
 	</div>
 	<div class="left">
+	<?if ($rows["group"]==1523&&$materialtype==11&&$tpl['user']['user_id']){?>
+		<a href='<?=$cfg['site_dir']?>shopcoins/<?=$rows['rehref']?>' title='<?=$title?>' class="borderimage primage">Описать монету</a>
+		
+	<?}?>
 	<?=trim($rows["condition"])?"Состояние: <strong><span class='blue'>".$rows["condition"]."</span></strong>":""?>
 	</div>
 	<div class="right">

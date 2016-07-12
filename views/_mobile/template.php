@@ -166,9 +166,10 @@ $(document).ready(function() {
 		                <?php include $cfg['path'] . '/views/common/breadcrumb.tpl.php'; ?> 
 		            </div>
                 <?}
-	            if($tpl['is_mobile']&&file_exists($cfg['path'].'/views/_mobile/'.$tpl['module'].'.tpl.php')){
-			        require_once $cfg['path'] .  '/views/_mobile/'.$tpl['module'].'.tpl.php';
-			    } else {
+	            if($tpl['is_mobile']&&file_exists($cfg['path'].'/views/_mobile/'.$tpl['module'].'.tpl.php')){?>
+	                
+			        <? require_once $cfg['path'] .  '/views/_mobile/'.$tpl['module'].'.tpl.php';?>			        
+			    <?} else {
 			        require_once $cfg['path'] .  '/views/'.$tpl['module'].'.tpl.php';
 			    }?>		            
 	        </div>            
