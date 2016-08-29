@@ -25,8 +25,8 @@ if (!$tpl['user']['user_id']){
 	}*/
     die();	
 } else {
-    $order_class = new model_order($cfg['db'],$shopcoinsorder,$tpl['user']['user_id']);
-    $orderdetails_class = new model_orderdetails($cfg['db']);
+    $order_class = new model_order($db_class,$shopcoinsorder,$tpl['user']['user_id']);
+    $orderdetails_class = new model_orderdetails($db_class);
 	if (!$action) $action = "showorders";
 	
 	if ($action=="postreceipt" && $parent) {

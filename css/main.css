@@ -6,6 +6,15 @@ body {
 	font-family:Arial,Tahoma, sans-serif;		
 	/* 'Roboto',*/
 }
+
+#content-catalognew table {
+    font-size: 12px;
+}
+
+#content-catalognew table a {
+    text-decoration: none;
+}
+
 h1.main {
     margin: 0;
 }
@@ -327,29 +336,31 @@ color: black;
 #ddmenu div#menu4 {left: -142px;}
 #ddmenu div#menu4:before {left: 180px;}
 #menu4  ul{ padding: 0  0 0 145px;}
-#ddmenu div#menu5 {left: -240px;}
+#ddmenu div#menu5 {left: -245px;}
 #ddmenu div#menu5:before {left: 285px;}
 #menu5  ul{ padding:0  0 0 240px}
-#ddmenu div#menu6 {left: -350px;}
+#ddmenu div#menu6 {left: -353px;}
 #ddmenu div#menu6:before {left: 370px;}
 #menu6  ul{ padding:0  0 0 310px}
-#ddmenu div#menu7 {left: -415px;}
-#ddmenu div#menu7:before {left: 435px;}
-#menu7  ul{ padding:0  0 0 380px}
+#ddmenu div#menu10 {left: -422px;}
+#ddmenu div#menu10:before {left: 445px;}
+#menu10  ul{ padding:0  0 0 380px}
 
-#ddmenu div#menu8 {left: -485px;}
-#ddmenu div#menu8:before {left: 510px;}
+#ddmenu div#menu8 {left: -502px;}
+#ddmenu div#menu8:before {left: 520px;}
 #menu8  ul{ padding:0  0 0 450px}
 
-#ddmenu div#menu9 {left: -555px}
-#ddmenu div#menu9:before {left: 615px;}
+#ddmenu div#menu9 {left: -572px}
+#ddmenu div#menu9:before {left: 625px;}
 #menu9  ul{ padding:0 0 0 560px}
 
-#ddmenu div#menu10 {left: -695px}
-#ddmenu div#menu10:before {left: 725px;}
-#menu10  ul{ padding:0 0 0 695px}
-#ddmenu div#menu11 {left: -775px}
-#ddmenu div#menu11:before {left: 800px;}
+#ddmenu div#menu7 {left: -715px}
+#ddmenu div#menu7:before {left: 745px;}
+#menu7  ul{ padding:0 0 0 695px}
+
+
+#ddmenu div#menu11 {left: -785px}
+#ddmenu div#menu11:before {left: 810px;}
 #menu11  ul{ padding:0 0 0 775px}
 
 #ddmenu ul li { 
@@ -423,6 +434,7 @@ cursor:pointer;
 .open-top{
 background: url("../images/expand.jpg") no-repeat scroll left center;
 }
+
 .borderimage img{
 	border:1px solid #cccccc;
 	padding: 3px 0;
@@ -527,15 +539,12 @@ height: 290px;}*/
 #basket p {
     margin: 0 0 7px;
 }
-h1{
-font-size: 32px;
-color:#000
-}
-h2{font-size: 28px;}
-h3{font-size: 24px;}
-h4{font-size: 21px;}
-h5{
-font-size: 18px;
+h1{font-size: 22px;color:#000}
+h2{font-size: 21px;}
+h3{font-size: 20px;}
+h4{font-size: 19px;}
+h5{font-size: 18px;
+
 margin: 15px 0;}
 
 .statictic h5 {
@@ -1080,8 +1089,10 @@ line-height: 28px;
 .subheader{
 position:relative;
 }
+
+
 #subheader-body h2 {
-    font-size: 26px;
+    /*font-size: 26px;*/
     margin: 5px 0 10px;
 }
 #subheader-body {
@@ -1760,7 +1771,9 @@ height: 280px;
 #raiting_info,.raiting_info {margin-left:100px}
 #raiting_info img,.raiting_info img{vertical-align:middle; margin:0 5px; display:none}
 
-
+.mycatalog .amount{
+text-align:left;
+}
 .amount {
 	width:225px;
 	text-align:right;
@@ -1845,7 +1858,7 @@ div.stars {
 /*order-page start*/
 #payment-block > div,#delivery-block > div {
     line-height: 20px;
-	width:500px;
+	/*width:500px;*/
 	text-align:left;
 	margin-bottom:15px;
 }
@@ -2134,6 +2147,26 @@ overflow: hidden;
     color: #ecb34e;
     /*background: white;*/
 }
+
+.addcons_block{
+    border: 1px solid rgb(204, 204, 204); 
+    margin-top: 20px; 
+    display:table;
+    width: 100%;
+    position: relative;
+    background: #fff8e8 none repeat scroll 0 0;
+}
+
+.addcons_block a.h{
+    background: #ecb34e none repeat scroll 0 0;
+    color: white;
+    display: block;
+    font-size: 16px;
+    line-height: 28px;
+    padding: 0 10px;
+    text-decoration: none;
+}
+
 .showitem{
 border: 1px solid rgb(204, 204, 204); 
 padding: 10px; 
@@ -2915,4 +2948,57 @@ border:0px;
 }
 .mtabs.ui-widget-content {
     background: #ebe4d4;
+}
+
+.seo img{
+border: 1px solid #cccccc;
+max-height: 119px;
+max-width: 223px;
+}
+
+.seo img:hover{
+    display:block;
+    top: 50px; 
+    left: 90px; 
+    z-index: 100;
+    max-width:1000px;
+     max-height:1000px;
+     border: 1px solid #cccccc;
+
+}
+
+
+.detailsItem a {
+    text-decoration: none;
+}
+
+.wform label {
+    float: left;
+    line-height: 20px;
+    margin: 10px 0 5px;
+    padding-right: 10px;
+    text-align: right;
+    text-shadow: 1px 1px 1px #f0f0f0;
+    width: 180px;
+}
+.wform p {
+    clear: both;
+    float: left;
+    line-height: 40px;
+    margin: 0;
+    position: relative;
+    width: 100%;
+}
+.wform select {
+    width: 398px;
+}
+
+.wform input[type="text"], .wform textarea,.wform select {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px #000;   
+    letter-spacing: normal;
+    margin: 5px 0;
+    padding: 4px;
+    
 }

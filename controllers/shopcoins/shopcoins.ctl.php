@@ -1,9 +1,19 @@
 <?
-   
+ 
 $tpl['current_page'] = '';
     
 require_once($cfg['path'].'/helpers/Paginator.php');
 require_once($cfg['path'].'/helpers/urlBuilder.php');
+
+//if($tpl['user']['user_id']==811||$tpl['user']['user_id']==355337){
+     $correct_url = urlBuild::correctedUrl($_SERVER["REQUEST_URI"],$tpl['user']['user_id']);
+     
+     if($correct_url!=$_SERVER["REQUEST_URI"]){
+         header("HTTP/1.1 301 Moved Permanently"); 
+         header("location: http://www.numizmatik.ru".$correct_url);
+         die();
+     }    
+//}
 
 $materialtype = request('materialtype')?(int)request('materialtype'):1;
 
@@ -15,7 +25,7 @@ $tpl['show_short_button'] = false;
 $data_filter = array();
 
 require_once $cfg['path'] . '/models/stats.php';
-$stats_class = new stats($cfg['db'],$tpl['user']['user_id'],session_id());
+$stats_class = new stats($db_class,$tpl['user']['user_id'],session_id());
 
 
 if(in_array($_SERVER['REMOTE_ADDR'],$admin_ips)&&$tpl['user']['user_id']){
@@ -30,7 +40,7 @@ if($tpl['show_short']){
 if(isset($materialsRule[request('materialtype')])) $materialtype = $materialsRule[request('materialtype')];
 
 require_once $cfg['path'] . '/models/shopcoinsdetails.php';
-$details_class = new model_shopcoins_details($cfg['db']);
+$details_class = new model_shopcoins_details($db_class);
 
 $mycoins = 0;
 $arraykeyword = array();
@@ -398,13 +408,7 @@ if($bydate&&$tpl['user']['user_id']) $WhereParams['bydate'] = $bydate;
 if(contentHelper::get_encoding($searchname)=='windows-1251'){
 	$searchname = iconv( "CP1251//TRANSLIT//IGNORE","UTF8", $searchname);	
 }
-if($tpl['user']['user_id']==352480){
-	/*echo "<br>";
-	echo "<br>";
-	var_dump($years_data,$years_p,$WhereParams);
-	echo "<br>";
-	echo "<br>";*/
-}
+
 if($searchname) {
     //так как ссылки были вида cp1251
     $WhereParams['searchname'] = str_replace("'","",$searchname);

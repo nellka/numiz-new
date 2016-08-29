@@ -32,22 +32,38 @@ $tpl['user']['vip_discoint'] = 0;
 
 if ($delivery==2){$DeliveryName[$delivery] = "В офисе (возможность посмотреть материал до выставления)";}
 
-if($tpl['user']['user_id']==352480){
+$sumallorder= 1;
+
+$order_class = new model_order($db_class,$shopcoinsorder,$tpl['user']['user_id']);
+
+$sum_allorder = $order_class->getSumOfOrder();
+
+if($sum_allorder&&intval($sum_allorder["sumallorder"])>0){
+    $sumallorder = intval($sum_allorder["sumallorder"]);
 }
 
+$user_data =  $user_class->getUserData();
+
+$userstatus = (integer) $user_data['userstatus'];
+	
+$userstatus = $user_data['userstatus'];
+$sumlimit = $user_data['sumlimit'];
+$timelimit = $user_data['timelimit'];
 $bonus_comment = false;
 
-if(!$payment || !$userfio ||!$fio){    
+
+if($sumlimit&&($sumlimit<=$sumallorder)){
+    $tpl['submitorder']['error_sumlimit'] = true;
+}elseif(!$payment || !$userfio ||!$fio){    
     $tpl['submitorder']['error'] = true;
 } elseif (!$tpl['user']['user_id']||!$shopcoinsorder) {
     $tpl['submitorder']['error_auth'] = true;
-} else {  
+} else {      
     
-    $order_class = new model_order($cfg['db'],$shopcoinsorder,$tpl['user']['user_id']);
-    $orderdetails_class = new model_orderdetails($cfg['db'],$shopcoinsorder);
-    $catalogshopcoinsrelation_class = new model_catalogshopcoinsrelation($cfg['db']);
+    $orderdetails_class = new model_orderdetails($db_class,$shopcoinsorder);
+    $catalogshopcoinsrelation_class = new model_catalogshopcoinsrelation($db_class);
 
-	$user_data =  $user_class->getUserData();
+	
 
 	if($tpl['user']['user_id']){
 		if($user_data['vip_discoint']&&(!$user_data['vip_discoint_date_end']||$user_data['vip_discoint_date_end']>time())){
@@ -55,18 +71,9 @@ if(!$payment || !$userfio ||!$fio){
 		}
 	}
 
-	$userstatus = (integer) $user_data['userstatus'];
 	
-	$userstatus = $user_data['userstatus'];
-    $sumlimit = $user_data['sumlimit'];
-    $timelimit = $user_data['timelimit'];
+    $rows90 = $order_class->getOrder();    
     
-    $rows90 = $order_class->getOrder();
-    
-    if($tpl['user']['user_id']==352480){
-    	echo time()." 1<br>";
-    }
-
 	if ($userstatus==2) {
 		$tpl['submitorder']['error_userstatus'] = true;
 	} elseif (!$rows90||$rows90['check']==1) {
@@ -424,7 +431,7 @@ if(!$payment || !$userfio ||!$fio){
 						
 			if($user_data['sms']==1&&in_array($delivery,array(1,3,4,6,7))) {
 		        require_once $cfg['path'] . '/models/smssend.php';
-            	$sms_class = new model_smssend($cfg['db']);
+            	$sms_class = new model_smssend($db_class);
 				
 				$textsms1 = $sms_class->create_textsms($delivery,$payment,$meetingdate,$meetingdate,$MetroName);			
 							

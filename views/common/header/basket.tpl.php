@@ -6,8 +6,12 @@
      </div>	
      <div class="caption">
         <p> <? if($tpl['user']['product_amount']){?>     
-        	<a href="<?=$cfg['site_dir']?>shopcoins/index.php?page=orderdetails" title="Показать корзину"><span class="black">Корзина покупок</span>
+        	<a href="<?=$cfg['site_dir']?>shopcoins/index.php?page=orderdetails" title="Показать корзину"><span class="black">Корзина</span>
         	   <span id='basket-order'><?=($shopcoinsorder&&$tpl['user']['product_amount'])?" № ".$shopcoinsorder:''?></span>
+                <?php
+                if($orderstart){?>
+                <span class="red">до <?=date('H:i',($orderstart+5*3600))?></span>
+                <?}?>
         	</a>
         	<?} else {?>
         	    <span class="black"><b>Корзина покупок</b></span><span id='basket-order'></span>

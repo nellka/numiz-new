@@ -14,6 +14,7 @@
 <?} else {?>
 <div class="error" id="addcall-error"><?=implode("<br>",$tpl['user']['errors'])?></div>
 <form action="#" method="post" class=formtxt>
+<input type="hidden" id="codeforfrend" name="codeforfrend" value="<?=$tpl['user']['codeforfrend']?>">
 <div class="web-form">
     <div class="left">
         <label for="email">Email: </label>
@@ -42,6 +43,7 @@
         <label for="subscr">Подписаться на новости: </label>
          <input type="checkbox" id=subscr name=subscr <?=checked_box($tpl['user']['subscr'])?> value='1'>
 </div>
+    <br>
 <div class="web-form" style='line-height:30px;padding:0 0 20px '>
         <label for="subscr">Введите цифрами число <font style='background:#ffcc66' id='inttostring_text'><?=$tpl['user']['inttostring']?></font>: </label>
         
@@ -65,6 +67,7 @@ $.ajax({
     type: "POST",
     data:{email: $('#email').val(), 
         password: $('#password').val(),
+        codeforfrend: $('#codeforfrend').val(),
         password_repeat:$('#password_repeat').val(),
         subscr:$('#subscr').val(),
         inttostring:$('#inttostring').val(),

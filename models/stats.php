@@ -14,9 +14,7 @@ class stats {
     static $revaluation_materialtype = 200;
        
     function __construct($db,$user_id=0,$session_id=''){
-        $db['driver_options']  = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES "utf8"');
-		$this->db = Zend_Db::factory('PDO_MYSQL', $db);
-	 	$this->db->query("SET names 'utf8'");
+        $this->db = $db;
 	 	$this->cache = Zend_Registry::get('Memcached');	 
 	 	$this->user_id = $user_id;
 	    $this->session_id = $session_id;

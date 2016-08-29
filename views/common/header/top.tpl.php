@@ -19,7 +19,7 @@
      <div id="contact-top-phone">
      <p  class=phonetop>  8-800-333-14-77 (по России бесплатно)<br>
      +7-903-006-00-44 (Москва)<br>
-     +7-915-001-22-23 
+     +7-915-002-22-23
      </p>
      <a id="showcalllink"  class="button24" onclick="showWin('<?=$cfg['site_dir']?>addcall.php?ajax=1',500);return false;" href="#">Заказать обратный звонок</a>   
     </div>

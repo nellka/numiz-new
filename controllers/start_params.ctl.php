@@ -10,6 +10,15 @@ $fv= (isset($_COOKIE['fv'])&&$_COOKIE['fv']>0)?true:false;
 $c_en= (isset($_COOKIE['c_en'])&&$_COOKIE['c_en']>0)?true:false;
 //номер заказа
 $shopcoinsorder = 0;
+$orderstart = 0;
+
+if(isset($_SESSION['orderstart'])&&intval($_SESSION['orderstart'])>0){
+	$orderstart = intval($_SESSION['orderstart']);
+	if(time() > $orderstart + 5*3600){
+		$orderstart = 0;
+	}
+}
+
 
 if (isset($_COOKIE['shopcoinsorder'])&&intval($_COOKIE['shopcoinsorder'])>0)
 	$shopcoinsorder = intval($_COOKIE['shopcoinsorder']);

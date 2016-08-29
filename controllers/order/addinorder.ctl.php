@@ -2,11 +2,12 @@
 require $cfg['path'] . '/configs/config_shopcoins.php';
 require_once $cfg['path'] . '/models/order.php';
 require_once $cfg['path'] . '/models/orderdetails.php';
-
+require_once $cfg['path'] . '/models/catalogshopcoinsrelation.php';
 require_once($cfg['path'] . '/models/mails.php');
 
-$order_class = new model_order($cfg['db'],$shopcoinsorder,$tpl['user']['user_id']);
-$orderdetails_class = new model_orderdetails($cfg['db'],$shopcoinsorder);
+$order_class = new model_order($db_class,$shopcoinsorder,$tpl['user']['user_id']);
+$orderdetails_class = new model_orderdetails($db_class,$shopcoinsorder);
+$catalogshopcoinsrelation_class = new model_catalogshopcoinsrelation($db_class);
 
 $addinordersubmit = request('addinordersubmit');
 
@@ -26,9 +27,11 @@ if ($blockend > time()) {
 		$tpl['addinorder']['error'] = "Заказ $shopcoinsorder уже оформлен Вами. Вы можете его просомтреть в \"Ваши заказы\"";
 }
 
+
+
 if (!$tpl['addinorder']['error']) {
 	$rows_temp = $order_class->getPreviosOrder();
-	
+
 	$phone = $rows_temp['phone'];
 	$fio = $rows_temp['userfio'];
 	$adress = $rows_temp['adress'];
@@ -97,6 +100,11 @@ if (!$tpl['addinorder']['error']) {
 	//делаем проверку на все товары из магазина и показ отчета --------------------------------------------------------------
 	$tpl['submitorder']['result'] = $orderdetails_class->getOrderDetails($clientdiscount);
 
+	if($tpl['user']['user_id']==352480){
+		//var_dump($rows_temp);
+		//die();
+		// $tpl['is_mobile'] = true;
+	}
 	$i=0;
 	$oldmaterialtype = "";
 	$sum = 0;
@@ -139,7 +147,7 @@ if (!$tpl['addinorder']['error']) {
 		if ($rows_temp['MetroMeeting'] and $rows_temp['delivery'] == 1){
 			$MetroName = $MetroArray[$rows_temp['MetroMeeting']];
 		}	elseif ($rows_temp['MetroMeeting'] and ($rows_temp['delivery'] == 3)) {
-			$rows = $order_class->getMetroName($metro) ;				
+			$rows = $order_class->getMetroName($rows_temp['MetroMeeting']) ;
 			$MetroName = $rows["name"];
 		}
 		

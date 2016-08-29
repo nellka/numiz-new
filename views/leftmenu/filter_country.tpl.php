@@ -1,5 +1,7 @@
 <? 
-$search_href = $bydate?'&bydate='.$bydate:"";
+$search_href = $nocheck?'?nocheck=1':"";
+$search_href .= $bydate?'&bydate='.$bydate:"";
+
 ?>
 <form id='search-params' method="POST" action="<?=$r_url?>" class="left">
 <input type="hidden" id='orderby' name='orderby' value='<?=$tpl['orderby']?>'>
@@ -12,6 +14,7 @@ $search_href = $bydate?'&bydate='.$bydate:"";
 <input type="hidden" id='yearend' name='yearend' value='<?=$yearend?>'>
 <input type="hidden" id='mycoins' name='mycoins' value='<?=$mycoins?>'>
 <input type="hidden" id='bydate' name='bydate' value='<?=$bydate?>'>
+
 <?
 
 //if($tpl['user']['user_id']) include("filter_bydates.tpl.php");

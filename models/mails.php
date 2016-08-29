@@ -4,14 +4,34 @@ require('Zend/Mail.php');
 class mails 
 {	
     protected $mail;
-    
-    function __construct(){
+	
+    function __construct($from = false){
 		$this->mail = new Zend_Mail('UTF-8');
 		//$this->mail->addHeader("Content-Type:","text/html; charset=UTF-8");
-		$this->mail->setFrom('administrator@numizmatik.ru', 'Numizmatik.Ru');  
-	 	
-	}   
-	  
+		if(!$from){
+			$this->mail->setFrom('administrator@numizmatik.ru', 'Numizmatik.Ru');
+		}	 	
+	}
+	//формирование письма о монете в каталоге
+	public function CatalogCoinsLetter($data){
+     	$this->mail->setFrom($data['mailfrom'], $data['fiofrom']);
+		$this->mail->addTo($data['mailfriend'], $data['mailfriend']);  
+		$this->mail->setSubject("Сообщение из Монетной Лавки Клуба Нумизмат");
+
+		$mytext ="<table border='0' cellpadding='0' cellspacing='0' width='650' style='border:1px solid #cccccc;border-collapse:collapse;margin-top:20px;'>";
+		$mytext .="<tr><td style=\"border:1px solid #cccccc; background-color:#eeeeee;padding:10px;font-size:14px;font-weight:bold;\">Монетная лавка Клуба Нумизмат</td></tr>";
+		$mytext .= "<tr><td style='padding: 10px;'><b><p>Добрый день!</b></p>";
+		$mytext .="<p>Ваш товарищ (".$data['fiofrom']." ".$data['mailfrom'].") отправил Вам сообщение с Монетной лавки Клуба Нумизмат. </p>";
+		$mytext .="<p>".$data['message']."</p>";
+		$mytext .="<p>Для просмотра данного лота перейдите по ссылке: <b><a href='".$data['link']."'>".$data['link']."</a></b></p>";
+		$mytext .="<p>Данное сообщение не гарантирует, что данный лот не продан другому покупателю.</p>";
+		$mytext .= "</td></tr></table>";
+		$html = $this->createFullHtml($mytext);
+
+		$this->mail->setBodyHtml($html);
+		$this->mail->send();
+	}
+	
 	//формирование письма о регистрации пользователя
 	public function newUserLetter($dataUser){
 		$this->mail->addTo($dataUser['email'], $dataUser['userlogin']);	
@@ -97,7 +117,7 @@ class mails
         $this->mail->send();
 	}
 	
-	protected function createFullHtml($mytext,$subject=''){
+	public function createFullHtml($mytext,$subject=''){
 		$message = "<html><head><style type='text/css'> body{font-family:arial;font-size:14px;font-weight:bold;}.maintd{font-size:14px;font-weight:bold;border:1px solid #cccccc;padding:10px;}.bordertd{border:1px solid #cccccc; background-color:#eeeeee;padding:10px;font-size:14px;font-weight:bold;}";
 		$message .="a:link{font-family:arial;font-weight:bold;color:#006699; TEXT-DECORATION:none; font-size:14px;}"; 
 		//$message .="a:visited{font-family:arial;font-weight:bold;color:#006699; TEXT-DECORATION:none; font-size:12px;}"; 

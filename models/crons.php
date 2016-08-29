@@ -20,7 +20,7 @@ class crons {
 	    $this->db->query("TRUNCATE shopcoins_search;");
                
         $sql = "INSERT INTO  `shopcoins_search` 
-        SELECT shopcoins, price,  `group` , YEAR, dateinsert,  `check` , number, materialtype, parent, materialtypecross, nominal_id, metal_id, condition_id,amount,amountparent,datereprice,dateinsert,theme,novelty 
+        SELECT shopcoins, price,  `group` , YEAR, dateinsert,  `check` , number, materialtype, parent, materialtypecross, nominal_id, metal_id, condition_id,amount,amountparent,datereprice,dateinsert,dateorder,theme,novelty
         FROM  `shopcoins` WHERE (`check` =1 OR  `check` >=4);";
         $this->db->query($sql);        
         

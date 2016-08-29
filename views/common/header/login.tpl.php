@@ -28,7 +28,7 @@ if(isset($tpl['user']["error_login"])){
 	
 	<p><a href="http://www.numizmatik.ru/user/profile.php"  title="Просмотр/редактирование личных данных/настроек">Ваш профайл</a></p>
 	<p>
-	<form action="<?=$_SERVER["REQUEST_URI"]?>" method="POST">
+	<form action="<?=$cfg['site_dir']?>" method="POST">
 	<input type="hidden" value="1" name="logout" id="logout">
 	<input type="submit" class="yell_b"  value="Выход">
 	</form>

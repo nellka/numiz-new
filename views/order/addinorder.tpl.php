@@ -81,36 +81,36 @@
 		
 		
 		<h5>Информация о покупателе:</h5>
-		<div><b>ФИО:</b><?=$rows_temp['userfio']?></div>
-		<div><b>Контактный телефон:</b><?=$rows_temp['phone']?></div>
+		<div><b>ФИО:</b> <?=$rows_temp['userfio']?></div>
+		<div><b>Контактный телефон:</b> <?=$rows_temp['phone']?></div>
 		
 		<?if ($rows_temp['adress']){?>
-			<div><b>Адрес доставки:</b><?=$rows_temp['adress']?></div>
+			<div><b>Адрес доставки:</b> <?=$rows_temp['adress']?></div>
 		<?
 		}
 		
 		if ($rows_temp['delivery']==2) 	$DeliveryName[$rows_temp['delivery']] = "В офисе (возможность посмотреть материал до выставления)";?>
 
-		<div><b>Способ доставки:</b><?=$DeliveryName[$rows_temp['delivery']]?>
+		<div><b>Способ доставки:</b> <?=$DeliveryName[$rows_temp['delivery']]?>
 		
 		<?if ($rows_temp['delivery']==2) {?>
 			<br>2-3 минуты от метро Тверская.  <br>Рабочие дни с 10.00 до 18.00.  <br><iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://maps.google.ru/maps?hl=ru&amp;q=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0+%D0%BA%D1%80%D0%B0%D1%81%D0%BD%D0%BE%D0%BF%D1%80%D0%BE%D0%BB%D0%B5%D1%82%D0%B0%D1%80%D1%81%D0%BA%D0%B0%D1%8F+16&amp;lr=&amp;ie=UTF8&amp;hq=&amp;hnear=%D0%90%D0%9E+%D0%A6%D0%B5%D0%BD%D1%82%D1%80%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9,+%D0%B3%D0%BE%D1%80%D0%BE%D0%B4+%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0,+%D0%9A%D1%80%D0%B0%D1%81%D0%BD%D0%BE%D0%BF%D1%80%D0%BE%D0%BB%D0%B5%D1%82%D0%B0%D1%80%D1%81%D0%BA%D0%B0%D1%8F+%D1%83%D0%BB.,+16&amp;ll=55.777152,37.607768&amp;spn=0.018102,0.054932&amp;z=15&amp;output=embed"></iframe><br /><small><a href="http://maps.google.ru/maps?hl=ru&amp;q=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0+%D0%BA%D1%80%D0%B0%D1%81%D0%BD%D0%BE%D0%BF%D1%80%D0%BE%D0%BB%D0%B5%D1%82%D0%B0%D1%80%D1%81%D0%BA%D0%B0%D1%8F+16&amp;lr=&amp;ie=UTF8&amp;hq=&amp;hnear=%D0%90%D0%9E+%D0%A6%D0%B5%D0%BD%D1%82%D1%80%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9,+%D0%B3%D0%BE%D1%80%D0%BE%D0%B4+%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0,+%D0%9A%D1%80%D0%B0%D1%81%D0%BD%D0%BE%D0%BF%D1%80%D0%BE%D0%BB%D0%B5%D1%82%D0%B0%D1%80%D1%81%D0%BA%D0%B0%D1%8F+%D1%83%D0%BB.,+16&amp;ll=55.777152,37.607768&amp;spn=0.018102,0.054932&amp;z=15&amp;source=embed" style="color:#0000FF;text-align:left" target=_blank>Просмотреть увеличенную карту</a></small>
 			
 		<?}?>
 		</div>
-		<div><b>Способ оплаты:</b><?=$SumName[$rows_temp['payment']]?>		
+		<div><b>Способ оплаты:</b> <?=$SumName[$rows_temp['payment']]?>		
 		
 		<? if ($MetroName){?>
-			<div><b>Метро:</b><?=$MetroName?></div>
+			<div><b>Метро:</b> <?=$MetroName?></div>
 		<?
 		}
 		//дата
 		if (($rows_temp['DateMeeting']-$rows_temp['MeetingFromTime'])>0 and ($rows_temp['delivery'] == 1 || $rows_temp['delivery'] == 2 || $rows_temp['delivery'] == 3 || $rows_temp['delivery'] == 7)){?>
-			<div><b>Дата:</b><?=$DaysArray[date("w",($rows_temp['DateMeeting']-$rows_temp['MeetingFromTime']))].":".date("d-m-Y", ($rows_temp['DateMeeting']-$rows_temp['MeetingFromTime']))?></div>
+			<div><b>Дата:</b> <?=$DaysArray[date("w",($rows_temp['DateMeeting']-$rows_temp['MeetingFromTime']))].":".date("d-m-Y", ($rows_temp['DateMeeting']-$rows_temp['MeetingFromTime']))?></div>
 		<?}
 		//время
 		if ($rows_temp['MeetingFromTime'] and ($rows_temp['delivery'] == 1 || $rows_temp['delivery'] == 2 || $rows_temp['delivery'] == 3 || $rows_temp['delivery'] == 7)){?>
-			<div><b>Время:</b><?=date("H-i", $timenow + $rows_temp['MeetingFromTime'])." по ".date("H-i", $timenow + $rows_temp['MeetingToTime'])?></div>
+			<div><b>Время:</b> <?=date("H-i", $timenow + $rows_temp['MeetingFromTime'])." по ".date("H-i", $timenow + $rows_temp['MeetingToTime'])?></div>
 		<?}
 		if(!$addinordersubmit){?>
 		<form action='<?=$cfg['site_dir']?>shopcoins/index.php?page=order&page2=2' method=post >

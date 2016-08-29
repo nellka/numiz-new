@@ -1410,3 +1410,16 @@ text-align: center;
 .clearfix {
    clear:both
 }
+
+.image-s {
+    margin: 0 20px 0 0;
+}
+
+
+.descr {
+    text-align: justify;
+}
+
+#hidden-shopcoins-stat .ui-widget-content .coin_info-mini a.button25{
+    color: white;
+}

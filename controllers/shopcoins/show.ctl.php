@@ -3,13 +3,13 @@ require_once($cfg['path'].'/helpers/Paginator.php');
 require_once($cfg['path'].'/models/catalogshopcoinsrelation.php');
 require_once $cfg['path'] . '/configs/config_shopcoins.php';
 require_once $cfg['path'] . '/models/shopcoinsdetails.php';
-$details_class = new model_shopcoins_details($cfg['db']);
+$details_class = new model_shopcoins_details($db_class);
 
 require_once $cfg['path'] . '/models/stats.php';
-$stats_class = new stats($cfg['db'],$tpl['user']['user_id'],session_id());
+$stats_class = new stats($db_class,$tpl['user']['user_id'],session_id());
  
 
-$catalogshopcoinsrelation_class = new model_catalogshopcoinsrelation($cfg['db']);
+$catalogshopcoinsrelation_class = new model_catalogshopcoinsrelation($db_class);
 //var_dump($_SERVER);
 
 $page = 'show';
@@ -92,10 +92,22 @@ $tpl['show']['error'] = false;
 //показываем количество страниц
 
 if ($catalog){	
-    $stats_class->saveCoins($catalog);
+    
     //стартовая инфа о монете независимо от родитея
-    $rows_main = $shopcoins_class ->getItem($catalog,true);
+    $rows_main = $shopcoins_class ->getItem($catalog,true);    
 
+	$correct_links = contentHelper::getRegHref($rows_main);
+	if("/shopcoins/".$correct_links["rehref"]!=urldecode($_SERVER['REQUEST_URI'])){
+		/*if($tpl['user']['user_id']==352480){
+			var_dump("shopcoins/".$correct_links["rehref"],$_SERVER['REQUEST_URI']));
+			die();
+		}*/
+		header('HTTP/1.1 301 Moved Permanently');
+    	header('Location: '.$cfg['site_dir']."shopcoins/".$correct_links["rehref"]);
+    	die();
+	}  
+    
+    $stats_class->saveCoins($catalog);
 	if ($rows_main) {
 		$ourcoinsorder = array();
 

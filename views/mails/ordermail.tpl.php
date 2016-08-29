@@ -59,7 +59,7 @@ if ($delivery==4 || $delivery==5 || $delivery==6 || $delivery==7){
 	$mail_text .= 'Вес (с учетом упаковки) ~'.$tpl['submitorder']['bascetpostweight'].' грамм.<br>';
 }
 
-if ($adress) $mail_text .= 'Адрес доставки: '.$adress.'<br>';
+if (($delivery==3||$delivery==4||$delivery==6)&&$adress) $mail_text .= 'Адрес доставки: '.$adress.'<br>';
 if ($delivery==6) {
 	$mail_text .= 'Почтовые услуги: '.$tpl['submitorder']['sumEMC'].' руб.<br>';
 	$mail_text .= 'Страховка 1%: '.(10).' руб.<br>';

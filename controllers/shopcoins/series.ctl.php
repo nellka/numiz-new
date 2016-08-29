@@ -39,11 +39,11 @@ $base_url = $cfg['site_dir']."shopcoins/series/$id".(($tpl['onpage']!=24)?"&onpa
 require($cfg['path'].'/helpers/Paginator.php');
 require($cfg['path'].'/models/shopcoinsbyseries.php');
 require_once $cfg['path'] . '/models/shopcoinsdetails.php';
-$details_class = new model_shopcoins_details($cfg['db']);
+$details_class = new model_shopcoins_details($db_class);
 $filter_groups =  array();
 $tpl['one_series'] =  array();
 
-$shopcoinsbyseries_class = new model_shopcoinsbyseries($cfg['db']);
+$shopcoinsbyseries_class = new model_shopcoinsbyseries($db_class);
 
 $mycoins = array();
 
@@ -80,7 +80,8 @@ $OrderByArray[] = "s.price desc";
 
 
 if (sizeof($OrderByArray)){
-	$orderby = array_merge(array("s.check ASC"),$OrderByArray);
+	//$orderby = array_merge(array("s.check ASC"),$OrderByArray);
+	$orderby = $OrderByArray;
 }
 
 
@@ -123,7 +124,8 @@ if($id){
         
         foreach ($tpl['one_series_data'] as $key=>$rows){            
             $ArrayShopcoins[] = $rows["shopcoins"];
-            $ArrayDataShopcoins[$rows["shopcoins"]] = $rows;            
+            //$ArrayDataShopcoins[$rows["shopcoins"]] = $rows;    
+            $tpl['one_series']['data'][$rows["shopcoins"]] = $rows;       
        	    
         }
         
@@ -131,7 +133,7 @@ if($id){
         
         foreach ($itemsShopcoins as $item){            
             $key = $item["shopcoins"];
-        	$tpl['one_series']['data'][$key] = array_merge($ArrayDataShopcoins[$key],$item);
+        	$tpl['one_series']['data'][$key] = array_merge($tpl['one_series']['data'][$key],$item);
         	
         	//$group = $shopcoins_class->getGroupItem($rows['group']);	
         	

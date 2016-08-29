@@ -6,8 +6,15 @@
 	'base_href' =>'/'
 );
 $tpl['current_page'] = '/';*/
-
-if($tpl['module']=='user'&&$tpl['task']=='registration'){    
+if ($tpl['module']=='catalognew'){
+    $tpl['breadcrumbs'][] = array(
+    	'text' => 'Каталог монет',
+    	'href' => '',
+    	'base_href' =>''
+    );    
+    $tpl['current_page'] = '';
+    
+} elseif($tpl['module']=='user'&&$tpl['task']=='registration'){    
    
     $tpl['breadcrumbs'][] = array(
     	'text' => 'Регистрация',

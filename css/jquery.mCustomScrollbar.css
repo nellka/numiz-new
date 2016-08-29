@@ -24,6 +24,11 @@
 #filter-groupgroup_container .dragger_pressed{position:absolute; width:6px; height:60px; background:#367e9b text-align:center; margin-left:1px; line-height:60px; color:#367e9b; overflow:hidden; border-left:1px solid #367e9b; border-right:1px solid #367e9b; cursor:pointer;}
 
 #filter-grouptheme_container{position:relative; left:0; /*top:20px;*/ margin:0; height:253px; }
+
+
+#content-catalognew #filter-grouptheme_container{position:relative; left:0; /*top:20px;*/ margin:0; height:296px; }
+
+
 .s_mt #filter-grouptheme_container{height:185px; }
 
 #filter-grouptheme_container .customScrollBox{position:relative; height:100%; overflow:hidden;float:left;}

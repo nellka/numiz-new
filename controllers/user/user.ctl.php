@@ -17,6 +17,7 @@ switch ($tpl['task']){
     	
         $tpl['user']['password'] = request('password');
         $tpl['user']['email'] =request('email');
+        $tpl['user']['codeforfrend'] =request('codeforfrend');
         $tpl['user']['password_repeat'] = request('password_repeat');
         
         $inttostring = rand(1,99);
@@ -43,9 +44,11 @@ switch ($tpl['task']){
             }  else if($userData = $user_class->getRowByParams(array('email'=>$tpl['user']['email']))){
                  $tpl['user']['errors'][] = "Пользователя с таким Email уже существует в системе";
             }  else {
+
                  $data = array('email'=>$tpl['user']['email'],
                                'userpassword' => $tpl['user']['password'],
-                               'userlogin'=>$tpl['user']['email']);   
+                               'userlogin'=>$tpl['user']['email'],
+                               'codeforfrend' => $tpl['user']['codeforfrend']);
                                              
                  $userId = $user_class->addNewUser($data,$tpl['user']['subscr']);
                  //регистрируем

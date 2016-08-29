@@ -73,8 +73,8 @@ if (sizeof($tpl['show']['shopcoinstheme']))	echo "<br>Тематика: <strong>
 
 if ($materialtype==1||$materialtype==12||$materialtype==10 || $materialtype==11 ||$materialtype==2|| $materialtype==4 || $materialtype==8 || $materialtype==6 || $materialtype==9) {		   
     if($shopcoins_class->is_already_described($catalog)){			
-        echo '<div>Монета была описана <span style="color:red;">пользователем</span> сайта.<br>Клуб Нумизмат 
-    несет ответственность за изображение предмета</div>';
+        echo '<div>Монета была описана <span class="red">пользователем</span> сайта.<br>Клуб Нумизмат 
+    несет ответственность <span class="red">ТОЛЬКО</span> за изображение предмета</div>';
     }
 }
 

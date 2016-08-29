@@ -12,6 +12,7 @@
 <?} else {?>
 <div class="error" id="addcall-error"><?=implode("<br>",$tpl['user']['errors'])?></div>
 <form action="#" method="post" class=formtxt>
+<input type="hidden" id="codeforfrend" name="codeforfrend" value="<?=$tpl['user']['codeforfrend']?>">
 <div class="web-form">
     <div class="left">
         <label for="email">Email: </label>
@@ -62,6 +63,7 @@ $.ajax({
     type: "POST",
     data:{email: $('#email').val(), 
         password: $('#password').val(),
+        codeforfrend: $('#codeforfrend').val(),
         password_repeat:$('#password_repeat').val(),
         subscr:$('#subscr').val(),
         inttostring:$('#inttostring').val(),

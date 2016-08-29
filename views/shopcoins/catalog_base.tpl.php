@@ -1,4 +1,13 @@
 
+
+<div class="bordered"><b>Хотим вас порадовать новостью от том, что с 27 июля по 1 сентября 2016 года доставка в офис по Москве (курьерская доставка) для заказов от 3000 рублей <font color=red>БЕСПЛАТНО</font>
+<br></b>
+</div>
+<?php
+if($orderstart&&($orderstart+5*3600-1800)<time()){?>
+	<h3 class=red style='margin:0 0 10px '>Внимание! Корзина заканчивается в <?=date('H:i',($orderstart+5*3600))?></h3>
+<?}?>
+
 <div id='products' class="products-cls m-<?=$mycoins?'mycoins':$materialtype?>">
 
 <div class="filter-products-block">
@@ -23,7 +32,7 @@ if($tpl['show_short_button']){?>
 <?
 include('nav_catalog.tpl.php');
 
-if($tpl['shop']['errors']){?>
+if( $tpl['subscribe']['error']){?>
 	<font color="red"><?=implode("<br>",$tpl['shop']['errors'])?></font>
 <?} else {
 ?>
@@ -54,7 +63,7 @@ if($tpl['shop']['errors']){?>
 <?include('pager.tpl.php');?>
 </div>
 
-<?if ($tpl['catalog']['lastViews']) {	?>
+<? /*if ($tpl['catalog']['lastViews']) {	?>
 	<div>
 	<h5>10 последних просматриваемых товаров</h5>
 	</div>
@@ -83,13 +92,13 @@ if($tpl['shop']['errors']){?>
 		</ul>
 	</div>
 </div>
-<?}?>
+<?}*/ ?>
 <br class="clear:both">
 
 <?
     if($tpl['seo_data']){?>
 <div class="seo" class="clearfix">
-<h5><?=$tpl['seo_data']['title']?></h5>
+<h2><?=$tpl['seo_data']['title']?></h2>
 <?=$tpl['seo_data']['text']?>
 </div>
 <br class="clear:both">
@@ -111,7 +120,7 @@ if ($tpl['shop']['OtherMaterialData']) {	?>
           
 		<?
 		foreach ($tpl['shop']['OtherMaterialData'] as $rowsp){
-		    $rowsp['gname'] = $groupData["name"];		   
+		    //$rowsp['gname'] = $groupData["name"];		   
 		    $rowsp['metal'] = $tpl['metalls'][$rowsp['metal_id']];		   
 		    $rowsp['condition'] = $tpl['conditions'][$rowsp['condition_id']];
 		    $rowsp = array_merge($rowsp, contentHelper::getRegHref($rowsp));

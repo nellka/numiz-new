@@ -20,9 +20,9 @@ if($tpl['user']['user_id']==352480){
 $erroramount = "";
 if (!$amount) $amount = 1;
 
-$helpshopcoinsorder_class = new model_helpshopcoinsorder($cfg['db']);
-$order_class = new model_order($cfg['db']);
-$orderdetails_class = new model_orderdetails($cfg['db'],$shopcoinsorder);
+$helpshopcoinsorder_class = new model_helpshopcoinsorder($db_class);
+$order_class = new model_order($db_class);
+$orderdetails_class = new model_orderdetails($db_class,$shopcoinsorder);
 
 $data_result = array();
 $data_result['error'] = null;
@@ -87,13 +87,17 @@ if(!$rows){
 				
 				if(isset($_SESSION['shopcoinsorder']))unset($_SESSION['shopcoinsorder']);
 			}
-		}	else $_SESSION['shopcoinsorder'] = $shopcoinsorder;
+		}	else {
+			$_SESSION['shopcoinsorder'] = $shopcoinsorder;
+			$_SESSION['orderstart'] = $rows["date"];
+		}
 		
 	} 
 
 	  if (!$data_result['error'])	{
 		if (!$shopcoinsorder) {
-			$data_order = array('date'=>time(),
+			$time = time();
+			$data_order = array('date'=>$time,
                              'type'=>'shopcoins',
                              'check'=>0,
                              'ip'=>$user_remote_address,
@@ -109,6 +113,7 @@ if(!$rows){
 			
 						
 			$_SESSION['shopcoinsorder'] = $shopcoinsorder;
+			$_SESSION['orderstart'] = $time;
 			$orderdetails_class->setShopcoinsorder($shopcoinsorder);
 		}
 		$rows_info = $orderdetails_class->getPostion($shopcoins); 
@@ -174,6 +179,7 @@ if (!$data_result['error']){
 	$data_result['bascetpostweightmin']=$dataBasket["bascetpostweightmin"];
 	$data_result['bascetpostweightmax']=$dataBasket["bascetpostweightmax"];
 	$data_result['bascetinsurance']=$dataBasket["bascetinsurance"];
+	$data_result['orderstart']=$_SESSION['orderstart'];
 	//$data_result['textbascet'] = $textbascet2?htmlspecialchars($textbascet2):"none")."</textbascet2>
 } else {
 	$data_result['error'] = $data_result['error'];

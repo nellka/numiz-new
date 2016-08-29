@@ -21,6 +21,29 @@ class contentHelper{
 		}
 	}
 	
+	static function inputspace($text,$position) {
+
+    	$lenchtext = strlen($text);
+    	$newtext = '';
+    	$tigger=0;
+    	for ($i=0;$i<$lenchtext;$i++) {
+    	
+    		if ($text[$i] != ' ') 
+    			$tigger++;
+    		else
+    			$tigger = 0;
+    		
+    		if ($tigger==$position) {
+    		
+    			$newtext .= " ";
+    			$tigger = 0;
+    		}
+    		$newtext .= $text[$i];
+    	}
+    	
+    	return $newtext;
+    }
+    
     static function strtolower_ru($text) 
     { 
     	$text = trim($text);
@@ -35,12 +58,16 @@ class contentHelper{
        	return str_replace($ruskey,$engkey,$text);
     } 
     static function showImage($url,$title,$params=array()){
-       if(!file_exists("/var/www/htdocs/numizmatik.ru/shopcoins/".$url)) return false;
+       if(!isset($params['folder'])) {
+           $folder = 'shopcoins';
+       } else $folder = $params['folder'];
+       
+       if(!file_exists("/var/www/htdocs/numizmatik.ru/$folder/".$url)) return false;
        $on = '';
        foreach ($params as $key=>$value){
             $on.= "$key='$value' ";
        }
-       return "<img  src='http://www.numizmatik.ru/shopcoins/$url' title='$title' $on>";
+       return "<img  src='http://www.numizmatik.ru/$folder/$url' title='$title' $on>";
        
     }
     

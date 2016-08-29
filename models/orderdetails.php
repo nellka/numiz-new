@@ -118,8 +118,8 @@ class model_orderdetails extends Model_Base
 		               ->where('`user`<>811 and `check`=1')
 		               ->where('`order`<>?',$this->getIdentity())
 		               ->where('date>?',time()-365*24*60*60);
-    		               
-        	$orders = $this->db->fetchRow($select);    
+    		       
+        	$orders = $this->db->fetchOne($select);    
 			if ( $orders>=3) return  1;			
 	 	}
 	 	return  0;

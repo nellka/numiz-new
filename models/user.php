@@ -5,6 +5,7 @@ class model_user extends Model_Base
 {		
     public $user_id;    
     public $username;    
+    public $fio; 
 	public $orderusernow;
 	protected $session_int;
 	
@@ -268,10 +269,30 @@ class model_user extends Model_Base
     }
     			
 	public function getUserData(){
+	    
+	   if(!(int)$this->user_id) return array();
+	   
 	   $select = $this->db->select()
 		               ->from('user')
 		               ->where('user =?',$this->user_id);	         
 		return $this->db->fetchRow($select); 
+	}
+	
+	public function getUserDataByID($id){
+	    
+	   if(!(int)$id) return false;
+	   
+	   $select = $this->db->select()
+		               ->from('user')
+		               ->where('user =?',$id);	         
+	   return $this->db->fetchRow($select); 
+	}
+	
+	public function getUserDataByEmail($email=''){
+		$select = $this->db->select()
+			->from('user')
+			->where('email =?',$email);
+		return $this->db->fetchRow($select);
 	}
 	//добавляем нового пользователя и подписываем на новости если надо
 	 public function addNewUser($data,$is_subsrib = false){
@@ -326,6 +347,10 @@ class model_user extends Model_Base
 	     return $this->username;
 	 }
 	 
+	 public function getUserfio(){
+	     return $this->fio;
+	 }
+	 
 	 public function addsubscribe($user_id,$data=array('news'=>1)){
 	     if($user_id){
     	     $select = $this->db->select()
@@ -351,6 +376,7 @@ class model_user extends Model_Base
 	 	$data['user_id'] = $this->getIdentity();
 	 	$data['orderusernow'] = 0;
 		$data['username'] = $this->getUsername();
+		$data['fio'] = $this->getUserfio();
     	$data['balance'] = $this->getUserBalance();
     	
     	return $data;
@@ -405,9 +431,10 @@ class model_user extends Model_Base
     			setcookie("shopcoinsorder", $shopcoinsorder, $rows_or['date'] + $reservetime, "/shopcoins/", ".shopcoins.numizmatik.ru");
     			setcookie("shopcoinsorder", $shopcoinsorder, $rows_or['date'] + $reservetime, "/");   				
 				
-    			$_SESSION['shopcoinsorder'] = $shopcoinsorder;   			
-                
-                return $shopcoinsorder;
+    			$_SESSION['shopcoinsorder'] = $shopcoinsorder;
+				$_SESSION['orderstart'] = $rows_or["date"];
+
+				return $shopcoinsorder;
     		}    		
         	 
         }
@@ -508,137 +535,34 @@ class model_user extends Model_Base
 		setcookie($cookie_prefix .'password', md5($vbuser['password']), $expire, $cookie_path, $vb_cookie_domain);
 		return TRUE;
 	}
-
-	protected function curl_open($url,$post,$referer,$cook){
-		var_dump($cook);
-	        $ch = curl_init();
-	        curl_setopt($ch, CURLOPT_URL, $url);
-		    curl_setopt ($ch, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");
-
-	        //curl_setopt($ch, CURLOPT_COOKIEJAR, "/");
-		   // curl_setopt($ch, CURLOPT_COOKIEFILE, "/");
-		    curl_setopt ($ch, CURLOPT_TIMEOUT, '10');
-	        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-	        curl_setopt($ch, CURLOPT_POST,1);
-		    curl_setopt($ch, CURLOPT_POSTFIELDS,$post);
-		    curl_setopt($ch, CURLOPT_HEADER, 1);
-	        curl_setopt($ch, CURLOPT_REFERER, $referer);
-			if (strlen($cook)>0){
-				//curl_setopt($ch, CURLOPT_COOKIE, $cook);
-			}
-
-
-
-		//curl_setopt($ch, CURLOPT_COOKIEJAR, "/tmp/codecall_$user.txt");
-		//curl_setopt($ch, CURLOPT_COOKIEFILE, "/tmp/codecall_$user.txt");
-
-
-
-		//curl_setopt ($ch, CURLOPT_FOLLOWLOCATION, FALSE); // follow redirects
-		//curl_setopt ($ch, CURLOPT_MAXREDIRS, 0); // limit redirections to four
-	        $get_row_urlink = curl_exec($ch);
-var_dump(curl_error($ch));
-	        curl_close($ch);
-	    return $get_row_urlink;
-	}
-
-
     //проверяем, что пользователь залогинен
 	public function loginUsForForum($email,$userpassword){
-		//if($email=='serg-nsa@yandex.ru'){
-			$this->set_login_cookies($email);
-		//}
-			/*$forum_url = "www.numizmatik.ru/forum";
-
-
-                $header = $this->curl_open('http://'.$forum_url.'/newthread.php?do=newthread&f=20','1','index.php',$cook);
-                //echo $header;
-
-                preg_match("/bblastvisit=(.+?);/",$header,$cookie);
-                $cook='bblastvisit='.$cookie[1].';bblastactivity=0';
-                setcookie('blastvisit',$cookie[1],'/')
-                //echo '<br><br> cook1 '.$cook.'<br><br>';
-
-
-                preg_match("/class=\"panel\">(.+?)class=\"smallfont\"/is",$header,$out);
-                preg_match_all("/name=\"(.*?)\"\s+value=\"(.*?)\"/i",$out[1],$dootp);
-                //print_r($dootp);
-
-                for($r=0;$r<count($dootp[1]);$r++){
-                    if($dootp[1][$r]=='url'){
-                        $dannie_dootp1 .= $dootp[1][$r].'='.preg_replace("/&/i",'%26',$dootp[2][$r]).'&';
-                    } else {
-                        $dannie_dootp1 .= $dootp[1][$r].'='.$dootp[2][$r].'&';
-                    }
-                }
-                echo "\n\n   ".$dannie_dootp1."\n\n";
-
-                //Это делается для того, чтобы получить "bbsessionhash"
-
-
-                $header = $this->curl_open('http://'.$forum_url.'/login.php?do=login',$dannie_dootp1.'vb_login_username='.$email.'&vb_login_password='.$userpassword,$forum_url.'/index.php',$cook);
-    //var_dump($header);
-
-                preg_match("/bbsessionhash=(.+?);/",$header,$cookie_session);
-                var_dump($cookie_session);
-                $cook='bblastvisit='.$cookie[1].';bblastactivity=0;bbsessionhash='.$cookie_session[1].'';
-                echo "\n\n".' cook2 '.$cook."\n\n";
-
-                // Теперь, имея все куки и зная значения всех скрытых полей формы, пытаюсь //авторизоваться
-                $params = $dannie_dootp1.'vb_login_username='.$email.'&vb_login_password='.$userpassword;
-                $params= "vb_login_username=" . $email . "&vb_login_password=" .
-            //"&login_btn=%C2%F5%EE%E4" .
-            "&s=".
-            "&securitytoken=guest" .
-            "&do=Login" .
-            "&vb_login_md5password=".md5($userpassword).
-            "&vb_login_md5password_utf=".md5($userpassword);
-                //"&cookieuser=1" .
-                //vb_login_username=serg-nsa%40yandex.ru&vb_login_password=&s=&securitytoken=guest&do=login&vb_login_md5password=d0f5f67034b419ae11e2fdcee9f4a8e1&vb_login_md5password_utf=d0f5f67034b419ae11e2fdcee9f4a8e1
-                echo $params;
-                $header = $this->curl_open('http://'.$forum_url.'/login.php?do=login',$params,"http://www.numizmatik.ru/forum/index.php",$cook);
-    var_dump($header);
-                die();
-            */
-/*
-		$ch = ""; // reset value
-		$ch = curl_init();
-		curl_setopt ($ch, CURLOPT_URL,  "http://www.numizmatik.ru/forum/login.php?do=login") ; // target site
-		curl_setopt($ch, CURLOPT_COOKIEJAR, "cookie.txt"); 
-		curl_setopt($ch, CURLOPT_COOKIEFILE, "cookie.txt");
-		curl_setopt ($ch, CURLOPT_REFERER, "http://www.numizmatik.ru/forum/login.php?do=login");
-		curl_setopt ($ch, CURLOPT_TIMEOUT, 10); // timeout
-		curl_setopt ($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.1) Gecko/20061204 Firefox/2.0.0.1");
-		
-		curl_setopt ($ch, CURLOPT_FOLLOWLOCATION, FALSE); // follow redirects
-		curl_setopt ($ch, CURLOPT_MAXREDIRS, 0); // limit redirections to four
-		curl_setopt ($ch, CURLOPT_RETURNTRANSFER, TRUE); // return in string
-		
-		curl_setopt ($ch, CURLOPT_POST, 1);
-		curl_setopt ($ch, CURLOPT_POSTFIELDS, $postfields);
-		
-		$postfields = "vb_login_username=" . $email . "&vb_login_password=" . $userpassword .
-		//"&login_btn=%C2%F5%EE%E4" .
-		"&cookieuser=1" .
-		"&s=".
-		"&securitytoken=guest" .
-		"&do=login" .
-		"&vb_login_md5password=".
-		//md5($userpassword).
-		"&vb_login_md5password_utf="
-		//md5($userpassword)
-		;
-		
-		curl_setopt ($ch, CURLOPT_POST, 1); 
-		$result = curl_exec($ch); 
-		
-		if($email=='serg-nsa@yandex.ru'){
-			var_dump($ch,$result,$postfields,curl_error($ch), curl_errno($ch)); 
-			die(); 
-		}
-		curl_close($ch);
-		return;*/
+		$this->set_login_cookies($email);
+	}
+	
+	//логинем по ссылке из подписки
+	public function loginByMailkey($mailkey){
+	    if(!$mailkey) return;
+	    
+	    $select = $this->db->select()
+		               ->from('subscribe',array('user'))
+		               ->where("mailkey=?",$mailkey);		               
+    	$userId  = $this->db->fetchOne($select);    
+    	if(!$userId) return ;
+    	  
+    	$select = $this->db->select()
+		               ->from('user')
+		               ->where("user=?",$userId);		               
+    	$user_data  = $this->db->fetchRow($select);
+    	   	
+    	if(!$user_data) return ;
+    	
+    	if($mailkey==md5("Numizmatik_Ru".$user_data['user'].$user_data['userpassword'])){
+    	    var_dump($user_data); 
+    	    $this->logout();  
+    	    $this->loginUser($user_data['email'],$user_data['userpassword']);
+    	}    	
+	    return;
 	}
 	
 	//проверяем, что пользователь залогинен
@@ -705,7 +629,7 @@ var_dump(curl_error($ch));
         		$_SESSION['cookiesuser'] = $userData['user'];
         		$this->user_id = $userData['user'];
         		$this->username = $userData['userlogin'];
-        		
+        		$this->fio = $userData['fio'];
                 return true;
         	} else {
         		return false;
@@ -761,8 +685,12 @@ var_dump(curl_error($ch));
 		setcookie("cookiesuserlogin", "1", time()-3600, "/shopcoins/");
 		setcookie("cookiesuserpassword", "1", time()-3600, "/shopcoins/");
 		setcookie("cookiesuser", "1", time()-3600, "/shopcoins/");
-    		
 
+		if (!empty($_COOKIE['bbsessionhash'])) {
+			$this->db->delete('vbull_session',"sessionhash = '".$_COOKIE['bbsessionhash']."'");
+		}
+		setcookie("bbsessionhash", "0", time()-3600, "/","www.numizmatik.ru");
+		setcookie("bbpassword", "", time()-3600, "/","www.numizmatik.ru");
 	
 		/*unset($_COOKIE['cookiesuserlogin']);
 		unset($_COOKIE['cookiesuserpassword']);

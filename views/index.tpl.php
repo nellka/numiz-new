@@ -1,3 +1,6 @@
+<div class="bordered"><b>Хотим вас порадовать новостью от том, что с 27 июля по 1 сентября 2016 года доставка в офис по Москве (курьерская доставка) для заказов от 3000 рублей <font color=red>БЕСПЛАТНО</font>
+<br></b>
+</div>
 <div id="hidden-shopcoins-stat">
 	<div id="mtabs" class="mtabs" >
     <ul>

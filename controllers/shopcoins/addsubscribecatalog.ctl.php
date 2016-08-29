@@ -1,7 +1,7 @@
 <?
 require($cfg['path'].'/models/catalogshopcoinsrelation.php');
 
-$catalogshopcoinsrelation_class = new model_catalogshopcoinsrelation($cfg['db']);
+$catalogshopcoinsrelation_class = new model_catalogshopcoinsrelation($db_class);
 
 $data_result = array();
 $data_result['error'] = null;

@@ -25,18 +25,28 @@ if(request('logout')){
 
 require $cfg['path'] . '/controllers/start_params.ctl.php';
 
-$orderdetails_class = new model_orderdetails($cfg['db'],$shopcoinsorder);
+$orderdetails_class = new model_orderdetails($db_class,$shopcoinsorder);
 
 if($tpl['is_mobile']&&isset($_COOKIES['fullversion'])){
 	$tpl['is_mobile'] = false;
 }
 
 $nocheck = request('nocheck');
+$mailkey = request('mailkey');
 
 $tmp['addcall']['errors'] = array();
 
 $user_remote_address = $_SERVER['REMOTE_ADDR'] ;
 $tpl['user']['remote_address'] = $user_remote_address;
+//логиним пользователя по ссылке если надо
+
+if($mailkey&&$tpl['module']=='subscribe'){
+    
+    if($mailkey=='5fe6503e907ff96216e4df8f16777726'){    
+        $user_class->loginByMailkey($mailkey);
+    }
+}
+
 //проверяем залогинивание пользователя
 $tpl['user']['is_logined'] = $user_class->is_logged_in();
 
@@ -65,7 +75,7 @@ if ($tpl['user']['is_logined']){
 	$user_base_data = $user_class->getUserBaseData();
 	
 	$tpl['user'] = array_merge($tpl['user'],$user_base_data);
-	$shopcoins_class = new model_shopcoins($cfg['db'],$tpl['user']['user_id'],$nocheck);
+	$shopcoins_class = new model_shopcoins($db_class,$tpl['user']['user_id'],$nocheck);
 	$tpl['user']['catalogamount'] = count($shopcoins_class->myCoinsRequest());
 	$tpl['user']['my_ip'] = ((getenv("REMOTE_ADDR")=="212.233.78.26"||getenv("REMOTE_ADDR")=="127.0.0.1")?1:0);
 	
@@ -74,6 +84,13 @@ if ($tpl['user']['is_logined']){
 	if(!$shopcoinsorder) {
 	    $shopcoinsorder = $user_class->getUserCurrentOrder();
 	    $orderdetails_class->setShopcoinsorder($shopcoinsorder);
+
+        if(isset($_SESSION['orderstart'])&&intval($_SESSION['orderstart'])>0){
+            $orderstart = intval($_SESSION['orderstart']);
+            if(time() > $orderstart + 5*3600){
+                $orderstart = 0;
+            }
+        }
 	}
 	
 	if($shopcoinsorder){ 	        		
@@ -84,14 +101,15 @@ if ($tpl['user']['is_logined']){
         	
     	$tpl['user']['summ'] = $bascetsum = $_SESSION['bascetsum'] = $dataBasket["mysum"];
 
+
 	}
 	
 } else {
 	$tpl['user']['user_id'] = 0;
-	$shopcoins_class = new model_shopcoins($cfg['db'],$tpl['user']['user_id'],$nocheck);
+	$shopcoins_class = new model_shopcoins($db_class,$tpl['user']['user_id'],$nocheck);
 }
 
-$stats_class = new stats($cfg['db'],$tpl['user']['user_id'],session_id());
+$stats_class = new stats($db_class,$tpl['user']['user_id'],session_id());
 
 $tpl['user']['showfullgrouplist'] = false;
 
@@ -242,7 +260,9 @@ if($tpl["datatype"]=='text_html'){
         if($tpl['is_mobile']&&file_exists($cfg['path'].'/views/_mobile/'.$tpl['module'].'.tpl.php')){
     	   require_once $cfg['path'].'/views/_mobile/'.$tpl['module'].'.tpl.php';
         } else {
-            require_once $cfg['path'].'/views/'.$tpl['module'].'.tpl.php';
+            if($tpl['task']&&file_exists($cfg['path'].'/views/'.$tpl['module'].'/'.$tpl['task'].'.tpl.php')){
+                require_once $cfg['path'].'/views/'.$tpl['module'].'/'.$tpl['task'].'.tpl.php';
+            } else require_once $cfg['path'].'/views/'.$tpl['module'].'.tpl.php';
         }
     }
     die();
@@ -255,7 +275,9 @@ if($tpl['ajax']){
     if($tpl['is_mobile']&&file_exists($cfg['path'].'/views/_mobile/'.$tpl['module'].'.tpl.php')){
         require_once $cfg['path'] .  '/views/_mobile/'.$tpl['module'].'.tpl.php';
     } else {
-        require_once $cfg['path'] .  '/views/'.$tpl['module'].'.tpl.php';
+        if($tpl['task']&&file_exists($cfg['path'].'/views/'.$tpl['module'].'/'.$tpl['task'].'.tpl.php')){
+            require_once $cfg['path'].'/views/'.$tpl['module'].'/'.$tpl['task'].'.tpl.php';
+        } else require_once $cfg['path'] .  '/views/'.$tpl['module'].'.tpl.php';
     }  
     die();
 }

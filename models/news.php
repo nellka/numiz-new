@@ -171,12 +171,19 @@ class model_news extends Model_Base
     /**
      * @return mixed
      */
-    public function getImg($id=0)
+    public function getImg($id=0,$text='')
     {
-        $select = $this->db->select()
+        /*$select = $this->db->select()
             ->from(array('s'=>'news_img'),array('src'))
             ->where('news_id=?',$id);
-        return $this->db->fetchOne($select);
+        $src =  $this->db->fetchOne($select);
+        
+        if(!$src){   */         
+           preg_match('#(<img\s(?>(?!src=)[^>])*?src=")(.*?)("[^>]*>)#',$text,$res);
+	       $src = $res[2];
+       // }
+        
+        return $src;
     }
 
     public function getItemsByParams($WhereParams=array(),$page=1, $items_for_page=30,$orderby='',$searchid=''){

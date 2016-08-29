@@ -1,4 +1,9 @@
-<h1 class="left">Корзина</h1>
+<h1 class="left">Корзина
+	<?php
+	if($orderstart){?>
+		<span class="red">до <?=date('H:i',($orderstart+5*3600))?></span>
+	<?}?>
+</h1>
     <?
     if($tpl['can_order']){?>
         

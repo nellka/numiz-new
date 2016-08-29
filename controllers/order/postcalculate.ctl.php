@@ -14,8 +14,8 @@ if(!$tpl['user']['user_id']) $data_result['error'] = "noauth";
 
 $shopcoins = (integer)request('shopcoins');
 
-$orderdetails_class = new model_orderdetails($cfg['db'],$shopcoinsorder);
-$order_class = new model_order($cfg['db'],$shopcoinsorder,$tpl['user']['user_id']);
+$orderdetails_class = new model_orderdetails($db_class,$shopcoinsorder);
+$order_class = new model_order($db_class,$shopcoinsorder,$tpl['user']['user_id']);
 
 $order = request('order');
 $postindex = request('postindex');

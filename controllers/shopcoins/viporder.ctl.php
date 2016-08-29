@@ -5,7 +5,7 @@ require_once $cfg['path'] . '/models/viporder.php';
 
 $id = request('id');
 
-$viporder_class = new model_shopcoinsvipclientanswer($cfg['db']);
+$viporder_class = new model_shopcoinsvipclientanswer($db_class);
 
 $GroupNameMain = '';
 $GroupName = ''; 

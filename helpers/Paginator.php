@@ -8,7 +8,9 @@ class Paginator
     private $baseUrl,
             $resultsPerPage,
             $resultsCount,
-            $currentPage;
+            $currentPage,
+            $onclick;
+            
 
     function __construct($options = array()) {
         
@@ -31,16 +33,28 @@ class Paginator
             if (array_key_exists('page', $options)) {
                 $this->setCurrentPage($options['page']);
             }
-             if (array_key_exists('border', $options)) {
+            if (array_key_exists('border', $options)) {
                 $this->setBorder($options['border']);
             }
+            if (array_key_exists('onclick', $options)) {
+                $this->setOnclick($options['onclick']);
+            }
+            
         }        
        
     }
     public function setBorder($num) {
         if ($num > 0) { $this->border = (int) $num; }
     }
-
+    
+    public function setOnclick($func) { 
+        $this->onclick = $func; 
+    }
+    
+    public function getOnclick() { 
+        return $this->onclick; 
+    }
+    
     public function getBorder() { 
         return $this->border; 
     }
@@ -131,19 +145,26 @@ class Paginator
         
         $first = $this->getFirstPage();
         $last  = $this->getLastPage();
-        
+       
         if ($last == 0) 
             { return array(); }
             
         $page = $this->getCurrentPage();
+
         $from = $page - $this->border;
         $to   = $page + $this->border;
         
-        if ($from < $first) 
-            { $from = $first; }
+        if ($from < $first){            
+            $d = $first-$from;
+            $from = $first;             
+        }
             
-        if ($to > $last) 
-            { $to = $last; }
+        if ($to > $last){ 
+            $to = $last; 
+            if(($from-$d)>=1) {
+                $from = $from-$d;
+            } else $from=1;
+        }
             
         $list = array();
         for ($i = $from; $i <= $to; $i++) 
@@ -153,13 +174,17 @@ class Paginator
     
     public function printPager(){
         $pages = $this->getPagesList();
+        $onclick = '';
+        
+        if($this->getOnclick()){
+            $onclick = "onclick='".$this->getOnclick()."'";
+        }
          if (count($pages) > 1) {        
             $refs = array();
     
             if ( $pages[0] != 1 ) {
     
-                $refs[] = "<a class='normal_ref_color' href='{$this->getBaseUrl()}page=" . 
-                      ($pages[0] - 1) . "'>&lt;</a>";
+                $refs[] = "<a class='normal_ref_color' href='{$this->getBaseUrl()}page=" . ($pages[0] - 1) . "' $onclick>&lt;</a>";
             }
     
             foreach ($pages as $page) {
@@ -167,14 +192,13 @@ class Paginator
                 if ($this->isCurrentPage($page)) {
                     $refs[] = "<span class=active>{$page}</span>";
                 } else {
-                    $refs[] = "<a class='normal_ref_color' href='{$this->getBaseUrl()}pagenum={$page}'>$page</a>";
+                    $refs[] = "<a class='normal_ref_color' href='{$this->getBaseUrl()}pagenum={$page}' $onclick>$page</a>";
                 }
             }
     
             if ( $pages[ count($pages) - 1 ] != $this->getLastPage() ) {
     
-                $refs[] = "<a class='normal_ref_color' href='{$this->getBaseUrl()}pagenum=" . 
-                      ($pages[count($pages) - 1] + 1) . "'>&gt;</a>";
+                $refs[] = "<a class='normal_ref_color' href='{$this->getBaseUrl()}pagenum=" .($pages[count($pages) - 1] + 1) . "' $onclick>&gt;</a>";
             }
             //Страницы: 
             print '<p class="paginator">' . implode('', $refs) . '</p>';

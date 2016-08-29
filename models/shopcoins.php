@@ -1870,8 +1870,7 @@ class model_shopcoins extends Model_Base
 	public function getOtherMaterialData($group,$materialtype=1){
 	    $data = array();
 	    if(!$group||!$materialtype) return $data;
-
-	    $sql = "select * from shopcoins  where shopcoins.check=1 and shopcoins.dateinsert<>0 and shopcoins.dateorder=0 and shopcoins.materialtype <> '".$materialtype."' and `group` = '$group'	group by shopcoins.parent order by rand() limit 5";
+	    $sql = "select  *,group.name as gname from shopcoins,`group`  where shopcoins.group=group.group and shopcoins.check=1 and shopcoins.dateinsert<>0 and shopcoins.dateorder=0 and shopcoins.materialtype <> '".$materialtype."' and group.group = '$group'	group by shopcoins.parent order by rand() limit 5";
     	
     	return $this->getDataSql($sql);	    
 	}

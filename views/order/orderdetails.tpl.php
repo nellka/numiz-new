@@ -1,6 +1,11 @@
 <div class="clearfix order-cart">
 	<br>
-    <h5 class="left">Корзина</h5>
+    <h5 class="left">Корзина
+		<?php
+		if($orderstart){?>
+			<span class="red">до <?=date('H:i',($orderstart+5*3600))?></span>
+		<?}?>
+	</h5>
 	
     <div class="right">
     <?

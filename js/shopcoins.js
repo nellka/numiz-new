@@ -37,6 +37,10 @@ function showMenuDescription(id){
     }
 }
 
+function StartUserInfo(id) {  
+   showWin(site_dir+'/new/?module=user&task=userinfo&user_id='+id+'&ajax=1','450');return false;
+}
+
 function setMini(on,onscroll){    
     //console.log(on+','+onscroll);
     if(!on&&onscroll){      
@@ -334,9 +338,12 @@ function sendData(name,val,p0,p1,y0,y1){
 
 function AddAccessory(id){		
 	var amount = 0;
+	//console.log($('#amount'+id));
+	//console.log($('#amount'+id).length);
 	if($('#amount'+id).length){
 		var amount = $('#amount'+id).val();
 	}
+	//console.log(amount);
 	if(amount <=0) amount = 1;
     $.ajax({	
 	    url: site_dir+'shopcoins/addbascet.php?r='+ Math.random(), 
@@ -992,7 +999,7 @@ function calculateOrder(on){
 
 			$('#user-compare-block').show();
 			$('#user-order').hide();
-console.log(data);
+
 			var errorvalue =data.error;
 			var bascetamount = data.bascetamount;
 			var bascetsum = data.bascetsum;

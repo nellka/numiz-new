@@ -11,19 +11,8 @@ $number = request('number');
 $dateuse = '';
 $dateout = '';
 
-$order_class = new model_order($cfg['db']);
+$order_class = new model_order($db_class);
 
-/*
-require_once $cfg['path'] . '/models/helpshopcoinsorder.php';
-
-require_once $cfg['path'] . '/models/orderdetails.php';
-$erroramount = "";
-if (!$amount) $amount = 1;
-
-$helpshopcoinsorder_class = new model_helpshopcoinsorder($cfg['db']);
-
-$orderdetails_class = new model_orderdetails($cfg['db'],$shopcoinsorder);
-*/
 $data_result = array();
 $data_result['error'] = null;
 
@@ -48,12 +37,12 @@ if ($code1 && $code2 && $code3 && $code4 && $tpl['user']['user_id'] && $tpl['use
     		$couponData = $user_class->getUserCoupon(array('code'=>$code,'type'=>1));
     
     		$friendCoupon = $user_class->getFriendCouponCode();
-    		
+
     		if(!$couponData){
     			$data_result['error'] = 'error1';
     		} else {
-    		    $couponData = $couponData[0];		
-    		
+    		    $couponData = $couponData[0];
+				
         		if($couponData['check'] == 0) {
         			//купон уже использован
         			$data_result['error'] = 'error5';
@@ -63,7 +52,7 @@ if ($code1 && $code2 && $code3 && $code4 && $tpl['user']['user_id'] && $tpl['use
         				$dateuse = $result_tmp['dateinsert'];
         			}    
         		} elseif ($couponData['dateend']<time()) {
-        			$error = "error6";
+					$data_result['error'] = "error6";
         			$dateout = $couponData['dateend'];
         		} elseif($friendCoupon==$code){
         			//введен купон приведи друга

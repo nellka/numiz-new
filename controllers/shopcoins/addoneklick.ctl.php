@@ -7,9 +7,9 @@ $onefio = request('onefio');
 $onephone = request('onephone');
 $amount = request('amount');
 
-$helpshopcoinsorder_class = new model_helpshopcoinsorder($cfg['db']);
-$order_class = new model_order($cfg['db']);
-$orderdetails_class = new model_orderdetails($cfg['db'],$shopcoinsorder);
+$helpshopcoinsorder_class = new model_helpshopcoinsorder($db_class);
+$order_class = new model_order($db_class);
+$orderdetails_class = new model_orderdetails($db_class,$shopcoinsorder);
 
 $data_result = array();
 $data_result['error'] = null;

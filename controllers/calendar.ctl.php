@@ -1,7 +1,7 @@
 <?php 
 require_once $cfg['path'] . '/models/calendar.php';
 
-$calendar_class = new model_calendar($cfg['db']);
+$calendar_class = new model_calendar($db_class);
 
 $rows = $calendar_class->getDates();
 $calendar_echo_var = '';
@@ -10,7 +10,7 @@ $max_holiday_date = NULL;
 $holidays = array();
 
 if(count($rows) > 0) {
-	 $calendar_echo_var .= '<h4 style="color:red; font-family: arial, helvetica, sans-serif;">График работы в праздничные дни:</h4>';
+	 $calendar_echo_var .= '<h4 style="color:red; font-family: arial, helvetica, sans-serif;">пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ:</h4>';
 	foreach ($rows as $key => $value) // dirty hack time convert, lol
 	{
 		$date_from_ = substr($value['date_from'], 0, strpos($value['date_from'], ' '));
@@ -22,7 +22,7 @@ if(count($rows) > 0) {
 		}
 		else
 		{
-			$calendar_echo_var .= '<h5 style="color:red; font-family: arial, helvetica, sans-serif;">с '.substr($value['date_from'], 0, strpos($value['date_from'], ' ')).' по '.substr($value['date_to'], 0, strpos($value['date_to'], ' ')).' - '.$value['msg'].'</h5>';
+			$calendar_echo_var .= '<h5 style="color:red; font-family: arial, helvetica, sans-serif;">пїЅ '.substr($value['date_from'], 0, strpos($value['date_from'], ' ')).' пїЅпїЅ '.substr($value['date_to'], 0, strpos($value['date_to'], ' ')).' - '.$value['msg'].'</h5>';
 
 		}			
 		$holidays[] = strtotime($value['date_to']);

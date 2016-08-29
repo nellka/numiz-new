@@ -5,10 +5,17 @@ require_once $cfg['path'] . '/models/viporder.php';
 require $cfg['path'] . '/configs/config_shopcoins.php';
 
 require_once $cfg['path'] . '/models/shopcoinsdetails.php';
-$details_class = new model_shopcoins_details($cfg['db']);
+$details_class = new model_shopcoins_details($db_class);
 
-$order_class = new model_order($cfg['db'],$shopcoinsorder,$tpl['user']['user_id']);
-$orderdetails_class = new model_orderdetails($cfg['db'],$shopcoinsorder);
+$order_class = new model_order($db_class,$shopcoinsorder,$tpl['user']['user_id']);
+$orderdetails_class = new model_orderdetails($db_class,$shopcoinsorder);
+
+$user_data =  $user_class->getUserData();
+	
+$sumlimit = $user_data['sumlimit'];
+$timelimit = $user_data['timelimit'];
+
+if($sumlimit) $stopsummax = $sumlimit;
 
 $tpl['user']['user_data'] = array();
 
@@ -99,7 +106,7 @@ if ($amount>0){
 $orderdetails= $orderdetails_class->getDetails($tpl['user']['user_id']);
 
 if($viporder){
-	$viporder_class = new model_shopcoinsvipclientanswer($cfg['db']);
+	$viporder_class = new model_shopcoinsvipclientanswer($db_class);
 	$viporder_id = $viporder_class->getNewViporder();
 	
 	$viporderCoinsIds = array();
@@ -186,4 +193,10 @@ if ($sum>$stopsummax) {
 	 $tpl['can_order'] = true;
 } else {
    $tpl['order_status'] = 3;
-}?>
+}
+
+
+if($tpl['user']['user_id']==352480){
+	//var_dump($tpl['order_status'],$sum,$stopsummax,$tpl['user']['orderusernow']);
+	// $tpl['is_mobile'] = true;
+}

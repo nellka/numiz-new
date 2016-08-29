@@ -4,9 +4,9 @@ require_once $cfg['path'] . '/models/helpshopcoinsorder.php';
 require_once $cfg['path'] . '/models/order.php';
 require_once $cfg['path'] . '/models/orderdetails.php';
 
-$helpshopcoinsorder_class = new model_helpshopcoinsorder($cfg['db']);
-$orderdetails_class = new model_orderdetails($cfg['db'],$shopcoinsorder);
-$order_class = new model_order($cfg['db']);
+$helpshopcoinsorder_class = new model_helpshopcoinsorder($db_class);
+$orderdetails_class = new model_orderdetails($db_class,$shopcoinsorder);
+$order_class = new model_order($db_class);
 
 $shopcoinslast =request("shopcoinslast");
 $data_result = array();

@@ -63,9 +63,9 @@ class Shopcoinsseotext extends CActiveRecord
 			array('title', 'length', 'max'=>255),
 			//array('title', 'length', 'max'=>255),
 			//array('text', 'match', 'pattern'=>'/^[\w\s,]+$/', 'message'=>''),
-			array('active,group_id,nominal_id', 'numerical', 'integerOnly'=>true),
+			array('active,group_id,nominal_id,year', 'numerical', 'integerOnly'=>true),
 			//array('title, text,active,group_id,nominal_id,materialtype', 'safe', 'on' => 'add,update'),
-			array('title, text,active,dateinsert,group_id,nominal_id,materialtype', 'safe', 'on'=>'search'),
+			array('title, text,active,dateinsert,group_id,nominal_id,materialtype,year', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -99,6 +99,7 @@ class Shopcoinsseotext extends CActiveRecord
 			'update_time' => 'Update Time',
 			'group_id' => 'Страна',
 			'nominal_id' => 'Номинал',
+			'year'       => 'Год'
 		);
 	}
 

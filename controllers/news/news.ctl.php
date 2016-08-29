@@ -2,7 +2,8 @@
 
 require_once $cfg['path'] . '/models/news.php';
 require_once $cfg['path'] . '/configs/config_news.php';
-require($cfg['path'].'/helpers/Paginator.php');
+require_once($cfg['path'].'/helpers/Paginator.php');
+require_once($cfg['path'].'/helpers/imageMini.php');
 
 
 $years = (array) request('years');
@@ -89,7 +90,7 @@ if($text)  {
 }
 
 //var_dump($years);
-$news_class = new model_news($cfg['db'],$tpl['user']['user_id']);
+$news_class = new model_news($db_class,$tpl['user']['user_id']);
 $tpl['news']['errors'] = false;
 
 //сохраняем количество элементов на странице в куке
@@ -125,18 +126,19 @@ $tpl['news']['_Title'] = "Новости нумизматики - выпуск �
 $tpl['news']['data'] = $news_class->getItemsByParams($WhereParams,$tpl['pagenum'],$tpl['onpage']);
 
 foreach ($tpl['news']['data'] as $key=>$rows){
-    $tpl['news']['data'][$key]['img'] = $news_class->getImg($rows['news']);
-    if(!$tpl['news']['data'][$key]['img']){       
-        preg_match('#(<img\s(?>(?!src=)[^>])*?src=")(.*?)("[^>]*>)#',$rows['text'],$res);
-	    $tpl['news']['data'][$key]['img'] = $res[2];
+    $tpl['news']['data'][$key]['img'] = $news_class->getImg($rows['news'],$rows['text']);
+    //if($tpl['user']['user_id']==352480){
+    if($tpl['user']['user_id']==352480){    	
+    	//var_dump($tpl['news']['data'][$key]['img']);
+    	//echo "<br>";
     }
     
+    $tpl['news']['data'][$key]['img'] = imageMini::getMini($tpl['news']['data'][$key]['img'],"news_img/");      
+    //} 
+   
     $news_text = $rows['text'];
     $news_text = str_replace("</h1>","</h1>. ",$news_text); 
-    if($tpl['user']['user_id']==352480){
-       // var_dump(strip_tags($rows['text']));
-      
-    }    
+    
     $news_text = strip_tags($news_text);
     
     while(substr_count($news_text,"<<<"))

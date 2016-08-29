@@ -1,13 +1,16 @@
 <script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
 <!--Блок выбора параметров заказа-- -->
 <form name=resultform id=resultform method=post action="<?=$cfg['site_dir']?>shopcoins/submitorder.php">
-
-<div style="width:60%;float:left;font-weight:400;">
+<!--width:60%;float:left;-->
+<div style="font-weight:400;">
 	
 		<input type="hidden" id="userstatus" name="userstatus" value="<?=$userstatus?>">
 		<div id='user-compare-block' style="display:none;font-weight:400;">
 			<h3>Проверить заказ</h3>
 			<p style="color:red;font-weight:bold;">Уважаемый пользователь! Проверьте внимательно данные о вашем заказе</p>
+			
+			<input type="submit"  class="button25" value='Подтвердить заказ и перейти к оплате' style="width:350px" onclick="$('.bg_shadow').show();">
+			
 			<div class="error" id='error-order'></div>
 			<br>
 			<div style="font-size:14px;font-weight:bold;">Заказ № <?=$shopcoinsorder?></div>
@@ -97,7 +100,7 @@
 		?>
 			
 			<input type="submit"  class="button25" value='Подтвердить заказ и перейти к оплате' style="width:350px" onclick="$('.bg_shadow').show();">
-			<input type="button"  class="button25" onclick="$('#user-compare-block').hide();$('#user-order').show();" value="Редактировать данные заказа">
+			<br><br><input type="button"  class="button25" onclick="$('#user-compare-block').hide();$('#user-order').show();" value="Редактировать данные заказа">
 		</div>
 		<div id='user-order'>
 			<div id='user-order-block'>
@@ -125,8 +128,7 @@
 							<input type=Radio name=delivery id="delivery<?=$key?>" <?=(isset($DeliveryNameDisabled[$key])&&$DeliveryNameDisabled[$key]==1)?"disabled":""?> value=<?=$key?> <?=checked_radio($delivery,$key)?>
 							onclick="ShowPayment(<?=$key?>);ShowOther(<?=$key?>);"> <img src="<?=$cfg['site_dir']?>images/delivery<?=$key?>.jpg"> <label for="delivery<?=$key?>"><?=$value?></label>
 							<?if($key==6){?> 
-							<br> <span style="font-size:11px;">Стоимость доставки пожалуйста узнавайте на сайте<br> 
-								<a href=http://www.emspost.ru/ target=_blank>http://www.emspost.ru/</a> <br>
+							<br> <span style="font-size:11px;">Стоимость доставки пожалуйста узнавайте на сайте <a href=http://www.emspost.ru/ target=_blank>http://www.emspost.ru/</a>
 								в разделе Тарифы и сроки и добавляйте к сумме заказа при его оплате</span>
 							<?}
 							if($key!=2){?> [<a href=#top onclick="window.open('<?=$cfg['site_dir']?>shopcoins/deliverydescription.php?delivery=<?=$key?>','_description','width=500,height=350,scrollbars=yes,top=250,left=450');return false;"><font color=red>?</font></a>]
@@ -247,6 +249,7 @@
 				<div class="order-cart">
 
 					<? if ($userstatus != 2) {
+					    
 						if ($sumlimit>=$sumallorder|| $sumlimit== 0) {?>
 							<input type="submit"  class="button25" value='Проверить заказ' id="CheckFormOrder">
 						<?} else {?>
@@ -269,11 +272,11 @@
 </div>
 </form>
 <!--Конец выбора параметров заказа-->
-<!--Блок информации о заказе-->
-<div style="float:right;width:40%;font-weight:400;">
+<!--Блок информации о заказе float:right;width:40%;-->
+<div style="font-weight:400;">
 	<h5>Мой заказ</h5>
 	<?foreach ($tpl['orderdetails']['ArrayShopcoinsInOrder'] as 	$rows ){ ?>
-		<div style="border:1px solid #cccccc; margin:15px;padding:10px;margin-left:0px;">
+		<div style="border:1px solid #cccccc; margin:15px;padding:10px;margin-left:0px;float: left;">
 			<td class=tboard id=image<?=$rows['catalog']?>>
 				<div id=show<?=$rows['catalog']?>></div>	
 				
@@ -295,7 +298,7 @@
 
 	
 	<div>
-	<br>
+	<br style="clear: both;">
 		Стоимость заказа: <font color="red"><b><?=$bascetsum?></b></font> руб.
 		<input type="hidden" id="bascetsum" name="bascetsum" value="<?=$bascetsum?>">
 		<?if ($userstatus != 2 &&$mysumclient) {?>
@@ -303,10 +306,8 @@
 			Прим.: Постоянным клиентом считается пользователь, сделавший не менее 3-х заказов за календарный год под своим логином
 		<?}?>
 		<br>
-		<!--Стоимость доставки: <span id="price-delivery"> 0 </span>руб.-->
 		
 	</div>
-	<!--<div>Итого: <b><span id="price-sum"><?=floor($bascetsum)?></span> руб.</b></div>-->
 	<br>
 	<div> <b>Быстро! Удобно! Безопасно!</b></div><br>
 	<div style="border:1px solid #cccccc; padding:10px;"> 
@@ -351,7 +352,6 @@
 			}?>
 		</div>
 	<?}
-	/*CheckFormDelivery()*/
 	?>
 </div>
 <input type="hidden" id="timelimit" name="timelimit" value="<?=$timelimit?>">

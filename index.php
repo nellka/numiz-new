@@ -6,6 +6,7 @@ try {
 
     session_start();
     require dirname(__FILE__) . '/config.php';        
+
     $time_script_start = microtime(true);
     //функции хелпера собрали в себе кучу мелких статических функци
     require_once $cfg['path'] . '/helpers/functions_h.php';
@@ -15,7 +16,15 @@ try {
     require_once $cfg['path'] . '/models/user.php';
     require_once($cfg['path'] . '/models/news.php');
     require_once $cfg['path'] . '/models/shopcoins.php';
-     require_once 'Zend/Cache.php';
+    require_once 'Zend/Cache.php';
+     
+    require_once 'Zend/Log/Writer/Stream.php';
+	require_once 'Zend/Log.php';
+	
+	require_once('Zend/Db.php');
+	$db['driver_options']  = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES "utf8"');
+	$db_class = Zend_Db::factory('PDO_MYSQL', $cfg['db']);
+	$db_class->query("SET names 'utf8'");
      
     $group = request('group');
 	$search = request('search');
@@ -91,8 +100,6 @@ try {
 	  $fp = fopen($logfile, 'a');
 	  fclose($fp);
 	}*/
-	require_once 'Zend/Log/Writer/Stream.php';
-	require_once 'Zend/Log.php';
 	
 	$writer = new Zend_Log_Writer_Stream($logfile);
 	$logger    = new Zend_Log($writer);
@@ -101,10 +108,10 @@ try {
 	$logger->log(var_export($e->getTrace(),true),Zend_Log::INFO);
 	
     //if($tpl['user']['user_id']==352480){
-        var_dump($e->getMessage());
+        var_dump($e->getTrace());
     //}
     $sql = "show variables like '%char%';";
-var_dump($shopcoins_class->getDataSql($sql));
+
 	 die('Извините, произошла ошибка!');
    // die( $e->getMessage() . ' ' .
        //  $e->getTraceAsString() );

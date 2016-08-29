@@ -105,7 +105,7 @@ $advertisedate = $rows_info["advertise"];
 $sql = "select * from news where dateinsert > '$newsdate' and `check`=1 order by date desc limit 10;";
 echo $sql;
 $result = $cron_class->getDataSql($sql);
-var_dump(count($result));
+
 
 if (count($result) > 3){
 	foreach ($result as $rows){
@@ -278,8 +278,14 @@ if ($Message["news"]
 	
 	foreach ($result as $rows){
 	    if(!trim($rows["email"])) continue;
-	    
-	    if(in_array($rows["email"],$Emails)) continue;
+		if(in_array($rows["email"],$Emails)) continue;
+
+		if(!$rows["mailkey"]){
+			$udata = $user_class->getUserDataByEmail($rows["email"]);
+			$rows['mailkey'] = md5("Numizmatik_Ru".$udata['user'].$udata['userpassword']);
+			$data_subscribe = array('mailkey'=>$rows['mailkey']);
+			$user_class->updateTableRow('subscribe',$data_subscribe,"user=".$udata['user']);
+		}
 	    
 	    $Emails[] = $rows["email"];
 	    

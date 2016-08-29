@@ -1,5 +1,11 @@
 <div style="font-weight:400;">
-<? if(isset($tpl['submitorder']['error_auth'])){?>    
+<?  if(isset($tpl['submitorder']['error_sumlimit'])){?>    
+    <div class="error" style="margin-top:140px;margin-bottom:140px;">
+    <p><b>Внимание!</b> Вы привысили лимит своих невыкупленных заказов по общей сумме.<br>
+		Для выяснения обстоятельств свяжитесь с администрацией по тел. +7-903-006-00-44 или  +7-915-002-22-23. С 10-00 до 18-00 МСК (по рабочим дням).
+	</p>
+    </div>
+<?} elseif(isset($tpl['submitorder']['error_auth'])){?>    
     <div class="error" style="margin-top:140px;margin-bottom:140px;">
     <p><b>Для оформления заказа необходимо авторизироваться на сайте или возможно у Вас истекло время отведенное на оформление заказа.</b></p>
     </div>

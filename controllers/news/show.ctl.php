@@ -12,7 +12,7 @@ $sp_s = array();
 $themes = array();
 $groups = array();
 
-$news_class = new model_news($cfg['db'],$tpl['user']['user_id']);
+$news_class = new model_news($db_class,$tpl['user']['user_id']);
 $tpl['news']['errors'] = false;
 
 $Meta = $news_class->getMeta("keywords", "text", "news='$id'", "", 0,0);

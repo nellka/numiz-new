@@ -1,4 +1,11 @@
-<?php header('Content-Type: text/html; charset=utf-8');?>
+<?php
+if($tpl['module']=='seo'){
+    include $cfg['path'] . '/views/seo/index.tpl.php';
+    die();
+}
+
+
+header('Content-Type: text/html; charset=utf-8');?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -166,12 +173,14 @@ $(document).ready(function() {
 		                <?php include $cfg['path'] . '/views/common/breadcrumb.tpl.php'; ?> 
 		            </div>
                 <?}
+                include $cfg['path'] . '/views/_mobile/view_construct.tpl.php'; 
+                /*
 	            if($tpl['is_mobile']&&file_exists($cfg['path'].'/views/_mobile/'.$tpl['module'].'.tpl.php')){?>
 	                
 			        <? require_once $cfg['path'] .  '/views/_mobile/'.$tpl['module'].'.tpl.php';?>			        
 			    <?} else {
 			        require_once $cfg['path'] .  '/views/'.$tpl['module'].'.tpl.php';
-			    }?>		            
+			    }*/?>		            
 	        </div>            
        <? }        
         ?> 

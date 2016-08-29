@@ -5,7 +5,7 @@ require_once $cfg['path'] . '/models/order.php';
 require_once $cfg['path'] . '/models/orderdetails.php';
 require $cfg['path'] . '/configs/config_shopcoins.php';
 require_once $cfg['path'] . '/models/shopcoinsdetails.php';
-$details_class = new model_shopcoins_details($cfg['db']);
+$details_class = new model_shopcoins_details($db_class);
 //способ доставки
 
 $delivery = request('delivery');
@@ -38,8 +38,8 @@ if (!$tpl['user']['user_id']){
     die();	
 }
 
-$order_class = new model_order($cfg['db'],$shopcoinsorder,$tpl['user']['user_id']);
-$orderdetails_class = new model_orderdetails($cfg['db'],$shopcoinsorder);
+$order_class = new model_order($db_class,$shopcoinsorder,$tpl['user']['user_id']);
+$orderdetails_class = new model_orderdetails($db_class,$shopcoinsorder);
 //
 $user_data =  $user_class->getUserData();
 
@@ -229,7 +229,7 @@ if($tpl['user']['my_ip']||$tpl['user']['user_id']==811){
     //проверяем, что монеты из предзаказа
     if($tpl['user']['user_id']==352480){
        require_once $cfg['path'] . '/models/viporder.php';
-       $viporder_class = new model_shopcoinsvipclientanswer($cfg['db']);
+       $viporder_class = new model_shopcoinsvipclientanswer($db_class);
        $idadmin = $viporder_class->getAdminInCoins($ids_in_order);
     }
 }

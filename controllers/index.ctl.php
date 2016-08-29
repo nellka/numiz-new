@@ -1,7 +1,8 @@
-<?
+<?	
 require_once $cfg['path'] . '/models/news.php';
 require_once $cfg['path'] . '/models/forum.php';
 require_once $cfg['path'] . '/configs/config_news.php';
+require_once($cfg['path'].'/helpers/imageMini.php');
 $tpl['index']['_Title'] = "Клуб Нумизмат: монеты, нумизматика монеты россии и ссср монеты из драгоценных металлов золотые монеты каталог монет куплю монеты купить монеты юбилейные монеты старинные монеты продажа монет стоимость монет монетный двор продать монеты нумизматика монеты цены  на монеты альбом  для монет покупка монет царские монеты манеты монеты мира нумизматика цены российские монеты редкие монеты";
 $tpl['banners']['main_center_1'] = '<img border="0" src="'.$cfg['site_root'].'/images/banners/main_center_1.jpg">';
 $tpl['banners']['main_center_2'] = '<img border="0" src="'.$cfg['site_root'].'/images/banners/main_center_2.jpg">';
@@ -9,18 +10,22 @@ $tpl['banners']['main_center_2'] = '<img border="0" src="'.$cfg['site_root'].'/i
 
 //$tpl['coins']['populars_in_category'] = $shopcoins_class->getPopular(4);
 
-$news_class = new model_news($cfg['db'],$tpl['user']['user_id']);
-$forum_class = new model_forum($cfg['db'],$tpl['user']['user_id']);
+$news_class = new model_news($db_class,$tpl['user']['user_id']);
+$forum_class = new model_forum($db_class,$tpl['user']['user_id']);
 
 $tpl['lastNews'] = $news_class->getItemsByParams(array(),1,10);
 
 foreach ($tpl['lastNews'] as $key=>$rows){
-    $tpl['lastNews'][$key]['img'] = $news_class->getImg($rows['news']);
-    if(!$tpl['lastNews'][$key]['img']){       
-        preg_match('#(<img\s(?>(?!src=)[^>])*?src=")(.*?)("[^>]*>)#',$rows['text'],$res);
-	    $tpl['lastNews'][$key]['img'] = $res[2];
+    $tpl['lastNews'][$key]['img'] = $news_class->getImg($rows['news'],$rows['text']);
+    
+    
+    if($tpl['user']['user_id']==352480){
+    	//var_dump($rows['news'],$tpl['lastNews'][$key]['img']);
+    	//echo "<br>";
     }
-
+    
+    $tpl['lastNews'][$key]['img'] = imageMini::getMini($tpl['lastNews'][$key]['img'],"news_img/");   
+    
 	$text = mb_substr($rows['text'], 0, 350,'utf-8');
 
 	while(substr_count($text,"<<<"))

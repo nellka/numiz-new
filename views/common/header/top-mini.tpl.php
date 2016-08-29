@@ -17,7 +17,12 @@
 	
     <div class="right" style="width: 165px;">
         <? if($tpl['user']['product_amount']){?>        
-        <a href="<?=$cfg['site_dir']?>shopcoins/index.php?page=orderdetails" title="Показать корзину"><span class="black">Корзина покупок</span><span id='basket-order'><?=($shopcoinsorder&&$tpl['user']['product_amount'])?" №".$shopcoinsorder:''?></span></a>
+        <a href="<?=$cfg['site_dir']?>shopcoins/index.php?page=orderdetails" title="Показать корзину"><span class="black">Корзина</span><span id='basket-order'><?=($shopcoinsorder&&$tpl['user']['product_amount'])?" №".$shopcoinsorder:''?></span>
+            <?php
+            if($orderstart){?>
+                <span class="red">до <?=date('H:i',($orderstart+5*3600))?></span>
+            <?}?>
+        </a>
          <?} else {?>
             <span class="black">Корзина покупок</span><span id='basket-order'></span>
         <?}?> 
@@ -48,6 +53,7 @@
 	<div class="user_menu right">
 	<a href="#" onclick="showUserMenu(this);return false" class="user_menu_href" onclick=""></a>
       <ul class="u_submunu" style="display:none" id='u_submunu'>
+        <li>Здравствуйте, <b><?=$tpl['user']['username']?></b>!</li>
         <li><a title="Просмотр/редактирование личных данных/настроек" href="http://www.numizmatik.ru/user/profile.php">Ваш профайл</a></li>
         <li>
         	<a title="Ваши заказы монет, банкнот, аксессуаров для коллекционеров в интернет-магазине монет" href="http://www.numizmatik.ru/shopcoins/order.php">Ваши заказы</a>

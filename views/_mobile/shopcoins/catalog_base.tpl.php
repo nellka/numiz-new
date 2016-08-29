@@ -1,3 +1,7 @@
+<div class="bordered"><b>Хотим вас порадовать новостью от том, что с 27 июля по 1 сентября 2016 года доставка в офис по Москве (курьерская доставка) для заказов от 3000 рублей <font color=red>БЕСПЛАТНО</font>
+<br></b>
+</div>
+
 <div id='products' class="products-cls m-<?=$materialtype?>">
 <div class=ftl>
 <a href="#" onclick="showInvis('search-params-place');return false;" class="left">Фильтры <span class="l-f">(страны, номиналы, года)</span></a>
@@ -131,7 +135,7 @@ if($tpl['shop']['errors']){?>
 <br class="clear:both">
 <?if($tpl['seo_data']){?>
 <div class="seo" class="clearfix">
-<h5><?=$tpl['seo_data']['title']?></h5>
+<h2><?=$tpl['seo_data']['title']?></h2>
 <?=$tpl['seo_data']['text']?>
 </div>
 <?}?>

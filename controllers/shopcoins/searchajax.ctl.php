@@ -3,7 +3,7 @@ header("Access-Control-Allow-Origin:*");
 require $cfg['path'] . '/configs/config_shopcoins.php';
 require_once $cfg['path'] . '/models/shopcoinsdetails.php';
 
-$details_class = new model_shopcoins_details($cfg['db']);
+$details_class = new model_shopcoins_details($db_class);
 
 $search = request('term');
 

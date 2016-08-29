@@ -8,9 +8,9 @@ if(!$tpl['user']['user_id']) $data_result['error'] = "noauth";
 
 $shopcoins = (integer)request('shopcoins');	
 
-$helpshopcoinsorder_class = new model_helpshopcoinsorder($cfg['db']);
+$helpshopcoinsorder_class = new model_helpshopcoinsorder($db_class);
 
-//монета уже продана - не резервируем
+//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 $rows = $shopcoins_class->getRowByParams(array('shopcoins'=>$shopcoins));
 
 if(!$rows||$rows["check"]==0) $data_result['error'] = "notavailable";
@@ -32,7 +32,7 @@ else {
     } else {    
 
     	if (time()-$rows["reserve"] > $reservetime || $rows['doubletimereserve']>time()) {
-    		//уже кто то забронировал
+    		//пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     		if ($rows['doubletimereserve']>time() || time()-$rows["reserve"] > $reservetime)
     			$data_result['error'] = "reserved";
     	}

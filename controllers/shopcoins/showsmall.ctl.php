@@ -3,12 +3,12 @@ require_once($cfg['path'].'/helpers/Paginator.php');
 require_once($cfg['path'].'/models/catalogshopcoinsrelation.php');
 require_once $cfg['path'] . '/configs/config_shopcoins.php';
 require_once $cfg['path'] . '/models/shopcoinsdetails.php';
-$details_class = new model_shopcoins_details($cfg['db']);
+$details_class = new model_shopcoins_details($db_class);
 
-$catalogshopcoinsrelation_class = new model_catalogshopcoinsrelation($cfg['db']);
+$catalogshopcoinsrelation_class = new model_catalogshopcoinsrelation($db_class);
 
 require_once $cfg['path'] . '/models/stats.php';
-$stats_class = new stats($cfg['db'],$tpl['user']['user_id'],session_id());
+$stats_class = new stats($db_class,$tpl['user']['user_id'],session_id());
 
 
 $page = 'show';

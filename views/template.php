@@ -1,10 +1,10 @@
-<?php include $cfg['path'] . '/views/common/header/head.tpl.php';
-
-if($tpl['user']['user_id']==352480){  
-	//var_dump($tpl['module']);
-   //$tpl['is_mobile'] = true;
+<?php 
+if($tpl['module']=='seo'){
+    include $cfg['path'] . '/views/seo/index.tpl.php';
+    die();
 }
-?>
+
+include $cfg['path'] . '/views/common/header/head.tpl.php';?>
 <div class="bg_shadow"></div>
 
 <div id="page" class="container">
@@ -14,7 +14,32 @@ if($tpl['user']['user_id']==352480){
     <div class="clearfix content" id='content-<?=$tpl['module']?>'>
         <?php     
 
-        if($tpl['module']=='shopcoins'||$tpl['module']=='order'){
+        if($tpl['module']=='catalognew'){?>
+            <script src="<?=$cfg['site_dir']?>js/catalognew.js"></script>
+        <?
+           if(in_array($tpl['task'],array('show'))){ ?>
+    			<div class="wraper clearfix">  
+			     <?php
+                if(file_exists($cfg['path'] . '/views/pagetop/'.$tpl['task'].'.tpl.php')){
+			         include $cfg['path'] . '/views/pagetop/'.$tpl['task'].'.tpl.php'; 
+                } else include $cfg['path'] . '/views/pagetop/top.tpl.php'; 
+                ?>
+			    </div> 
+        		<? include $cfg['path'] . '/views/' . $tpl['module'] . '/'.$tpl['task'].'.tpl.php'; ?>    
+           <? } else {     ?>
+			<div class="subheader">
+				<div class="wraper clearfix">
+				   <div id='leftmemu'>
+			         <?php include $cfg['path'] . '/views/leftmenu/leftmenu_catalognew.tpl.php'; ?>
+			        </div>
+			        <div id='subheader-body'>
+			            <?php include $cfg['path'] . '/views/common/breadcrumb.tpl.php'; ?> 
+			            <? include $cfg['path'] . '/views/catalognew/' . $tpl['task'] . '.tpl.php'; ?>		            
+			        </div>
+				</div> 
+		    </div>         
+       <? }
+       } elseif($tpl['module']=='shopcoins'||$tpl['module']=='order'){
            if(in_array($tpl['task'],array('show','showa','catalog_search','viporder','series','one_serie'))||$tpl['module']=='order'){ ?>
     			<div class="wraper clearfix">  
 			     <?php
@@ -80,20 +105,22 @@ if($tpl['user']['user_id']==352480){
 					require($cfg['path'] . '/views/' . $tpl['module'] . '.tpl.php'); ?>
 				</div>
 			</div>
-		<?}        else {   ?>
+		<?} else {   ?>
         	  <div class="subheader">
 		       <div class="wraper clearfix">
 		            <div id='leftmemu'>
 		             <?php include $cfg['path'] . '/views/leftmenu/leftmenu_index'.(($tpl['module']=='index')?'main':'').'.tpl.php'; ?>
 		            </div>
 		            <div id='subheader-body'>
-		                <?php include $cfg['path'] . '/views/common/breadcrumb.tpl.php'; ?> 		                
-		                <div id='slider' class="bordered">
-							<h1 class="main"><a href='<?=$cfg['site_dir']?>shopcoins/moneti' class="black"> Магазин монет клуба Нумизмат </a></h1>
-		                    <?php include $cfg['path'] . '/views/common/header/slider.tpl.php'; ?>                          
-		                </div>
+		                <?php include $cfg['path'] . '/views/common/breadcrumb.tpl.php'; 
+		                if($tpl['module']=='index'){?> 		                		                
+    		                <div id='slider' class="bordered">
+    							<h1 class="main"><a href='<?=$cfg['site_dir']?>shopcoins/moneti' class="black"> Магазин монет клуба Нумизмат </a></h1>
+    		                    <?php include $cfg['path'] . '/views/common/header/slider.tpl.php'; ?>                          
+    		                </div>
+		                <?}?>
 		                 <div>
-			             <? include $cfg['path'] . '/views/' . $tpl['module'] . '.tpl.php'; ?>
+			             <? include $cfg['path'] . '/views/view_construct.tpl.php'; ?>
 			            </div>        
 		            </div>
 		        </div>
@@ -157,6 +184,8 @@ $(document).ready(function() {
 		
 	});
     site_dir = '<?=$cfg['site_dir']?>';
+    search_link='<?=($tpl['module']=='catalognew')?'new/?module=catalognew&task=searchajax':'shopcoins/index.php?search=1'?>';
+    
     $('.iframe').click(function () {    
         showOn(this.href,this.id);
         return false; ////cancel eventbubbeling
@@ -169,7 +198,7 @@ $(document).ready(function() {
     });    
       
     $('#header-mini #search').autocomplete({
-      source: '<?=$cfg['site_dir']?>shopcoins/index.php?search=1',
+      source: '<?=$cfg['site_dir']?>'+search_link,
       minLength:3,
       select: function (event, ui) {
             window.location = ui.item.href;
@@ -186,7 +215,7 @@ $(document).ready(function() {
     };
 
     $('#header #search').autocomplete({
-      source: '<?=$cfg['site_dir']?>shopcoins/index.php?search=1',
+      source: '<?=$cfg['site_dir']?>'+search_link,
       minLength:3,
       select: function (event, ui) {
             window.location = ui.item.href;
@@ -204,21 +233,25 @@ $(document).ready(function() {
     };
     
     $('.down').click(function () {
-		var $input = $(this).parent().find('input[type=text]');
+		var input = $(this).parent().find('input[type=text]');
 		var $amountall = $(this).parent().find('input[type=hidden]');
-		var count = parseInt($input.val()) - 1;
+		var count = parseInt(input.val()) - 1;
 		count = count < 1 ? 1 : count;
-		$input.val(count);
-		$input.change();
+		var id = $(input).attr('id');
+		$('#'+id).val(count);
+		input.val(count);
+		input.change();
 		return false;
 	});
 	$('.up').click(function () {
-		var $input = $(this).parent().find('input[type=text]');
+		var input = $(this).parent().find('input[type=text]');
 		var $amountall = $(this).parent().find('input[type=hidden]');
-		count = parseInt($input.val()) + 1;
+		count = parseInt(input.val()) + 1;
 		count = count > $amountall.val() ? $amountall.val() : count;
-		$input.val(count);
-		$input.change();
+		input.val(count);
+		var id = $(input).attr('id');
+		$('#'+id).val(count);
+		input.change();
 		return false;
 	});
 

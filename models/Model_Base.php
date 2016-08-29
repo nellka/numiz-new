@@ -1,5 +1,4 @@
 <?
-require('Zend/Db.php');
 require('Zend/Registry.php');
 
 Abstract Class Model_Base {
@@ -8,13 +7,12 @@ Abstract Class Model_Base {
     protected $table;
     private $dataResult;
     protected  $cache;
+    
     function __construct($db){
-        $db['driver_options']  = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES "utf8"');
-		$this->db = Zend_Db::factory('PDO_MYSQL', $db);
-	 	$this->db->query("SET names 'utf8'");
+        $this->db = $db;
 	 	$modelName = get_class($this);
 	 	
-	 	$this->cache = Zend_Registry::get('Memcached');
+	 	$this->cache = Zend_Registry::get('cache');
         
         $arrExp = explode('_', $modelName);
         $tableName = strtolower($arrExp[1]);
@@ -31,6 +29,28 @@ Abstract Class Model_Base {
 		               ->from($this->table,array('count(*)'));
     	return $this->db->fetchOne($select);       
     }
+    
+    function getItem($id){
+        $select = $this->db->select()
+		               ->from($this->table)
+		               ->where('id=?',$id);
+    	return $this->db->fetchRow($select);       
+    }
+    
+    function getItemTable($id,$table='',$primary=''){
+    	
+        $select = $this->db->select();
+        if($table){
+        	$select->from($table);
+        } else $select->from($this->table);
+		              
+		if($primary){
+        	$select->where("$primary=?",$id);
+        } else $select->where('id=?',$id);
+        
+    	return $this->db->fetchRow($select);       
+    }
+    
     public function getTableName() {
         return $this->table;
     }
@@ -98,6 +118,9 @@ Abstract Class Model_Base {
     public function getDataSql($sql){
     	return $this->db->fetchAll($sql);
     }
+    public function getOneSql($sql){
+    	return $this->db->fetchOne($sql);
+    }
     public function getRow($table,$params=array()){
         $select = $this->db->select()
 		               ->from($table);
@@ -109,7 +132,10 @@ Abstract Class Model_Base {
     public function deleteRow($table,$where){
          $this->db->delete($table, $where);	     
     }
-      
+    
+    public function setQuery($sql){
+	     $this->db->query($sql);  
+	} 
       /*
     // уделение записей из базы данных по условию
     public function deleteBySelect($select){
