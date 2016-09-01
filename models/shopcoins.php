@@ -600,6 +600,9 @@ class model_shopcoins extends Model_Base
     	   }  elseif ($this->materialtype==7){
     	     	$select->where("$alias.materialtype='".$this->materialtype."' or $alias.materialtypecross =144 or $alias.materialtypecross = 128 "); 
 
+    	   } elseif ($this->materialtype==4){
+    	     	$select->where("$alias.materialtype='".$this->materialtype."' or $alias.materialtypecross =144"); 
+
     	   } else {
     	        $select->where("$alias.materialtype=? ",$this->materialtype); 
     	   }
@@ -819,6 +822,7 @@ class model_shopcoins extends Model_Base
 		 		  ->from('shopcoins')
 	              ->join(array('group'),'shopcoins.group=group.group',array('gname'=>'group.name'))
                    ->where('novelty>0')
+                   ->where('shopcoins.check=1')
                   ->order('novelty desc')                 
                   ->limit(3); 
           $select = $this->setMaterialtypeSelect($select);
@@ -1215,7 +1219,13 @@ class model_shopcoins extends Model_Base
         }
 	   	return $this->db->fetchAll($select);    
 	}
-	
+	public function getMetalList(){
+	    $select = $this->db->select()
+	                      ->from(array('shopcoins_metal'))
+	                      ->where('name<>""')             
+	                      ->order('shopcoins_metal.name asc');	 
+	    return $this->db->fetchAll($select);           
+	}
 	//получаем металы для выборки
 	public function getMetalls($all=false,$groups=array(),$nominals=array(),$bydate=0){
 	    
@@ -1832,16 +1842,21 @@ class model_shopcoins extends Model_Base
     }	
     
     public function getSeo($materialtype=0,$group_data=array(),$nominal_data=array()){
+        
     	//var_dump($materialtype,$group_data,$nominal_data);
     	$select = $this->db->select()
                   ->from('shopcoinsseotext')
                   ->where('active=1')
                   ->limit(1)
-                  ->order('rand()');
+                 // ->order('rand()')
+                  ;
         if($materialtype){
         	$select->where('materialtype=?',$materialtype);
         }
-        
+        /*if($this->user_id==352480){
+        	echo "<br><br>".$select->__toString()."<br><br>";
+        	die('jjjj');
+        }*/
     	if($group_data&&$nominal_data){
         	$select->where('group_id in ('.implode(",",$group_data).') and nominal_id in ('.implode(",",$nominal_data).')');
         	$data = $this->db->fetchRow($select);
@@ -1855,6 +1870,8 @@ class model_shopcoins extends Model_Base
         }
         
         $data = $this->db->fetchRow($select);
+        
+        
         return $data;
 	}
 	
