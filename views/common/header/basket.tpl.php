@@ -1,20 +1,41 @@
 <div class="basket-mini">
     <div class="basket-img">
     	<a href="<?=$cfg['site_dir']?>index.php?page=orderdetails">
-            <img src="<?=$cfg['site_dir']?>images/cart.png" border=0 alt="Показать корзину">
+            <img src="<?=$cfg['site_dir']?>images/cart.png" alt="Показать корзину">
         </a>
      </div>	
      <div class="caption">
-        <p>
-        	<a href="/catalog?page=shop.cart" title="Показать корзину"><font color="Black">Корзина покупок</font></a>
+        <p> <? if($tpl['user']['product_amount']){?>     
+        	<a href="<?=$cfg['site_dir']?>shopcoins/index.php?page=orderdetails" title="Показать корзину"><span class="black">Корзина</span>
+        	   <span id='basket-order'><?=($shopcoinsorder&&$tpl['user']['product_amount'])?" № ".$shopcoinsorder:''?></span>
+                <?php
+                if($orderstart){?>
+                <span class="red">до <?=date('H:i',($orderstart+5*3600))?></span>
+                <?}?>
+        	</a>
+        	<?} else {?>
+        	    <span class="black"><b>Корзина покупок</b></span><span id='basket-order'></span>
+        	<?}?>
+
          </p>
-    	<div class="basket-label">  <p>	
-    	<b>В корзине:</b> <span><a href='<?=$cfg['site_dir']?>shopcoins/index.php?page=orderdetails'>
-    	<span id=inorderamount><?=$tpl['user']['product_amount']?></span> товаров</a></span><br>
-    	<b>На сумму:</b> <span><?=$tpl['user']['summ']?> рублей </span>  </p>
-    	
+    	<div class="basket-label" id='basket-info-ne' style="display:<?=$tpl['user']['product_amount']?'block':'none'?>">  
+    	<p>	
+    	<b>В корзине:</b> 
+    	<span id=inorderamount>
+    	 <? if($tpl['user']['product_amount']){?>        
+            <a href='<?=$cfg['site_dir']?>shopcoins/index.php?page=orderdetails'>
+            <?=$tpl['user']['product_amount']?> товаров
+            </a>
+        <?} else {?>
+            <?=$tpl['user']['product_amount']?> товаров
+        <?}?>        
+    	</span><br>
+    	<b>На сумму:</b> <span id=inordersum><?=ceil($tpl['user']['summ'])?></span> рублей   </p>
     	</div>	
-    	<p class="basket-info"><b>Выберите несколько товаров и поместите их в корзину.</b> </p>
+        <p class="basket-label" id='basket-info' style="display:<?=$tpl['user']['product_amount']?'none':'block'?>"><b>Выберите несколько товаров и поместите их в корзину.</b> </p>
+    	<?/*($cookiesuser?($catalogamount>0?"<a href=$script?catalognewstr=1&savesearch=1><font color=red>Ответы на оставленные заявки ($catalogamount)</font></a>":"<b>Ответы на оставленные заявки (0)</b>"):"<b>Ответы на оставленные заявки</b> (нужна авторизация)")*/
+        if($tpl['user']['user_id']){?>
+            <a href="<?=$cfg['site_dir']?>shopcoins/?catalognewstr=1&savesearch=1" class="error">Монеты по заявкам (<?=$tpl['user']['catalogamount']?>)</a>
+        <?}?>   	
     </div>
 </div>		
-<div id=MainBascet></div>

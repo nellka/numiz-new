@@ -1,4 +1,4 @@
-<?
+<?php
 class contentHelper{    
 
 	static  function render($template,$rows) {
@@ -19,6 +19,35 @@ class contentHelper{
 			die('Error: Could not load template ' . DIR_TEMPLATE . $template . '!');
 			exit();				
 		}
+	}
+	
+	static function returnSeoHref($href,$text,$params=array()) {
+
+		$is_current = "http://www.numizmatik.ru".$_SERVER['REQUEST_URI']==$href;
+		
+		$a = $is_current?"<div ":"<a href='$href' ";
+		$is_class_exist = false;
+		foreach ($params as $key=>$value){
+			if($key=='class'&&$is_current){
+				$a .= "class=\"$value active\" ";
+				$is_class_exist = true;
+			} else {
+				$a .= "$key=\"$value\" ";	
+			}
+					
+		}
+		
+		
+		if($is_current){
+			if(!$is_class_exist) $a .=" class=\"active\" ";
+			$a .=">$text";
+			$a .="</div>";
+		} else {
+			$a .=">$text";
+			$a .="</a>";
+		}	
+		
+		return $a;
 	}
 	
 	static function inputspace($text,$position) {
@@ -47,16 +76,21 @@ class contentHelper{
     static function strtolower_ru($text) 
     { 
     	$text = trim($text);
+    	$text = mb_strtolower($text,'utf8');
     	$text = strip_tags($text);
     	$text = str_replace("{",'',$text);
     	$text = str_replace("}",'',$text);
     	$alfavitlover = array('ё','й','ц','у','к','е','н','г', 'ш','щ','з','х','ъ','ф','ы','в', 'а','п','р','о','л','д','ж','э', 'я','ч','с','м','и','т','ь','б','ю','ї'); 
-    	$alfavitupper = array('Ё','Й','Ц','У','К','Е','Н','Г', 'Ш','Щ','З','Х','Ъ','Ф','Ы','В', 'А','П','Р','О','Л','Д','Ж','Э', 'Я','Ч','С','М','И','Т','Ь','Б','Ю','Ї'); 
-    	$ruskey = Array('ї','а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я', ',', '.', ' ', '«', '»', '"', ':', '/','?');
-    	$engkey = Array ("i","a", "b", "v", "g", "d", "e", "e", "g", "z", "i", "i", "k", "l", "m", "n", "o", "p", "r", "s", "t", "u", "f", "h", "c", "ch", "sh", "sch", "i", "y", "i", "e", "yu", "ya", "_", "_", '-', '', '', '', '','-','');
+    	$alfavitupper = array('Ё','Й','Ц','У','К','Е','Н','Г', 'Ш','Щ','З','Х','Ъ','Ф','Ы','В', 'А','П','Р','О','Л','Д','Ж','Э', 'Я','Ч','С','М','�?','Т','Ь','Б','Ю','Ї'); 
+    	$ruskey = Array('ї','а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я', ',', '.', ' ', '«', '»', '"', ':', '/','?','``','`',"'","%");
+    	$engkey = Array ("i","a", "b", "v", "g", "d", "e", "e", "g", "z", "i", "i", "k", "l", "m", "n", "o", "p", "r", "s", "t", "u", "f", "h", "c", "ch", "sh", "sch", "i", "y", "i", "e", "yu", "ya", "_", "_", '-', '', '', '', '','-','','','',"","");
     	$text = str_replace($alfavitupper,$alfavitlover,strtolower($text)); 
-       	return str_replace($ruskey,$engkey,$text);
+    	$text = str_replace($ruskey,$engkey,$text);
+    	$text = preg_replace('|-+|', '-', $text);
+    	$text = str_replace('-–-', '-', $text);    	
+       	return $text;
     } 
+    
     static function showImage($url,$title,$params=array()){
        if(!isset($params['folder'])) {
            $folder = 'shopcoins';
@@ -67,7 +101,7 @@ class contentHelper{
        foreach ($params as $key=>$value){
             $on.= "$key='$value' ";
        }
-       return "<img  src='http://www.numizmatik.ru/$folder/$url' title='$title' $on>";
+       return "<img itemprop=\"image\" src='http://www.numizmatik.ru/$folder/$url' title='$title' $on>";
        
     }
     
@@ -213,7 +247,19 @@ class contentHelper{
     }*/
     
     static function getAlt($rows){
-        return $rows["gname"].' '.$rows["name"].' '.$rows["year"].' '.$rows["metal"];
+        return "Изображение ". contentHelper::$menu[$rows["materialtype"]]." ". $rows["gname"].' '.$rows["name"].' '.$rows["year"].' '.$rows["metal"].' '.$rows["condition"].' '.mb_substr($rows["details"],0,20,'utf8');
+    }
+    
+    static function getImgTitle($rows){
+        return "Фото ". contentHelper::$menu[$rows["materialtype"]]." ".$rows["gname"].' '.$rows["name"].' '.$rows["year"].' '.$rows["metal"];
+    }
+    
+    static function getAltOne($rows){
+        return "Картинка ". contentHelper::$menu[$rows["materialtype"]]." ". $rows["gname"].' '.$rows["name"].' '.$rows["metal"].' '.$rows["year"];
+    }
+    
+    static function getImgTitleOne($rows){
+        return "Фотография ". contentHelper::$menu[$rows["materialtype"]]." ".$rows["gname"].' '.$rows["name"].' '.$rows["metal"].' '.$rows["year"].' '.mb_substr($rows["details"],0,70,'utf8');
     }
     
     static function getRegHref($rows,$materialtype=0,$parent=0){  
@@ -285,6 +331,22 @@ class contentHelper{
                          5=>"Книги о монетах",
                          11=>'Барахолка',
                          12=>'Монеты СССР');
+                         
+   static $h1_materialtype = array(1=>"монет",
+                         8=>"мелочи",
+                         6=>"цветных монет" ,
+                         10=>"нотгельдов",
+                         7=>"наборов монет",
+                         9=>"лотов монет для начинающих нумизматов",
+                         2=>"банкнот/бон",
+                         3=>"аксессуаров для монет",
+                         4=>"подарочных наборов",
+                         5=>"книг о монетах",
+                         11=>'барахолка',
+                         12=>'монет ссср',
+                         'revaluation'=>'распродажа монет',
+                         'newcoins'=>'новинок монет');
+                         
 }
 
 ?>

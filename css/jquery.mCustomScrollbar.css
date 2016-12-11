@@ -5,7 +5,7 @@
 .filter-groupgroup_container_1{height:290px;}
 
 #search-news #filter-groupyears_container {
-    height: 55px;
+    height: 90px;
     overflow: hidden;
 }
 
@@ -23,7 +23,7 @@
 #filter-groupgroup_container .dragger{position:absolute; width:12px; height:60px; background:#367e9b; text-align:center; margin-left:1px; line-height:60px; color:#666; overflow:hidden; border-left:1px solid #367e9b; border-right:1px solid #367e9b; cursor:pointer;}
 #filter-groupgroup_container .dragger_pressed{position:absolute; width:6px; height:60px; background:#367e9b text-align:center; margin-left:1px; line-height:60px; color:#367e9b; overflow:hidden; border-left:1px solid #367e9b; border-right:1px solid #367e9b; cursor:pointer;}
 
-#filter-grouptheme_container{position:relative; left:0; /*top:20px;*/ margin:0; height:253px; }
+#filter-grouptheme_container,#filter-groupsimbol_container{position:relative; left:0; /*top:20px;*/ margin:0; height:253px; }
 
 
 #content-catalognew #filter-grouptheme_container{position:relative; left:0; /*top:20px;*/ margin:0; height:296px; }
@@ -42,6 +42,16 @@
 #filter-grouptheme_container .dragger_pressed{position:absolute; width:6px; height:60px; background:#367e9b; text-align:center; margin-left:1px; line-height:60px; color:#367e9b; overflow:hidden; border-left:1px solid #367e9b; border-right:1px solid #367e9b; cursor:pointer;}
 
 
+#filter-groupsimbol_container .customScrollBox{position:relative; height:100%; overflow:hidden;float:left;}
+#filter-groupsimbol_container .customScrollBox .container{position:relative; width:230px; top:10px; float:left;}
+#filter-groupsimbol_container .customScrollBox .content{clear:both;}
+#filter-groupsimbol_container .customScrollBox .content p{padding:10px 5px; margin:10px 0; color:#fff; font-family:Verdana, Geneva, sans-serif; font-size:13px; line-height:20px;}
+#filter-groupsimbol_container .customScrollBox .content p.alt{padding:10px 5px; margin:10px 0; color:#fff; font-family:Georgia, "Times New Roman", Times, serif; font-size:17px; line-height:19px; color:#999;}
+#filter-groupsimbol_container .customScrollBox img{border:5px solid #fff;}
+#filter-groupsimbol_container .dragger_container{position:relative; width:13px; height:275px; float:left; margin:10px 0 0 10px; cursor:pointer; box-shadow:inset 0 0 10px #ccc; -moz-box-shadow:inset 0 0 10px #000; -webkit-box-shadow:inset 0 0 10px #000;}
+#filter-groupsimbol_container .dragger{position:absolute; width:12px; height:60px; background:#367e9b; text-align:center; margin-left:1px; line-height:60px; color:#367e9b; overflow:hidden; border-left:1px solid #367e9b; border-right:1px solid #367e9b; cursor:pointer;}
+#filter-groupsimbol_container .dragger_pressed{position:absolute; width:6px; height:60px; background:#367e9b; text-align:center; margin-left:1px; line-height:60px; color:#367e9b; overflow:hidden; border-left:1px solid #367e9b; border-right:1px solid #367e9b; cursor:pointer;}
+
 
 /*#filter-groupnominal_container{position:relative; left:0;  margin:0; height:290px; }*/
 #filter-groupnominal_container{position:relative; left:0;  margin:0; }
@@ -55,7 +65,7 @@ ul.s_tm .filter-groupcondition_container_1{height:187px;}
 
 .filter-groupnominal_container_1{height:269px;}
 .filter-groupnominals_container_1{height:269px;}
-.filter-groupyears_p_container_1{height:198px;}
+.filter-groupyears_p_container_1{height:170px;}
 
 .rf-3 ul.c .filter-groupmetals_container_1 {
     height: 232px;

@@ -46,4 +46,6 @@ $tpl['shopcoins']['_Keywords'] = $_Keywords;
 $tpl['shopcoins']['_Description'] = $_DescriptionShopcoins; 
 $tpl['shopcoins']['_Title'] = $title;
 
+
+
 ?>

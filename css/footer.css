@@ -1,0 +1,63 @@
+#subsription-form {
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 35px;
+     position: relative;
+}
+
+
+#subsription-form input[type="text"] {
+    width: 200px;
+}
+input[type="text"] {
+    color: #663333;
+}
+
+.sub {
+    display: inline-block;
+    float: left;
+    font-size: 10px;
+    font-weight: bold;
+    height: 83px;
+    line-height: 83px;
+    width: 250px;
+}
+
+.sub-img {
+    float: left;
+    line-height: 83px;
+    vertical-align: middle;
+}
+#subsription-form input[type="button"] {
+    background: white none repeat scroll 0 0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    color: #247bbd;
+    cursor: pointer;
+    padding: 2px 10px;
+    text-transform: uppercase;
+}
+
+.custom_socials {
+    bottom: 10px;
+    position: absolute;
+    right: 100px;
+    text-align: right;
+    width: 230px;
+}
+
+.custom_socials a {
+    text-decoration: none;
+     color: #247bbd;
+    font-weight: bold;
+}
+.wraper {
+    margin: 0 auto;
+    width: 1024px;
+}
+
+
+#footer-menu .col-5 {
+    float: left;
+    width: 20%;
+}

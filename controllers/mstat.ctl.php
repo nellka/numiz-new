@@ -4,19 +4,22 @@ require_once($cfg['path'] . '/configs/config_shopcoins.php');
 
 require($cfg['path'].'/helpers/Paginator.php');
 
+$limit = (int)request('limit');
+if(!$limit) $limit = 4;
+
 switch ($tpl['task']){  
 	  
     case 'recomended':{       
-       $coinsId = $shopcoins_class->getPopular(4);         
+       $coinsId = $shopcoins_class->getPopular($limit);         
        break;
     }
     case 'new':{
-      	$coinsId = $shopcoins_class->getNew(4);      
+      	$coinsId = $shopcoins_class->getNew($limit);      
        	break;
     }
     
     case 'sale':{
-      	$coinsId = $shopcoins_class->getSale(4);         
+      	$coinsId = $shopcoins_class->getSale($limit);         
        	break;
     }   
 }
@@ -45,7 +48,7 @@ if($coinsId){
         $rows_show_relation2['condition'] = $tpl['conditions'][$rows_show_relation2['condition_id']];
         ?>			
         
-        <div class="coin_info-mini left " id='item<?=$rows_show_relation2['shopcoins']?>'>
+        <div class="coin_info-mini left " id='item<?=$rows_show_relation2['shopcoins']?>' itemscope itemtype="http://schema.org/Product">
             <div id=show<?=$rows_show_relation2['shopcoins']?>></div>
             <?	
             $statuses = $shopcoins_class->getBuyStatus($rows_show_relation2["shopcoins"],$tpl['user']['can_see'],$ourcoinsorder,$shopcoinsorder);

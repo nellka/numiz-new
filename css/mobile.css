@@ -241,12 +241,13 @@ text-align: right;
     width: 415px;
 }
 .search-top-module input#search {   
-	border: 1px solid #eeeeee;
+	 background: white url("../images/search.png") no-repeat scroll 5px center;
+    border: 1px solid #eeeeee;
     border-radius: 3px;
     color: #7da2aa;
     cursor: pointer;
-    margin: 5px 5px 5px 20px;
-    padding: 5px;
+    margin: 1px 1px 1px 0;
+    padding: 5px 0 5px 30px;
     vertical-align: middle;
     width: 300px;
 }
@@ -254,19 +255,42 @@ text-align: right;
 .search-top-module{
     margin: 0;
     padding: 0;
-    display:none;
+    /*display:none;*/
     background: #fdc36d none repeat scroll 0 0;
 }
+.search-ayax.ui-menu-item {
+    border-bottom: 1px solid;
+    margin-bottom: 5px;
+}
+.search-ayax img {
+    border: 1px solid #ccc;
+    float: left;
+    margin: 0 10px 10px 0;
+}
 
+.search-ayax.ui-menu-item:last-child a {
+    color: #247bbd;
+    font-weight: bold;
+     text-decoration: underline;
+}
 .search-top-module #globalsearch-submit {
-   background: #eeeeee url("../images/search.png") no-repeat scroll center center;
-    border: 1px solid #eeeeee;
+   background: #fdc36d none repeat scroll 0 0;
+    border: 0 none;
     border-radius: 3px;
-    color: #7da2aa;
+    color: white;
     cursor: pointer;
-    height: 30px;
+    font-weight: bold;
+	padding: 0 0 0 20px;
     vertical-align: middle;
-    width: 30px;
+    
+}
+.search-top-module .search{
+	font-size: 18px;
+}
+.ui-widget-content .tab_coins .p-10  a {
+    font-weight: bold;
+    color: #1c94c4;
+    text-decoration: none;
 }
 ul.ui-autocomplete{
 border:1px solid #ccc;
@@ -674,7 +698,7 @@ a.borderimage{
 }
 .buy-div{
     display:inline-block;
-    width:225px;
+    /*width:225px;*/
     text-align:right;
 }
 
@@ -1234,17 +1258,28 @@ display: table;
 }
 .coin_division{
 	background: #eeeeee none repeat scroll 0 0;
-    float: left;
-    height: 180px;
+     /*float: left;
+   height: 180px;*/
     margin: 0 0 10px 10px;
     padding: 10px 7px;
     width: 217px;
 }
+/*
+.coin_division_block .coin_division{
+height: auto;
+display:table;
+}
 
+.coin_division_block .coin_division.h-1 {
+    height: 235px;
+}
+.coin_division_block .coin_division.h-4 {
+    height: 235px;
+}*/
 .coin_division,.coin_division_last {
     background: #eeeeee none repeat scroll 0 0;
-    float: left;
-    height: 240px;
+    /*float: left;
+    height: 240px;*/
     margin: 5px;
     padding: 10px 7px;
     width: 170px;
@@ -1320,6 +1355,9 @@ width: 155px;
 text-align: center;
 }
 
+.b-am.left {
+    margin-right: 40px;
+}
 .coin_info-mini .oneclick_notifications {
     text-align: center;
     width: 155px;
@@ -1422,4 +1460,82 @@ text-align: center;
 
 #hidden-shopcoins-stat .ui-widget-content .coin_info-mini a.button25{
     color: white;
+}
+.addcons_block{
+    border: 1px solid rgb(204, 204, 204); 
+    margin-top: 20px; 
+    width: 100%;
+    position: relative;
+    background: #fff8e8 none repeat scroll 0 0;
+}
+.addcons_block a.h{
+    background: #ecb34e none repeat scroll 0 0;
+    color: white;
+    display: block;
+    font-size: 16px;
+    line-height: 28px;
+    padding: 0 10px;
+    text-decoration: none;
+}
+
+.wform label {    
+    line-height: 20px;
+    margin: 10px 0 5px;
+    padding-right: 10px;
+    text-shadow: 1px 1px 1px #f0f0f0;   
+}
+/*
+.wform .videolink label{
+ width: 250px;
+}*/
+
+.wform p {
+     clear: both;
+    float: left;
+    margin: 0 0 10px;
+    padding: 0 10px;
+    position: relative;
+    width: 100%;
+}
+.wform p.txt {
+padding: 0;
+}
+
+.table_cl{
+background:#ebe4d4;
+}
+
+.table_cl a {
+    text-decoration: none;
+}
+
+.table_cl td {
+    border: 1px solid #cccccc;
+    padding: 5px;
+    width: 33%;
+}
+.table_active_block  a {
+    color: white;
+}
+.table_active_block{
+	background: #ecb34e none repeat scroll 0 0;
+}
+
+
+
+#header .main-top {
+    background: #ccc none repeat scroll 0 0;
+    font-weight: bold;
+    height: 20px;
+    line-height: 20px;
+    margin: 0;
+    padding: 5px 20px;
+    width: 375px;
+}
+
+#header .cssmenu ul li a {
+    height: 30px;
+    line-height: 30px;
+    padding: 0;
+    width: 375px;
 }

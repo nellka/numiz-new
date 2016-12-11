@@ -70,7 +70,7 @@ class imageMini
         return str_replace(self::$DIR_PATH,self::$SITE_PATH,$path_to_mini);
 	}	
 	
-	static function SaveSmallImage ($FolderIn, $FolderOut, $Image, $xsize, $ysize) {
+	static function SaveSmallImage ($FolderIn, $FolderOut, $Image, $xsize, $ysize,$wwm = true) {
     	$mFolderIn = $FolderIn;
     	$mFolderOut = $FolderOut;
     	$mImage = $Image;
@@ -94,7 +94,10 @@ class imageMini
     	$k = $size[0]/$size[1];
     	
     	$tmp = explode("_", $Image);
+    	
+    	//echo "<!--".var_dump($tmp)."-->";
     	$tmp2 = explode(".", $tmp[1]);
+    	$tmp = explode(".", $tmp[0]);
     	//$ImageNew = $tmp[0].".".$tmp2[1];
     	$ImageNew = $tmp[0].".jpg";
     	
@@ -136,7 +139,8 @@ class imageMini
     		$fontnum = imageloadfont('../fonts/arial.gdf');
     	}
     	
-    	imagestringup($im, $fontnum, $xsize/2-8, $ysize, "Numizmatik.Ru", $textcolor);    	
+    	if($wwm) imagestringup($im, $fontnum, $xsize/2-8, $ysize, "Numizmatik.Ru", $textcolor);  
+    	//var_dump($FolderOut.$ImageNew);  	
     	imagejpeg($im, $FolderOut.$ImageNew);
     	chmod($FolderOut.$ImageNew, 0775);
     	    	
