@@ -5,9 +5,21 @@ $page = request('page');
 $parent= request('parent');
 //для магазина - тип категории
 $materialtype = (integer)(isset($_REQUEST['materialtype'])?$_REQUEST['materialtype']:'');
-
+$mini= (isset($_COOKIE['mini'])&&$_COOKIE['mini']>0)?true:false;
+$viporder = (isset($_COOKIE['viporder'])&&$_COOKIE['viporder']>0)?trim($_COOKIE['viporder']):0;
+$fv= (isset($_COOKIE['fv'])&&$_COOKIE['fv']>0)?true:false;
+$c_en= (isset($_COOKIE['c_en'])&&$_COOKIE['c_en']>0)?true:false;
 //номер заказа
 $shopcoinsorder = 0;
+$orderstart = 0;
+
+if(isset($_SESSION['orderstart'])&&intval($_SESSION['orderstart'])>0){
+	$orderstart = intval($_SESSION['orderstart']);
+	if(time() > $orderstart + 5*3600){
+		$orderstart = 0;
+	}
+}
+
 
 if (isset($_COOKIE['shopcoinsorder'])&&intval($_COOKIE['shopcoinsorder'])>0)
 	$shopcoinsorder = intval($_COOKIE['shopcoinsorder']);
@@ -15,19 +27,23 @@ elseif(isset($_SESSION['shopcoinsorder'])&&intval($_SESSION['shopcoinsorder'])>0
 	$shopcoinsorder = intval($_SESSION['shopcoinsorder']);
 elseif (intval(request('shopcoinsorder'))>0)
 	$shopcoinsorder = intval(request('shopcoinsorder'));
-	
+
 //количество товаров в корзине
 if(isset($_SESSION['shopcoinsorderamount'])&&intval($_SESSION['shopcoinsorderamount'])>0){
-	$shopcoinsorder = intval($_SESSION['shopcoinsorderamount']);
+	$shopcoinsorderamount = intval($_SESSION['shopcoinsorderamount']);
 } else $shopcoinsorderamount = request('shopcoinsorderamount');
 //для админа
 $nocheck = request('nocheck');
 
 $LastCatalog10 = isset($_COOKIE['LastCatalog10'])?$_COOKIE['LastCatalog10']:'';
+
 $pagenumparent =  request('pagenumparent');
 
-
-			
+$bascetsum = 0;
+if(isset($_SESSION['bascetsum'])&&$_SESSION['bascetsum']){
+	$bascetsum = $_SESSION['bascetsum'];
+}
+	
 
 /*
 $order = (integer)(isset($_REQUEST['order'])?$_REQUEST['order']:0);
